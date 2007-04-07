@@ -63,7 +63,7 @@ protected:
 public:
 
 	Node(const CRayTraceDoc* const pDoc, node_type NodeType, const char* const Name, const sp Color = sp(-1,-1,-1))
-	: m_NodeType(NodeType), m_Refractive(1), m_TextureFileName("")
+	: m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1), m_TextureFileName("")
 	{
 		m_pDoc = (const CRayTraceDoc*)pDoc;
 		Set_Name( Name );
