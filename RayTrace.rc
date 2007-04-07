@@ -1,0 +1,685 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 日本語 resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 17, 1\r\n"
+    "#pragma code_page(932)\r\n"
+    "#endif\r\n"
+    "#include ""res\\RayTrace.rc2""  // Microsoft Visual C++ 以外のツールで編集されたリソース\r\n"
+    "#include ""l.jpn\\afxres.rc""          // 標準のコンポーネント\r\n"
+    "#include ""l.jpn\\afxprint.rc""        // 印刷/印刷プレビュー リソース\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\RayTrace.ico"
+IDR_RAYTRATYPE          ICON    DISCARDABLE     "res\\RayTraceDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+IDB_BITMAP_NORMAL       BITMAP  DISCARDABLE     "res\\bitmap_n.bmp"
+IDB_BITMAP_STATE        BITMAP  DISCARDABLE     "res\\bitmap_s.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_ADD_SPHERE
+    BUTTON      ID_ADD_PLANE
+    BUTTON      ID_ADD_CONE
+    BUTTON      ID_ADD_CYLINDER
+    BUTTON      ID_ADD_CUBE
+    BUTTON      ID_ADD_TORUS
+    BUTTON      ID_ADD_POLYGON
+    BUTTON      ID_ADD_TEAPOT
+    BUTTON      ID_ADD_PLUS
+    BUTTON      ID_ADD_MULTIPLE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "ﾌｧｲﾙ(&F)"
+    BEGIN
+        MENUITEM "新規作成(&N)\tCtrl+N",        ID_FILE_NEW
+        MENUITEM "開く(&O)...\tCtrl+O",         ID_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "ﾌﾟﾘﾝﾀの設定(&R)...",          ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "最新のﾌｧｲﾙ",                  ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "ｱﾌﾟﾘｹｰｼｮﾝの終了(&X)",         ID_APP_EXIT
+    END
+    POPUP "表示(&V)"
+    BEGIN
+        MENUITEM "ﾂｰﾙ ﾊﾞｰ(&T)",                 ID_VIEW_TOOLBAR
+        MENUITEM "ｽﾃｰﾀｽ ﾊﾞｰ(&S)",               ID_VIEW_STATUS_BAR
+    END
+    POPUP "ﾍﾙﾌﾟ(&H)"
+    BEGIN
+        MENUITEM "ﾊﾞｰｼﾞｮﾝ情報(RayTrace)(&A)...", ID_APP_ABOUT
+    END
+END
+
+IDR_RAYTRATYPE MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "ﾌｧｲﾙ(&F)"
+    BEGIN
+        MENUITEM "新規作成(&N)\tCtrl+N",        ID_FILE_NEW
+        MENUITEM "開く(&O)...\tCtrl+O",         ID_FILE_OPEN
+        MENUITEM "閉じる(&C)",                  ID_FILE_CLOSE
+        MENUITEM "上書き保存(&S)\tCtrl+S",      ID_FILE_SAVE
+        MENUITEM "名前を付けて保存(&A)...",     ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "印刷(&P)...\tCtrl+P",         ID_FILE_PRINT
+        MENUITEM "印刷ﾌﾟﾚﾋﾞｭｰ(&V)",             ID_FILE_PRINT_PREVIEW
+        MENUITEM "ﾌﾟﾘﾝﾀの設定(&R)...",          ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "最新のﾌｧｲﾙ",                  ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "ｱﾌﾟﾘｹｰｼｮﾝの終了(&X)",         ID_APP_EXIT
+    END
+    POPUP "編集(&E)"
+    BEGIN
+        MENUITEM "元に戻す(&U)\tCtrl+Z",        ID_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "切り取り(&T)\tCtrl+X",        ID_EDIT_CUT
+        MENUITEM "ｺﾋﾟｰ(&C)\tCtrl+C",            ID_EDIT_COPY
+        MENUITEM "貼り付け(&P)\tCtrl+V",        ID_EDIT_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "プロパティ(&O)\tAlt+Enter",   ID_PROPERTY
+    END
+    POPUP "追加(&A)"
+    BEGIN
+        MENUITEM "球(&S)",                      ID_ADD_SPHERE
+        MENUITEM "平面(&P)",                    ID_ADD_PLANE
+        MENUITEM "円柱(&Y)",                    ID_ADD_CYLINDER
+        MENUITEM "円錐(&R)",                    ID_ADD_CONE
+        MENUITEM "立方体(&C)",                  ID_ADD_CUBE
+        MENUITEM "トーラス",                    ID_ADD_TORUS
+        MENUITEM "ポリゴン",                    ID_ADD_POLYGON
+        MENUITEM "ティーポット",                ID_ADD_TEAPOT
+        MENUITEM SEPARATOR
+        MENUITEM "変換(&T)",                    ID_ADD_TRANS
+        MENUITEM "加法(&P)",                    ID_ADD_PLUS
+        MENUITEM "乗法(&M)",                    ID_ADD_MULTIPLE
+        MENUITEM "除法(&D)",                    ID_ADD_MINUS
+    END
+    POPUP "ﾌﾟﾛﾊﾟﾃｨ(&P)"
+    BEGIN
+        MENUITEM "ｱﾌｨﾝ変換(&A)",                ID_AFIN
+        MENUITEM "色(&C)",                      ID_COLOR
+        MENUITEM "材質(&M)",                    ID_MATERIAL
+        MENUITEM "ﾃｸｽﾁｬ(&T)",                   ID_TEXTURE
+    END
+    POPUP "表示(&V)"
+    BEGIN
+        MENUITEM "ﾂｰﾙ ﾊﾞｰ(&T)",                 ID_VIEW_TOOLBAR
+        MENUITEM "ｽﾃｰﾀｽ ﾊﾞｰ(&S)",               ID_VIEW_STATUS_BAR
+        MENUITEM SEPARATOR
+        MENUITEM "旧ﾜｲﾔｰﾌﾚｰﾑ(&O)",              ID_VIEW_WIREFRAME, CHECKED
+        MENUITEM "ﾚｲﾄﾚｰｽ(&R)",                  ID_VIEW_RAYTRACE
+        MENUITEM "ﾜｲﾔｰﾌﾚｰﾑ(&W)",                ID_VIEW_D3DWIREFRAME
+        MENUITEM "ﾌﾗｯﾄｼｪｰﾃﾞｨﾝｸﾞ(&F)",           ID_VIEW_FLATSHADING
+        MENUITEM "ｸﾞﾛｰｼｪｰﾃﾞｨﾝｸﾞ(&G)",           ID_VIEW_GOURAUDSHADING
+    END
+    POPUP "ｳｨﾝﾄﾞｳ(&W)"
+    BEGIN
+        MENUITEM "新しいｳｨﾝﾄﾞｳを開く(&N)",      ID_WINDOW_NEW
+        MENUITEM "重ねて表示(&C)",              ID_WINDOW_CASCADE
+        MENUITEM "並べて表示(&T)",              ID_WINDOW_TILE_HORZ
+        MENUITEM "ｱｲｺﾝの整列(&A)",              ID_WINDOW_ARRANGE
+    END
+    POPUP "ﾍﾙﾌﾟ(&H)"
+    BEGIN
+        MENUITEM "ﾊﾞｰｼﾞｮﾝ情報(RayTrace) (&A)...", ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+BEGIN
+    "A",            ID_AFIN,                VIRTKEY, ALT, NOINVERT
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    "C",            ID_COLOR,               VIRTKEY, ALT, NOINVERT
+    "M",            ID_MATERIAL,            VIRTKEY, ALT, NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_PROPERTY,            VIRTKEY, ALT, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 217, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ﾊﾞｰｼﾞｮﾝ情報(RayTrace)"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "RayTrace Version 1.0",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 1999",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,32,14,WS_GROUP
+END
+
+IDD_MATRIX DIALOGEX 0, 0, 199, 149
+STYLE DS_SYSMODAL | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+CAPTION "変換行列の編集"
+FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,142,6,50,14
+    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,142,24,50,14
+    EDITTEXT        IDC_EDIT_MATRIX_1_1,14,13,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_1_2,45,13,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_1_3,76,13,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_1_4,107,13,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_2_1,14,29,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_2_2,45,29,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_2_3,76,29,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_2_4,107,29,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_3_1,14,45,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_3_2,45,45,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_3_3,76,45,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_3_4,107,45,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_4_1,14,61,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_4_2,45,61,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_4_3,76,61,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_4_4,107,61,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_SCALE_X,26,98,28,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SCALE_Y,39,114,28,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SCALE_Z,55,130,28,12,ES_AUTOHSCROLL
+    LTEXT           "倍率",IDC_STATIC,18,86,15,8
+    EDITTEXT        IDC_EDIT_ROTATE_X,93,98,28,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_ROTATE_Y,93,114,28,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_ROTATE_Z,93,130,28,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_ROTATE_ANGLE,127,114,28,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_MOVE_X,164,98,28,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_MOVE_Y,164,114,28,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_MOVE_Z,164,130,28,12,ES_AUTOHSCROLL
+    LTEXT           "回転軸",IDC_STATIC,94,86,15,8
+    LTEXT           "回転角",IDC_STATIC,130,104,26,8
+    LTEXT           "平行移動",IDC_STATIC,165,86,33,8
+    LTEXT           "Ｘ",IDC_STATIC,6,102,8,8
+    LTEXT           "Ｙ",IDC_STATIC,6,118,8,8
+    LTEXT           "Ｚ",IDC_STATIC,6,134,8,8
+END
+
+IDD_MATERIAL DIALOG DISCARDABLE  0, 0, 178, 79
+STYLE DS_SYSMODAL | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+CAPTION "マテリアル"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,121,7,50,14
+    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,121,24,50,14
+    LTEXT           "材質",IDC_STATIC,7,11,18,12
+    LTEXT           "反射率",IDC_STATIC,7,30,26,8
+    LTEXT           "透過率",IDC_STATIC,7,46,26,8
+    LTEXT           "屈折率",IDC_STATIC,7,62,29,8
+    EDITTEXT        IDC_REFLECT,47,30,36,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_THROUGH,47,46,36,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_REFRACTIVE,47,60,36,12,ES_RIGHT | ES_AUTOHSCROLL
+    COMBOBOX        IDC_MATERIAL,29,7,70,61,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+END
+
+IDD_TORUS DIALOG DISCARDABLE  0, 0, 166, 45
+STYLE DS_SYSMODAL | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+CAPTION "トーラスの編集"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,109,7,50,14
+    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,109,24,50,14
+    EDITTEXT        IDC_TORUS_SMALL_R,47,7,44,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_TORUS_LARGE_R,48,27,44,12,ES_RIGHT | ES_AUTOHSCROLL
+    LTEXT           "長半径",IDC_STATIC,7,30,28,8
+    LTEXT           "短半径",IDC_STATIC,7,7,28,11
+END
+
+IDD_POLYGON DIALOG DISCARDABLE  0, 0, 231, 145
+STYLE DS_SYSMODAL | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+CAPTION "ポリゴン"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,174,7,50,14
+    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,174,24,50,14
+    LISTBOX         IDC_LIST1,7,7,121,109,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "041104B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "RayTrace MFC ｱﾌﾟﾘｹｰｼｮﾝ\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "RayTrace\0"
+            VALUE "LegalCopyright", "Copyright (C) 1999\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "RayTrace.EXE\0"
+            VALUE "ProductName", "RayTrace ｱﾌﾟﾘｹｰｼｮﾝ\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x411, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_MATRIX, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 192
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 142
+    END
+
+    IDD_MATERIAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 171
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 72
+    END
+
+    IDD_TORUS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 159
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 38
+    END
+
+    IDD_POLYGON, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 224
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 138
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_MATERIAL DLGINIT
+BEGIN
+    IDC_MATERIAL, 0x403, 13, 0
+0x5f83, 0x4383, 0x4183, 0x8283, 0x9383, 0x6883, "\000" 
+    IDC_MATERIAL, 0x403, 11, 0
+0x4b83, 0x5b81, 0x6c83, 0x6283, 0x6783, "\000" 
+    IDC_MATERIAL, 0x403, 19, 0
+0x8b83, 0x7283, 0x5b81, 0x4181, 0x5483, 0x7483, 0x4083, 0x4383, 0x4183, 
+"\000" 
+    IDC_MATERIAL, 0x403, 9, 0
+0x5883, 0x7383, 0x6c83, 0x8b83, "\000" 
+    IDC_MATERIAL, 0x403, 11, 0
+0x7983, 0x8a83, 0x6883, 0x6283, 0x6783, "\000" 
+    IDC_MATERIAL, 0x403, 7, 0
+0xd082, 0xb782, 0xa282, "\000" 
+    IDC_MATERIAL, 0x403, 9, 0
+0x6783, 0x7083, 0x5b81, 0x5983, "\000" 
+    IDC_MATERIAL, 0x403, 11, 0
+0x6783, 0x8b83, 0x7d83, 0x8a83, 0x9383, "\000" 
+    IDC_MATERIAL, 0x403, 11, 0
+0x4783, 0x8183, 0x8983, 0x8b83, 0x6883, "\000" 
+    IDC_MATERIAL, 0x403, 5, 0
+0x8590, 0xbb8f, "\000" 
+    IDC_MATERIAL, 0x403, 9, 0
+0x4983, 0x7083, 0x5b81, 0x8b83, "\000" 
+    IDC_MATERIAL, 0x403, 7, 0
+0x4b83, 0x8983, 0x5883, "\000" 
+    IDC_MATERIAL, 0x403, 3, 0
+0x8590, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_CURSOR1             CURSOR  DISCARDABLE     "res\\cursor1.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "RayTrace"
+    IDR_RAYTRATYPE          "\nRayTra\nRayTra\nRayTra ﾌｧｲﾙ (*.scn)\n.scn\nRayTrace.Document\nRayTra Document"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "RayTrace"
+    AFX_IDS_IDLEMESSAGE     "ﾚﾃﾞｨ"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "上書"
+    ID_INDICATOR_REC        "記録"
+    ID_INDICATOR_KANA       "ｶﾅ"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_NEW             "新規にﾌｧｲﾙを作成\n新規ﾌｧｲﾙ"
+    ID_FILE_OPEN            "既存のﾌｧｲﾙを開く\n開く"
+    ID_FILE_CLOSE           "作業中のﾌｧｲﾙを閉じる\n閉じる"
+    ID_FILE_SAVE            "作業中のﾌｧｲﾙを保存\n保存"
+    ID_FILE_SAVE_AS         "作業中のﾌｧｲﾙに名前を付けて保存\n名前をつけて保存"
+    ID_FILE_PAGE_SETUP      "印刷設定の変更\n印刷設定"
+    ID_FILE_PRINT_SETUP     "ﾌﾟﾘﾝﾀ/印刷設定の変更\nﾌﾟﾘﾝﾀの設定"
+    ID_FILE_PRINT           "作業中のﾌｧｲﾙを印刷\n印刷"
+    ID_FILE_PRINT_PREVIEW   "ﾌﾙｽｸﾘｰﾝで表示\n印刷ﾌﾟﾚﾋﾞｭｰ"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "ﾌﾟﾛｸﾞﾗﾑの情報、ﾊﾞｰｼﾞｮﾝそして著作権を表示\nﾊﾞｰｼﾞｮﾝ情報"
+    ID_APP_EXIT             "ｱﾌﾟﾘｹｰｼｮﾝを終了し、ﾌｧｲﾙの保存を指示\n終了"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "指定のﾌｧｲﾙを開く"
+    ID_FILE_MRU_FILE2       "指定のﾌｧｲﾙを開く"
+    ID_FILE_MRU_FILE3       "指定のﾌｧｲﾙを開く"
+    ID_FILE_MRU_FILE4       "指定のﾌｧｲﾙを開く"
+    ID_FILE_MRU_FILE5       "指定のﾌｧｲﾙを開く"
+    ID_FILE_MRU_FILE6       "指定のﾌｧｲﾙを開く"
+    ID_FILE_MRU_FILE7       "指定のﾌｧｲﾙを開く"
+    ID_FILE_MRU_FILE8       "指定のﾌｧｲﾙを開く"
+    ID_FILE_MRU_FILE9       "指定のﾌｧｲﾙを開く"
+    ID_FILE_MRU_FILE10      "指定のﾌｧｲﾙを開く"
+    ID_FILE_MRU_FILE11      "指定のﾌｧｲﾙを開く"
+    ID_FILE_MRU_FILE12      "指定のﾌｧｲﾙを開く"
+    ID_FILE_MRU_FILE13      "指定のﾌｧｲﾙを開く"
+    ID_FILE_MRU_FILE14      "指定のﾌｧｲﾙを開く"
+    ID_FILE_MRU_FILE15      "指定のﾌｧｲﾙを開く"
+    ID_FILE_MRU_FILE16      "指定のﾌｧｲﾙを開く"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEXT_PANE            "次のｳｨﾝﾄﾞｳに切り替える\n次ﾍﾟｰｼﾞ"
+    ID_PREV_PANE            "前のｳｨﾝﾄﾞｳに切り替える\n前ﾍﾟｰｼﾞ"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_WINDOW_NEW           "作業中のｳｨﾝﾄﾞｳを複写して表示\n新規ｳｨﾝﾄﾞｳ"
+    ID_WINDOW_ARRANGE       "ｳｨﾝﾄﾞｳの下部にｱｲｺﾝを整列\nｱｲｺﾝの整列"
+    ID_WINDOW_CASCADE       "ｳｨﾝﾄﾞｳを重ねて表示\n重ねて表示"
+    ID_WINDOW_TILE_HORZ     "ｳｨﾝﾄﾞｳを上下に並べて表示\n上下に並べて表示"
+    ID_WINDOW_TILE_VERT     "ｳｨﾝﾄﾞｳを左右に並べて表示\n左右に並べて表示"
+    ID_WINDOW_SPLIT         "作業中のｳｨﾝﾄﾞｳを分割\n分割"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_CLEAR           "選択範囲を消去\n消去"
+    ID_EDIT_CLEAR_ALL       "すべて消去\nすべて消去"
+    ID_EDIT_COPY            "選択範囲をｺﾋﾟｰしてｸﾘｯﾌﾟﾎﾞｰﾄﾞに保存\nｺﾋﾟ-"
+    ID_EDIT_CUT             "選択範囲を切り取ってｸﾘｯﾌﾟﾎﾞｰﾄﾞに保存\n切り取り"
+    ID_EDIT_FIND            "指定した文字列の検索\n検索"
+    ID_EDIT_PASTE           "ｸﾘｯﾌﾟﾎﾞｰﾄﾞの内容を貼り付け\n貼り付け"
+    ID_EDIT_REPEAT          "直前に行った動作を繰り返す\nﾘﾋﾟｰﾄ"
+    ID_EDIT_REPLACE         "指定した文字列を他の文字列で置換\n置換"
+    ID_EDIT_SELECT_ALL      "ﾌｧｲﾙ全体を選択\nすべて選択"
+    ID_EDIT_UNDO            "直前に行った動作を元に戻す\n元に戻す"
+    ID_EDIT_REDO            "直前に行った動作を繰り返す\nやり直し"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "ﾂｰﾙ ﾊﾞｰの表示/非表示\nﾂｰﾙ ﾊﾞｰの表示/非表示"
+    ID_VIEW_STATUS_BAR      "ｽﾃｰﾀｽ ﾊﾞｰの表示/非表示\nｽﾃｰﾀｽ ﾊﾞｰの表示/非表示"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "ｳｨﾝﾄﾞｳのｻｲｽﾞを変更"
+    AFX_IDS_SCMOVE          "ｳｨﾝﾄﾞｳの位置を変更"
+    AFX_IDS_SCMINIMIZE      "ｳｨﾝﾄﾞｳをｱｲｺﾝ化する"
+    AFX_IDS_SCMAXIMIZE      "ｳｨﾝﾄﾞｳを最大表示にする"
+    AFX_IDS_SCNEXTWINDOW    "次のｳｨﾝﾄﾞｳに切り替える"
+    AFX_IDS_SCPREVWINDOW    "前のｳｨﾝﾄﾞｳに切り替える"
+    AFX_IDS_SCCLOSE         "作業中のｳｨﾝﾄﾞｳを閉じ、変更したﾌｧｲﾙの保存を指示"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "ｳｨﾝﾄﾞｳを通常のｻｲｽﾞに戻す"
+    AFX_IDS_SCTASKLIST      "ｱﾌﾟﾘｹｰｼｮﾝの切り替え"
+    AFX_IDS_MDICHILD        "指定のｳｨﾝﾄﾞｳを表示"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "印刷ﾌﾟﾚﾋﾞｭｰ ﾓｰﾄﾞを閉じる\nﾌﾟﾚﾋﾞｭｰのｷｬﾝｾﾙ"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_ADD_SPHERE           "カーソル位置に球を追加します。"
+    ID_ADD_PLANE            "カーソル位置に平面を追加します。"
+    ID_ADD_CUBE             "カーソル位置に立方体を追加します。"
+    ID_ADD_TRANS            "カーソル位置に変換行列を追加します。"
+    ID_ADD_TORUS            "カーソル位置にトーラスを追加します。"
+    ID_ADD_PLUS             "カーソル位置に加法演算子を追加します。"
+    ID_ADD_MINUS            "カーソル位置に除法演算子を追加します。"
+    ID_ADD_MULTIPLE         "カーソル位置に乗法演算子を追加します。"
+    ID_MENU_AFIN            "アフィン変換パラメータを編集します。"
+    ID_PROPERTY             "対象のノードの属性を変更します。"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_ADD_POLYGON          "カーソル位置にポリゴンを追加します。"
+    ID_TEXTURE              "テクスチャを選択します。"
+    IDC_VIEW_WIREFRAME      "ワイヤーフレーム表示に切り換えます。"
+    ID_ADD_CORN             "レイトレース表示に切り換えます。"
+    ID_VIEW_WIREFRAME       "ワイヤーフレーム表示に切り換えます。"
+    ID_ADD_CYLINDER         "カーソル位置に円柱を追加します。"
+    ID_ADD_CONE             "カーソル位置に円錐を追加します。"
+    ID_VIEW_DIRECT3D        "Direct3Dによる表示に切り換えます。"
+    ID_VIEW_D3DWIREFRAME    "Direct3D によるﾜｲﾔｰﾌﾚｰﾑ表示に切り換えます。"
+    ID_VIEW_FLATSHADING     "Direct3D によるﾌﾗｯﾄｼｪｰﾃﾞｨﾝｸﾞ表示に切り換えます。"
+    ID_VIEW_GOURAUDSHADING  "Direct3D によるｸﾞﾛｰｼｪｰﾃﾞｨﾝｸﾞ表示に切り換えます。"
+    ID_ADD_TEAPOT           "カーソル位置にティーポットを追加します。"
+END
+
+#endif    // 日本語 resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE 17, 1
+#pragma code_page(932)
+#endif
+#include "res\RayTrace.rc2"  // Microsoft Visual C++ 以外のツールで編集されたリソース
+#include "l.jpn\afxres.rc"          // 標準のコンポーネント
+#include "l.jpn\afxprint.rc"        // 印刷/印刷プレビュー リソース
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
