@@ -2,7 +2,7 @@
 
 IMPLEMENT_SERIAL(Cube, CObject, 1)
 
-BOOL	Cube::GetInfo( const sp& K, const sp& L, Info* const r_info, const Node const *) const
+BOOL Cube::GetInfo( const sp& K, const sp& L, Info* const r_info, const Node*) const
 {
 	r_info->isEnter = !IsInside( L );
 

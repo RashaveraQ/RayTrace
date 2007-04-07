@@ -3,20 +3,19 @@
 
 IMPLEMENT_SERIAL(Multiple, CObject, 1)
 
-BOOL	Multiple::IsInside( const sp& L ) const
+BOOL Multiple::IsInside(const sp& L) const
 {
-	if ( !m_Member )
+	if (!m_Member)
 		return FALSE;
 
-	for ( int i = 0; i < m_Member; i++ )
-	{
-		if ( !m_Node[i]->IsInside( m_Matrix * L ) )
+	for (int i = 0; i < m_Member; i++) {
+		if (!m_Node[i]->IsInside(m_Matrix * L))
 			return FALSE;
 	}
 	return TRUE;
 }
 
-BOOL	Multiple::GetInfo(const sp& K, const sp& L, Info* const info, const Node const *pOmit) const
+BOOL Multiple::GetInfo(const sp& K, const sp& L, Info* const info, const Node* pOmit) const
 {
 	Info	tmp;
 	double	l = -1;

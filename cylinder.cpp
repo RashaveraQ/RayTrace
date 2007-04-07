@@ -96,7 +96,7 @@ BOOL Cylinder::IsInside(const sp& L) const
 	return (-1 <= L.y && L.y <= 1 && sqrt(L.x*L.x+L.z*L.z) <= 1.0);
 }
 
-BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node const * pOmit) const
+BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node* pOmit) const
 {
 	if (L.y < -1)
 	{

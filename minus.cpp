@@ -2,21 +2,21 @@
 
 IMPLEMENT_SERIAL(Minus, CObject, 1)
 
-BOOL	Minus::AddNode( CTreeCtrl& c, HTREEITEM SelectItem, Node* Target )
+BOOL Minus::AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target)
 {
-	if ( m_Member >= 2 )
+	if (m_Member >= 2)
 		return FALSE;
 
-	return Gathering::AddNode( c, SelectItem, Target );
+	return Gathering::AddNode(c, SelectItem, Target);
 }
 
-BOOL	Minus::IsInside( const sp& L ) const
+BOOL Minus::IsInside(const sp& L) const
 {
-	return ( (m_Member >= 1 && m_Node[0]->IsInside(m_Matrix * L)) 
-			  && !( m_Member >= 2 && m_Node[1]->IsInside(m_Matrix * L)) );
+	return ((m_Member >= 1 && m_Node[0]->IsInside(m_Matrix * L)) 
+			  && !( m_Member >= 2 && m_Node[1]->IsInside(m_Matrix * L)));
 }
 
-BOOL	Minus::GetInfo( const sp& K, const sp& L, Info* const info, const Node const *pOmit) const
+BOOL Minus::GetInfo(const sp& K, const sp& L, Info* const info, const Node* pOmit) const
 {
 	Info	l_info;
 	Info	r_info;
@@ -53,18 +53,15 @@ BOOL	Minus::GetInfo( const sp& K, const sp& L, Info* const info, const Node cons
 	return TRUE;
 }
 
-int	Minus::cmp_distance( double a, double b ) const
+int	Minus::cmp_distance(double a, double b) const
 {
-	if ( a >= 0 )
-	{
-		if ( b >= 0 )
-			return  ( a < b ) ? -1 : 1;
+	if (a >= 0) {
+		if (b >= 0)
+			return (a < b) ? -1 : 1;
 		else
 			return -1;
-	}
-	else
-	{
-		if ( b >= 0 )
+	} else {
+		if (b >= 0)
 			return 1;
 		else
 			return 0;
