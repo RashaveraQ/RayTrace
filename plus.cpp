@@ -4,7 +4,7 @@
 
 IMPLEMENT_SERIAL(Plus, CObject, 1)
 
-BOOL	Plus::IsInside( const sp& L ) const
+BOOL Plus::IsInside( const sp& L ) const
 {
 	for (int i = 0; i < m_Member; i++) {
 		if (m_Node[i]->IsInside(m_Matrix * L))
@@ -14,7 +14,7 @@ BOOL	Plus::IsInside( const sp& L ) const
 	return FALSE;
 }
 
-BOOL	Plus::GetInfo(const sp& K, const sp& L, Info* const info, const Node const * pOmit) const
+BOOL Plus::GetInfo(const sp& K, const sp& L, Info* const info, const Node* pOmit) const
 {
 	Info	tmp;
 	int		n;

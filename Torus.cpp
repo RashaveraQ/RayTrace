@@ -114,7 +114,7 @@ BOOL Torus::IsInside(const sp& L) const
 	return (m_r * m_r <= d + L.z * L.z);
 }
 
-BOOL Torus::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node const *pOmit) const
+BOOL Torus::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node* pOmit) const
 {
 	int Solve_Polynomial(int d, double *k, double min, double max, double *r);
 

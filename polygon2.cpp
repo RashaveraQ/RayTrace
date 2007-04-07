@@ -39,7 +39,7 @@ BOOL	Polygon2::IsInside( const sp& L ) const
 	return r;
 }
 
-BOOL	Polygon2::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node const *) const
+BOOL Polygon2::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node*) const
 {
 	double	a = K * K;
 	double	b = K * L;

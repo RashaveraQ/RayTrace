@@ -65,9 +65,7 @@ BOOL CRayTraceApp::InitInstance()
 	//  したければ以下の特定の初期化ルーチンの中から不必要なもの
 	//  を削除してください。
 
-#ifdef _AFXDLL
-	Enable3dControls();			// 共有 DLL の中で MFC を使用する場合にはここを呼び出してください。
-#else
+#ifndef _AFXDLL
 	Enable3dControlsStatic();	// MFC と静的にリンクしている場合にはここを呼び出してください。
 #endif
 

@@ -10,7 +10,7 @@
 Node::Node( const Node& other ) : m_Scale(4,4), m_Rotate(4,4), m_Move(4,4), m_Matrix(4,4)
 {
 	m_NodeType = other.m_NodeType;
-	strcpy( m_Name, other.m_Name );
+	strcpy_s(m_Name, sizeof(m_Name), other.m_Name);
 	m_Material = other.m_Material;
 	m_Scale = other.m_Scale;
 	m_Rotate = other.m_Rotate;
@@ -205,7 +205,7 @@ sp		Node::GetPixel(double x, double y) const
 	return sp(GetRValue(c),GetGValue(c),GetBValue(c));
 }
 
-BOOL	Node::GetInfo2(const sp& K, const sp& L, Info* const info, const Node const *pOmit) const
+BOOL Node::GetInfo2(const sp& K, const sp& L, Info* const info, const Node* pOmit) const
 {
 	// START Boundary 
 /*
@@ -241,7 +241,7 @@ BOOL	Node::GetInfo2(const sp& K, const sp& L, Info* const info, const Node const
 	return TRUE;
 }
 
-sp	Node::GetColor(const sp& K, const sp& L, const Node const *pOmit) const
+sp Node::GetColor(const sp& K, const sp& L, const Node* pOmit) const
 {
 	Info	info;
 

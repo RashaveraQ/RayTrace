@@ -75,13 +75,13 @@ public:
 	virtual	~Node() {}
 
 	// オペレーション
-			void Set_Name(const char* const str) { strncpy(m_Name, str, 99); }  
+			void Set_Name(const char* const str) { strncpy_s(m_Name, sizeof(m_Name), str, 99); }  
 	virtual void SetDocument(const CRayTraceDoc* const pDoc) { m_pDoc = (const CRayTraceDoc*)pDoc; }
 
 			sp GetColor(const sp& K, const sp& L, const Node * pOmit) const;
-			BOOL GetInfo2(const sp& K, const sp& L, Info* const r_info, const Node const *pOmit) const;
+			BOOL GetInfo2(const sp& K, const sp& L, Info* const r_info, const Node *pOmit) const;
 			sp GetPixel(double x, double y) const;
-	virtual	BOOL GetInfo(const sp& K, const sp& L, Info* const r_info, const Node const *pOmit) const = 0;
+	virtual	BOOL GetInfo(const sp& K, const sp& L, Info* const r_info, const Node *pOmit) const = 0;
 	virtual	BOOL IsInside(const sp& L) const = 0;
 	
 	void Move(eAxis axis, double d);
