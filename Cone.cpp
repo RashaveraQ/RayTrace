@@ -32,13 +32,13 @@ void Cone::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Mat
 
 void Cone::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const
 {
-	LPDIRECT3DVERTEXBUFFER9 pVB;
-	CUSTOMVERTEX*	pVertices;
-
 	matrix m = Matrix * m_Matrix;
 
 	switch (rtv.m_ViewMode) {
 	case CRayTraceView::eD3DWireFrame:
+
+		LPDIRECT3DVERTEXBUFFER9 pVB;
+		CUSTOMVERTEX*	pVertices;
 
 		if (!InitVertexBuffer(pd3dDevice, pVB, pVertices, COUNT))
 			return;
@@ -53,22 +53,22 @@ void Cone::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 		pVB->Unlock();
 		lstGeometry.AddTail(Geometry(this, pVB, D3DPT_LINESTRIP, COUNT-1));
 
-		if (!InitVertexBuffer(pd3dDevice, pVB, pVertices, LINES+1))
+		if (!InitVertexBuffer(pd3dDevice, pVB, pVertices, LINES + 2))
 			return;
-
 		{
 			sp p = m * sp(0,0,0);
 			pVertices[0].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 			pVertices[0].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 		}
-		for (i = 1; i <= LINES+1; i++) {
-			double th = 6.28 * (double)(i-1)/ LINES;
+		for (int i = 1; i <= LINES + 1; i++) {
+			double th = 6.28 * (double)(i - 1)/ LINES;
 			sp p = m * sp(cos(th), 1, sin(th));
 			pVertices[i].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 			pVertices[i].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 		}
 		pVB->Unlock();
 		lstGeometry.AddTail(Geometry(this, pVB, D3DPT_TRIANGLEFAN, LINES));
+
 		break;
 
 	case CRayTraceView::eD3DFlatShading:
