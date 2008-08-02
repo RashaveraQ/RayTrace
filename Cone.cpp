@@ -40,8 +40,8 @@ void Cone::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 	switch (rtv.m_ViewMode) {
 	case CRayTraceView::eD3DWireFrame:
 
-	if (!InitVertexBuffer(pd3dDevice, pVB, pVertices, COUNT))
-		return;
+		if (!InitVertexBuffer(pd3dDevice, pVB, pVertices, COUNT))
+			return;
 
 		int i;
 		for (i = 0; i < COUNT; i++) {
