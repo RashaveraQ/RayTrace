@@ -272,7 +272,7 @@ void CRayTraceView::OnTimer(UINT nIDEvent)
 			double ry = (m_View.bottom - m_View.top) * m_NowY / m_ClientSize.cx + m_View.top;
 			sp	   c  = m_Viewport.GetColor(sp( 0.01 * rx / (m_View.right - m_View.left),
 												0.01 * ry / (m_View.bottom - m_View.top), 0.01),
-											sp(rx, ry, -20), NULL);
+											sp(rx, ry, -20), NULL, m_Viewport);
 			m_MemoryDC.FillSolidRect(CRect(m_NowX, m_NowY, m_NowX+m_NowSize, m_NowY+m_NowSize), RGB(c.x, c.y, c.z));
 			m_Job = Go_ahead(m_NowX, m_NowY, m_NowSize, m_StartX, m_StartY, m_ClientSize, START_SQUARE);
 		}
@@ -356,7 +356,7 @@ void CRayTraceView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	if (m_Viewport.GetInfo2(sp( 0.01 * rx / (m_View.right - m_View.left),
 								0.01 * ry / (m_View.bottom - m_View.top), 0.01),
-								sp(rx, ry, -20), &info, NULL))
+								sp(rx, ry, -20), info, NULL, m_Viewport))
 		m_SelectedNode = (Node*)info.pNode;
 	else
 		m_SelectedNode = NULL;
@@ -373,7 +373,7 @@ void CRayTraceView::OnLButtonUp(UINT nFlags, CPoint point)
 
 	if (m_Viewport.GetInfo2(sp( 0.01 * rx / (m_View.right - m_View.left),
 								0.01 * ry / (m_View.bottom - m_View.top), 0.01),
-								sp(rx, ry, -20), &info, NULL))
+								sp(rx, ry, -20), info, NULL, m_Viewport))
 		m_SelectedNode = (Node*)info.pNode;
 
 	Invalidate();

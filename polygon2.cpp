@@ -39,7 +39,7 @@ BOOL	Polygon2::IsInside( const sp& L ) const
 	return r;
 }
 
-BOOL Polygon2::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node*) const
+BOOL Polygon2::GetInfo(const sp& K, const sp& L, Info& info, const Node*, const Node& viewport) const
 {
 	double	a = K * K;
 	double	b = K * L;
@@ -47,36 +47,36 @@ BOOL Polygon2::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node*
 
 	double	bb_ac = b*b - a*c;
 
-	if ( bb_ac < 0 )
+	if (bb_ac < 0)
 		return FALSE;
 
 	double	t;
-	double	t1 = ( -b + sqrt(bb_ac) ) / a;
-	double	t2 = ( -b - sqrt(bb_ac) ) / a;
+	double	t1 = (-b + sqrt(bb_ac)) / a;
+	double	t2 = (-b - sqrt(bb_ac)) / a;
 
-	r_info->isEnter = 0;
-	if ( t1 > 0 )
+	info.isEnter = 0;
+	if (t1 > 0)
 	{
-		if ( t2 > 0 )
+		if (t2 > 0)
 		{
-			r_info->isEnter = 1;
-			t = ( t1 < t2 ) ? t1 : t2;
+			info.isEnter = 1;
+			t = (t1 < t2) ? t1 : t2;
 		}
 		else
 			t = t1;
 	}
 	else
 	{
-		if ( t2 > 0 )
+		if (t2 > 0)
 			t = t2;
 		else
 			return FALSE;
 	}
 
-	r_info->Cross = r_info->Vertical = K * t + L;
-	r_info->Distance = t * sqrt( K * K );
-	r_info->Material = m_Material;
-	r_info->pNode = this;
+	info.Cross = info.Vertical = K * t + L;
+	info.Distance = t * sqrt(K * K);
+	info.Material = m_Material;
+	info.pNode = this;
 	
 	return TRUE;
 }

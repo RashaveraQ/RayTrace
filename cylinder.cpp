@@ -96,7 +96,7 @@ BOOL Cylinder::IsInside(const sp& L) const
 	return (-1 <= L.y && L.y <= 1 && sqrt(L.x*L.x+L.z*L.z) <= 1.0);
 }
 
-BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node* pOmit) const
+BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit, const Node& viewport) const
 {
 	if (L.y < -1)
 	{
@@ -108,14 +108,12 @@ BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node*
 		sp	p = K*t+L;
 
 		if (p.x * p.x + p.z * p.z <= 1 && (pOmit != this || fabs(t) >= 1E-10)) {
-			r_info->Cross = p;
-			r_info->Vertical = sp(0,-1,0);
-			r_info->Distance = t * sqrt(K*K);
-			r_info->isEnter = 1;
-			r_info->Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
-			r_info->pNode = this;
-			r_info->Refractive = m_Refractive;
-
+			info.Cross = p;
+			info.Vertical = sp(0,-1,0);
+			info.Distance = t * sqrt(K*K);
+			info.isEnter = 1;
+			info.Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
+			info.pNode = this;
 			return TRUE;
 		}
 	}
@@ -130,13 +128,12 @@ BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node*
 		sp	p = K*t+L;
 
 		if (p.x * p.x + p.z * p.z <= 1 && (pOmit != this || fabs(t) >= 1E-10)) {
-			r_info->Cross = p;
-			r_info->Vertical = sp(0,1,0);
-			r_info->Distance = t * sqrt(K*K);
-			r_info->isEnter = 1;
-			r_info->Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
-			r_info->pNode = this;
-			r_info->Refractive = m_Refractive;
+			info.Cross = p;
+			info.Vertical = sp(0,1,0);
+			info.Distance = t * sqrt(K*K);
+			info.isEnter = 1;
+			info.Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
+			info.pNode = this;
 
 			return TRUE;
 		}
@@ -158,14 +155,14 @@ BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node*
 	t1 = (b + d)/a;
 	t2 = (b - d)/a;
 
-	r_info->isEnter = 0;
+	info.isEnter = 0;
 	if (t1 > 0) {
 		if (t2 > 0) {
 			t = (t1 < t2) ? t1 : t2;
 			if (pOmit == this && fabs(t) < 1E-10)
 				t = (t1 < t2) ? t2 : t1;
 			else
-				r_info->isEnter = 1;
+				info.isEnter = 1;
 		} else
 			t = t1;
 	} else {
@@ -183,12 +180,12 @@ BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node*
 	if (p.y < -1 || 1 < p.y)
 		return FALSE;
 
-	r_info->isEnter = !IsInside( L );
-	r_info->Cross = r_info->Vertical = p;
-	r_info->Vertical.y = 0;
-	r_info->Distance = t * sqrt( K * K );
-	r_info->Material = m_Material;
-	r_info->pNode = this;
+	info.isEnter = !IsInside(L);
+	info.Cross = info.Vertical = p;
+	info.Vertical.y = 0;
+	info.Distance = t * sqrt(K * K);
+	info.Material = m_Material;
+	info.pNode = this;
 
 	return TRUE;
 }

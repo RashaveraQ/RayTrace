@@ -7,7 +7,7 @@
 
 //IMPLEMENT_DYNAMIC( Node, CObject ) 
 
-Node::Node( const Node& other ) : m_Scale(4,4), m_Rotate(4,4), m_Move(4,4), m_Matrix(4,4)
+Node::Node(const Node& other) : m_Scale(4,4), m_Rotate(4,4), m_Move(4,4), m_Matrix(4,4)
 {
 	m_NodeType = other.m_NodeType;
 	strcpy_s(m_Name, sizeof(m_Name), other.m_Name);
@@ -94,18 +94,18 @@ void Node::Serialize(CArchive& ar)
 	}
 }
 
-BOOL	Node::Edit()
+BOOL Node::Edit()
 {
 	return FALSE;
 }
 
-BOOL	Node::EditColor()
+BOOL Node::EditColor()
 {
-	COLORREF	color = RGB( 256 * m_Material.Diffuse.r, 256 * m_Material.Diffuse.g, 256 * m_Material.Diffuse.b );
+	COLORREF	color = RGB(256 * m_Material.Diffuse.r, 256 * m_Material.Diffuse.g, 256 * m_Material.Diffuse.b);
 
-	CColorDialog	color_dlg( color );
+	CColorDialog	color_dlg(color);
 
-	if ( color_dlg.DoModal() != IDOK )
+	if (color_dlg.DoModal() != IDOK)
 		return FALSE;
 
 	color = color_dlg.GetColor();
@@ -116,35 +116,35 @@ BOOL	Node::EditColor()
 	return TRUE;
 }
 
-BOOL	Node::EditAfin()
+BOOL Node::EditAfin()
 {
 	CDlgMatrix	dlg_matrix;
 
-	dlg_matrix.Set( *this );
+	dlg_matrix.Set(*this);
 
-	if ( dlg_matrix.DoModal() != IDOK )
+	if (dlg_matrix.DoModal() != IDOK)
 		return FALSE;
 
-	dlg_matrix.Get( *this );
+	dlg_matrix.Get(*this);
 
 	return TRUE;
 }
 
-BOOL	Node::EditMaterial()
+BOOL Node::EditMaterial()
 {
 	CDlgMaterial dlg_material;
 
-	dlg_material.Set( *this );
+	dlg_material.Set(*this);
 
-	if ( dlg_material.DoModal() != IDOK )
+	if (dlg_material.DoModal() != IDOK)
 		return FALSE;
 
-	dlg_material.Get( *this );
+	dlg_material.Get(*this);
 	
 	return TRUE;
 }
 
-BOOL	Node::EditTexture()
+BOOL Node::EditTexture()
 {
 	CFileDialog	dlg_file(TRUE);
 	CString		b = m_TextureFileName;
@@ -167,7 +167,7 @@ BOOL	Node::EditTexture()
 	return FALSE;
 }
 
-BOOL	Node::MakeMemoryDCfromTextureFileName()
+BOOL Node::MakeMemoryDCfromTextureFileName()
 {
 	HBITMAP		h;
 	BITMAP		b;
@@ -190,7 +190,7 @@ BOOL	Node::MakeMemoryDCfromTextureFileName()
 	return TRUE;
 }
 
-sp		Node::GetPixel(double x, double y) const
+sp Node::GetPixel(double x, double y) const
 {
 	COLORREF	c;
 
@@ -205,7 +205,7 @@ sp		Node::GetPixel(double x, double y) const
 	return sp(GetRValue(c),GetGValue(c),GetBValue(c));
 }
 
-BOOL Node::GetInfo2(const sp& K, const sp& L, Info* const info, const Node* pOmit) const
+BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info, const Node* pOmit, const Node& viewport) const
 {
 	// START Boundary 
 /*
@@ -229,23 +229,37 @@ BOOL Node::GetInfo2(const sp& K, const sp& L, Info* const info, const Node* pOmi
 	matrix m = m_Move * m_Rotate * m_Scale;
 	matrix Inv_m = m.Inv();
 
-	if (!GetInfo(Inv_m * matrix(K,0), Inv_m * L, info, pOmit)) {
+	if (!GetInfo(Inv_m * matrix(K,0), Inv_m * L, info, pOmit, viewport)) {
 		return FALSE;
 	}
 
-	info->Cross = m * info->Cross;
-	info->Vertical = m * matrix(info->Vertical,0);
-	info->Distance = (info->Cross - L).abs();
-	info->Refractive = info->pNode->m_Refractive / ((pOmit) ? pOmit->m_Refractive : 1);
+	info.Cross = m * info.Cross;
+	info.Vertical = m * matrix(info.Vertical,0);
+	info.Distance = (info.Cross - L).abs();
+//	info->Refractive = info->pNode->m_Refractive / ((pOmit) ? pOmit->m_Refractive : 1);
+
+	sp k = K.e();
+	sp v = info.Vertical.e();
+
+	if (m_Reflect > 0) {
+		sp c = viewport.GetColor(k-2*(k*v)*v, info.Cross, this, viewport);
+		info.Material = (m_Reflect * c + (1 - m_Reflect) * sp(info.Material)).getMaterial();
+	}
+
+	if (m_Through > 0) {
+		double r = m_Refractive;
+		sp c = viewport.GetColor((k+v)/r-v, info.Cross, this, viewport);
+		info.Material = (m_Through * c + (1 - m_Through) * sp(info.Material)).getMaterial();
+	}
 
 	return TRUE;
 }
 
-sp Node::GetColor(const sp& K, const sp& L, const Node* pOmit) const
+sp Node::GetColor(const sp& K, const sp& L, const Node* pOmit, const Node& viewport) const
 {
 	Info	info;
 
-	if (!GetInfo2(K, L, &info, pOmit))
+	if (!GetInfo2(K, L, info, pOmit, viewport))
 		return sp(127, 127, 127);
 
 	double	x = -m_pDoc->m_Light.e() * info.Vertical.e();
@@ -254,20 +268,6 @@ sp Node::GetColor(const sp& K, const sp& L, const Node* pOmit) const
 
 	double t = 64 + 191 * sin(M_PI / 2 * x);
 	double b = 191 * (1 - cos(M_PI / 2 * x));
-
-	sp k = K.e();
-	sp v = info.Vertical.e();
-
-	if (info.pNode->m_Reflect > 0) {
-		sp c = GetColor(k-2*(k*v)*v, info.Cross, info.pNode);
-		info.Material = (info.pNode->m_Reflect * c + (1-info.pNode->m_Reflect) * sp(info.Material)).getMaterial();
-	}
-
-	if (info.pNode->m_Through > 0) {
-		double r = info.Refractive;
-		sp c = GetColor((k+v)/r-v, info.Cross, info.pNode);
-		info.Material = (info.pNode->m_Through * c + (1-info.pNode->m_Through) * sp(info.Material)).getMaterial();
-	}
 
 	return (t - b) * sp(info.Material) / 255 + sp(b,b,b);
 }

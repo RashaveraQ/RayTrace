@@ -90,7 +90,7 @@ BOOL Cone::IsInside(const sp& L) const
 	return (0 <= L.y && L.y <= 1 && sqrt( L.x * L.x + L.z * L.z ) <= L.y);
 }
 
-BOOL Cone::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node* pOmit) const
+BOOL Cone::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit, const Node& viewport) const
 {
 	if (L.y > 1) {
 
@@ -102,13 +102,13 @@ BOOL Cone::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node* pOm
 		sp p = K*t + L;
 
 		if (p.x * p.x + p.z * p.z <= 1 && (pOmit != this || fabs(t) >= 1E-10)) {
-			r_info->Cross = p;
-			r_info->Vertical = sp(0,1,0);
-			r_info->Distance = t * sqrt(K*K);
-			r_info->isEnter = 1;
-			r_info->Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
-			r_info->pNode = this;
-			r_info->Refractive = m_Refractive;
+			info.Cross = p;
+			info.Vertical = sp(0,1,0);
+			info.Distance = t * sqrt(K*K);
+			info.isEnter = 1;
+			info.Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
+			info.pNode = this;
+//			r_info->Refractive = m_Refractive;
 
 			return TRUE;
 		}
@@ -154,18 +154,18 @@ BOOL Cone::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node* pOm
 			return FALSE;
 	}
 
-	r_info->isEnter = !IsInside( L );
+	info.isEnter = !IsInside( L );
 	sp p = K * t + L;
-	r_info->Cross = r_info->Vertical = p;
+	info.Cross = info.Vertical = p;
 
 	if (p.y < 0 || p.x*p.x + p.z*p.z > 1) 
 		return FALSE;
 
-	r_info->Vertical.y *= -1;
+	info.Vertical.y *= -1;
 
-	r_info->Distance = t * sqrt( K * K );
-	r_info->Material = m_Material;
-	r_info->pNode = this;
+	info.Distance = t * sqrt( K * K );
+	info.Material = m_Material;
+	info.pNode = this;
 
 	return TRUE;
 }

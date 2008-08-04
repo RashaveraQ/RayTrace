@@ -15,7 +15,7 @@ BOOL Multiple::IsInside(const sp& L) const
 	return TRUE;
 }
 
-BOOL Multiple::GetInfo(const sp& K, const sp& L, Info* const info, const Node* pOmit) const
+BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit, const Node& viewport) const
 {
 	Info	tmp;
 	double	l = -1;
@@ -29,19 +29,19 @@ BOOL Multiple::GetInfo(const sp& K, const sp& L, Info* const info, const Node* p
 	for (i = 0; i < m_Member; i++)
 	{
 		// 視点の先に、交点がない場合。
-		if (!m_Node[i]->GetInfo2(K, L, &tmp, pOmit))
+		if (!m_Node[i]->GetInfo2(K, L, tmp, pOmit, viewport))
 			return FALSE;
 
 		if (tmp.Distance <= l || !tmp.isEnter)
 			continue;
 
-		info->Cross = tmp.Cross;
+		info.Cross = tmp.Cross;
 
 		for (flag = TRUE, j = 0; j < m_Member; j++) {
 			if (i == j)
 				continue;
 
-			if (!m_Node[j]->IsInside(m_Matrix * info->Cross))
+			if (!m_Node[j]->IsInside(m_Matrix * info.Cross))
 				flag = FALSE;
 		}
 
@@ -52,12 +52,10 @@ BOOL Multiple::GetInfo(const sp& K, const sp& L, Info* const info, const Node* p
 	if (n < 0)
 		return FALSE;
 
-	m_Node[n]->GetInfo2(K, L, info, pOmit);
+	m_Node[n]->GetInfo2(K, L, info, pOmit, viewport);
 
-	if ( info->Material.Diffuse.r < 0 )
-		info->Material = m_Material;
-
-	info->Refractive = m_Reflect;
+	if (info.Material.Diffuse.r < 0)
+		info.Material = m_Material;
 
 	return TRUE;
 }

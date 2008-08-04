@@ -114,7 +114,7 @@ BOOL Torus::IsInside(const sp& L) const
 	return (m_r * m_r <= d + L.z * L.z);
 }
 
-BOOL Torus::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node* pOmit) const
+BOOL Torus::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit, const Node& viewport) const
 {
 	int Solve_Polynomial(int d, double *k, double min, double max, double *r);
 
@@ -149,29 +149,31 @@ BOOL Torus::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node* pO
 	sp		p;
 	double	th;
 
-	r_info->isEnter = IsInside(L) == TRUE ? 1 : 0;
-	r_info->Cross = p = K * r[0] + L;
+	info.isEnter = IsInside(L) == TRUE ? 1 : 0;
+	info.Cross = p = K * r[0] + L;
 	
 	if (p.x == 0.0) {
-		r_info->Vertical = sp(0, p.y - ((p.y > 0) ? 1 : -1) * m_R, p.z);
+		info.Vertical = sp(0, p.y - ((p.y > 0) ? 1 : -1) * m_R, p.z);
 	} else {
 		th = atan2( p.y , p.x );
-		r_info->Vertical = sp(p.x - m_R * cos(th), p.y - m_R * sin(th), p.z);
+		info.Vertical = sp(p.x - m_R * cos(th), p.y - m_R * sin(th), p.z);
 	}
 
-	r_info->Distance = r[0] * sqrt(K * K);
+	info.Distance = r[0] * sqrt(K * K);
 
 	double x,y,z, phy;
 
-	x = r_info->Vertical.x;
-	y = r_info->Vertical.y;
-	z = r_info->Vertical.z;
+	x = info.Vertical.x;
+	y = info.Vertical.y;
+	z = info.Vertical.z;
 
 	th = acos(y) / (2 * M_PI); if (x < 0) th = 1 - th;
-	phy = acos(z / sqrt(x * x + z * z)) / (2 * M_PI); if (x < 0) phy = 1 - phy;
+	phy = acos(z / sqrt(x * x + z * z)) / (2 * M_PI);
+	if (x < 0)
+		phy = 1 - phy;
 
-	r_info->Material = GetPixel(phy, th).getMaterial();
-	r_info->pNode = this;
+	info.Material = GetPixel(phy, th).getMaterial();
+	info.pNode = this;
 	
 	return TRUE;
 }

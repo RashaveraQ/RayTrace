@@ -103,7 +103,7 @@ BOOL Teapot::IsInside(const sp& L) const
 	return (sqrt(L * L) <= 1.0);
 }
 
-BOOL Teapot::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node* pOmit) const
+BOOL Teapot::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit, const Node& viewport) const
 {
 	double	a = K * K;
 	double	b = K * L;
@@ -118,14 +118,14 @@ BOOL Teapot::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node* p
 	double	t1 = (-b + sqrt(bb_ac)) / a;
 	double	t2 = (-b - sqrt(bb_ac)) / a;
 
-	r_info->isEnter = 0;
+	info.isEnter = 0;
 	if (t1 > 0) {
 		if (t2 > 0) {
 			t = (t1 < t2) ? t1 : t2;
 			if (pOmit == this && fabs(t) < 1E-10)
 				t = (t1 < t2) ? t2 : t1;
 			else
-				r_info->isEnter = 1;
+				info.isEnter = 1;
 		} else
 			t = t1;
 	} else {
@@ -138,20 +138,20 @@ BOOL Teapot::GetInfo(const sp& K, const sp& L, Info* const r_info, const Node* p
 	if (pOmit == this && fabs(t) < 1E-10)
 		return FALSE;
 
-	r_info->Cross = r_info->Vertical = K * t + L;
-	r_info->Distance = t * sqrt(K * K);
+	info.Cross = info.Vertical = K * t + L;
+	info.Distance = t * sqrt(K * K);
 
 	double x,y,z, th, phy;
 
-	x = r_info->Vertical.x;
-	y = r_info->Vertical.y;
-	z = r_info->Vertical.z;
+	x = info.Vertical.x;
+	y = info.Vertical.y;
+	z = info.Vertical.z;
 
 	th = atan2(y, sqrt(x*x+z*z)) / M_PI + .5;
 	phy = atan2(x, -z) / (2 * M_PI) + .5;
 
-	r_info->Material = GetPixel(phy, th).getMaterial();
-	r_info->pNode = this;
+	info.Material = GetPixel(phy, th).getMaterial();
+	info.pNode = this;
 
 	return TRUE;
 }

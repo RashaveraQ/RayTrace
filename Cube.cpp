@@ -2,16 +2,16 @@
 
 IMPLEMENT_SERIAL(Cube, CObject, 1)
 
-BOOL Cube::GetInfo( const sp& K, const sp& L, Info* const r_info, const Node*) const
+BOOL Cube::GetInfo( const sp& K, const sp& L, Info& info, const Node*, const Node& viewport) const
 {
-	r_info->isEnter = !IsInside( L );
+	info.isEnter = !IsInside(L);
 
-	if ( r_info->isEnter )
+	if (info.isEnter)
 	{
 		//外側から外に向かう場合、
-		if ( ( L.x < -1.0 && K.x <= 0.0 ) || ( 1.0 < L.x && 0.0 <= K.x ) ||
-			 ( L.y < -1.0 && K.y <= 0.0 ) || ( 1.0 < L.y && 0.0 <= K.y ) ||
-			 ( L.z < -1.0 && K.z <= 0.0 ) || ( 1.0 < L.z && 0.0 <= K.z ) )
+		if ((L.x < -1.0 && K.x <= 0.0) || (1.0 < L.x && 0.0 <= K.x) ||
+			(L.y < -1.0 && K.y <= 0.0) || (1.0 < L.y && 0.0 <= K.y) ||
+			(L.z < -1.0 && K.z <= 0.0) || (1.0 < L.z && 0.0 <= K.z))
 			 return FALSE;
 	}
 
@@ -20,53 +20,66 @@ BOOL Cube::GetInfo( const sp& K, const sp& L, Info* const r_info, const Node*) c
 	sp		c;
 
 	// 全ての面までの距離を求める。
-	T[0] = ( 1.0 - L.x ) / K.x; T[1] = - ( 1.0 + L.x ) / K.x;
-	T[2] = ( 1.0 - L.y ) / K.y; T[3] = - ( 1.0 + L.y ) / K.y;
-	T[4] = ( 1.0 - L.z ) / K.z; T[5] = - ( 1.0 + L.z ) / K.z;
+	T[0] = (1.0 - L.x) / K.x; T[1] = - (1.0 + L.x) / K.x;
+	T[2] = (1.0 - L.y) / K.y; T[3] = - (1.0 + L.y) / K.y;
+	T[4] = (1.0 - L.z) / K.z; T[5] = - (1.0 + L.z) / K.z;
 
 	// t1 に最大値を代入する。
-	for ( i = 1, t1 = T[0]; i < 6; i++ )
-		if ( t1 < T[i] ) t1 = T[i];
+	for (i = 1, t1 = T[0]; i < 6; i++)
+		if (t1 < T[i])
+			t1 = T[i];
 
 	// 負の場合、t1 を代入する。
-	for ( i = 0; i < 6; i++ )
-		if ( T[i] < 0.0 ) T[i] = t1;
+	for (i = 0; i < 6; i++)
+		if (T[i] < 0.0)
+			T[i] = t1;
 
-	for ( k = 0; k < 3; k++ )
+	for (k = 0; k < 3; k++)
 	{
-		for ( i = 1, j = 0, t= T[0]; i < 6; i++ )
-			if ( t > T[i] ) t = T[i], j = i;
+		for (i = 1, j = 0, t= T[0]; i < 6; i++)
+			if (t > T[i])
+				t = T[i], j = i;
 
-		if ( !r_info->isEnter )
+		if (!info.isEnter)
 			break;
 
 		c = K * t + L;
 
-		if ( -1.0 <= c.x && c.x <= 1.0 && -1.0 <= c.y && c.y <= 1.0 && -1.0 <= c.z && c.z <= 1.0 )
+		if (-1.0 <= c.x && c.x <= 1.0 && -1.0 <= c.y && c.y <= 1.0 && -1.0 <= c.z && c.z <= 1.0)
 			break;
 
 		T[j] = t1;
 	}
 
-	if ( k == 3 )
-	{
+	if (k == 3)
 		return FALSE;
-	}
 
-	r_info->Cross = K * t + L;
-	r_info->Distance = t * sqrt( K * K );
-	r_info->Material = m_Material;
+	info.Cross = K * t + L;
+	info.Distance = t * sqrt(K * K);
+	info.Material = m_Material;
 
-	switch ( j )
+	switch (j)
 	{
-	case 0: r_info->Vertical = sp( 1, 0, 0); break;
-	case 1: r_info->Vertical = sp(-1, 0, 0); break;
-	case 2: r_info->Vertical = sp( 0, 1, 0); break;
-	case 3: r_info->Vertical = sp( 0,-1, 0); break;
-	case 4: r_info->Vertical = sp( 0, 0, 1); break;
-	case 5: r_info->Vertical = sp( 0, 0,-1); break;
+	case 0:
+		info.Vertical = sp(1, 0, 0);
+		break;
+	case 1:
+		info.Vertical = sp(-1, 0, 0);
+		break;
+	case 2:
+		info.Vertical = sp(0, 1, 0);
+		break;
+	case 3:
+		info.Vertical = sp(0,-1, 0);
+		break;
+	case 4:
+		info.Vertical = sp(0, 0, 1);
+		break;
+	case 5:
+		info.Vertical = sp(0, 0,-1);
+		break;
 	}
-	r_info->pNode = this;
+	info.pNode = this;
 
 	return TRUE;
 }
