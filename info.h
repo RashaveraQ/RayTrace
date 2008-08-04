@@ -12,7 +12,6 @@ struct Info
 	sp				Cross;		// 交点座標
 	sp				Vertical;	// 法線ベクトル
 	const Node *	pNode;		// 
-	//double			Refractive;	// 屈折率
 	Info()
 	{
 		pNode = NULL;

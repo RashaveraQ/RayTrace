@@ -46,28 +46,29 @@ void Cone::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 		int i;
 		for (i = 0; i < COUNT; i++) {
 			double th = 6.28 * (double)i / COUNT;
-			sp p = m * sp(cos(th), 1, sin(th));
+			sp p = m * sp(cos(th), 0, sin(th));
 			pVertices[i].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 			pVertices[i].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 		}
 		pVB->Unlock();
 		lstGeometry.AddTail(Geometry(this, pVB, D3DPT_LINESTRIP, COUNT-1));
 
-		if (!InitVertexBuffer(pd3dDevice, pVB, pVertices, LINES + 2))
+		if (!InitVertexBuffer(pd3dDevice, pVB, pVertices, 2 * LINES))
 			return;
 		{
-			sp p = m * sp(0,0,0);
+			sp p = m * sp(0,1,0);
 			pVertices[0].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 			pVertices[0].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 		}
-		for (int i = 1; i <= LINES + 1; i++) {
-			double th = 6.28 * (double)(i - 1)/ LINES;
-			sp p = m * sp(cos(th), 1, sin(th));
-			pVertices[i].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
-			pVertices[i].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
+		for (int i = 0; i < LINES; i++) {
+			pVertices[2*i] = pVertices[0];
+			double th = 6.28 * (double)(i)/ LINES;
+			sp p = m * sp(cos(th), 0, sin(th));
+			pVertices[2*i+1].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
+			pVertices[2*i+1].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 		}
 		pVB->Unlock();
-		lstGeometry.AddTail(Geometry(this, pVB, D3DPT_TRIANGLEFAN, LINES));
+		lstGeometry.AddTail(Geometry(this, pVB, D3DPT_LINELIST, LINES));
 
 		break;
 
