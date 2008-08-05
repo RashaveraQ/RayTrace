@@ -91,7 +91,7 @@ BOOL Cone::IsInside(const sp& L) const
 	return (0 <= L.y && L.y <= 1 && sqrt( L.x * L.x + L.z * L.z ) <= L.y);
 }
 
-BOOL Cone::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit, const Node& viewport) const
+BOOL Cone::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit) const
 {
 	if (L.y > 1) {
 

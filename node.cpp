@@ -205,7 +205,39 @@ sp Node::GetPixel(double x, double y) const
 	return sp(GetRValue(c),GetGValue(c),GetBValue(c));
 }
 
-BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info, const Node* pOmit, const Node& viewport) const
+sp Node::GetColor(const sp& K, const sp& L, const Node* pOmit) const
+{
+	Info	info;
+
+	if (!GetInfo2(K, L, info, pOmit))
+		return sp(127, 127, 127);
+
+	double	x = -m_pDoc->m_Light.e() * info.Vertical.e();
+
+	x = (x > 0.0) ? x : 0.0;
+
+	double t = 64 + 191 * sin(M_PI / 2 * x);
+	double b = 191 * (1 - cos(M_PI / 2 * x));
+
+	sp k = K.e();
+	sp v = info.Vertical.e();
+
+	if (info.pNode->m_Reflect > 0) {
+		sp c = m_pDoc->m_Root.GetColor(k-2*(k*v)*v, info.Cross, info.pNode);
+		info.Material = (info.pNode->m_Reflect * c + (1 - info.pNode->m_Reflect) * sp(info.Material)).getMaterial();
+	}
+
+	if (info.pNode->m_Through > 0) {
+		double r = info.Refractive;
+		sp c = m_pDoc->m_Root.GetColor((k+v)/r-v, info.Cross, info.pNode);
+		info.Material = (info.pNode->m_Through * c + (1 - info.pNode->m_Through) * sp(info.Material)).getMaterial();
+	}
+
+
+	return (t - b) * sp(info.Material) / 255 + sp(b,b,b);
+}
+
+BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info, const Node* pOmit) const
 {
 	// START Boundary 
 /*
@@ -229,47 +261,18 @@ BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info, const Node* pOmit, con
 	matrix m = m_Move * m_Rotate * m_Scale;
 	matrix Inv_m = m.Inv();
 
-	if (!GetInfo(Inv_m * matrix(K,0), Inv_m * L, info, pOmit, viewport)) {
+	if (!GetInfo(Inv_m * matrix(K,0), Inv_m * L, info, pOmit)) {
 		return FALSE;
 	}
 
 	info.Cross = m * info.Cross;
 	info.Vertical = m * matrix(info.Vertical,0);
 	info.Distance = (info.Cross - L).abs();
-//	info->Refractive = info->pNode->m_Refractive / ((pOmit) ? pOmit->m_Refractive : 1);
-
-	sp k = K.e();
-	sp v = info.Vertical.e();
-
-	if (m_Reflect > 0) {
-		sp c = viewport.GetColor(k-2*(k*v)*v, info.Cross, this, viewport);
-		info.Material = (m_Reflect * c + (1 - m_Reflect) * sp(info.Material)).getMaterial();
-	}
-
-	if (m_Through > 0) {
-		double r = m_Refractive;
-		sp c = viewport.GetColor((k+v)/r-v, info.Cross, this, viewport);
-		info.Material = (m_Through * c + (1 - m_Through) * sp(info.Material)).getMaterial();
-	}
+	info.Refractive = info.pNode->m_Refractive / ((pOmit) ? pOmit->m_Refractive : 1);
+	if (info.isEnter)
+		info.Refractive = 1 / info.Refractive;
 
 	return TRUE;
-}
-
-sp Node::GetColor(const sp& K, const sp& L, const Node* pOmit, const Node& viewport) const
-{
-	Info	info;
-
-	if (!GetInfo2(K, L, info, pOmit, viewport))
-		return sp(127, 127, 127);
-
-	double	x = -m_pDoc->m_Light.e() * info.Vertical.e();
-
-	x = (x > 0.0) ? x : 0.0;
-
-	double t = 64 + 191 * sin(M_PI / 2 * x);
-	double b = 191 * (1 - cos(M_PI / 2 * x));
-
-	return (t - b) * sp(info.Material) / 255 + sp(b,b,b);
 }
 
 void Node::Move(eAxis axis, double d)

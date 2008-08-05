@@ -103,7 +103,7 @@ BOOL Teapot::IsInside(const sp& L) const
 	return (sqrt(L * L) <= 1.0);
 }
 
-BOOL Teapot::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit, const Node& viewport) const
+BOOL Teapot::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit) const
 {
 	double	a = K * K;
 	double	b = K * L;

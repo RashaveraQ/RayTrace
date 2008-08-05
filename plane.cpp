@@ -8,7 +8,7 @@ BOOL	Plane::IsInside( const sp& L ) const
 	return ( L.z >= 0.0 );
 }
 
-BOOL Plane::GetInfo(const sp& K, const sp& L, Info& info, const Node*, const Node& viewport) const
+BOOL Plane::GetInfo(const sp& K, const sp& L, Info& info, const Node*) const
 {
 	double	t = ( K.z ) ? -L.z / K.z : (( L.z > 0 ) ? DBL_MAX : -DBL_MAX);
 
