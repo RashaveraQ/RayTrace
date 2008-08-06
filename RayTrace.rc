@@ -1,4 +1,4 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// 日本語 resources
+// Japanese resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
 #ifdef _WIN32
@@ -27,18 +27,18 @@ LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE 
 BEGIN
     "#define _AFX_NO_SPLITER_RESOURCES\r\n"
     "#define _AFX_NO_OLE_RESOURCES\r\n"
@@ -66,24 +66,24 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON    DISCARDABLE     "res\\RayTrace.ico"
-IDR_RAYTRATYPE          ICON    DISCARDABLE     "res\\RayTraceDoc.ico"
+IDR_MAINFRAME           ICON                    "res\\RayTrace.ico"
+IDR_RAYTRATYPE          ICON                    "res\\RayTraceDoc.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Bitmap
 //
 
-IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
-IDB_BITMAP_NORMAL       BITMAP  DISCARDABLE     "res\\bitmap_n.bmp"
-IDB_BITMAP_STATE        BITMAP  DISCARDABLE     "res\\bitmap_s.bmp"
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+IDB_BITMAP_NORMAL       BITMAP                  "res\\bitmap_n.bmp"
+IDB_BITMAP_STATE        BITMAP                  "res\\bitmap_s.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Toolbar
 //
 
-IDR_MAINFRAME TOOLBAR DISCARDABLE  16, 15
+IDR_MAINFRAME TOOLBAR  16, 15
 BEGIN
     BUTTON      ID_FILE_NEW
     BUTTON      ID_FILE_OPEN
@@ -114,18 +114,18 @@ END
 // Menu
 //
 
-IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+IDR_MAINFRAME MENU 
 BEGIN
     POPUP "ﾌｧｲﾙ(&F)"
     BEGIN
-        MENUITEM "新規作成(&N)\tCtrl+N",        ID_FILE_NEW
-        MENUITEM "開く(&O)...\tCtrl+O",         ID_FILE_OPEN
+        MENUITEM "新規作成(&N)\tCtrl+N",            ID_FILE_NEW
+        MENUITEM "開く(&O)...\tCtrl+O",           ID_FILE_OPEN
         MENUITEM SEPARATOR
-        MENUITEM "ﾌﾟﾘﾝﾀの設定(&R)...",          ID_FILE_PRINT_SETUP
+        MENUITEM "ﾌﾟﾘﾝﾀの設定(&R)...",             ID_FILE_PRINT_SETUP
         MENUITEM SEPARATOR
-        MENUITEM "最新のﾌｧｲﾙ",                  ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM "最新のﾌｧｲﾙ",                     ID_FILE_MRU_FILE1, GRAYED
         MENUITEM SEPARATOR
-        MENUITEM "ｱﾌﾟﾘｹｰｼｮﾝの終了(&X)",         ID_APP_EXIT
+        MENUITEM "ｱﾌﾟﾘｹｰｼｮﾝの終了(&X)",            ID_APP_EXIT
     END
     POPUP "表示(&V)"
     BEGIN
@@ -134,59 +134,59 @@ BEGIN
     END
     POPUP "ﾍﾙﾌﾟ(&H)"
     BEGIN
-        MENUITEM "ﾊﾞｰｼﾞｮﾝ情報(RayTrace)(&A)...", ID_APP_ABOUT
+        MENUITEM "ﾊﾞｰｼﾞｮﾝ情報(RayTrace)(&A)...",  ID_APP_ABOUT
     END
 END
 
-IDR_RAYTRATYPE MENU PRELOAD DISCARDABLE 
+IDR_RAYTRATYPE MENU 
 BEGIN
     POPUP "ﾌｧｲﾙ(&F)"
     BEGIN
-        MENUITEM "新規作成(&N)\tCtrl+N",        ID_FILE_NEW
-        MENUITEM "開く(&O)...\tCtrl+O",         ID_FILE_OPEN
-        MENUITEM "閉じる(&C)",                  ID_FILE_CLOSE
-        MENUITEM "上書き保存(&S)\tCtrl+S",      ID_FILE_SAVE
-        MENUITEM "名前を付けて保存(&A)...",     ID_FILE_SAVE_AS
+        MENUITEM "新規作成(&N)\tCtrl+N",            ID_FILE_NEW
+        MENUITEM "開く(&O)...\tCtrl+O",           ID_FILE_OPEN
+        MENUITEM "閉じる(&C)",                     ID_FILE_CLOSE
+        MENUITEM "上書き保存(&S)\tCtrl+S",           ID_FILE_SAVE
+        MENUITEM "名前を付けて保存(&A)...",             ID_FILE_SAVE_AS
         MENUITEM SEPARATOR
-        MENUITEM "印刷(&P)...\tCtrl+P",         ID_FILE_PRINT
-        MENUITEM "印刷ﾌﾟﾚﾋﾞｭｰ(&V)",             ID_FILE_PRINT_PREVIEW
-        MENUITEM "ﾌﾟﾘﾝﾀの設定(&R)...",          ID_FILE_PRINT_SETUP
+        MENUITEM "印刷(&P)...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "印刷ﾌﾟﾚﾋﾞｭｰ(&V)",               ID_FILE_PRINT_PREVIEW
+        MENUITEM "ﾌﾟﾘﾝﾀの設定(&R)...",             ID_FILE_PRINT_SETUP
         MENUITEM SEPARATOR
-        MENUITEM "最新のﾌｧｲﾙ",                  ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM "最新のﾌｧｲﾙ",                     ID_FILE_MRU_FILE1, GRAYED
         MENUITEM SEPARATOR
-        MENUITEM "ｱﾌﾟﾘｹｰｼｮﾝの終了(&X)",         ID_APP_EXIT
+        MENUITEM "ｱﾌﾟﾘｹｰｼｮﾝの終了(&X)",            ID_APP_EXIT
     END
     POPUP "編集(&E)"
     BEGIN
-        MENUITEM "元に戻す(&U)\tCtrl+Z",        ID_EDIT_UNDO
+        MENUITEM "元に戻す(&U)\tCtrl+Z",            ID_EDIT_UNDO
         MENUITEM SEPARATOR
-        MENUITEM "切り取り(&T)\tCtrl+X",        ID_EDIT_CUT
+        MENUITEM "切り取り(&T)\tCtrl+X",            ID_EDIT_CUT
         MENUITEM "ｺﾋﾟｰ(&C)\tCtrl+C",            ID_EDIT_COPY
-        MENUITEM "貼り付け(&P)\tCtrl+V",        ID_EDIT_PASTE
+        MENUITEM "貼り付け(&P)\tCtrl+V",            ID_EDIT_PASTE
         MENUITEM SEPARATOR
-        MENUITEM "プロパティ(&O)\tAlt+Enter",   ID_PROPERTY
+        MENUITEM "プロパティ(&O)\tAlt+Enter",        ID_PROPERTY
     END
     POPUP "追加(&A)"
     BEGIN
-        MENUITEM "球(&S)",                      ID_ADD_SPHERE
-        MENUITEM "平面(&P)",                    ID_ADD_PLANE
-        MENUITEM "円柱(&Y)",                    ID_ADD_CYLINDER
-        MENUITEM "円錐(&R)",                    ID_ADD_CONE
-        MENUITEM "立方体(&C)",                  ID_ADD_CUBE
-        MENUITEM "トーラス",                    ID_ADD_TORUS
-        MENUITEM "ポリゴン",                    ID_ADD_POLYGON
-        MENUITEM "ティーポット",                ID_ADD_TEAPOT
+        MENUITEM "球(&S)",                       ID_ADD_SPHERE
+        MENUITEM "平面(&P)",                      ID_ADD_PLANE
+        MENUITEM "円柱(&Y)",                      ID_ADD_CYLINDER
+        MENUITEM "円錐(&R)",                      ID_ADD_CONE
+        MENUITEM "立方体(&C)",                     ID_ADD_CUBE
+        MENUITEM "トーラス",                        ID_ADD_TORUS
+        MENUITEM "ポリゴン",                        ID_ADD_POLYGON
+        MENUITEM "ティーポット",                      ID_ADD_TEAPOT
         MENUITEM SEPARATOR
-        MENUITEM "変換(&T)",                    ID_ADD_TRANS
-        MENUITEM "加法(&P)",                    ID_ADD_PLUS
-        MENUITEM "乗法(&M)",                    ID_ADD_MULTIPLE
-        MENUITEM "除法(&D)",                    ID_ADD_MINUS
+        MENUITEM "変換(&T)",                      ID_ADD_TRANS
+        MENUITEM "加法(&P)",                      ID_ADD_PLUS
+        MENUITEM "乗法(&M)",                      ID_ADD_MULTIPLE
+        MENUITEM "除法(&D)",                      ID_ADD_MINUS
     END
     POPUP "ﾌﾟﾛﾊﾟﾃｨ(&P)"
     BEGIN
-        MENUITEM "ｱﾌｨﾝ変換(&A)",                ID_AFIN
-        MENUITEM "色(&C)",                      ID_COLOR
-        MENUITEM "材質(&M)",                    ID_MATERIAL
+        MENUITEM "ｱﾌｨﾝ変換(&A)",                  ID_AFIN
+        MENUITEM "色(&C)",                       ID_COLOR
+        MENUITEM "材質(&M)",                      ID_MATERIAL
         MENUITEM "ﾃｸｽﾁｬ(&T)",                   ID_TEXTURE
     END
     POPUP "表示(&V)"
@@ -194,18 +194,19 @@ BEGIN
         MENUITEM "ﾂｰﾙ ﾊﾞｰ(&T)",                 ID_VIEW_TOOLBAR
         MENUITEM "ｽﾃｰﾀｽ ﾊﾞｰ(&S)",               ID_VIEW_STATUS_BAR
         MENUITEM SEPARATOR
-        MENUITEM "旧ﾜｲﾔｰﾌﾚｰﾑ(&O)",              ID_VIEW_WIREFRAME, CHECKED
-        MENUITEM "ﾚｲﾄﾚｰｽ(&R)",                  ID_VIEW_RAYTRACE
+        MENUITEM "旧ﾜｲﾔｰﾌﾚｰﾑ(&O)",               ID_VIEW_WIREFRAME, CHECKED
+        MENUITEM "ﾚｲﾄﾚｰｽ(&R)",                  ID_ADD_CORN
         MENUITEM "ﾜｲﾔｰﾌﾚｰﾑ(&W)",                ID_VIEW_D3DWIREFRAME
         MENUITEM "ﾌﾗｯﾄｼｪｰﾃﾞｨﾝｸﾞ(&F)",           ID_VIEW_FLATSHADING
         MENUITEM "ｸﾞﾛｰｼｪｰﾃﾞｨﾝｸﾞ(&G)",           ID_VIEW_GOURAUDSHADING
     END
     POPUP "ｳｨﾝﾄﾞｳ(&W)"
     BEGIN
-        MENUITEM "新しいｳｨﾝﾄﾞｳを開く(&N)",      ID_WINDOW_NEW
-        MENUITEM "重ねて表示(&C)",              ID_WINDOW_CASCADE
-        MENUITEM "並べて表示(&T)",              ID_WINDOW_TILE_HORZ
-        MENUITEM "ｱｲｺﾝの整列(&A)",              ID_WINDOW_ARRANGE
+        MENUITEM "新しいｳｨﾝﾄﾞｳを開く(&N)",            ID_WINDOW_NEW
+        MENUITEM "重ねて表示(&C)",                   ID_WINDOW_CASCADE
+        MENUITEM "上下に並べて表示(&T)",                ID_WINDOW_TILE_HORZ
+        MENUITEM "左右に並べて表示(&V)",                ID_WINDOW_TILE_VERT
+        MENUITEM "ｱｲｺﾝの整列(&A)",                 ID_WINDOW_ARRANGE
     END
     POPUP "ﾍﾙﾌﾟ(&H)"
     BEGIN
@@ -219,7 +220,7 @@ END
 // Accelerator
 //
 
-IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+IDR_MAINFRAME ACCELERATORS 
 BEGIN
     "A",            ID_AFIN,                VIRTKEY, ALT, NOINVERT
     "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
@@ -247,57 +248,40 @@ END
 // Dialog
 //
 
-IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 217, 55
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_ABOUTBOX DIALOG  0, 0, 217, 55
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "ﾊﾞｰｼﾞｮﾝ情報(RayTrace)"
 FONT 9, "ＭＳ Ｐゴシック"
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
-    LTEXT           "RayTrace Version 1.0",IDC_STATIC,40,10,119,8,
-                    SS_NOPREFIX
+    LTEXT           "RayTrace Version 1.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 1999",IDC_STATIC,40,25,119,8
     DEFPUSHBUTTON   "OK",IDOK,178,7,32,14,WS_GROUP
 END
 
 IDD_MATRIX DIALOGEX 0, 0, 199, 149
-STYLE DS_SYSMODAL | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
 CAPTION "変換行列の編集"
 FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,142,6,50,14
     PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,142,24,50,14
-    EDITTEXT        IDC_EDIT_MATRIX_1_1,14,13,27,12,ES_AUTOHSCROLL | 
-                    ES_READONLY,WS_EX_RIGHT
-    EDITTEXT        IDC_EDIT_MATRIX_1_2,45,13,27,12,ES_AUTOHSCROLL | 
-                    ES_READONLY,WS_EX_RIGHT
-    EDITTEXT        IDC_EDIT_MATRIX_1_3,76,13,27,12,ES_AUTOHSCROLL | 
-                    ES_READONLY,WS_EX_RIGHT
-    EDITTEXT        IDC_EDIT_MATRIX_1_4,107,13,27,12,ES_AUTOHSCROLL | 
-                    ES_READONLY,WS_EX_RIGHT
-    EDITTEXT        IDC_EDIT_MATRIX_2_1,14,29,27,12,ES_AUTOHSCROLL | 
-                    ES_READONLY,WS_EX_RIGHT
-    EDITTEXT        IDC_EDIT_MATRIX_2_2,45,29,27,12,ES_AUTOHSCROLL | 
-                    ES_READONLY,WS_EX_RIGHT
-    EDITTEXT        IDC_EDIT_MATRIX_2_3,76,29,27,12,ES_AUTOHSCROLL | 
-                    ES_READONLY,WS_EX_RIGHT
-    EDITTEXT        IDC_EDIT_MATRIX_2_4,107,29,27,12,ES_AUTOHSCROLL | 
-                    ES_READONLY,WS_EX_RIGHT
-    EDITTEXT        IDC_EDIT_MATRIX_3_1,14,45,27,12,ES_AUTOHSCROLL | 
-                    ES_READONLY,WS_EX_RIGHT
-    EDITTEXT        IDC_EDIT_MATRIX_3_2,45,45,27,12,ES_AUTOHSCROLL | 
-                    ES_READONLY,WS_EX_RIGHT
-    EDITTEXT        IDC_EDIT_MATRIX_3_3,76,45,27,12,ES_AUTOHSCROLL | 
-                    ES_READONLY,WS_EX_RIGHT
-    EDITTEXT        IDC_EDIT_MATRIX_3_4,107,45,27,12,ES_AUTOHSCROLL | 
-                    ES_READONLY,WS_EX_RIGHT
-    EDITTEXT        IDC_EDIT_MATRIX_4_1,14,61,27,12,ES_AUTOHSCROLL | 
-                    ES_READONLY,WS_EX_RIGHT
-    EDITTEXT        IDC_EDIT_MATRIX_4_2,45,61,27,12,ES_AUTOHSCROLL | 
-                    ES_READONLY,WS_EX_RIGHT
-    EDITTEXT        IDC_EDIT_MATRIX_4_3,76,61,27,12,ES_AUTOHSCROLL | 
-                    ES_READONLY,WS_EX_RIGHT
-    EDITTEXT        IDC_EDIT_MATRIX_4_4,107,61,27,12,ES_AUTOHSCROLL | 
-                    ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_1_1,14,13,27,12,ES_AUTOHSCROLL | ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_1_2,45,13,27,12,ES_AUTOHSCROLL | ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_1_3,76,13,27,12,ES_AUTOHSCROLL | ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_1_4,107,13,27,12,ES_AUTOHSCROLL | ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_2_1,14,29,27,12,ES_AUTOHSCROLL | ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_2_2,45,29,27,12,ES_AUTOHSCROLL | ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_2_3,76,29,27,12,ES_AUTOHSCROLL | ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_2_4,107,29,27,12,ES_AUTOHSCROLL | ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_3_1,14,45,27,12,ES_AUTOHSCROLL | ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_3_2,45,45,27,12,ES_AUTOHSCROLL | ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_3_3,76,45,27,12,ES_AUTOHSCROLL | ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_3_4,107,45,27,12,ES_AUTOHSCROLL | ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_4_1,14,61,27,12,ES_AUTOHSCROLL | ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_4_2,45,61,27,12,ES_AUTOHSCROLL | ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_4_3,76,61,27,12,ES_AUTOHSCROLL | ES_READONLY,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT_MATRIX_4_4,107,61,27,12,ES_AUTOHSCROLL | ES_READONLY,WS_EX_RIGHT
     EDITTEXT        IDC_EDIT_SCALE_X,26,98,28,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_SCALE_Y,39,114,28,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_SCALE_Z,55,130,28,12,ES_AUTOHSCROLL
@@ -317,8 +301,8 @@ BEGIN
     LTEXT           "Ｚ",IDC_STATIC,6,134,8,8
 END
 
-IDD_MATERIAL DIALOG DISCARDABLE  0, 0, 178, 79
-STYLE DS_SYSMODAL | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+IDD_MATERIAL DIALOG  0, 0, 178, 79
+STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
 CAPTION "マテリアル"
 FONT 9, "ＭＳ Ｐゴシック"
 BEGIN
@@ -331,12 +315,11 @@ BEGIN
     EDITTEXT        IDC_REFLECT,47,30,36,12,ES_RIGHT | ES_AUTOHSCROLL
     EDITTEXT        IDC_THROUGH,47,46,36,12,ES_RIGHT | ES_AUTOHSCROLL
     EDITTEXT        IDC_REFRACTIVE,47,60,36,12,ES_RIGHT | ES_AUTOHSCROLL
-    COMBOBOX        IDC_MATERIAL,29,7,70,61,CBS_DROPDOWNLIST | WS_VSCROLL | 
-                    WS_TABSTOP
+    COMBOBOX        IDC_MATERIAL,29,7,70,61,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
 END
 
-IDD_TORUS DIALOG DISCARDABLE  0, 0, 166, 45
-STYLE DS_SYSMODAL | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+IDD_TORUS DIALOG  0, 0, 166, 45
+STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
 CAPTION "トーラスの編集"
 FONT 9, "ＭＳ Ｐゴシック"
 BEGIN
@@ -348,19 +331,17 @@ BEGIN
     LTEXT           "短半径",IDC_STATIC,7,7,28,11
 END
 
-IDD_POLYGON DIALOG DISCARDABLE  0, 0, 231, 145
-STYLE DS_SYSMODAL | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+IDD_POLYGON DIALOG  0, 0, 231, 145
+STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
 CAPTION "ポリゴン"
 FONT 9, "ＭＳ Ｐゴシック"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,174,7,50,14
     PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,174,24,50,14
-    LISTBOX         IDC_LIST1,7,7,121,109,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
-                    WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LIST1,7,7,121,109,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
 END
 
 
-#ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
@@ -383,15 +364,13 @@ BEGIN
     BEGIN
         BLOCK "041104B0"
         BEGIN
-            VALUE "CompanyName", "\0"
-            VALUE "FileDescription", "RayTrace MFC ｱﾌﾟﾘｹｰｼｮﾝ\0"
-            VALUE "FileVersion", "1, 0, 0, 1\0"
-            VALUE "InternalName", "RayTrace\0"
-            VALUE "LegalCopyright", "Copyright (C) 1999\0"
-            VALUE "LegalTrademarks", "\0"
-            VALUE "OriginalFilename", "RayTrace.EXE\0"
-            VALUE "ProductName", "RayTrace ｱﾌﾟﾘｹｰｼｮﾝ\0"
-            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "FileDescription", "RayTrace MFC ｱﾌﾟﾘｹｰｼｮﾝ"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "RayTrace"
+            VALUE "LegalCopyright", "Copyright (C) 1999"
+            VALUE "OriginalFilename", "RayTrace.EXE"
+            VALUE "ProductName", "RayTrace ｱﾌﾟﾘｹｰｼｮﾝ"
+            VALUE "ProductVersion", "1, 0, 0, 1"
         END
     END
     BLOCK "VarFileInfo"
@@ -400,8 +379,6 @@ BEGIN
     END
 END
 
-#endif    // !_MAC
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -409,7 +386,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
+GUIDELINES DESIGNINFO 
 BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
@@ -497,26 +474,26 @@ END
 // Cursor
 //
 
-IDC_CURSOR1             CURSOR  DISCARDABLE     "res\\cursor1.cur"
+IDC_CURSOR1             CURSOR                  "res\\cursor1.cur"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // String Table
 //
 
-STRINGTABLE PRELOAD DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDR_MAINFRAME           "RayTrace"
     IDR_RAYTRATYPE          "\nRayTra\nRayTra\nRayTra ﾌｧｲﾙ (*.scn)\n.scn\nRayTrace.Document\nRayTra Document"
 END
 
-STRINGTABLE PRELOAD DISCARDABLE 
+STRINGTABLE 
 BEGIN
     AFX_IDS_APP_TITLE       "RayTrace"
     AFX_IDS_IDLEMESSAGE     "ﾚﾃﾞｨ"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_INDICATOR_EXT        "EXT"
     ID_INDICATOR_CAPS       "CAP"
@@ -527,7 +504,7 @@ BEGIN
     ID_INDICATOR_KANA       "ｶﾅ"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_FILE_NEW             "新規にﾌｧｲﾙを作成\n新規ﾌｧｲﾙ"
     ID_FILE_OPEN            "既存のﾌｧｲﾙを開く\n開く"
@@ -540,13 +517,13 @@ BEGIN
     ID_FILE_PRINT_PREVIEW   "ﾌﾙｽｸﾘｰﾝで表示\n印刷ﾌﾟﾚﾋﾞｭｰ"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_APP_ABOUT            "ﾌﾟﾛｸﾞﾗﾑの情報、ﾊﾞｰｼﾞｮﾝそして著作権を表示\nﾊﾞｰｼﾞｮﾝ情報"
     ID_APP_EXIT             "ｱﾌﾟﾘｹｰｼｮﾝを終了し、ﾌｧｲﾙの保存を指示\n終了"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_FILE_MRU_FILE1       "指定のﾌｧｲﾙを開く"
     ID_FILE_MRU_FILE2       "指定のﾌｧｲﾙを開く"
@@ -566,13 +543,13 @@ BEGIN
     ID_FILE_MRU_FILE16      "指定のﾌｧｲﾙを開く"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_NEXT_PANE            "次のｳｨﾝﾄﾞｳに切り替える\n次ﾍﾟｰｼﾞ"
     ID_PREV_PANE            "前のｳｨﾝﾄﾞｳに切り替える\n前ﾍﾟｰｼﾞ"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_WINDOW_NEW           "作業中のｳｨﾝﾄﾞｳを複写して表示\n新規ｳｨﾝﾄﾞｳ"
     ID_WINDOW_ARRANGE       "ｳｨﾝﾄﾞｳの下部にｱｲｺﾝを整列\nｱｲｺﾝの整列"
@@ -582,7 +559,7 @@ BEGIN
     ID_WINDOW_SPLIT         "作業中のｳｨﾝﾄﾞｳを分割\n分割"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_EDIT_CLEAR           "選択範囲を消去\n消去"
     ID_EDIT_CLEAR_ALL       "すべて消去\nすべて消去"
@@ -597,13 +574,13 @@ BEGIN
     ID_EDIT_REDO            "直前に行った動作を繰り返す\nやり直し"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_VIEW_TOOLBAR         "ﾂｰﾙ ﾊﾞｰの表示/非表示\nﾂｰﾙ ﾊﾞｰの表示/非表示"
     ID_VIEW_STATUS_BAR      "ｽﾃｰﾀｽ ﾊﾞｰの表示/非表示\nｽﾃｰﾀｽ ﾊﾞｰの表示/非表示"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     AFX_IDS_SCSIZE          "ｳｨﾝﾄﾞｳのｻｲｽﾞを変更"
     AFX_IDS_SCMOVE          "ｳｨﾝﾄﾞｳの位置を変更"
@@ -614,19 +591,19 @@ BEGIN
     AFX_IDS_SCCLOSE         "作業中のｳｨﾝﾄﾞｳを閉じ、変更したﾌｧｲﾙの保存を指示"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     AFX_IDS_SCRESTORE       "ｳｨﾝﾄﾞｳを通常のｻｲｽﾞに戻す"
     AFX_IDS_SCTASKLIST      "ｱﾌﾟﾘｹｰｼｮﾝの切り替え"
     AFX_IDS_MDICHILD        "指定のｳｨﾝﾄﾞｳを表示"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     AFX_IDS_PREVIEW_CLOSE   "印刷ﾌﾟﾚﾋﾞｭｰ ﾓｰﾄﾞを閉じる\nﾌﾟﾚﾋﾞｭｰのｷｬﾝｾﾙ"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_ADD_SPHERE           "カーソル位置に球を追加します。"
     ID_ADD_PLANE            "カーソル位置に平面を追加します。"
@@ -640,7 +617,7 @@ BEGIN
     ID_PROPERTY             "対象のノードの属性を変更します。"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_ADD_POLYGON          "カーソル位置にポリゴンを追加します。"
     ID_TEXTURE              "テクスチャを選択します。"
@@ -656,7 +633,7 @@ BEGIN
     ID_ADD_TEAPOT           "カーソル位置にティーポットを追加します。"
 END
 
-#endif    // 日本語 resources
+#endif    // Japanese resources
 /////////////////////////////////////////////////////////////////////////////
 
 
