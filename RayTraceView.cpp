@@ -538,13 +538,6 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 			p->Move(axis, d.x);
 		else {
 			p->Move(d);
-			D3DXVECTOR3	v = m_vLookatPt - m_vEyePt;
-			m_vEyePt.x -= (float)(d.x * v.y) / 100;
-			m_vEyePt.y -= (float)d.y / 10;
-			m_vEyePt.z -= (float)(d.x * v.x) / 100;
-			m_vLookatPt.x -= (float)(d.x * v.y) / 100;
-			m_vLookatPt.y -= (float)d.y / 10;
-			m_vLookatPt.z -= (float)(d.x * v.x) / 100;
 		}
 		break;
 	case eROTATE:
@@ -552,26 +545,10 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 			p->Rotate(axis, d.x);
 		else {
 			p->Rotate(d);
-			double theta = sqrt((double)d.x * d.x + d.y * d.y) / 100;
-			D3DXVECTOR3 axis((float)d.y, (float)d.x, 0);
-			D3DXQUATERNION rot( (float)(sin(theta) * axis.x),
-								(float)(sin(theta) * axis.y),
-								(float)(sin(theta) * axis.z),
-								(float)(cos(theta)));
-			D3DXMATRIX		m;	
-			D3DXMatrixTransformation(&m, NULL, NULL, NULL, &m_vLookatPt, &rot, NULL);
-			D3DXVec3TransformCoord(&m_vEyePt, &m_vEyePt, &m);
 		}
 		break;
 	case eSCALE:
-		if (m_SelectedNode)
-			p->Scale(axis,d.x);
-		else {
-			p->Scale(axis,d.x);
-			D3DXVECTOR3	v = m_vLookatPt - m_vEyePt;
-			v *= (float)d.x / 100; 
-			m_vEyePt += v;
-		}
+		p->Scale(axis,d.x);
 		break;
 	case ePIVOT_MOVE:
 		if (!m_SelectedNode)
@@ -588,8 +565,9 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 
 	if (m_SelectedNode) {
 		((CRayTraceDoc*)GetDocument())->UpdateAllViews(NULL);
-	} else
-		Invalidate(m_ViewMode == eWireFrame);
+	} else {
+		OnUpdate(0, 0, 0);
+	}
 
 	CView::OnMouseMove(nFlags, point);
 }

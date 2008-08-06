@@ -65,11 +65,13 @@ void Viewport::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeome
 
 	InitVertexBuffer(pd3dDevice, pVB, pVertices, 100);
 
+	matrix m = Matrix * m_Matrix;
+
 	int j = 0;
 	for (int i = 0; i < 2; i++) {
 		for (int x = -12; x <= 12; x++) {
-			sp p1 = i ? sp(x,0,-12) : sp(-12,0,x);
-			sp p2 = i ? sp(x,0,12) : sp(12,0,x);
+			sp p1 = m * (i ? sp(x,0,-12) : sp(-12,0,x));
+			sp p2 = m * (i ? sp(x,0,12) : sp(12,0,x));
 			pVertices[j].position = D3DXVECTOR3((float)p1.x, (float)p1.y, (float)p1.z);
 			pVertices[j].normal = D3DXVECTOR3(0,1,0);
 			pVertices[++j].position = D3DXVECTOR3((float)p2.x, (float)p2.y, (float)p2.z);
