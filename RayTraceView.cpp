@@ -356,7 +356,7 @@ void CRayTraceView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	if (m_Viewport.GetInfo2(sp( 0.01 * rx / (m_View.right - m_View.left),
 								0.01 * ry / (m_View.bottom - m_View.top), 0.01),
-								sp(rx, ry, -20), info, NULL))
+								sp(rx, ry, -20), info))
 		m_SelectedNode = (Node*)info.pNode;
 	else
 		m_SelectedNode = NULL;
@@ -373,7 +373,7 @@ void CRayTraceView::OnLButtonUp(UINT nFlags, CPoint point)
 
 	if (m_Viewport.GetInfo2(sp( 0.01 * rx / (m_View.right - m_View.left),
 								0.01 * ry / (m_View.bottom - m_View.top), 0.01),
-								sp(rx, ry, -20), info, NULL))
+								sp(rx, ry, -20), info))
 		m_SelectedNode = (Node*)info.pNode;
 
 	Invalidate();

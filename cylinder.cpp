@@ -96,7 +96,7 @@ BOOL Cylinder::IsInside(const sp& L) const
 	return (-1 <= L.y && L.y <= 1 && sqrt(L.x*L.x+L.z*L.z) <= 1.0);
 }
 
-BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit) const
+BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info) const
 {
 	if (L.y < -1)
 	{
@@ -107,7 +107,7 @@ BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit) 
 
 		sp	p = K*t+L;
 
-		if (p.x * p.x + p.z * p.z <= 1 && (pOmit != this || fabs(t) >= 1E-10)) {
+		if (p.x * p.x + p.z * p.z <= 1) {
 			info.Cross = p;
 			info.Vertical = sp(0,-1,0);
 			info.Distance = t * sqrt(K*K);
@@ -127,7 +127,7 @@ BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit) 
 
 		sp	p = K*t+L;
 
-		if (p.x * p.x + p.z * p.z <= 1 && (pOmit != this || fabs(t) >= 1E-10)) {
+		if (p.x * p.x + p.z * p.z <= 1) {
 			info.Cross = p;
 			info.Vertical = sp(0,1,0);
 			info.Distance = t * sqrt(K*K);
@@ -159,10 +159,7 @@ BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit) 
 	if (t1 > 0) {
 		if (t2 > 0) {
 			t = (t1 < t2) ? t1 : t2;
-			if (pOmit == this && fabs(t) < 1E-10)
-				t = (t1 < t2) ? t2 : t1;
-			else
-				info.isEnter = 1;
+			info.isEnter = 1;
 		} else
 			t = t1;
 	} else {
@@ -171,9 +168,6 @@ BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit) 
 		else
 			return FALSE;
 	}
-
-	if (pOmit == this && fabs(t) < 1E-10)
-		return FALSE;
 
 	sp p = K * t + L;
 

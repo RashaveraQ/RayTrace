@@ -91,7 +91,7 @@ BOOL Cone::IsInside(const sp& L) const
 	return (0 <= L.y && L.y <= 1 && sqrt( L.x * L.x + L.z * L.z ) <= L.y);
 }
 
-BOOL Cone::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit) const
+BOOL Cone::GetInfo(const sp& K, const sp& L, Info& info) const
 {
 	if (L.y > 1) {
 
@@ -102,14 +102,14 @@ BOOL Cone::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit) cons
 
 		sp p = K*t + L;
 
-		if (p.x * p.x + p.z * p.z <= 1 && (pOmit != this || fabs(t) >= 1E-10)) {
+		if (p.x * p.x + p.z * p.z <= 1) {
 			info.Cross = p;
 			info.Vertical = sp(0,1,0);
 			info.Distance = t * sqrt(K*K);
 			info.isEnter = 1;
 			info.Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
 			info.pNode = this;
-//			r_info->Refractive = m_Refractive;
+			info.Refractive = m_Refractive;
 
 			return TRUE;
 		}

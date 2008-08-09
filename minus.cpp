@@ -16,18 +16,18 @@ BOOL Minus::IsInside(const sp& L) const
 			  && !( m_Member >= 2 && m_Node[1]->IsInside(m_Matrix * L)));
 }
 
-BOOL Minus::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit) const
+BOOL Minus::GetInfo(const sp& K, const sp& L, Info& info) const
 {
 	Info	l_info;
 	Info	r_info;
 	sp		l = L;
 	int		left, right;
 
-	if (!(m_Member >= 1 && m_Node[0]->GetInfo2(K, l, l_info, pOmit)))
+	if (!(m_Member >= 1 && m_Node[0]->GetInfo2(K, l, l_info)))
 		return FALSE;
 	do {
-		left  = (m_Member >= 1) ? m_Node[0]->GetInfo2(K, l, l_info, pOmit) : 0;
-		right = (m_Member >= 2) ? m_Node[1]->GetInfo2(K, l, r_info, pOmit) : 0;
+		left  = (m_Member >= 1) ? m_Node[0]->GetInfo2(K, l, l_info) : 0;
+		right = (m_Member >= 2) ? m_Node[1]->GetInfo2(K, l, r_info) : 0;
 		
 		if (left == 0 && right == 0)
 			return FALSE;

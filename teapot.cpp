@@ -103,7 +103,7 @@ BOOL Teapot::IsInside(const sp& L) const
 	return (sqrt(L * L) <= 1.0);
 }
 
-BOOL Teapot::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit) const
+BOOL Teapot::GetInfo(const sp& K, const sp& L, Info& info) const
 {
 	double	a = K * K;
 	double	b = K * L;
@@ -122,10 +122,7 @@ BOOL Teapot::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit) co
 	if (t1 > 0) {
 		if (t2 > 0) {
 			t = (t1 < t2) ? t1 : t2;
-			if (pOmit == this && fabs(t) < 1E-10)
-				t = (t1 < t2) ? t2 : t1;
-			else
-				info.isEnter = 1;
+			info.isEnter = 1;
 		} else
 			t = t1;
 	} else {
@@ -134,9 +131,6 @@ BOOL Teapot::GetInfo(const sp& K, const sp& L, Info& info, const Node* pOmit) co
 		else
 			return FALSE;
 	}
-
-	if (pOmit == this && fabs(t) < 1E-10)
-		return FALSE;
 
 	info.Cross = info.Vertical = K * t + L;
 	info.Distance = t * sqrt(K * K);
