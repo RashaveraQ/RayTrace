@@ -438,6 +438,7 @@ void CRayTraceView::UpdateDevice()
 	while (!m_lstGeometry.IsEmpty())
 		m_lstGeometry.RemoveTail().Clear();
 
+	// DirectX の視点移動は高速化の余地があり、その場合、以下の m_Viewport を GetDocument()->m_Root に変更する等...
 	m_Viewport.AddGeometry(m_pd3dDevice, m_lstGeometry, *this, matrix());
 }
 
@@ -573,7 +574,18 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 	if (m_SelectedNode) {
 		((CRayTraceDoc*)GetDocument())->UpdateAllViews(NULL);
 	} else {
-		OnUpdate(0, 0, 0);
+		switch (m_ViewMode) {
+		case eRayTrace:
+		case eWireFrame:
+			OnUpdate(0, 0, 0);
+			break;
+		case eD3DWireFrame:
+		case eD3DFlatShading:
+		case eD3DGouraudShading:
+			// ToDo: UpdateDevice を不要に出来たら、以下を削除して高速化可能。
+			OnUpdate(0, 0, 0);
+			break;
+		}
 	}
 
 	CView::OnMouseMove(nFlags, point);
