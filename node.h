@@ -70,7 +70,7 @@ public:
 		MakeMemoryDCfromTextureFileName();
 		m_Material = Color.getMaterial();
 	}
-	Node( const Node &other );
+	Node(const Node &other);
 
 	virtual	~Node() {}
 
@@ -105,6 +105,8 @@ public:
 	virtual const Node*		MakeCopy() const = 0;
 	virtual	BOOL Delete( Node* ) { return FALSE; }
 	virtual	void Serialize(CArchive& ar);
+
+	matrix getMatrix() { return m_Matrix; }
 
 	// インプリメンテーション
 	friend CDlgMatrix;

@@ -270,9 +270,16 @@ void CRayTraceView::OnTimer(UINT nIDEvent)
 		if (m_Job == CONTINUED) {
 			double rx = (m_View.right - m_View.left) * m_NowX / m_ClientSize.cx + m_View.left;
 			double ry = (m_View.bottom - m_View.top) * m_NowY / m_ClientSize.cx + m_View.top;
-			sp	   c  = m_Viewport.GetColor(sp( 0.01 * rx / (m_View.right - m_View.left),
-												0.01 * ry / (m_View.bottom - m_View.top), 0.01),
-											sp(rx, ry, -20), NULL);
+
+			sp k = sp(0.01 * rx / (m_View.right - m_View.left), 0.01 * ry / (m_View.bottom - m_View.top), 0.01);
+			sp l = sp(rx, ry, -20);
+
+			// ToDo: 視線ベクトルは、m_Viewportの変換行列から求めるか、カメラオブジェクトを新規に作成する
+			matrix m = m_Viewport.getMatrix().Inv();
+			k = m * (k + l) - m * l;
+			l = m * l;
+
+			sp	   c  = pDoc->m_Root.GetColor(k, l, NULL);
 			m_MemoryDC.FillSolidRect(CRect(m_NowX, m_NowY, m_NowX+m_NowSize, m_NowY+m_NowSize), RGB(c.x, c.y, c.z));
 			m_Job = Go_ahead(m_NowX, m_NowY, m_NowSize, m_StartX, m_StartY, m_ClientSize, START_SQUARE);
 		}
