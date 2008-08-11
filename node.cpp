@@ -220,7 +220,7 @@ sp Node::GetColor(const sp& K, const sp& L, int nest) const
 	// 反射率がある場合、
 	if (info.pNode->m_Reflect > 0) {
 		sp k2 = k - 2 * (v * k) * v;
-		sp l2 = info.Cross + 0.01 * v;
+		sp l2 = info.Cross + 0.01 * k2;
 		// 反射した視線ベクトルから色を取得。
 		sp c = m_pDoc->m_Root.GetColor(k2, l2, nest + 1);
 		// 反射率で色を混ぜる。
@@ -230,8 +230,10 @@ sp Node::GetColor(const sp& K, const sp& L, int nest) const
 	// 透過率がある場合、
 	if (info.pNode->m_Through > 0) {
 		double r = info.Refractive;
-		sp k2 = (k + v)/r - v;
-		sp l2 = info.Cross + 0.01 * v;
+		double i = k * v;
+		sp k2 = -sqrt(1.0 - r * r * (1.0 - i * i)) * v - r * (k - i * v);
+		//sp k2 = (k + v)/r - v;
+		sp l2 = info.Cross + 0.01 * k2;
 		// 屈折した視線ベクトルから色を取得。
 		sp c = m_pDoc->m_Root.GetColor(k2, l2, nest + 1);
 		// 透過率で色を混ぜる。
