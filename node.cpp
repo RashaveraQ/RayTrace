@@ -231,7 +231,7 @@ sp Node::GetColor(const sp& K, const sp& L, int nest) const
 	if (info.pNode->m_Through > 0) {
 		double r = info.Refractive;
 		double i = k * v;
-		sp k2 = -sqrt(1.0 - r * r * (1.0 - i * i)) * v - r * (k - i * v);
+		sp k2 = r * (k -i * v - sqrt(r * r - 1.0 + i * i) * v);
 		//sp k2 = (k + v)/r - v;
 		sp l2 = info.Cross + 0.01 * k2;
 		// 屈折した視線ベクトルから色を取得。
