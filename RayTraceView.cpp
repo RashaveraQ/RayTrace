@@ -261,6 +261,19 @@ int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	return 0;
 }
+	
+void CRayTraceView::GetVectorFromPoint(sp& k, sp& l, int px, int py)
+{
+	double rx = (m_View.right - m_View.left) * px / m_ClientSize.cx + m_View.left;
+	double ry = (m_View.bottom - m_View.top) * py / m_ClientSize.cx + m_View.top;
+
+	k = sp(0.01 * rx / (m_View.right - m_View.left), 0.01 * ry / (m_View.bottom - m_View.top), 0.01);
+	l = sp(rx, ry, -20);
+
+	matrix m = m_Viewport.getMatrix().Inv();
+	k = m * (k + l) - m * l;
+	l = m * l;
+}
 
 void CRayTraceView::OnTimer(UINT nIDEvent) 
 {
@@ -268,17 +281,8 @@ void CRayTraceView::OnTimer(UINT nIDEvent)
 
 	for (int i = 0; i < 1000; i ++) {
 		if (m_Job == CONTINUED) {
-			double rx = (m_View.right - m_View.left) * m_NowX / m_ClientSize.cx + m_View.left;
-			double ry = (m_View.bottom - m_View.top) * m_NowY / m_ClientSize.cx + m_View.top;
-
-			sp k = sp(0.01 * rx / (m_View.right - m_View.left), 0.01 * ry / (m_View.bottom - m_View.top), 0.01);
-			sp l = sp(rx, ry, -20);
-
-			// ToDo: 視線ベクトルは、m_Viewportの変換行列から求めるか、カメラオブジェクトを新規に作成する
-			matrix m = m_Viewport.getMatrix().Inv();
-			k = m * (k + l) - m * l;
-			l = m * l;
-
+			sp k, l;
+			GetVectorFromPoint(k, l, m_NowX, m_NowY);
 			sp	   c  = pDoc->m_Root.GetColor(k, l, NULL);
 			m_MemoryDC.FillSolidRect(CRect(m_NowX, m_NowY, m_NowX+m_NowSize, m_NowY+m_NowSize), RGB(c.x, c.y, c.z));
 			m_Job = Go_ahead(m_NowX, m_NowY, m_NowSize, m_StartX, m_StartY, m_ClientSize, START_SQUARE);
@@ -358,30 +362,29 @@ void CRayTraceView::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 
 	Info	info;
-	double rx = (m_View.right - m_View.left) * point.x / m_ClientSize.cx + m_View.left;
-	double ry = (m_View.bottom - m_View.top) * point.y / m_ClientSize.cx + m_View.top;
+	CRayTraceDoc	*pDoc = GetDocument();
+	sp k, l;
+	GetVectorFromPoint(k, l, point.x, point.y);
 
-	if (m_Viewport.GetInfo2(sp( 0.01 * rx / (m_View.right - m_View.left),
-								0.01 * ry / (m_View.bottom - m_View.top), 0.01),
-								sp(rx, ry, -20), info))
+	if (pDoc->m_Root.GetInfo2(k, l, info)) {
 		m_SelectedNode = (Node*)info.pNode;
-	else
+	} else {
 		m_SelectedNode = NULL;
+	}
 
 	m_AltStart = point;
 }
 
 void CRayTraceView::OnLButtonUp(UINT nFlags, CPoint point) 
 {
+	CRayTraceDoc	*pDoc = GetDocument();
 	Info	info;
+	sp k, l;
+	GetVectorFromPoint(k, l, point.x, point.y);
 
-	double rx = (m_View.right - m_View.left) * point.x / m_ClientSize.cx + m_View.left;
-	double ry = (m_View.bottom - m_View.top) * point.y / m_ClientSize.cx + m_View.top;
-
-	if (m_Viewport.GetInfo2(sp( 0.01 * rx / (m_View.right - m_View.left),
-								0.01 * ry / (m_View.bottom - m_View.top), 0.01),
-								sp(rx, ry, -20), info))
+	if (pDoc->m_Root.GetInfo2(k, l, info)) {
 		m_SelectedNode = (Node*)info.pNode;
+	}
 
 	Invalidate();
 }
