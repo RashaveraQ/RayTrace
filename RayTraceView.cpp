@@ -65,7 +65,6 @@ CRayTraceView::CRayTraceView()
 	m_View.right  = 10;
 	m_View.top    = -10;
 	m_View.bottom = 10;
-	m_rect.SetRectEmpty( );
 	m_ViewMode = eD3DFlatShading; //eWireFrame;
 	m_Alt = FALSE;
 	m_AltStart.x = m_AltStart.y = 0;
@@ -100,14 +99,7 @@ void CRayTraceView::OnDraw(CDC* pDC)
 	switch (m_ViewMode) {
 	case eRayTrace:
 		pDC->BitBlt(0, 0, m_ClientSize.cx, m_ClientSize.cy, &m_MemoryDC, 0, 0, SRCCOPY);
-
-		m_rect.NormalizeRect();
-		if (m_rect.IsRectEmpty())
-			return ;
-
-		pDC->FrameRect(m_rect, &CBrush(RGB(255,255,255)));
 		break;
-
 	case eWireFrame:
 		pDC->SelectStockObject(NULL_BRUSH);
 		m_Viewport.Draw_Outline(pDC, *this, matrix(4,4));
