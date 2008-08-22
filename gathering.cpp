@@ -122,14 +122,6 @@ BOOL Gathering::AddNode(CTreeCtrl& c, HTREEITEM hitem, Node* pNode)
 	return TRUE;
 }
 
-void Gathering::MakeCopy(Gathering* out, Gathering* in)
-{
-	out->m_Member = in->m_Member;
-
-	for (int i = 0; i < in->m_Member; i++)
-		out->m_Node[i] = (class Node*)in->m_Node[i]->MakeCopy();
-}
-
 void Gathering::SetDocument(const CRayTraceDoc* const pDoc)
 {
 	m_pDoc = (const CRayTraceDoc*)pDoc;
