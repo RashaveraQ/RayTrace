@@ -96,8 +96,11 @@ BOOL CRayTraceView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CRayTraceView::OnDraw(CDC* pDC)
 {
+	void DoCuda();
+
 	switch (m_ViewMode) {
 	case eRayTrace:
+		DoCuda();
 		pDC->BitBlt(0, 0, m_ClientSize.cx, m_ClientSize.cy, &m_MemoryDC, 0, 0, SRCCOPY);
 		break;
 	case eWireFrame:
