@@ -48,7 +48,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
-				AdditionalIncludeDirectories=""
+				AdditionalIncludeDirectories="$(CUDA_INC_PATH);../../NVIDIA CUDA SDK/common/inc"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -73,11 +73,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3d9.lib d3dx9.lib winmm.lib dxerr9.lib cudart.lib"
+				AdditionalDependencies="d3d9.lib d3dx9.lib winmm.lib dxerr9.lib cudart.lib cutil32.lib"
 				OutputFile=".\Release/RayTrace.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="$(CUDA_LIB_PATH)"
+				AdditionalLibraryDirectories="$(CUDA_LIB_PATH);../../NVIDIA CUDA SDK/common/lib"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -142,7 +142,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=""
+				AdditionalIncludeDirectories="$(CUDA_INC_PATH);../../NVIDIA CUDA SDK/common/inc"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
@@ -169,11 +169,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3d9.lib d3dx9.lib winmm.lib dxerr9.lib cudart.lib"
+				AdditionalDependencies="d3d9.lib d3dx9.lib winmm.lib dxerr9.lib cudart.lib cutil32D.lib"
 				OutputFile=".\Debug/RayTrace.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="$(CUDA_LIB_PATH)"
+				AdditionalLibraryDirectories="$(CUDA_LIB_PATH);../../NVIDIA CUDA SDK/common/lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/RayTrace.pdb"
 				SubSystem="2"

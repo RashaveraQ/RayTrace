@@ -10,6 +10,9 @@
 #include "RayTraceView.h"
 #include "ScnTreeView.h"
 
+#include <cutil.h>
+#include <cuda_runtime.h>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -54,6 +57,8 @@ CRayTraceApp theApp;
 
 BOOL CRayTraceApp::InitInstance()
 {
+	CUT_DEVICE_INIT(0,0);
+
     // Create the D3D object, which is needed to create the D3DDevice.
     if (NULL == (g_pD3D = Direct3DCreate9(D3D_SDK_VERSION)))
         return FALSE;
