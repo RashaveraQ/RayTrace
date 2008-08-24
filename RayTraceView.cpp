@@ -265,10 +265,10 @@ int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	
 void CRayTraceView::GetVectorFromPoint(sp& k, sp& l, int px, int py)
 {
-	double rx = 20 * px / m_ClientSize.cx - 10;
-	double ry = 20 * py / m_ClientSize.cx - 10;
+	double rx = 20.0 * px / m_ClientSize.cx - 10.0;
+	double ry = 20.0 * py / m_ClientSize.cx - 10.0;
 
-	k = sp(0.01 * rx / 20, 0.01 * ry / 20, 0.01);
+	k = sp(0.01 * rx / 20.0, 0.01 * ry / 20.0, 0.01);
 	l = sp(rx, ry, -20);
 
 	matrix m = m_Viewport.getMatrix().Inv();
