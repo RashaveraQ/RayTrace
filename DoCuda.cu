@@ -2,16 +2,36 @@
 #include <cuda_runtime.h>
 #include <d3dx9.h>
 #include <atltypes.h>
-#include "sp.h"
+
+#define TARGET __device__
+#include "matrix.h"
 
 // The dimensions of the thread block
 #define BLOCKDIM_X 16
 #define BLOCKDIM_Y 16
 
-__global__ void kernel(unsigned long* dst, void* root, const int imageW, const int imageH)
+__device__ void GetColor(sp& dst, void* target, const sp& k, const sp& l, int nest)
 {
-    const int ix = blockDim.x * blockIdx.x + threadIdx.x;
-    const int iy = blockDim.y * blockIdx.y + threadIdx.y;
+}
+
+__global__ void kernel(unsigned long* dst, void* root, const int imageW, const int imageH, const matrix* m)
+{
+    const int px = blockDim.x * blockIdx.x + threadIdx.x;
+    const int py = blockDim.y * blockIdx.y + threadIdx.y;
+    
+   	double rx = 20.0 * px / imageW - 10.0;
+	double ry = 20.0 * py / imageH - 10.0;
+
+	sp k(0.01 * rx / 20.0, 0.01 * ry / 20.0, 0.01);
+	sp l(rx, ry, -20);
+
+	k = *m * (k + l) - *m * l;
+	l = *m * l;
+ 
+	sp c;
+	GetColor(c, root, k, l, 0);
+	
+	dst[px + py * imageW] = RGB(c.x, c.y, c.z);
 }
 
 // Increase the grid size by 1 if the image width or height does not divide evenly
@@ -21,7 +41,7 @@ inline int iDivUp(int a, int b)
     return ((a % b) != 0) ? (a / b + 1) : (a / b);
 } // iDivUp
 
-void DoCuda(unsigned long* out, class Node* root, const int imageW, const int imageH)
+void DoCuda(unsigned long* out, class Node* root, const int imageW, const int imageH, const matrix* m)
 {
 	unsigned long* d_data;
     const unsigned int mem_size = imageW * imageH * sizeof(unsigned long);
@@ -32,7 +52,7 @@ void DoCuda(unsigned long* out, class Node* root, const int imageW, const int im
     dim3 grid(iDivUp(imageW, BLOCKDIM_X), iDivUp(imageH, BLOCKDIM_Y));
  
 	// execute the kernel
-	kernel<<< grid, threads >>>(d_data, (void*)root, imageW, imageH);
+	kernel<<< grid, threads >>>(d_data, (void*)root, imageW, imageH, m);
 
 	// check if kernel execution generated and error
 	CUT_CHECK_ERROR("Kernel execution failed");

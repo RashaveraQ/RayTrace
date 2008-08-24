@@ -381,7 +381,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="$(CUDA_BIN_PATH)\nvcc.exe -ccbin &quot;$(VCInstallDir)bin&quot; -c -DWIN32 -D_CONSOLE -D_MBCS -Xcompiler /EHsc,/W3,/nologo,/Wp64,/O2,/Zi,/MT -I&quot;$(CUDA_INC_PATH)&quot; -I&quot;../../NVIDIA CUDA SDK/common/inc&quot; -o $(ConfigurationName)\DoCuda.obj DoCuda.cu"
+						CommandLine="$(CUDA_BIN_PATH)\nvcc.exe -ccbin &quot;$(VCInstallDir)bin&quot; -c -DWIN32 -D_CONSOLE -D_MBCS -Xcompiler /EHsc,/W3,/nologo,/Wp64,/O2,/Zi,/MT -I&quot;$(CUDA_INC_PATH)&quot; -I&quot;../../NVIDIA CUDA SDK/common/inc&quot; -o $(ConfigurationName)\DoCuda.obj DoCuda.cu&#x0D;&#x0A;"
 						Outputs="$(ConfigurationName)\DoCuda.obj"
 					/>
 				</FileConfiguration>
@@ -390,7 +390,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="$(CUDA_BIN_PATH)\nvcc.exe -ccbin &quot;$(VCInstallDir)bin&quot; -c -DWIN32 -D_CONSOLE -D_MBCS -Xcompiler /EHsc,/W3,/nologo,/Wp64,/O2,/Zi,/MT -I&quot;$(CUDA_INC_PATH)&quot; -I&quot;../../NVIDIA CUDA SDK/common/inc&quot; -o $(ConfigurationName)\DoCuda.obj DoCuda.cu"
+						CommandLine="$(CUDA_BIN_PATH)\nvcc.exe -ccbin &quot;$(VCInstallDir)bin&quot; -c -DWIN32 -D_CONSOLE -D_MBCS -Xcompiler /EHsc,/W3,/nologo,/Wp64,/O2,/Zi,/MT -I&quot;$(CUDA_INC_PATH)&quot; -I&quot;../../NVIDIA CUDA SDK/common/inc&quot; -o $(ConfigurationName)\DoCuda.obj DoCuda.cu&#x0D;&#x0A;"
 						AdditionalDependencies=""
 						Outputs="$(ConfigurationName)\DoCuda.obj"
 					/>
@@ -458,26 +458,6 @@
 			</File>
 			<File
 				RelativePath="MainFrm.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="matrix.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -838,26 +818,6 @@
 			</File>
 			<File
 				RelativePath="Solve_Polynomial.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="sp.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"

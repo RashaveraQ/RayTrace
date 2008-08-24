@@ -70,6 +70,8 @@ typedef CList<Geometry,Geometry&> CListGeometry;
 
 bool InitVertexBuffer(LPDIRECT3DDEVICE9 pd3dDevice, LPDIRECT3DVERTEXBUFFER9& pVB, CUSTOMVERTEX*& pVertices, UINT count);
 
+#define TARGET
+
 #include "move.h"
 #include "expand.h"
 #include "rotate_x.h"

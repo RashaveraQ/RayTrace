@@ -25,7 +25,6 @@ struct fsize
 	double	bottom;
 	double	right;
 };
-#define PERSPECTIVE_RATIO 0.1
 
 class	Node : public CObject
 {
