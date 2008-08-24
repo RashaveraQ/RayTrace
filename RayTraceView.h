@@ -25,7 +25,6 @@ protected: // シリアライズ機能のみから作成します。
 // アトリビュート
 public:
 	class CRayTraceDoc* GetDocument();
-	fsize		m_View;
 	Viewport	m_Viewport;		//	視点開始オブジェクトのポインタ
 	Node*		m_SelectedNode;
 	CSize		m_ClientSize;

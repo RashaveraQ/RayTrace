@@ -61,10 +61,6 @@ CRayTraceView::CRayTraceView()
 {
 	m_StartX = m_StartY = m_NowX = m_NowY = 0;
 	m_NowSize = START_SQUARE;
-	m_View.left   = -10;
-	m_View.right  = 10;
-	m_View.top    = -10;
-	m_View.bottom = 10;
 	m_ViewMode = eD3DFlatShading; //eWireFrame;
 	m_Alt = FALSE;
 	m_AltStart.x = m_AltStart.y = 0;
@@ -269,10 +265,10 @@ int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	
 void CRayTraceView::GetVectorFromPoint(sp& k, sp& l, int px, int py)
 {
-	double rx = (m_View.right - m_View.left) * px / m_ClientSize.cx + m_View.left;
-	double ry = (m_View.bottom - m_View.top) * py / m_ClientSize.cx + m_View.top;
+	double rx = 20 * px / m_ClientSize.cx - 10;
+	double ry = 20 * py / m_ClientSize.cx - 10;
 
-	k = sp(0.01 * rx / (m_View.right - m_View.left), 0.01 * ry / (m_View.bottom - m_View.top), 0.01);
+	k = sp(0.01 * rx / 20, 0.01 * ry / 20, 0.01);
 	l = sp(rx, ry, -20);
 
 	matrix m = m_Viewport.getMatrix().Inv();
