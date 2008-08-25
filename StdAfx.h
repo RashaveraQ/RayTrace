@@ -38,13 +38,12 @@
 
 #include <afxwin.h>         // MFC のコアおよび標準コンポーネント
 #include <afxext.h>         // MFC の拡張部分
-#include <afxdisp.h>        // MFC の OLE オートメーション クラス
+#include <afxdisp.h>        // MFC の OLE オートメーション クラス	CList
 #ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>			// MFC の Windows コモン コントロール サポート
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
-#include <afxcview.h>
-#include <afxtempl.h>
+#include <afxcview.h>		// CTreeView
 
 #include <mmsystem.h>
 #include <d3dx9.h>
@@ -70,7 +69,9 @@ typedef CList<Geometry,Geometry&> CListGeometry;
 
 bool InitVertexBuffer(LPDIRECT3DDEVICE9 pd3dDevice, LPDIRECT3DVERTEXBUFFER9& pVB, CUSTOMVERTEX*& pVertices, UINT count);
 
+#ifndef TARGET
 #define TARGET
+#endif // TARGET
 
 #include "move.h"
 #include "expand.h"

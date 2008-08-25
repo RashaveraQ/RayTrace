@@ -557,6 +557,30 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\NodeBase.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NodeBase_kernel.cpp"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="NodeTreeCtrl.cpp"
 				>
 				<FileConfiguration
@@ -1014,6 +1038,10 @@
 			</File>
 			<File
 				RelativePath="node.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NodeBase.h"
 				>
 			</File>
 			<File
