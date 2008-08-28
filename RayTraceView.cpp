@@ -92,7 +92,7 @@ BOOL CRayTraceView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CRayTraceView::OnDraw(CDC* pDC)
 {
-	void DoCuda(COLORREF* colorrefs, class Node* root, const sp& light, const int imageW, const int imageH, const matrix* m);
+	void DoCuda(COLORREF* colorrefs, class Node* root, const int imageW, const int imageH, const matrix* m);
 
 	switch (m_ViewMode) {
 	case eRayTrace:
@@ -101,7 +101,7 @@ void CRayTraceView::OnDraw(CDC* pDC)
 			// 色配列のメモリ領域確保(サイズが変化した時に確保すべき
 			COLORREF* colorrefs = (COLORREF*)malloc(m_ClientSize.cx * m_ClientSize.cy * sizeof(COLORREF));
 			matrix m = m_Viewport.getMatrix().Inv();
-			DoCuda(colorrefs, &GetDocument()->m_Root, GetDocument()->m_Light, m_ClientSize.cx, m_ClientSize.cy, &m);
+			DoCuda(colorrefs, &GetDocument()->m_Root, m_ClientSize.cx, m_ClientSize.cy, &m);
 			for (int y = 0; y < m_ClientSize.cy; y++)
 				for (int x = 0; x < m_ClientSize.cx; x++)
 					m_MemoryDC.FillSolidRect(CRect(x, y, x+1, y+1), colorrefs[x + y * m_ClientSize.cx]);
@@ -285,7 +285,7 @@ void CRayTraceView::OnTimer(UINT nIDEvent)
 		if (m_Job == CONTINUED) {
 			sp k, l;
 			GetVectorFromPoint(k, l, m_NowX, m_NowY);
-			sp	   c  = pDoc->m_Root.GetColor(&pDoc->m_Root, pDoc->m_Light, k, l, NULL);
+			sp	   c  = pDoc->m_Root.GetColor(k, l, NULL);
 			m_MemoryDC.FillSolidRect(CRect(m_NowX, m_NowY, m_NowX+m_NowSize, m_NowY+m_NowSize), RGB(c.x, c.y, c.z));
 			m_Job = Go_ahead(m_NowX, m_NowY, m_NowSize, m_StartX, m_StartY, m_ClientSize, START_SQUARE);
 		}

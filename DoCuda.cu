@@ -1,18 +1,20 @@
 #include <cutil.h>
 #include <cuda_runtime.h>
-
 #include <d3dx9.h>
 #include <atltypes.h>
 
 #define TARGET __device__
-#include "NodeBase.h"
-#include "NodeBase_kernel.cpp"
+#include "matrix.h"
 
 // The dimensions of the thread block
 #define BLOCKDIM_X 16
 #define BLOCKDIM_Y 16
 
-__global__ void kernel(unsigned long* dst, NodeBase* root, const sp& light, const int imageW, const int imageH, const matrix* m)
+__device__ void GetColor(sp& dst, void* target, const sp& k, const sp& l, int nest)
+{
+}
+
+__global__ void kernel(unsigned long* dst, void* root, const int imageW, const int imageH, const matrix* m)
 {
     const int px = blockDim.x * blockIdx.x + threadIdx.x;
     const int py = blockDim.y * blockIdx.y + threadIdx.y;
@@ -26,7 +28,8 @@ __global__ void kernel(unsigned long* dst, NodeBase* root, const sp& light, cons
 	k = *m * (k + l) - *m * l;
 	l = *m * l;
  
-	sp c = root->GetColor(root, light, k, l, 0);
+	sp c;
+	GetColor(c, root, k, l, 0);
 	
 	dst[px + py * imageW] = RGB(c.x, c.y, c.z);
 }
@@ -38,7 +41,7 @@ inline int iDivUp(int a, int b)
     return ((a % b) != 0) ? (a / b + 1) : (a / b);
 } // iDivUp
 
-void DoCuda(unsigned long* out, NodeBase* root, const sp& light, const int imageW, const int imageH, const matrix* m)
+void DoCuda(unsigned long* out, class Node* root, const int imageW, const int imageH, const matrix* m)
 {
 	unsigned long* d_data;
     const unsigned int mem_size = imageW * imageH * sizeof(unsigned long);
@@ -49,7 +52,7 @@ void DoCuda(unsigned long* out, NodeBase* root, const sp& light, const int image
     dim3 grid(iDivUp(imageW, BLOCKDIM_X), iDivUp(imageH, BLOCKDIM_Y));
  
 	// execute the kernel
-	kernel<<< grid, threads >>>(d_data, root, light, imageW, imageH, m);
+	kernel<<< grid, threads >>>(d_data, (void*)root, imageW, imageH, m);
 
 	// check if kernel execution generated and error
 	CUT_CHECK_ERROR("Kernel execution failed");
