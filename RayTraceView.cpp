@@ -99,12 +99,20 @@ void CRayTraceView::OnDraw(CDC* pDC)
 #if 0	// CUDA対応が完成したら有効にする。
 		{
 			// 色配列のメモリ領域確保(サイズが変化した時に確保すべき
-			COLORREF* colorrefs = (COLORREF*)malloc(m_ClientSize.cx * m_ClientSize.cy * sizeof(COLORREF));
-			matrix m = m_Viewport.getMatrix().Inv();
-			DoCuda(colorrefs, &GetDocument()->m_Root, m_ClientSize.cx, m_ClientSize.cy, &m);
+			size_t size = m_ClientSize.cx * m_ClientSize.cy * sizeof(COLORREF);
+			COLORREF* colorrefs = (COLORREF*)malloc(size);
+
 			for (int y = 0; y < m_ClientSize.cy; y++)
 				for (int x = 0; x < m_ClientSize.cx; x++)
-					m_MemoryDC.FillSolidRect(CRect(x, y, x+1, y+1), colorrefs[x + y * m_ClientSize.cx]);
+					colorrefs[x + y * m_ClientSize.cx] = RGB(x % 255, y % 255, 0xee);
+
+			matrix m = m_Viewport.getMatrix().Inv();
+			DoCuda(colorrefs, &GetDocument()->m_Root, m_ClientSize.cx, m_ClientSize.cy, &m);
+
+			for (int y = 0; y < m_ClientSize.cy; y++)
+				for (int x = 0; x < m_ClientSize.cx; x++)
+					m_MemoryDC.SetPixel(x, y, colorrefs[x + y * m_ClientSize.cx]);
+
 			free(colorrefs);
 		}
 #endif	
