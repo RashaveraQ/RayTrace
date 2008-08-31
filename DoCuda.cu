@@ -5,18 +5,62 @@
 
 #define TARGET __device__
 #include "matrix.h"
+#include "info.h"
+#include "BaseNode.h"
+#include "BaseNode4cuda.cpp"
 
-// The dimensions of the thread block
-#define BLOCKDIM_X 16
-#define BLOCKDIM_Y 16
+#ifndef M_PI
+#define M_PI (4.0*atan(1.0))
+#endif
 
-__device__ sp GetColor(void* target, const sp* pK, const sp* pL, int nest)
+__device__ matrix		Matrix;
+__device__ BaseNode*	Root;
+__device__ sp			Light;
+
+// 視線ベクトル(Kt+L)から色を返す。
+TARGET sp BaseNode::GetColor(const sp* K, const sp* L, int nest)
 {
-	sp c(255, 255 * sin(pL->x), 255 * sin(pL->y));
-	return c;
+	Info	info;
+
+	// 再帰数が１０を越える又は、交点が存在しない場合、
+	if (nest > 10 || !GetInfo2(K, L, &info))
+		return sp(127, 127, 127);
+
+	sp k = K->e();
+	sp v = info.Vertical.e();
+
+	// 反射率がある場合、
+	if (info.pNode->m_Reflect > 0) {
+		sp k2 = k - 2 * (v * k) * v;
+		sp l2 = info.Cross + 1E-05 * k2;
+		// 反射した視線ベクトルから色を取得。
+		sp c = Root->GetColor(&k2, &l2, nest + 1);
+		// 反射率で色を混ぜる。
+		info.Material = (info.pNode->m_Reflect * c + (1 - info.pNode->m_Reflect) * sp(info.Material)).getMaterial();
+	}
+
+	// 透過率がある場合、
+	if (info.pNode->m_Through > 0) {
+		double r = info.Refractive;
+		double i = k * v;
+		sp k2 = r * (k -i * v - sqrt(r * r - 1.0 + i * i) * v);
+		sp l2 = info.Cross + 1E-05 * k2;
+		// 屈折した視線ベクトルから色を取得。
+		sp c = Root->GetColor(&k2, &l2, nest + 1);
+		// 透過率で色を混ぜる。
+		info.Material = (info.pNode->m_Through * c + (1 - info.pNode->m_Through) * sp(info.Material)).getMaterial();
+	}
+
+	// 光源より色を補正。
+	double	x = -Light.e() * info.Vertical.e();
+	x = (x > 0.0) ? x : 0.0;
+	double t = 64 + 191 * sin(M_PI / 2 * x);
+	double b = 191 * (1 - cos(M_PI / 2 * x));
+
+	return (t - b) * sp(info.Material) / 255 + sp(b,b,b);
 }
 
-__global__ void kernel(unsigned long* dst, const int imageW, const int imageH, void* root, const matrix* m)
+__global__ void kernel(unsigned long* dst, const int imageW, const int imageH)
 {
     const int px = blockDim.x * blockIdx.x + threadIdx.x;
     const int py = blockDim.y * blockIdx.y + threadIdx.y;
@@ -26,17 +70,17 @@ __global__ void kernel(unsigned long* dst, const int imageW, const int imageH, v
 	sp k(0.01 * rx / 20.0, 0.01 * ry / 20.0, 0.01);
 	sp l(rx, ry, -20);
     
-	k = *m * (k + l) - *m * l;
-	l = *m * l;
+	k = Matrix * (k + l) - Matrix * l;
+	l = Matrix * l;
 
-	sp c = GetColor(root, &k, &l, 0);
+	sp c = Root->GetColor(&k, &l, 0);
 	
 	if (px <= imageW && py <= imageH) {
 		dst[px + py * imageW] = RGB(c.x, c.y, c.z);
 	}
 }
 
-void DoCuda(unsigned long* out, class Node* root, const int imageW, const int imageH, const matrix* m)
+void DoCuda(unsigned long* out, class BaseNode* root, const int imageW, const int imageH, const matrix* m, const sp* light)
 {
 	cudaError_t err;
 
@@ -47,20 +91,23 @@ void DoCuda(unsigned long* out, class Node* root, const int imageW, const int im
 		return;
 	}
 
-	matrix* d_m;
-	if (cudaSuccess != (err = cudaMalloc((void**)&d_m, sizeof(matrix)))) {
-		MessageBox(0, cudaGetErrorString(err), "cudaMalloc:2", MB_OK);
-		return;
-	}	
-    if (cudaSuccess != (err = cudaMemcpy(d_m, m, sizeof(matrix), cudaMemcpyHostToDevice))) {
+    if (cudaSuccess != (err = cudaMemcpy(&Root, &root, sizeof(BaseNode*), cudaMemcpyHostToDevice))) {
 		MessageBox(0, cudaGetErrorString(err), "cudaMemcpy:1", MB_OK);
+	}
+
+    if (cudaSuccess != (err = cudaMemcpy(&Matrix, m, sizeof(matrix), cudaMemcpyHostToDevice))) {
+		MessageBox(0, cudaGetErrorString(err), "cudaMemcpy:1", MB_OK);
+	}
+
+    if (cudaSuccess != (err = cudaMemcpy(&Light, light, sizeof(sp), cudaMemcpyHostToDevice))) {
+		MessageBox(0, cudaGetErrorString(err), "cudaMemcpy:2", MB_OK);
 	}
 	
     dim3 threads(16,16);
     dim3 grid(16,16);
  
 	// execute the kernel
-	kernel<<< grid, threads >>>(d_data, imageW, imageH, root, d_m);
+	kernel<<< grid, threads >>>(d_data, imageW, imageH);
 
     if (cudaSuccess != cudaGetLastError()) {
 		MessageBox(0, cudaGetErrorString(err), "cudaGetLastError", MB_OK);

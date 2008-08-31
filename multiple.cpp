@@ -3,19 +3,20 @@
 
 IMPLEMENT_SERIAL(Multiple, CObject, 1)
 
-BOOL Multiple::IsInside(const sp& L) const
+BOOL Multiple::IsInside(const sp* L)
 {
 	if (!m_Member)
 		return FALSE;
 
 	for (int i = 0; i < m_Member; i++) {
-		if (!m_Node[i]->IsInside(m_Matrix * L))
+		sp l = m_Matrix * (*L);
+		if (!m_Node[i]->IsInside(&l))
 			return FALSE;
 	}
 	return TRUE;
 }
 
-BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info) const
+BOOL Multiple::GetInfo(const sp* K, const sp* L, Info* info)
 {
 	Info	tmp;
 	double	l = -1;
@@ -29,19 +30,21 @@ BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info) const
 	for (i = 0; i < m_Member; i++)
 	{
 		// 視点の先に、交点がない場合。
-		if (!m_Node[i]->GetInfo2(K, L, tmp))
+		if (!m_Node[i]->GetInfo2(K, L, &tmp))
 			return FALSE;
 
 		if (tmp.Distance <= l || !tmp.isEnter)
 			continue;
 
-		info.Cross = tmp.Cross;
+		info->Cross = tmp.Cross;
 
 		for (flag = TRUE, j = 0; j < m_Member; j++) {
 			if (i == j)
 				continue;
 
-			if (!m_Node[j]->IsInside(m_Matrix * info.Cross))
+			sp a = m_Matrix * info->Cross;
+
+			if (!m_Node[j]->IsInside(&a))
 				flag = FALSE;
 		}
 
@@ -54,8 +57,8 @@ BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info) const
 
 	m_Node[n]->GetInfo2(K, L, info);
 
-	if (info.Material.Diffuse.r < 0)
-		info.Material = m_Material;
+	if (info->Material.Diffuse.r < 0)
+		info->Material = m_Material;
 
 	return TRUE;
 }

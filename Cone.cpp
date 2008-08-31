@@ -86,30 +86,29 @@ void Cone::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 	Node::AddGeometry(pd3dDevice, lstGeometry, rtv, m);
 }
 
-BOOL Cone::IsInside(const sp& L) const
+BOOL Cone::IsInside(const sp* L)
 {
-	return (0 <= L.y && L.y <= 1 && sqrt( L.x * L.x + L.z * L.z ) <= L.y);
+	return (0 <= L->y && L->y <= 1 && sqrt( L->x * L->x + L->z * L->z ) <= L->y);
 }
 
-BOOL Cone::GetInfo(const sp& K, const sp& L, Info& info) const
+BOOL Cone::GetInfo(const sp* K, const sp* L, Info* info)
 {
-	if (L.y > 1) {
-
-		if (K.y >= 0)
+	if (L->y > 1) {
+		if (K->y >= 0)
 			return FALSE;
 
-		double t = (1 - L.y) / K.y;
+		double t = (1 - L->y) / K->y;
 
-		sp p = K*t + L;
+		sp p = (*K) * t + (*L);
 
 		if (p.x * p.x + p.z * p.z <= 1) {
-			info.Cross = p;
-			info.Vertical = sp(0,1,0);
-			info.Distance = t * sqrt(K*K);
-			info.isEnter = 1;
-			info.Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
-			info.pNode = this;
-			info.Refractive = m_Refractive;
+			info->Cross = p;
+			info->Vertical = sp(0,1,0);
+			info->Distance = t * sqrt((*K) * (*K));
+			info->isEnter = 1;
+			info->Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
+			info->pNode = this;
+			info->Refractive = m_Refractive;
 
 			return TRUE;
 		}
@@ -117,56 +116,56 @@ BOOL Cone::GetInfo(const sp& K, const sp& L, Info& info) const
 
 	double	a, b, c, d, t, t1, t2;
 
-	c = K.x * L.y - K.y * L.x, c *= c, d = c;
-	c = K.z * L.y - K.y * L.z, c *= c, d += c;
-	c = K.x * L.z - K.z * L.x, c *= c, d -= c;
+	c = K->x * L->y - K->y * L->x, c *= c, d = c;
+	c = K->z * L->y - K->y * L->z, c *= c, d += c;
+	c = K->x * L->z - K->z * L->x, c *= c, d -= c;
 
 	if ( d < 0 )
 		return FALSE;
 
 	d = sqrt( d );
 
-	a = -( K.x * L.x + K.z * L.z - K.y * L.y );
-	b = K.x * K.x + K.z * K.z - K.y * K.y;
+	a = -( K->x * L->x + K->z * L->z - K->y * L->y );
+	b = K->x * K->x + K->z * K->z - K->y * K->y;
 
-	t1 = ( a + d ) / b;
-	t2 = ( a - d ) / b;
+	t1 = (a + d) / b;
+	t2 = (a - d) / b;
 
 	if (fabs(t1) < 1E-10 || fabs(t2) < 1E-10)
 		return FALSE;
 
-	if ( t1 > 0 )
+	if (t1 > 0)
 	{
-		if ( t2 > 0 )
+		if (t2 > 0)
 		{
-			if ( t1 < t2 )
-				t = ( K.y * t1 + L.y > 0 ) ? t1 : t2;
+			if (t1 < t2)
+				t = ( K->y * t1 + L->y > 0 ) ? t1 : t2;
 			else
-				t = ( K.y * t2 + L.y > 0 ) ? t2 : t1;
+				t = ( K->y * t2 + L->y > 0 ) ? t2 : t1;
 		}
 		else
 			t = t1;
 	}
 	else
 	{
-		if ( t2 > 0 )
+		if (t2 > 0)
 			t = t2;
 		else
 			return FALSE;
 	}
 
-	info.isEnter = !IsInside( L );
-	sp p = K * t + L;
-	info.Cross = info.Vertical = p;
+	info->isEnter = !IsInside( L );
+	sp p = (*K) * t + (*L);
+	info->Cross = info->Vertical = p;
 
 	if (p.y < 0 || p.x*p.x + p.z*p.z > 1) 
 		return FALSE;
 
-	info.Vertical.y *= -1;
+	info->Vertical.y *= -1;
 
-	info.Distance = t * sqrt( K * K );
-	info.Material = m_Material;
-	info.pNode = this;
+	info->Distance = t * sqrt((*K) * (*K));
+	info->Material = m_Material;
+	info->pNode = this;
 
 	return TRUE;
 }

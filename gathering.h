@@ -1,7 +1,7 @@
 #ifndef __GATHERING_H
 #define __GATHERING_H
 
-class	Gathering : public Node
+class Gathering : public Node
 {
 protected:
 
@@ -11,8 +11,7 @@ protected:
 public:
 
 	// コンストラクタ
-	Gathering(const CRayTraceDoc* const pDoc, node_type NodeType, const char* const Name)
-		: Node(pDoc, NodeType, Name), m_Member( 0 ) {}
+	Gathering(const CRayTraceDoc* const pDoc, node_type NodeType, const char* const Name);
 	Gathering(const Gathering& other);
 
 	// デストラクタ
@@ -26,6 +25,7 @@ public:
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	BOOL Delete(Node*);	
 	void Serialize(CArchive& ar);
+	void updateDeviceData();
 };
 
 #endif

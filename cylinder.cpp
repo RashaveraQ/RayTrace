@@ -91,49 +91,49 @@ void Cylinder::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeome
 	Node::AddGeometry(pd3dDevice, lstGeometry, rtv, m);
 }
 
-BOOL Cylinder::IsInside(const sp& L) const
+BOOL Cylinder::IsInside(const sp* L)
 {
-	return (-1 <= L.y && L.y <= 1 && sqrt(L.x*L.x+L.z*L.z) <= 1.0);
+	return (-1 <= L->y && L->y <= 1 && sqrt(L->x * L->x + L->z * L->z) <= 1.0);
 }
 
-BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info) const
+BOOL Cylinder::GetInfo(const sp* K, const sp* L, Info* info)
 {
-	if (L.y < -1)
+	if (L->y < -1)
 	{
-		if (K.y <= 0)
+		if (K->y <= 0)
 			return FALSE;
 
-		double t = -(1 + L.y)/K.y;
+		double t = -(1 + L->y) / K->y;
 
-		sp	p = K*t+L;
+		sp	p = (*K) * t + (*L);
 
 		if (p.x * p.x + p.z * p.z <= 1) {
-			info.Cross = p;
-			info.Vertical = sp(0,-1,0);
-			info.Distance = t * sqrt(K*K);
-			info.isEnter = 1;
-			info.Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
-			info.pNode = this;
+			info->Cross = p;
+			info->Vertical = sp(0,-1,0);
+			info->Distance = t * sqrt((*K) * (*K));
+			info->isEnter = 1;
+			info->Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
+			info->pNode = this;
 			return TRUE;
 		}
 	}
 
-	if (L.y > 1)
+	if (L->y > 1)
 	{
-		if (K.y >= 0)
+		if (K->y >= 0)
 			return FALSE;
 
-		double t = (1 - L.y) / K.y;
+		double t = (1 - L->y) / K->y;
 
-		sp	p = K*t+L;
+		sp	p = (*K) * t + (*L);
 
 		if (p.x * p.x + p.z * p.z <= 1) {
-			info.Cross = p;
-			info.Vertical = sp(0,1,0);
-			info.Distance = t * sqrt(K*K);
-			info.isEnter = 1;
-			info.Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
-			info.pNode = this;
+			info->Cross = p;
+			info->Vertical = sp(0,1,0);
+			info->Distance = t * sqrt((*K) * (*K));
+			info->isEnter = 1;
+			info->Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
+			info->pNode = this;
 
 			return TRUE;
 		}
@@ -141,25 +141,25 @@ BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info) const
 
 	double	a, b, c, d, t, t1, t2;
 
-	c = K.x * L.z - K.z * L.x;
+	c = K->x * L->z - K->z * L->x;
 	c *= c;
-	a = K.x * K.x + K.z * K.z;
+	a = K->x * K->x + K->z * K->z;
 	d = a - c;
 
 	if (d < 0)
 		return FALSE;
 
 	d = sqrt(d);
-	b = -(K.x * L.x + K.z * L.z);
+	b = -(K->x * L->x + K->z * L->z);
 
-	t1 = (b + d)/a;
-	t2 = (b - d)/a;
+	t1 = (b + d) / a;
+	t2 = (b - d) / a;
 
-	info.isEnter = 0;
+	info->isEnter = 0;
 	if (t1 > 0) {
 		if (t2 > 0) {
 			t = (t1 < t2) ? t1 : t2;
-			info.isEnter = 1;
+			info->isEnter = 1;
 		} else
 			t = t1;
 	} else {
@@ -169,17 +169,17 @@ BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info) const
 			return FALSE;
 	}
 
-	sp p = K * t + L;
+	sp p = (*K) * t + (*L);
 
 	if (p.y < -1 || 1 < p.y)
 		return FALSE;
 
-	info.isEnter = !IsInside(L);
-	info.Cross = info.Vertical = p;
-	info.Vertical.y = 0;
-	info.Distance = t * sqrt(K * K);
-	info.Material = m_Material;
-	info.pNode = this;
+	info->isEnter = !IsInside(L);
+	info->Cross = info->Vertical = p;
+	info->Vertical.y = 0;
+	info->Distance = t * sqrt((*K) * (*K));
+	info->Material = m_Material;
+	info->pNode = this;
 
 	return TRUE;
 }

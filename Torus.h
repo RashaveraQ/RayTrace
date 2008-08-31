@@ -17,8 +17,8 @@ public:
 	Torus(const Torus& other) : Node(other) ,m_R(other.m_R), m_r(other.m_r) {} 
 
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;
-	BOOL GetInfo(const sp& K, const sp& L, Info& info) const;
-	BOOL IsInside(const sp& L) const;
+	BOOL GetInfo(const sp* K, const sp* L, Info* info);
+	BOOL IsInside(const sp* L);
 	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	const Node*	MakeCopy() const { return new Torus(*this); }

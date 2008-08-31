@@ -7,21 +7,20 @@
 
 //IMPLEMENT_DYNAMIC( Node, CObject ) 
 
-Node::Node(const Node& other) : m_Scale(4,4), m_Rotate(4,4), m_Move(4,4), m_Matrix(4,4)
+Node::Node(const Node& other) : BaseNode(other.m_NodeType, other.m_Name, other.m_Material)
 {
-	m_NodeType = other.m_NodeType;
-	strcpy_s(m_Name, sizeof(m_Name), other.m_Name);
-	m_Material = other.m_Material;
-	m_Scale = other.m_Scale;
-	m_Rotate = other.m_Rotate;
-	m_Move = other.m_Move;
-	m_Matrix = other.m_Matrix;
-	m_Boundary = other.m_Boundary;
-	m_Reflect = other.m_Reflect;
-	m_Through = other.m_Through;
-	m_Refractive = other.m_Refractive;
-	m_TextureFileName = other.m_TextureFileName;
 	MakeMemoryDCfromTextureFileName();
+}
+
+Node::~Node()
+{
+	cudaError_t err;
+
+	if (m_DeviceData) {
+	    if (cudaSuccess != (err = cudaFree(m_DeviceData))) {
+			MessageBox(0, cudaGetErrorString(err), "cudaFree at Node::~Node()", MB_OK);
+		}
+	}
 }
 
 void Node::Serialize(CArchive& ar)
@@ -113,6 +112,8 @@ BOOL Node::EditColor()
 	m_Material.Diffuse.g = m_Material.Ambient.g = (float)(0xff & color >> 8) / 256;
 	m_Material.Diffuse.b = m_Material.Ambient.b = (float)(0xff & color >> 16) / 256;
 
+	updateDeviceData();
+
 	return TRUE;
 }
 
@@ -126,6 +127,8 @@ BOOL Node::EditAfin()
 		return FALSE;
 
 	dlg_matrix.Get(*this);
+
+	updateDeviceData();
 
 	return TRUE;
 }
@@ -141,6 +144,8 @@ BOOL Node::EditMaterial()
 
 	dlg_material.Get(*this);
 	
+	updateDeviceData();
+
 	return TRUE;
 }
 
@@ -153,51 +158,36 @@ BOOL Node::EditTexture()
 		if (dlg_file.DoModal() != IDOK)
 			return FALSE;
 
-		m_TextureFileName = dlg_file.GetPathName();
+		CString str = dlg_file.GetPathName();
 
-		if (MakeMemoryDCfromTextureFileName())
+		free(m_TextureFileName);
+		m_TextureFileName = (char *)malloc(str.GetLength() + 1);
+		memcpy(m_TextureFileName, str, str.GetLength());
+
+		if (MakeMemoryDCfromTextureFileName()) {
+			updateDeviceData();
 			return TRUE;
+		}
 
 		if (MessageBox(NULL, "ビットマップファイルの読み込みに失敗しました。", "テクスチャの選択エラー", MB_RETRYCANCEL|MB_ICONERROR) != IDRETRY)
 			return FALSE;
 	} while (1);
 
-	m_TextureFileName = b;
+	free(m_TextureFileName);
+	m_TextureFileName = (char *)malloc(b.GetLength() + 1);
+	memcpy(m_TextureFileName, b, b.GetLength());
 
 	return FALSE;
-}
-
-BOOL Node::MakeMemoryDCfromTextureFileName()
-{
-	HBITMAP		h;
-	BITMAP		b;
-	CBitmap*	p;
-
-	m_TextureDC.DeleteDC();
-	m_TextureDC.CreateCompatibleDC(NULL);
-
-	if (!(h = (HBITMAP)LoadImage(NULL, m_TextureFileName, IMAGE_BITMAP, 0, 0, LR_DEFAULTSIZE|LR_LOADFROMFILE)))
-		return FALSE;
-
-	(p = CBitmap::FromHandle(h))->GetObject(sizeof(BITMAP), &b);
-
-	m_TextureSize.cx = b.bmWidth;
-	m_TextureSize.cy = b.bmHeight;
-
-	m_TextureDC.SelectObject(p);
-	m_TextureDC.BitBlt(0, 0, m_TextureSize.cx, m_TextureSize.cy, &m_TextureDC, 0, 0, SRCCOPY);
-
-	return TRUE;
 }
 
 sp Node::GetPixel(double x, double y) const
 {
 	COLORREF	c;
 
-	if (m_TextureFileName.IsEmpty())
+	if (!m_TextureFileName)
 		return sp(256 * m_Material.Diffuse.r, 256 * m_Material.Diffuse.g, 256 * m_Material.Diffuse.b);
 
-	c = m_TextureDC.GetPixel((int)(x * m_TextureSize.cx), (int)(y * m_TextureSize.cy));
+	c = ::GetPixel(m_hTextureDC, (int)(x * m_TextureSize.cx), (int)(y * m_TextureSize.cy));
 	
 	if (c == -1)
 		return sp(256 * m_Material.Diffuse.r, 256 * m_Material.Diffuse.g, 256 * m_Material.Diffuse.b);
@@ -206,12 +196,12 @@ sp Node::GetPixel(double x, double y) const
 }
 
 // 視線ベクトル(Kt+L)から色を返す。
-sp Node::GetColor(const sp& K, const sp& L, int nest) const
+sp Node::GetColor2(const sp& K, const sp& L, int nest)
 {
 	Info	info;
 
 	// 再帰数が１０を越える又は、交点が存在しない場合、
-	if (nest > 10 || !GetInfo2(K, L, info))
+	if (nest > 10 || !GetInfo2(&K, &L, &info))
 		return sp(127, 127, 127);
 
 	sp k = K.e();
@@ -221,8 +211,9 @@ sp Node::GetColor(const sp& K, const sp& L, int nest) const
 	if (info.pNode->m_Reflect > 0) {
 		sp k2 = k - 2 * (v * k) * v;
 		sp l2 = info.Cross + 1E-05 * k2;
+		Plus& root = m_pDoc->m_Root;
 		// 反射した視線ベクトルから色を取得。
-		sp c = m_pDoc->m_Root.GetColor(k2, l2, nest + 1);
+		sp c = root.GetColor2(k2, l2, nest + 1);
 		// 反射率で色を混ぜる。
 		info.Material = (info.pNode->m_Reflect * c + (1 - info.pNode->m_Reflect) * sp(info.Material)).getMaterial();
 	}
@@ -235,7 +226,8 @@ sp Node::GetColor(const sp& K, const sp& L, int nest) const
 		//sp k2 = (k + v)/r - v;
 		sp l2 = info.Cross + 1E-05 * k2;
 		// 屈折した視線ベクトルから色を取得。
-		sp c = m_pDoc->m_Root.GetColor(k2, l2, nest + 1);
+		Plus& root = m_pDoc->m_Root;
+		sp c = root.GetColor2(k2, l2, nest + 1);
 		// 透過率で色を混ぜる。
 		info.Material = (info.pNode->m_Through * c + (1 - info.pNode->m_Through) * sp(info.Material)).getMaterial();
 	}
@@ -247,49 +239,6 @@ sp Node::GetColor(const sp& K, const sp& L, int nest) const
 	double b = 191 * (1 - cos(M_PI / 2 * x));
 
 	return (t - b) * sp(info.Material) / 255 + sp(b,b,b);
-}
-
-// 視線ベクトル(Kt+L)と交差する物体の情報infoを返す。
-// 戻り値:true 交差あり,false 交差なし
-BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info) const
-{
-	// START Boundary 
-/*
-	double a = gK * gK;
-	double b = (gL - m_Boundary.Center) * gK;
-	double c = (m_Boundary.Center - gL) * (m_Boundary.Center - gL) - m_Boundary.Radius * m_Boundary.Radius;
-	double bb_ac = b*b-a*c;
-
-	if (bb_ac < 0)
-		return FALSE;
-
-	double t1, t2;
-
-	t1 = (-b+sqrt(bb_ac))/a;
-	t2 = (-b-sqrt(bb_ac))/a;
-
-	if (t1 <= 0 || t2 <= 0)
-		return FALSE;
-	// End Boundary
-*/
-	matrix m = m_Move * m_Rotate * m_Scale;
-	matrix Inv_m = m.Inv();
-
-	sp L2 = Inv_m * L;
-	sp K2 = Inv_m * (K + L) - L2;
-
-	if (!GetInfo(K2, L2, info)) {
-		return FALSE;
-	}
-
-	info.Vertical = m * (info.Vertical + info.Cross) - m * info.Cross;
-	info.Cross = m * info.Cross;
-	info.Distance = (info.Cross - L).abs();
-	info.Refractive = info.pNode->m_Refractive;
-	if (info.isEnter)
-		info.Refractive = 1 / info.Refractive;
-
-	return TRUE;
 }
 
 void Node::Move(eAxis axis, double d)

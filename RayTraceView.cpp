@@ -92,7 +92,7 @@ BOOL CRayTraceView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CRayTraceView::OnDraw(CDC* pDC)
 {
-	void DoCuda(COLORREF* colorrefs, class Node* root, const int imageW, const int imageH, const matrix* m);
+	void DoCuda(COLORREF* colorrefs, class Node* root, const int imageW, const int imageH, const matrix* m, const sp* light);
 
 	switch (m_ViewMode) {
 	case eRayTrace:
@@ -107,7 +107,7 @@ void CRayTraceView::OnDraw(CDC* pDC)
 					colorrefs[x + y * m_ClientSize.cx] = RGB(x % 255, y % 255, 0xee);
 
 			matrix m = m_Viewport.getMatrix().Inv();
-			DoCuda(colorrefs, &GetDocument()->m_Root, m_ClientSize.cx, m_ClientSize.cy, &m);
+			DoCuda(colorrefs, GetDocument()->m_Root.getDeviceData(), m_ClientSize.cx, m_ClientSize.cy, &m, &GetDocument()->m_Light);
 
 			for (int y = 0; y < m_ClientSize.cy; y++)
 				for (int x = 0; x < m_ClientSize.cx; x++)
@@ -293,7 +293,7 @@ void CRayTraceView::OnTimer(UINT nIDEvent)
 		if (m_Job == CONTINUED) {
 			sp k, l;
 			GetVectorFromPoint(k, l, m_NowX, m_NowY);
-			sp	   c  = pDoc->m_Root.GetColor(k, l, NULL);
+			sp	   c  = pDoc->m_Root.GetColor2(k, l, 0);
 			m_MemoryDC.FillSolidRect(CRect(m_NowX, m_NowY, m_NowX+m_NowSize, m_NowY+m_NowSize), RGB(c.x, c.y, c.z));
 			m_Job = Go_ahead(m_NowX, m_NowY, m_NowSize, m_StartX, m_StartY, m_ClientSize, START_SQUARE);
 		}
@@ -376,7 +376,7 @@ void CRayTraceView::OnLButtonDown(UINT nFlags, CPoint point)
 	sp k, l;
 	GetVectorFromPoint(k, l, point.x, point.y);
 
-	if (pDoc->m_Root.GetInfo2(k, l, info)) {
+	if (pDoc->m_Root.GetInfo2(&k, &l, &info)) {
 		m_SelectedNode = (Node*)info.pNode;
 	} else {
 		m_SelectedNode = NULL;
@@ -392,7 +392,7 @@ void CRayTraceView::OnLButtonUp(UINT nFlags, CPoint point)
 	sp k, l;
 	GetVectorFromPoint(k, l, point.x, point.y);
 
-	if (pDoc->m_Root.GetInfo2(k, l, info)) {
+	if (pDoc->m_Root.GetInfo2(&k, &l, &info)) {
 		m_SelectedNode = (Node*)info.pNode;
 	}
 

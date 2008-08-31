@@ -1,14 +1,19 @@
 #include "stdafx.h"
 
-Gathering::Gathering( const Gathering& other ) : Node( other ), m_Member( other.m_Member )
+Gathering::Gathering(const CRayTraceDoc* const pDoc, node_type NodeType, const char* const Name)
+	: Node(pDoc, NodeType, Name), m_Member(0)
 {
-	for ( int i = 0; i < m_Member; i++ )
+}
+
+Gathering::Gathering(const Gathering& other) : Node(other), m_Member(other.m_Member)
+{
+	for (short i = 0; i < m_Member; i++)
 		m_Node[i] = (class Node*)other.m_Node[i]->MakeCopy();
 }
 
 Gathering::~Gathering()
 {
-	for ( short i = 0; i < m_Member; i++ )
+	for (short i = 0; i < m_Member; i++)
 		delete m_Node[i];
 }
 
@@ -112,6 +117,15 @@ BOOL Gathering::AddNode(CTreeCtrl& c, HTREEITEM hitem, Node* pNode)
 {
 	if (m_Member >= 1000)
 		return FALSE;
+	
+	cudaError_t err;
+
+	BaseNode* p = pNode->getDeviceData();
+	if (cudaSuccess != (err = cudaMemcpy(
+			p + sizeof(BaseNode) + sizeof(short) + m_Member * sizeof(BaseNode*),
+			&p, sizeof(BaseNode*), cudaMemcpyHostToDevice))) {
+		MessageBox(0, cudaGetErrorString(err), "cudaMemcpy at Gathering::AddNode()", MB_OK);
+	}
 
 	m_Node[m_Member++] = pNode;
 
@@ -124,8 +138,27 @@ BOOL Gathering::AddNode(CTreeCtrl& c, HTREEITEM hitem, Node* pNode)
 
 void Gathering::SetDocument(const CRayTraceDoc* const pDoc)
 {
-	m_pDoc = (const CRayTraceDoc*)pDoc;
+	m_pDoc = (CRayTraceDoc*)pDoc;
 
 	for (int i = 0; i < m_Member; i++)
 		m_Node[i]->SetDocument(pDoc);
+}
+
+void Gathering::updateDeviceData()
+{
+	cudaError_t err;
+
+	if (m_DeviceData) {
+	    if (cudaSuccess != (err = cudaFree(m_DeviceData))) {
+			MessageBox(0, cudaGetErrorString(err), "cudaFree at Gathering::updateDeviceData()", MB_OK);
+		}
+	}
+
+	if (cudaSuccess != (err = cudaMalloc((void**)&m_DeviceData, sizeof(Gathering)))) {
+		MessageBox(0, cudaGetErrorString(err), "cudaMalloc at Gathering::updateDeviceData()", MB_OK);
+	}
+
+	if (cudaSuccess != (err = cudaMemcpy(m_DeviceData, this, sizeof(Gathering), cudaMemcpyHostToDevice))) {
+		MessageBox(0, cudaGetErrorString(err), "cudaMemcpy at Gathering::updateDeviceData()", MB_OK);
+	}
 }
