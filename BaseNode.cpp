@@ -1,6 +1,6 @@
 TARGET sp BaseNode::GetPixel(double x, double y)
 {
-	COLORREF	c;
+	COLORREF	c = -1;
 	if (!m_TextureFileName)
 		return sp(256 * m_Material.Diffuse.r, 256 * m_Material.Diffuse.g, 256 * m_Material.Diffuse.b);
 /*

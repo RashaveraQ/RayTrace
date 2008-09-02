@@ -90,19 +90,23 @@ void DoCuda(unsigned long* out, class BaseNode* root, const int imageW, const in
     unsigned int mem_size = imageW * imageH * sizeof(unsigned long);
 	if (cudaSuccess != (err = cudaMalloc((void**)&d_data, mem_size))) {
 		MessageBox(0, cudaGetErrorString(err), "cudaMalloc:1", MB_OK);
+		RaiseException(0,0,0,0);
 		return;
 	}
 
     if (cudaSuccess != (err = cudaMemcpy(&Root, &root, sizeof(BaseNode*), cudaMemcpyHostToDevice))) {
 		MessageBox(0, cudaGetErrorString(err), "cudaMemcpy:1", MB_OK);
+		RaiseException(0,0,0,0);
 	}
 
     if (cudaSuccess != (err = cudaMemcpy(&Matrix, m, sizeof(matrix), cudaMemcpyHostToDevice))) {
 		MessageBox(0, cudaGetErrorString(err), "cudaMemcpy:1", MB_OK);
+		RaiseException(0,0,0,0);
 	}
 
     if (cudaSuccess != (err = cudaMemcpy(&Light, light, sizeof(sp), cudaMemcpyHostToDevice))) {
 		MessageBox(0, cudaGetErrorString(err), "cudaMemcpy:2", MB_OK);
+		RaiseException(0,0,0,0);
 	}
 	
     dim3 threads(16,16);
@@ -113,22 +117,26 @@ void DoCuda(unsigned long* out, class BaseNode* root, const int imageW, const in
 
     if (cudaSuccess != cudaGetLastError()) {
 		MessageBox(0, cudaGetErrorString(err), "cudaGetLastError", MB_OK);
+		RaiseException(0,0,0,0);
 		return;
 	}
 	
     if (cudaSuccess != (err = cudaThreadSynchronize())) {
 		MessageBox(0, cudaGetErrorString(err), "cudaThreadSynchronize", MB_OK);
+		RaiseException(0,0,0,0);
     	return;
     }
 
     // copy results from device to host
     if (cudaSuccess != (err = cudaMemcpy(out, d_data, mem_size, cudaMemcpyDeviceToHost))) {
 		MessageBox(0, cudaGetErrorString(err), "cudaMemcpy:2", MB_OK);
+		RaiseException(0,0,0,0);
 	}
 
     // cleanup memory
     if (cudaSuccess != (err = cudaFree(d_data))) {
 		MessageBox(0, cudaGetErrorString(err), "cudaFree", MB_OK);
+		RaiseException(0,0,0,0);
 		return;
 	}
 }

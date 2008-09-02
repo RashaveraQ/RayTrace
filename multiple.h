@@ -14,10 +14,10 @@ public:
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	const Node*	MakeCopy() const { return new Multiple(*this); }
 
-	using BaseMultiple::m_Member;
-	using BaseMultiple::m_Matrix;
-	using BaseMultiple::m_Node;
-	using BaseMultiple::m_Name;
+	using Gathering::m_Member;
+	using Gathering::m_Matrix;
+	using Gathering::m_Node;
+	using Gathering::m_Name;
 };
 
 #endif

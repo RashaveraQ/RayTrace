@@ -9,15 +9,18 @@ void BaseNode::updateDeviceData()
 	if (m_DeviceData) {
 	    if (cudaSuccess != (err = cudaFree(m_DeviceData))) {
 			MessageBox(0, cudaGetErrorString(err), "cudaFree at Node::updateDeviceData()", MB_OK);
+			RaiseException(0,0,0,0);
 		}
 	}
 
 	if (cudaSuccess != (err = cudaMalloc((void**)&m_DeviceData, sizeof(BaseNode)))) {
 		MessageBox(0, cudaGetErrorString(err), "cudaMalloc at Node::updateDeviceData()", MB_OK);
+		RaiseException(0,0,0,0);
 	}
 
 	if (cudaSuccess != (err = cudaMemcpy(m_DeviceData, this, sizeof(BaseNode), cudaMemcpyHostToDevice))) {
 		MessageBox(0, cudaGetErrorString(err), "cudaMemcpy at Node::updateDeviceData()", MB_OK);
+		RaiseException(0,0,0,0);
 	}
 }
 
@@ -36,6 +39,7 @@ BaseNode::~BaseNode()
 	if (m_DeviceData) {
 	    if (cudaSuccess != (err = cudaFree(m_DeviceData))) {
 			MessageBox(0, cudaGetErrorString(err), "cudaFree at BaseNode::~BaseNode()", MB_OK);
+			RaiseException(0,0,0,0);
 		}
 	}
 }

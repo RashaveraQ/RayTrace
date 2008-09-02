@@ -19,7 +19,7 @@ public:
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	const Node*	MakeCopy() const { return new Teapot(*this); }
-	using BaseTeapot::m_Matrix;
+	using Node::m_Matrix;
 	using Node::m_Name;
 };
 

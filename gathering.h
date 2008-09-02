@@ -20,8 +20,10 @@ public:
 	BOOL Delete(Node*);	
 	void Serialize(CArchive& ar);
 	void updateDeviceData();
+
 	using Node::m_Matrix;
 	using Node::m_Name;
+	using Node::m_DeviceData;
 };
 
 #endif

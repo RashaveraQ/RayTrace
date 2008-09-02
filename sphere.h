@@ -19,8 +19,9 @@ public:
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	const Node*	MakeCopy() const { return new Sphere(*this); }
-	using BaseSphere::m_Matrix;
-	using Node::m_Name;
+
+	using BaseNode::m_Matrix;
+	using BaseNode::m_Name;
 };
 
 #endif

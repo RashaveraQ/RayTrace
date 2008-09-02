@@ -127,6 +127,7 @@ BOOL Gathering::AddNode(CTreeCtrl& c, HTREEITEM hitem, Node* pNode)
 			p + sizeof(BaseNode) + sizeof(short) + m_Member * sizeof(BaseNode*),
 			&p, sizeof(BaseNode*), cudaMemcpyHostToDevice))) {
 		MessageBox(0, cudaGetErrorString(err), "cudaMemcpy at Gathering::AddNode()", MB_OK);
+		//RaiseException(0,0,0,0);
 	}
 
 	m_Node[m_Member++] = pNode;
@@ -150,17 +151,17 @@ void Gathering::updateDeviceData()
 {
 	cudaError_t err;
 
-	if (((BaseGathering*)this)->m_DeviceData) {
-	    if (cudaSuccess != (err = cudaFree(((BaseGathering*)this)->m_DeviceData))) {
+	if (m_DeviceData) {
+	    if (cudaSuccess != (err = cudaFree(m_DeviceData))) {
 			MessageBox(0, cudaGetErrorString(err), "cudaFree at Gathering::updateDeviceData()", MB_OK);
 		}
 	}
 
-	if (cudaSuccess != (err = cudaMalloc((void**)&(((BaseGathering*)this)->m_DeviceData), sizeof(Gathering)))) {
+	if (cudaSuccess != (err = cudaMalloc((void**)&m_DeviceData, sizeof(BaseGathering)))) {
 		MessageBox(0, cudaGetErrorString(err), "cudaMalloc at Gathering::updateDeviceData()", MB_OK);
 	}
 
-	if (cudaSuccess != (err = cudaMemcpy(((BaseGathering*)this)->m_DeviceData, this, sizeof(Gathering), cudaMemcpyHostToDevice))) {
+	if (cudaSuccess != (err = cudaMemcpy(m_DeviceData, this, sizeof(BaseGathering), cudaMemcpyHostToDevice))) {
 		MessageBox(0, cudaGetErrorString(err), "cudaMemcpy at Gathering::updateDeviceData()", MB_OK);
 	}
 }
