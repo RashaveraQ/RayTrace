@@ -7,22 +7,12 @@ class Node : public BaseNode, public CObject
 {
 protected:
 	CRayTraceDoc* m_pDoc;
-	virtual void updateDeviceData() {
-		BaseNode::updateDeviceData();
-	}
-
-	TARGET void updateMatrix() {
-		m_Matrix = m_Move * m_Rotate * m_Scale;
-		updateDeviceData();
-	}
-
 public:
-
 	Node(const CRayTraceDoc* pDoc, node_type NodeType, const char* Name, const sp Color = sp(-1,-1,-1))
 		: BaseNode(NodeType, Name, Color)
 	{
 		m_pDoc = (CRayTraceDoc*)pDoc;
-		MakeMemoryDCfromTextureFileName();
+		//MakeMemoryDCfromTextureFileName();
 	}
 	Node(const Node &other);
 
@@ -32,7 +22,7 @@ public:
 	virtual void SetDocument(const CRayTraceDoc* const pDoc) { m_pDoc = (CRayTraceDoc*)pDoc; }
 	sp GetColor2(const sp& K, const sp& L, int nest);
 	sp GetPixel(double x, double y) const;
-	virtual BOOL GetInfo(const sp* K, const sp* L, Info* info) = 0;
+	//virtual BOOL GetInfo(const sp* K, const sp* L, Info* info) = 0;
 	virtual BOOL IsInside(const sp* L) = 0;
 
 	void Move(eAxis axis, double d);

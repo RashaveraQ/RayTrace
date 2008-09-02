@@ -9,18 +9,10 @@
 
 Node::Node(const Node& other) : BaseNode(other.m_NodeType, other.m_Name, other.m_Material)
 {
-	MakeMemoryDCfromTextureFileName();
 }
 
 Node::~Node()
 {
-	cudaError_t err;
-
-	if (m_DeviceData) {
-	    if (cudaSuccess != (err = cudaFree(m_DeviceData))) {
-			MessageBox(0, cudaGetErrorString(err), "cudaFree at Node::~Node()", MB_OK);
-		}
-	}
 }
 
 void Node::Serialize(CArchive& ar)

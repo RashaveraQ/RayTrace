@@ -40,7 +40,6 @@ protected:
 	matrix		m_Pivot;	// マニュピレータの中心点
 	matrix		m_Matrix;
 
-
 	// アトリビュート
 	char*		m_TextureFileName;
 	HDC			m_hTextureDC;		// テクスチャイメージ格納用
@@ -52,6 +51,11 @@ protected:
 		TARGET tagBoundary() : Center(), Radius(1) {}
 	} m_Boundary;	// 境界
 	BaseNode*		m_DeviceData;
+
+	TARGET void updateMatrix() {
+		m_Matrix = m_Move * m_Rotate * m_Scale;
+		updateDeviceData();
+	}
 
 public:
 	double		m_Reflect ;		// 反射率
@@ -65,7 +69,7 @@ public:
 	void updateDeviceData();
 
 	// オペレーション
-	void Set_Name(const char* const str) { memcpy(m_Name, str, 99); }  
+	TARGET void Set_Name(const char* const str) { memcpy(m_Name, str, 99); }  
 	sp GetColor(const sp* K, const sp* L, int nest);
 	BOOL GetInfo2(const sp* K, const sp* L, Info* info);
 	sp GetPixel(double x, double y);
@@ -75,6 +79,96 @@ public:
 	TARGET matrix getMatrix() { return m_Matrix; }
 	TARGET BaseNode* getDeviceData() { return m_DeviceData; }
 	BOOL MakeMemoryDCfromTextureFileName();
+};
+
+class BaseGathering : public BaseNode
+{
+protected:
+	short	m_Member;
+	BaseNode*	m_Node[1000];
+friend class Gathering;
+};
+
+class BaseSphere : public BaseNode
+{
+public:
+	BOOL GetInfo(const sp* K, const sp* L, Info* info);
+friend class Sphere;
+};
+
+class BasePlane : public BaseNode
+{
+public:
+	BOOL GetInfo(const sp* K, const sp* L, Info* info);
+friend class Plane;
+};
+
+class BasePlus : public BaseGathering
+{
+public:
+	BOOL GetInfo(const sp* K, const sp* L, Info* info);
+friend class Plus;
+};
+
+class BaseMinus	: public BaseGathering
+{
+public:
+	BOOL GetInfo(const sp* K, const sp* L, Info* info);
+	int cmp_distance(double a, double b);
+friend class Minus;
+};
+
+class BaseMultiple : public BaseGathering
+{
+public:
+	BOOL GetInfo(const sp* K, const sp* L, Info* info);
+friend class Multiple;
+};
+
+class BaseCone : public BaseNode
+{
+public:
+	BOOL GetInfo(const sp* K, const sp* L, Info* info);
+friend class Cone;
+};
+
+class BaseCylinder : public BaseNode
+{
+public:
+	BOOL GetInfo(const sp* K, const sp* L, Info* info);
+friend class Cylinder;
+};
+
+class BaseTorus : public BaseNode
+{
+protected:
+	double	m_R;
+	double	m_r;
+public:
+	TARGET BaseTorus(double R, double r) : m_R(R), m_r(r) {}
+	BOOL GetInfo(const sp* K, const sp* L, Info* info);
+friend class Torus;
+};
+
+class BasePolygon2 : public BaseNode
+{
+public:
+	BOOL GetInfo(const sp* K, const sp* L, Info* info);
+friend class Polygon2;
+};
+
+class BaseCube : public BaseNode
+{
+public:
+	BOOL GetInfo(const sp* K, const sp* L, Info* info);
+friend class Cube;
+};
+
+class BaseTeapot : public BaseNode
+{
+public:
+	BOOL GetInfo(const sp* K, const sp* L, Info* info);
+friend class Teapot;
 };
 
 #endif	// __BASENODE_H

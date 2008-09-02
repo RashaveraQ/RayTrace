@@ -6,12 +6,14 @@
 #define TARGET __device__
 #include "matrix.h"
 #include "info.h"
-#include "BaseNode.h"
-#include "BaseNode4cuda.cpp"
 
 #ifndef M_PI
 #define M_PI (4.0*atan(1.0))
 #endif
+
+#include "BaseNode.h"
+#include "BaseNode.cpp"
+
 
 __device__ matrix		Matrix;
 __device__ BaseNode*	Root;

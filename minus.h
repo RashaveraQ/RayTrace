@@ -1,7 +1,7 @@
 #ifndef __MINUS_H
 #define __MINUS_H
 
-class Minus : public Gathering
+class Minus : public BaseMinus, public Gathering
 {
 protected:
 	DECLARE_SERIAL(Minus)
@@ -12,12 +12,14 @@ public:
 	Minus(const Minus& other) : Gathering(other) {}
 
 	BOOL AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target);
-	BOOL GetInfo(const sp* K, const sp* L, Info* info);
 	BOOL IsInside(const sp* L);
-	int cmp_distance(double,double) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	const Node*	MakeCopy() const { return new Minus(*this); }
 	BOOL GetBoundary(sp *pCenter, double *pRadius) const;
+
+	using Gathering::m_Member;
+	using BaseMinus::m_Matrix;
+	using Gathering::m_Node;
 };
 
 #endif

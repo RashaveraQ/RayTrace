@@ -39,47 +39,6 @@ BOOL Polygon2::IsInside(const sp* L)
 	return r;
 }
 
-BOOL Polygon2::GetInfo(const sp* K, const sp* L, Info* info)
-{
-	double	a = (*K) * (*K);
-	double	b = (*K) * (*L);
-	double	c = (*L) * (*L) - 1.0; 
-
-	double	bb_ac = b*b - a*c;
-
-	if (bb_ac < 0)
-		return FALSE;
-
-	double	t;
-	double	t1 = (-b + sqrt(bb_ac)) / a;
-	double	t2 = (-b - sqrt(bb_ac)) / a;
-
-	info->isEnter = 0;
-	if (t1 > 0)
-	{
-		if (t2 > 0)
-		{
-			info->isEnter = 1;
-			t = (t1 < t2) ? t1 : t2;
-		}
-		else
-			t = t1;
-	}
-	else
-	{
-		if (t2 > 0)
-			t = t2;
-		else
-			return FALSE;
-	}
-
-	info->Cross = info->Vertical = (*K) * t + (*L);
-	info->Distance = t * sqrt((*K) * (*K));
-	info->Material = m_Material;
-	info->pNode = this;
-	
-	return TRUE;
-}
 
 void Polygon2::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 {

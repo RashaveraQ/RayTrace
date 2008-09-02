@@ -531,12 +531,18 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 	d.y = m_AltStart.y - point.y;
 	m_AltStart = point;
 
-	Node* p = m_SelectedNode ? m_SelectedNode : &m_Viewport;
+	Node* p;
+	if (m_SelectedNode) {
+		p = (Node*)m_SelectedNode;
+	} else {
+		p = reinterpret_cast<Node*>(&m_Viewport);
+	}
+
 	eAxis axis;
 	eType type;
 		
 	if (m_Alt) {
-		p = &m_Viewport;
+		p = reinterpret_cast<Node*>(&m_Viewport);
 		axis = eNONE;
 		switch (nFlags) {
 		case MK_LBUTTON: type = eROTATE; break;
@@ -545,7 +551,7 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 		default: return;
 		}
 	} else if (m_SelectedNode && (nFlags == MK_LBUTTON || nFlags == MK_MBUTTON)) {
-		p = m_SelectedNode;
+		p = (Node*)m_SelectedNode;
 		axis = m_Manipulator.Axis;
 		type = m_Manipulator.Type;
 	} else {

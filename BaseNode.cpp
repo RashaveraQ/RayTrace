@@ -1,71 +1,143 @@
-#include "stdafx.h"
-#include "RayTrace.h"
-#include "BaseNode.h"
-
-void BaseNode::updateDeviceData()
+TARGET sp BaseNode::GetPixel(double x, double y)
 {
-	cudaError_t err;
+	COLORREF	c;
+	if (!m_TextureFileName)
+		return sp(256 * m_Material.Diffuse.r, 256 * m_Material.Diffuse.g, 256 * m_Material.Diffuse.b);
+/*
+	c = m_TextureDC.GetPixel((int)(x * m_TextureSize.cx), (int)(y * m_TextureSize.cy));
+*/
+	if (c == -1)
+		return sp(256 * m_Material.Diffuse.r, 256 * m_Material.Diffuse.g, 256 * m_Material.Diffuse.b);
 
-	if (m_DeviceData) {
-	    if (cudaSuccess != (err = cudaFree(m_DeviceData))) {
-			MessageBox(0, cudaGetErrorString(err), "cudaFree at Node::updateDeviceData()", MB_OK);
-		}
-	}
-
-	if (cudaSuccess != (err = cudaMalloc((void**)&m_DeviceData, sizeof(BaseNode)))) {
-		MessageBox(0, cudaGetErrorString(err), "cudaMalloc at Node::updateDeviceData()", MB_OK);
-	}
-
-	if (cudaSuccess != (err = cudaMemcpy(m_DeviceData, this, sizeof(BaseNode), cudaMemcpyHostToDevice))) {
-		MessageBox(0, cudaGetErrorString(err), "cudaMemcpy at Node::updateDeviceData()", MB_OK);
-	}
+	return sp(GetRValue(c),GetGValue(c),GetBValue(c));
 }
 
-BaseNode::BaseNode(node_type NodeType, const char* const Name, const sp Color)
-	: m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1), m_DeviceData(0), m_TextureFileName(0)
-{
-	Set_Name(Name);
-	m_Material = Color.getMaterial();
-	updateDeviceData();
-}
+#include "GetInfo.cpp"
 
-BaseNode::~BaseNode()
+TARGET BOOL BaseNode::IsInside(const sp* L)
 {
-	cudaError_t err;
-
-	if (m_DeviceData) {
-	    if (cudaSuccess != (err = cudaFree(m_DeviceData))) {
-			MessageBox(0, cudaGetErrorString(err), "cudaFree at Node::~Node()", MB_OK);
-		}
+	BOOL ans;
+	switch (m_NodeType) {
+	case SPHERE:
+		ans = ((BaseSphere*)this)->IsInside(L);
+		break;
+	case PLANE:
+		ans = ((BasePlane*)this)->IsInside(L);
+		break;
+	case PLUS:
+		ans = ((BasePlus*)this)->IsInside(L);
+		break;
+	case MINUS:
+		ans = ((BaseMinus*)this)->IsInside(L);
+		break;
+	case MULTIPLE:
+		ans = ((BaseMultiple*)this)->IsInside(L);
+		break;
+	case CONE:
+		ans = ((BaseCone*)this)->IsInside(L);
+		break;
+	case CYLINDER:
+		ans = ((BaseCylinder*)this)->IsInside(L);
+		break;
+	case TORUS:
+		ans = ((BaseTorus*)this)->IsInside(L);
+		break;
+	case POLYGON:
+		ans = ((BasePolygon2*)this)->IsInside(L);
+		break;
+	case CUBE:
+		ans = ((BaseCube*)this)->IsInside(L);
+		break;
+	case TEAPOT:
+		ans = ((BaseTeapot*)this)->IsInside(L);
+		break;
 	}
+	return ans;
 }
 
-BOOL BaseNode::MakeMemoryDCfromTextureFileName()
+TARGET BOOL BaseNode::GetInfo(const sp* K, const sp* L, Info* info)
 {
-	HBITMAP		h;
-	BITMAP		b;
-	class CBitmap*	p;
+	BOOL ans;
+	switch (m_NodeType) {
+	case SPHERE:
+		ans = ((BaseSphere*)this)->GetInfo(K,L,info);
+		break;
+	case PLANE:
+		ans = ((BasePlane*)this)->GetInfo(K,L,info);
+		break;
+	case PLUS:
+		ans = ((BasePlus*)this)->GetInfo(K,L,info);
+		break;
+	case MINUS:
+		ans = ((BaseMinus*)this)->GetInfo(K,L,info);
+		break;
+	case MULTIPLE:
+		ans = ((BaseMultiple*)this)->GetInfo(K,L,info);
+		break;
+	case CONE:
+		ans = ((BaseCone*)this)->GetInfo(K,L,info);
+		break;
+	case CYLINDER:
+		ans = ((BaseCylinder*)this)->GetInfo(K,L,info);
+		break;
+	case TORUS:
+		ans = ((BaseTorus*)this)->GetInfo(K,L,info);
+		break;
+	case POLYGON:
+		ans = ((BasePolygon2*)this)->GetInfo(K,L,info);
+		break;
+	case CUBE:
+		ans = ((BaseCube*)this)->GetInfo(K,L,info);
+		break;
+	case TEAPOT:
+		ans = ((BaseTeapot*)this)->GetInfo(K,L,info);
+		break;
+	}
+	return ans;
+}
 
-	CDC	dc;
-	dc.Attach(m_hTextureDC);
-	dc.DeleteDC();
-	dc.CreateCompatibleDC(NULL);
+// 視線ベクトル(Kt+L)と交差する物体の情報infoを返す。
+// 戻り値:true 交差あり,false 交差なし
+TARGET BOOL BaseNode::GetInfo2(const sp* K, const sp* L, Info* info)
+{
+	// START Boundary 
+/*
+	double a = gK * gK;
+	double b = (gL - m_Boundary.Center) * gK;
+	double c = (m_Boundary.Center - gL) * (m_Boundary.Center - gL) - m_Boundary.Radius * m_Boundary.Radius;
+	double bb_ac = b*b-a*c;
 
-	if (!(h = (HBITMAP)LoadImage(NULL, m_TextureFileName, IMAGE_BITMAP, 0, 0, LR_DEFAULTSIZE|LR_LOADFROMFILE)))
+	if (bb_ac < 0)
 		return FALSE;
 
-	(p = CBitmap::FromHandle(h))->GetObject(sizeof(BITMAP), &b);
+	double t1, t2;
 
-	m_TextureSize.cx = b.bmWidth;
-	m_TextureSize.cy = b.bmHeight;
+	t1 = (-b+sqrt(bb_ac))/a;
+	t2 = (-b-sqrt(bb_ac))/a;
 
-	dc.SelectObject(p);
-	dc.BitBlt(0, 0, m_TextureSize.cx, m_TextureSize.cy, &dc, 0, 0, SRCCOPY);
+	if (t1 <= 0 || t2 <= 0)
+		return FALSE;
+	// End Boundary
+*/
+	matrix m = m_Move * m_Rotate * m_Scale;
+	matrix Inv_m = m.Inv();
 
-	m_hTextureDC = dc.Detach();
+	sp L2 = Inv_m * (*L);
+	sp K2 = Inv_m * ((*K) + (*L)) - L2;
+
+	if (!GetInfo(&K2, &L2, info)) {
+		return FALSE;
+	}
+
+	info->Vertical = m * (info->Vertical + info->Cross) - m * info->Cross;
+	info->Cross = m * info->Cross;
+	info->Distance = (info->Cross - (*L)).abs();
+	info->Refractive = info->pNode->m_Refractive;
+	if (info->isEnter)
+		info->Refractive = 1 / info->Refractive;
 
 	return TRUE;
 }
 
-#include "BaseNode4cuda.cpp"
+
 

@@ -5,10 +5,10 @@ IMPLEMENT_SERIAL(Cylinder, CObject, 1)
 void Cylinder::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
 {
 	const CSize& size = raytraceview.m_ClientSize;
-	const Node* pNode = raytraceview.m_SelectedNode;
+	const BaseNode* pNode = raytraceview.m_SelectedNode;
 
 	matrix m = Matrix * m_Matrix;
-	pDC->SelectStockObject((pNode == this) ? WHITE_PEN : BLACK_PEN);
+	pDC->SelectStockObject((pNode == (BaseCylinder*)this) ? WHITE_PEN : BLACK_PEN);
 
 #define COUNT	100
 
@@ -94,94 +94,6 @@ void Cylinder::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeome
 BOOL Cylinder::IsInside(const sp* L)
 {
 	return (-1 <= L->y && L->y <= 1 && sqrt(L->x * L->x + L->z * L->z) <= 1.0);
-}
-
-BOOL Cylinder::GetInfo(const sp* K, const sp* L, Info* info)
-{
-	if (L->y < -1)
-	{
-		if (K->y <= 0)
-			return FALSE;
-
-		double t = -(1 + L->y) / K->y;
-
-		sp	p = (*K) * t + (*L);
-
-		if (p.x * p.x + p.z * p.z <= 1) {
-			info->Cross = p;
-			info->Vertical = sp(0,-1,0);
-			info->Distance = t * sqrt((*K) * (*K));
-			info->isEnter = 1;
-			info->Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
-			info->pNode = this;
-			return TRUE;
-		}
-	}
-
-	if (L->y > 1)
-	{
-		if (K->y >= 0)
-			return FALSE;
-
-		double t = (1 - L->y) / K->y;
-
-		sp	p = (*K) * t + (*L);
-
-		if (p.x * p.x + p.z * p.z <= 1) {
-			info->Cross = p;
-			info->Vertical = sp(0,1,0);
-			info->Distance = t * sqrt((*K) * (*K));
-			info->isEnter = 1;
-			info->Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
-			info->pNode = this;
-
-			return TRUE;
-		}
-	}
-
-	double	a, b, c, d, t, t1, t2;
-
-	c = K->x * L->z - K->z * L->x;
-	c *= c;
-	a = K->x * K->x + K->z * K->z;
-	d = a - c;
-
-	if (d < 0)
-		return FALSE;
-
-	d = sqrt(d);
-	b = -(K->x * L->x + K->z * L->z);
-
-	t1 = (b + d) / a;
-	t2 = (b - d) / a;
-
-	info->isEnter = 0;
-	if (t1 > 0) {
-		if (t2 > 0) {
-			t = (t1 < t2) ? t1 : t2;
-			info->isEnter = 1;
-		} else
-			t = t1;
-	} else {
-		if (t2 > 0)
-			t = t2;
-		else
-			return FALSE;
-	}
-
-	sp p = (*K) * t + (*L);
-
-	if (p.y < -1 || 1 < p.y)
-		return FALSE;
-
-	info->isEnter = !IsInside(L);
-	info->Cross = info->Vertical = p;
-	info->Vertical.y = 0;
-	info->Distance = t * sqrt((*K) * (*K));
-	info->Material = m_Material;
-	info->pNode = this;
-
-	return TRUE;
 }
 
 void Cylinder::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)

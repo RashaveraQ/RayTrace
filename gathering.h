@@ -1,15 +1,9 @@
 #ifndef __GATHERING_H
 #define __GATHERING_H
 
-class Gathering : public Node
+class Gathering : public BaseGathering, public Node
 {
-protected:
-
-	short	m_Member;
-	Node*	m_Node[1000];
-
 public:
-
 	// コンストラクタ
 	Gathering(const CRayTraceDoc* const pDoc, node_type NodeType, const char* const Name);
 	Gathering(const Gathering& other);
@@ -26,6 +20,8 @@ public:
 	BOOL Delete(Node*);	
 	void Serialize(CArchive& ar);
 	void updateDeviceData();
+	using Node::m_Matrix;
+	using Node::m_Name;
 };
 
 #endif
