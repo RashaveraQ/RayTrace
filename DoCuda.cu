@@ -3,7 +3,7 @@
 #include <d3dx9.h>
 #include <atltypes.h>
 
-#define TARGET __device__
+#define TARGET __device__ __noinline__
 #include "matrix.h"
 #include "info.h"
 
@@ -14,18 +14,20 @@
 #include "BaseNode.h"
 #include "BaseNode.cpp"
 
-
 __device__ matrix		Matrix;
 __device__ BaseNode*	Root;
 __device__ sp			Light;
 
 // 視線ベクトル(Kt+L)から色を返す。
-TARGET sp BaseNode::GetColor(const sp* K, const sp* L, int nest)
+__noinline__ TARGET sp BaseNode::GetColor(const sp* K, const sp* L, int nest)
 {
 	Info	info;
 
+	BOOL	ans;
+	GETINFO2(ans, this, K, L, info);
+
 	// 再帰数が１０を越える又は、交点が存在しない場合、
-	if (nest > 10 || !GetInfo2(K, L, &info))
+	if (nest > 10 || !ans)
 		return sp(127, 127, 127);
 
 	sp k = K->e();

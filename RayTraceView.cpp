@@ -376,7 +376,10 @@ void CRayTraceView::OnLButtonDown(UINT nFlags, CPoint point)
 	sp k, l;
 	GetVectorFromPoint(k, l, point.x, point.y);
 
-	if (pDoc->m_Root.GetInfo2(&k, &l, &info)) {
+	BOOL ans;
+	GETINFO2(ans, &pDoc->m_Root, &k, &l, info);
+	if (ans) {
+//	if (pDoc->m_Root.GetInfo2(&k, &l, &info)) {
 		m_SelectedNode = (Node*)info.pNode;
 	} else {
 		m_SelectedNode = NULL;
@@ -392,7 +395,10 @@ void CRayTraceView::OnLButtonUp(UINT nFlags, CPoint point)
 	sp k, l;
 	GetVectorFromPoint(k, l, point.x, point.y);
 
-	if (pDoc->m_Root.GetInfo2(&k, &l, &info)) {
+	BOOL ans;
+	GETINFO2(ans, &pDoc->m_Root, &k, &l, info);
+	if (ans) {
+//	if (pDoc->m_Root.GetInfo2(&k, &l, &info)) {
 		m_SelectedNode = (Node*)info.pNode;
 	}
 

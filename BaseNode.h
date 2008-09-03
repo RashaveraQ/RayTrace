@@ -1,6 +1,30 @@
 #ifndef __BASENODE_H
 #define __BASENODE_H
 
+// 視線ベクトル(Kt+L)と交差する物体の情報infoを返す。
+// 戻り値:true 交差あり,false 交差なし
+#define GETINFO2(ans,p,K,L,info)	do {										\
+	matrix m = (p)->m_Move * (p)->m_Rotate * (p)->m_Scale;						\
+	matrix Inv_m = m.Inv();														\
+																				\
+	sp L2 = Inv_m * (*(L));														\
+	sp K2 = Inv_m * ((*(K)) + (*(L))) - L2;										\
+																				\
+	if (!(p)->GetInfo(&K2, &L2, &(info))) {											\
+		(ans) = FALSE;															\
+		break;																	\
+	}																			\
+																				\
+	(info).Vertical = m * ((info).Vertical + (info).Cross) - m * (info).Cross;	\
+	(info).Cross = m * (info).Cross;											\
+	(info).Distance = ((info).Cross - (*(L))).abs();							\
+	(info).Refractive = (info).pNode->m_Refractive;								\
+	if ((info).isEnter)															\
+		(info).Refractive = 1 / (info).Refractive;								\
+																				\
+	(ans) = TRUE;																\
+} while(0);
+
 enum node_type 
 {
 	SPHERE = 1, PLANE, PLUS, MINUS, MULTIPLE, CONE, CYLINDER, TORUS, POLYGON, CUBE, TEAPOT
@@ -33,10 +57,11 @@ protected:
 	node_type	m_NodeType;
 	char		m_Name[99];	// 名前
 	D3DMATERIAL9 m_Material;
-
+public:
 	matrix		m_Scale;	// スケール変換
 	matrix		m_Rotate;	// 回転
 	matrix		m_Move;		// 平行移動
+protected:
 	matrix		m_Pivot;	// マニュピレータの中心点
 	matrix		m_Matrix;
 
@@ -51,12 +76,6 @@ protected:
 		TARGET tagBoundary() : Center(), Radius(1) {}
 	} m_Boundary;	// 境界
 	BaseNode*		m_DeviceData;
-
-	TARGET void updateMatrix() {
-		m_Matrix = m_Move * m_Rotate * m_Scale;
-		updateDeviceData();
-	}
-
 public:
 	double		m_Reflect ;		// 反射率
 	double		m_Through ;  	// 透過率
@@ -66,12 +85,10 @@ public:
 	BaseNode(node_type NodeType, const char* const Name, const sp Color);
 	~BaseNode();
 
-	void updateDeviceData();
-
 	// オペレーション
 	TARGET void Set_Name(const char* const str) { memcpy(m_Name, str, 99); }  
 	sp GetColor(const sp* K, const sp* L, int nest);
-	BOOL GetInfo2(const sp* K, const sp* L, Info* info);
+	//BOOL GetInfo2(const sp* K, const sp* L, Info* info);
 	sp GetPixel(double x, double y);
 	BOOL GetInfo(const sp* K, const sp* L, Info* info);
 	BOOL IsInside(const sp* L);

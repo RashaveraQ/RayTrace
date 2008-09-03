@@ -15,10 +15,12 @@ public:
 	const Node*	MakeCopy() const { return new Plus(*this); }
 	
 	using BasePlus::m_Rotate;
+	using BasePlus::m_Move;
+	using BasePlus::m_Scale;
 	using Gathering::m_Matrix;
 	using Gathering::m_Name;
 	using BasePlus::getMatrix;
-	using BasePlus::GetInfo2;
+	using BasePlus::GetInfo;
 	using Gathering::m_Node;
 	using Gathering::m_Member;
 };

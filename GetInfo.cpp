@@ -65,14 +65,15 @@ TARGET BOOL BasePlane::GetInfo(const sp* K, const sp* L, Info* info)
 TARGET BOOL BasePlus::GetInfo(const sp* K, const sp* L, Info* info)
 {
 	Info	tmp;
-	int		n;
 	double	l = -1;
 
 	for (int i = 0; i < m_Member; i++) {
-		if (m_Node[i]->GetInfo2(K, L, &tmp)) {
+//		if (m_Node[i]->GetInfo2(K, L, &tmp)) {
+		BOOL ans;
+		GETINFO2(ans, m_Node[i], K, L, tmp);
+		if (ans) {
 			if (l == -1 || tmp.Distance < l) {
 				l = tmp.Distance;
-				n = i;
 				*info = tmp;
 			}
 		}
@@ -111,11 +112,31 @@ TARGET BOOL BaseMinus::GetInfo(const sp* K, const sp* L, Info* info)
 
 	BOOL	b;
 
-	if (!(m_Member >= 1 && m_Node[0]->GetInfo2(K, &l, &l_info)))
+	BOOL ans;
+	GETINFO2(ans, m_Node[0], K, &l, l_info);
+
+//	if (!(m_Member >= 1 && m_Node[0]->GetInfo2(K, &l, &l_info)))
+	if (!(m_Member >= 1 && ans))
 		return FALSE;
+
 	do {
-		left  = (m_Member >= 1) ? m_Node[0]->GetInfo2(K, &l, &l_info) : 0;
-		right = (m_Member >= 2) ? m_Node[1]->GetInfo2(K, &l, &r_info) : 0;
+//		left  = (m_Member >= 1) ? m_Node[0]->GetInfo2(K, &l, &l_info) : 0;
+//		right = (m_Member >= 2) ? m_Node[1]->GetInfo2(K, &l, &r_info) : 0;
+
+		if (m_Member >= 1) {
+			GETINFO2(ans, m_Node[0], K, &l, l_info);
+			left = ans;
+		} else {
+			left = 0;
+		}
+
+		if (m_Member >= 2) {
+			GETINFO2(ans, m_Node[1], K, &l, r_info);
+			right = ans;
+		} else {
+			right = 0;
+		}
+
 		
 		if (left == 0 && right == 0)
 			return FALSE;
@@ -149,6 +170,7 @@ TARGET BOOL BaseMultiple::GetInfo(const sp* K, const sp* L, Info* info)
 	double	l = -1;
 	int		i, j, n = -1;
 	BOOL	flag;
+	BOOL	ans;
 
 	if (!m_Member)
 		return FALSE;
@@ -157,7 +179,9 @@ TARGET BOOL BaseMultiple::GetInfo(const sp* K, const sp* L, Info* info)
 	for (i = 0; i < m_Member; i++)
 	{
 		// 視点の先に、交点がない場合。
-		if (!m_Node[i]->GetInfo2(K, L, &tmp))
+//		if (!m_Node[i]->GetInfo2(K, L, &tmp))
+		GETINFO2(ans, m_Node[i], K, L, tmp);
+		if (!ans)
 			return FALSE;
 
 		if (tmp.Distance <= l || !tmp.isEnter)
@@ -182,7 +206,8 @@ TARGET BOOL BaseMultiple::GetInfo(const sp* K, const sp* L, Info* info)
 	if (n < 0)
 		return FALSE;
 
-	m_Node[n]->GetInfo2(K, L, info);
+	//m_Node[n]->GetInfo2(K, L, info);
+	GETINFO2(ans, m_Node[n], K, L, *info);
 
 	if (info->Material.Diffuse.r < 0)
 		info->Material = m_Material;
@@ -357,6 +382,8 @@ TARGET BOOL BaseCylinder::GetInfo(const sp* K, const sp* L, Info* info)
 	return TRUE;
 }
 
+//#include "Solve_Polynomial.cpp"
+
 TARGET BOOL BaseTorus::GetInfo(const sp* K, const sp* L, Info* info)
 {
 	int Solve_Polynomial(int d, double *k, double min, double max, double *r);
@@ -375,7 +402,7 @@ TARGET BOOL BaseTorus::GetInfo(const sp* K, const sp* L, Info* info)
 	k[1] = 2 * b * c - 8 * R2 * (K->x * L->x + K->y * L->y);
 	k[0] = c * c - 4 * R2 * (L->x * L->x + L->y * L->y);
 
-	n = Solve_Polynomial(4, k, 0.0, 2000, r);
+//	n = Solve_Polynomial(4, k, 0.0, 2000, r);
 
 	if (n == 0)
 		return FALSE;

@@ -13,6 +13,7 @@ public:
 	{
 		m_pDoc = (CRayTraceDoc*)pDoc;
 		//MakeMemoryDCfromTextureFileName();
+		updateDeviceData();
 	}
 	Node(const Node &other);
 
@@ -45,6 +46,8 @@ public:
 	virtual const Node*		MakeCopy() const = 0;
 	virtual	BOOL Delete( Node* ) { return FALSE; }
 	virtual	void Serialize(CArchive& ar);
+	virtual void updateDeviceData();
+	void updateMatrix();
 
 	// インプリメンテーション
 	friend CDlgMatrix;

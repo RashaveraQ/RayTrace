@@ -13,8 +13,7 @@ struct Info
 	sp				Vertical;	// 法線ベクトル
 	const BaseNode*	pNode;		// 
 	double	Refractive;			// 屈折率
-	Info()
-	{
+	TARGET Info() {
 		pNode = NULL;
 	}
 };

@@ -2,34 +2,12 @@
 #include "RayTrace.h"
 #include "BaseNode.h"
 
-void BaseNode::updateDeviceData()
-{
-	cudaError_t err;
-
-	if (m_DeviceData) {
-	    if (cudaSuccess != (err = cudaFree(m_DeviceData))) {
-			MessageBox(0, cudaGetErrorString(err), "cudaFree at Node::updateDeviceData()", MB_OK);
-			RaiseException(0,0,0,0);
-		}
-	}
-
-	if (cudaSuccess != (err = cudaMalloc((void**)&m_DeviceData, sizeof(BaseNode)))) {
-		MessageBox(0, cudaGetErrorString(err), "cudaMalloc at Node::updateDeviceData()", MB_OK);
-		RaiseException(0,0,0,0);
-	}
-
-	if (cudaSuccess != (err = cudaMemcpy(m_DeviceData, this, sizeof(BaseNode), cudaMemcpyHostToDevice))) {
-		MessageBox(0, cudaGetErrorString(err), "cudaMemcpy at Node::updateDeviceData()", MB_OK);
-		RaiseException(0,0,0,0);
-	}
-}
 
 BaseNode::BaseNode(node_type NodeType, const char* const Name, const sp Color)
 	: m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1), m_DeviceData(0), m_TextureFileName(0)
 {
 	Set_Name(Name);
 	m_Material = Color.getMaterial();
-	updateDeviceData();
 }
 
 BaseNode::~BaseNode()
