@@ -4,14 +4,39 @@
 
 IMPLEMENT_SERIAL(Plus, CObject, 1)
 
-BOOL Plus::IsInside(const sp* L)
+BOOL Plus::IsInside( const sp& L ) const
 {
 	for (int i = 0; i < m_Member; i++) {
-		sp l = m_Matrix * (*L);
-		if (m_Node[i]->IsInside(&l))
+		if (m_Node[i]->IsInside(m_Matrix * L))
 			return TRUE;
 	}
+
 	return FALSE;
+}
+
+BOOL Plus::GetInfo(const sp& K, const sp& L, Info& info) const
+{
+	Info	tmp;
+	int		n;
+	double	l = -1;
+
+	for (int i = 0; i < m_Member; i++) {
+		if (m_Node[i]->GetInfo2(K, L, tmp)) {
+			if (l == -1 || tmp.Distance < l) {
+				l = tmp.Distance;
+				n = i;
+				info = tmp;
+			}
+		}
+	}
+
+	if (l < 0)
+		return FALSE;
+
+	if (info.Material.Diffuse.r < 0)
+		info.Material = m_Material;
+
+	return TRUE;
 }
 
 void Plus::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)

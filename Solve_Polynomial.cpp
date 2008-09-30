@@ -1,14 +1,10 @@
-//#include "stdafx.h"
-#ifndef TARGET
-#define TARGET
-#endif	// TARGET
-
+#include "stdafx.h"
 #include <stdlib.h>
 #include <math.h>
 
 #define ENOUGH_SMALL 0.00001
 
-TARGET static double func(int d, double *k, double x)
+static double func(int d, double *k, double x)
 {
 	int		i;
 	double	ans = 0;
@@ -18,7 +14,7 @@ TARGET static double func(int d, double *k, double x)
 	return ans;
 }
 
-TARGET static int compare( const void *arg1, const void *arg2 )
+static int compare( const void *arg1, const void *arg2 )
 {
 	double *p1, *p2;
 
@@ -30,7 +26,7 @@ TARGET static int compare( const void *arg1, const void *arg2 )
 	else return -1;
 }
 
-TARGET static double walk(int d, double *k, double min, double max)
+static double walk(int d, double *k, double min, double max)
 {
 	double a, b, f, g, x, y;
 
@@ -76,7 +72,7 @@ TARGET static double walk(int d, double *k, double min, double max)
 	return x;
 }
 
-TARGET int Solve_Polynomial(int d, double *k, double min, double max, double *r)
+int Solve_Polynomial(int d, double *k, double min, double max, double *r)
 {
 	int		i, j, N, ans;
 	double	D;

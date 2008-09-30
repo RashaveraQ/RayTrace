@@ -61,6 +61,10 @@ CRayTraceView::CRayTraceView()
 {
 	m_StartX = m_StartY = m_NowX = m_NowY = 0;
 	m_NowSize = START_SQUARE;
+	m_View.left   = -10;
+	m_View.right  = 10;
+	m_View.top    = -10;
+	m_View.bottom = 10;
 	m_ViewMode = eD3DFlatShading; //eWireFrame;
 	m_Alt = FALSE;
 	m_AltStart.x = m_AltStart.y = 0;
@@ -92,30 +96,8 @@ BOOL CRayTraceView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CRayTraceView::OnDraw(CDC* pDC)
 {
-	void DoCuda(COLORREF* colorrefs, class Node* root, const int imageW, const int imageH, const matrix* m, const sp* light);
-
 	switch (m_ViewMode) {
 	case eRayTrace:
-#if 0	// CUDA対応が完成したら有効にする。
-		{
-			// 色配列のメモリ領域確保(サイズが変化した時に確保すべき
-			size_t size = m_ClientSize.cx * m_ClientSize.cy * sizeof(COLORREF);
-			COLORREF* colorrefs = (COLORREF*)malloc(size);
-
-			for (int y = 0; y < m_ClientSize.cy; y++)
-				for (int x = 0; x < m_ClientSize.cx; x++)
-					colorrefs[x + y * m_ClientSize.cx] = RGB(x % 255, y % 255, 0xee);
-
-			matrix m = m_Viewport.getMatrix().Inv();
-			DoCuda(colorrefs, GetDocument()->m_Root.getDeviceData(), m_ClientSize.cx, m_ClientSize.cy, &m, &GetDocument()->m_Light);
-
-			for (int y = 0; y < m_ClientSize.cy; y++)
-				for (int x = 0; x < m_ClientSize.cx; x++)
-					m_MemoryDC.SetPixel(x, y, colorrefs[x + y * m_ClientSize.cx]);
-
-			free(colorrefs);
-		}
-#endif	
 		pDC->BitBlt(0, 0, m_ClientSize.cx, m_ClientSize.cy, &m_MemoryDC, 0, 0, SRCCOPY);
 		break;
 	case eWireFrame:
@@ -274,10 +256,10 @@ int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	
 void CRayTraceView::GetVectorFromPoint(sp& k, sp& l, int px, int py)
 {
-	double rx = 20.0 * px / m_ClientSize.cx - 10.0;
-	double ry = 20.0 * py / m_ClientSize.cx - 10.0;
+	double rx = (m_View.right - m_View.left) * px / m_ClientSize.cx + m_View.left;
+	double ry = (m_View.bottom - m_View.top) * py / m_ClientSize.cx + m_View.top;
 
-	k = sp(0.01 * rx / 20.0, 0.01 * ry / 20.0, 0.01);
+	k = sp(0.01 * rx / (m_View.right - m_View.left), 0.01 * ry / (m_View.bottom - m_View.top), 0.01);
 	l = sp(rx, ry, -20);
 
 	matrix m = m_Viewport.getMatrix().Inv();
@@ -293,7 +275,7 @@ void CRayTraceView::OnTimer(UINT nIDEvent)
 		if (m_Job == CONTINUED) {
 			sp k, l;
 			GetVectorFromPoint(k, l, m_NowX, m_NowY);
-			sp	   c  = pDoc->m_Root.GetColor2(k, l, 0);
+			sp	   c  = pDoc->m_Root.GetColor(k, l, NULL);
 			m_MemoryDC.FillSolidRect(CRect(m_NowX, m_NowY, m_NowX+m_NowSize, m_NowY+m_NowSize), RGB(c.x, c.y, c.z));
 			m_Job = Go_ahead(m_NowX, m_NowY, m_NowSize, m_StartX, m_StartY, m_ClientSize, START_SQUARE);
 		}
@@ -376,10 +358,7 @@ void CRayTraceView::OnLButtonDown(UINT nFlags, CPoint point)
 	sp k, l;
 	GetVectorFromPoint(k, l, point.x, point.y);
 
-	BOOL ans;
-	GETINFO2(ans, &pDoc->m_Root, &k, &l, info);
-	if (ans) {
-//	if (pDoc->m_Root.GetInfo2(&k, &l, &info)) {
+	if (pDoc->m_Root.GetInfo2(k, l, info)) {
 		m_SelectedNode = (Node*)info.pNode;
 	} else {
 		m_SelectedNode = NULL;
@@ -395,10 +374,7 @@ void CRayTraceView::OnLButtonUp(UINT nFlags, CPoint point)
 	sp k, l;
 	GetVectorFromPoint(k, l, point.x, point.y);
 
-	BOOL ans;
-	GETINFO2(ans, &pDoc->m_Root, &k, &l, info);
-	if (ans) {
-//	if (pDoc->m_Root.GetInfo2(&k, &l, &info)) {
+	if (pDoc->m_Root.GetInfo2(k, l, info)) {
 		m_SelectedNode = (Node*)info.pNode;
 	}
 
@@ -537,18 +513,12 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 	d.y = m_AltStart.y - point.y;
 	m_AltStart = point;
 
-	Node* p;
-	if (m_SelectedNode) {
-		p = (Node*)m_SelectedNode;
-	} else {
-		p = reinterpret_cast<Node*>(&m_Viewport);
-	}
-
+	Node* p = m_SelectedNode ? m_SelectedNode : &m_Viewport;
 	eAxis axis;
 	eType type;
 		
 	if (m_Alt) {
-		p = reinterpret_cast<Node*>(&m_Viewport);
+		p = &m_Viewport;
 		axis = eNONE;
 		switch (nFlags) {
 		case MK_LBUTTON: type = eROTATE; break;
@@ -557,7 +527,7 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 		default: return;
 		}
 	} else if (m_SelectedNode && (nFlags == MK_LBUTTON || nFlags == MK_MBUTTON)) {
-		p = (Node*)m_SelectedNode;
+		p = m_SelectedNode;
 		axis = m_Manipulator.Axis;
 		type = m_Manipulator.Type;
 	} else {

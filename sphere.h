@@ -5,7 +5,7 @@ class	Node;
 struct	sp;
 struct	matrix;
 
-class Sphere : public BaseSphere, public Node
+class	Sphere : public	Node
 {
 protected:
 	DECLARE_SERIAL(Sphere)
@@ -14,14 +14,12 @@ public:
 	Sphere(const CRayTraceDoc* const pDoc = 0, const char* const Name = "Sphere", const sp Color = sp(255,255,255));
 	Sphere(const Sphere& other) : Node(other) {}
 
-	BOOL IsInside(const sp* L);
+	BOOL GetInfo(const struct sp& K, const sp& L, Info& info) const;
+	BOOL IsInside(const sp& L) const;
 	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	const Node*	MakeCopy() const { return new Sphere(*this); }
-
-	using BaseNode::m_Matrix;
-	using BaseNode::m_Name;
 };
 
 #endif

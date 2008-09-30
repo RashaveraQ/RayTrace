@@ -2,7 +2,7 @@
 #define __INFO_H
 
 struct	sp;
-class	BaseNode;
+class	Node;
 
 struct Info
 {
@@ -11,9 +11,10 @@ struct Info
 	double			Distance;	// 交点までの距離
 	sp				Cross;		// 交点座標
 	sp				Vertical;	// 法線ベクトル
-	const BaseNode*	pNode;		// 
+	const Node *	pNode;		// 
 	double	Refractive;			// 屈折率
-	TARGET Info() {
+	Info()
+	{
 		pNode = NULL;
 	}
 };
