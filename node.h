@@ -1,10 +1,6 @@
 #ifndef __NODE_H
 #define __NODE_H
 
-enum node_type 
-{
-	SPHERE = 1, PLANE, PLUS, MINUS, MULTIPLE, CONE, CYLINDER, TORUS, POLYGON, CUBE, TEAPOT
-};
 
 enum eType { eSELECT, eMOVE, eROTATE, eSCALE, ePIVOT_MOVE };
 enum eAxis { eNONE, eX, eY, eZ };
@@ -107,6 +103,8 @@ public:
 	virtual	void Serialize(CArchive& ar);
 
 	matrix getMatrix() { return m_Matrix; }
+
+	virtual Task* MakeTask() { return new Task(); }
 
 	// インプリメンテーション
 	friend CDlgMatrix;

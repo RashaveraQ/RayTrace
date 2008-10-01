@@ -52,6 +52,7 @@ void CRayTraceDoc::InitDocument()
 {
 	m_Root.SetDocument( this );
 	m_Light = sp( 1,1,1 );
+	d_pTask = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -100,4 +101,25 @@ BOOL CRayTraceDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	InitDocument();
 	
 	return TRUE;
+}
+
+void CRayTraceDoc::UpdateAllViews(CView* pSender, LPARAM lHint, CObject* pHint)
+{
+	// É^ÉXÉNÇÃèâä˙âª
+	Task t;
+	Task *devPtr = d_pTask;
+	while (devPtr) {
+		cudaMemcpy(&t, devPtr, sizeof(Task), cudaMemcpyDeviceToHost);
+		Task n;
+		cudaMemcpy(&n, t.next, sizeof(Task), cudaMemcpyDeviceToHost);
+		cudaFree(devPtr);
+		devPtr = n.next;
+	}
+
+	Task *p = m_Root.MakeTask();
+	cudaMalloc((void**)&d_pTask, sizeof(Task));
+	cudaMemcpy(d_pTask, p, sizeof(Task), cudaMemcpyHostToDevice);
+	delete p;
+
+	CDocument::UpdateAllViews(pSender,lHint,pHint);
 }

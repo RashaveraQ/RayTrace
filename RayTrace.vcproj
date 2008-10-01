@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3d9.lib d3dx9.lib winmm.lib dxerr9.lib"
+				AdditionalDependencies="d3d9.lib d3dx9.lib winmm.lib dxerr9.lib cudart.lib"
 				OutputFile=".\Release/RayTrace.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -168,7 +168,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3d9.lib d3dx9.lib winmm.lib dxerr9.lib"
+				AdditionalDependencies="d3d9.lib d3dx9.lib winmm.lib dxerr9.lib cudart.lib"
 				OutputFile=".\Debug/RayTrace.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -1163,5 +1163,9 @@
 		</File>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="RayTrace.rc"
+		/>
 	</Globals>
 </VisualStudioProject>

@@ -14,6 +14,7 @@ public:
 	BOOL IsInside(const sp& L) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	const Node*	MakeCopy() const { return new Plus(*this); }
+	Task* MakeTask();
 };
 
 #endif
