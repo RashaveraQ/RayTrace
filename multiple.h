@@ -3,7 +3,7 @@
 
 class	Multiple : public Gathering
 {
-	node_type getNodeType() { return MULTIPLE; }
+	node_type getNodeType() const { return MULTIPLE; }
 protected:
 	DECLARE_SERIAL(Multiple)
 public:

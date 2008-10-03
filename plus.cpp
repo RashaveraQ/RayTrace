@@ -46,31 +46,6 @@ void Plus::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 	Gathering::InsertItem(c, hitem, hInsertAfter);
 }
 
-Task* Plus::MakeTask()
-{
-	Task *ans = Node::MakeTask();
-
-	return ans;
-/*
-	Task	t;
-
-	t.task_kind = 1;
-	t.Matrix = m_Matrix;
-
-	// 変換タスクを追加
-	cudaMalloc(ppTask, sizeof(Task));
-	cudaMemcpy(*ppTask, &t, sizeof(Task), cudaMemcpyHostToDevice);
-
-	Task* p = *ppTask;
-
-	for (int i = 0; i < m_Member; i++) {
-		t.next = m_Node[i]->MakeTask(&p);
-		cudaMemcpy(*ppTask, &t, sizeof(Task), cudaMemcpyHostToDevice);
-	}
-
-*/	// 逆変換タスクを追加
-}
-
 /*
 Node*	Plus::MakeCopy()
 {

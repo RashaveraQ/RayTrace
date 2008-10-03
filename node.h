@@ -25,7 +25,6 @@ struct fsize
 
 class	Node : public CObject
 {
-	virtual node_type getNodeType() = 0;
 protected:
 	// アトリビュート
 	node_type	m_NodeType;
@@ -56,6 +55,7 @@ protected:
 	void updateMatrix() {
 		m_Matrix = m_Move * m_Rotate * m_Scale;
 	}
+	virtual node_type getNodeType() const = 0;
 
 public:
 
@@ -105,7 +105,7 @@ public:
 
 	matrix getMatrix() { return m_Matrix; }
 
-	virtual Task* MakeTask();
+	virtual Task* MakeTask(const matrix&, const Task* = 0) const;
 
 	// インプリメンテーション
 	friend CDlgMatrix;

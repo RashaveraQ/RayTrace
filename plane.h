@@ -6,7 +6,7 @@ struct	matrix;
 
 class	Plane : public	Node
 {
-	node_type getNodeType() { return PLANE; }
+	node_type getNodeType() const { return PLANE; }
 protected:
 	DECLARE_SERIAL(Plane)
 

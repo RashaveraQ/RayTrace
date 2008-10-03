@@ -7,7 +7,7 @@ struct matrix;
 
 class Sphere : public Node
 {
-	node_type getNodeType() { return SPHERE; }
+	node_type getNodeType() const { return SPHERE; }
 protected:
 	DECLARE_SERIAL(Sphere)
 public:

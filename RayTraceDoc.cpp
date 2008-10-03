@@ -107,16 +107,16 @@ void CRayTraceDoc::UpdateAllViews(CView* pSender, LPARAM lHint, CObject* pHint)
 {
 	// É^ÉXÉNÇÃèâä˙âª
 	Task t;
-	Task *devPtr = d_pTask;
+	const Task* devPtr = d_pTask;
 	while (devPtr) {
 		cudaMemcpy(&t, devPtr, sizeof(Task), cudaMemcpyDeviceToHost);
 		Task n;
 		cudaMemcpy(&n, t.next, sizeof(Task), cudaMemcpyDeviceToHost);
-		cudaFree(devPtr);
+		cudaFree((void*)devPtr);
 		devPtr = n.next;
 	}
 
-	d_pTask = m_Root.MakeTask();
+	d_pTask = m_Root.MakeTask(matrix());
 
 	CDocument::UpdateAllViews(pSender,lHint,pHint);
 }

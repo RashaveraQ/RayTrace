@@ -6,7 +6,7 @@ struct matrix;
 
 class Torus : public Node
 {
-	node_type getNodeType() { return TORUS; }
+	node_type getNodeType() const { return TORUS; }
 protected:
 	DECLARE_SERIAL(Torus)
 private:

@@ -8,7 +8,7 @@ struct	Info;
 
 class	Cylinder : public Node
 {
-	node_type getNodeType() { return CYLINDER; }
+	node_type getNodeType() const { return CYLINDER; }
 protected:
 	DECLARE_SERIAL(Cylinder)
 public:

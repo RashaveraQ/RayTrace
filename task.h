@@ -4,7 +4,7 @@
 #include "matrix.h"
 
 struct Task {
-	Task*		next;
+	const Task*	next;
 	node_type	type;
 	matrix		Matrix;
 	union {

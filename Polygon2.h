@@ -6,7 +6,7 @@ struct	matrix;
 
 class Polygon2 : public Node
 {
-	node_type getNodeType() { return POLYGON; }
+	node_type getNodeType() const { return POLYGON; }
 	int	m_N;
 	sp	*m_P;
 protected:

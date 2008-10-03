@@ -129,3 +129,23 @@ void Gathering::SetDocument(const CRayTraceDoc* const pDoc)
 	for (int i = 0; i < m_Member; i++)
 		m_Node[i]->SetDocument(pDoc);
 }
+
+Task* Gathering::MakeTask(const matrix& m1, const Task* next) const
+{
+	matrix m2 = m1 * m_Matrix;
+
+	Task  task;
+	task.type = getNodeType();
+	task.Matrix = m2.Inv();
+	task.next = next;
+	task.gathering.member = m_Member;
+
+	Task* p;
+	cudaMalloc((void**)&p, sizeof(Task));
+	cudaMemcpy((void*)p, (const void*)&task, sizeof(Task), cudaMemcpyHostToDevice);
+
+	for (int i = 0; i < m_Member; i++) {
+		p = m_Node[i]->MakeTask(m2, p);
+	}
+	return p;
+}
