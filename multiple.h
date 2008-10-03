@@ -3,6 +3,7 @@
 
 class	Multiple : public Gathering
 {
+	node_type getNodeType() { return MULTIPLE; }
 protected:
 	DECLARE_SERIAL(Multiple)
 public:

@@ -48,6 +48,9 @@ void Plus::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 
 Task* Plus::MakeTask()
 {
+	Task *ans = Node::MakeTask();
+
+	return ans;
 /*
 	Task	t;
 
@@ -66,7 +69,6 @@ Task* Plus::MakeTask()
 	}
 
 */	// ‹t•ÏŠ·ƒ^ƒXƒN‚ğ’Ç‰Á
-	return new Task();
 }
 
 /*

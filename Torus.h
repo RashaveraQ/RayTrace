@@ -1,11 +1,12 @@
 #ifndef __TORUS_H
 #define __TORUS_H
 
-class	Node;
-struct	matrix;
+class Node;
+struct matrix;
 
-class	Torus : public	Node
+class Torus : public Node
 {
+	node_type getNodeType() { return TORUS; }
 protected:
 	DECLARE_SERIAL(Torus)
 private:

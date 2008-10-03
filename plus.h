@@ -3,6 +3,7 @@
 
 class	Plus : public Gathering
 {
+	node_type getNodeType() { return PLUS; }
 protected:
 	DECLARE_SERIAL(Plus)
 public:

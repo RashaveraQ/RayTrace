@@ -3,6 +3,7 @@
 
 class	Minus : public Gathering
 {
+	node_type getNodeType() { return MINUS; }
 protected:
 	DECLARE_SERIAL(Minus)
 

@@ -7,6 +7,7 @@ struct	matrix;
 
 class	Teapot : public	Node
 {
+	node_type getNodeType() { return TEAPOT; }
 protected:
 	DECLARE_SERIAL(Teapot)
 public:

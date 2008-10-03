@@ -8,6 +8,7 @@ struct	Info;
 
 class	Cone : public	Node
 {
+	node_type getNodeType() { return CONE; }
 protected:
 	DECLARE_SERIAL(Cone)
 public:

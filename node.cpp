@@ -629,3 +629,17 @@ void Node::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) const
 	pDC->SelectObject(old_pen);
 }
 
+Task* Node::MakeTask()
+{
+	Task  task;
+
+	task.type = getNodeType();
+	task.Matrix = m_Matrix;
+	task.next = 0;
+
+	Task* ans;
+	cudaMalloc((void**)&ans, sizeof(Task));
+	cudaMemcpy((void*)ans, (const void*)&task, sizeof(Task), cudaMemcpyHostToDevice);
+
+	return ans;
+}

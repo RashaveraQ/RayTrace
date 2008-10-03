@@ -6,6 +6,7 @@ struct	matrix;
 
 class	Plane : public	Node
 {
+	node_type getNodeType() { return PLANE; }
 protected:
 	DECLARE_SERIAL(Plane)
 

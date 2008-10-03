@@ -116,10 +116,7 @@ void CRayTraceDoc::UpdateAllViews(CView* pSender, LPARAM lHint, CObject* pHint)
 		devPtr = n.next;
 	}
 
-	Task *p = m_Root.MakeTask();
-	cudaMalloc((void**)&d_pTask, sizeof(Task));
-	cudaMemcpy(d_pTask, p, sizeof(Task), cudaMemcpyHostToDevice);
-	delete p;
+	d_pTask = m_Root.MakeTask();
 
 	CDocument::UpdateAllViews(pSender,lHint,pHint);
 }

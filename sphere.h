@@ -1,12 +1,13 @@
 #ifndef __SPHERE_H
 #define __SPHERE_H
 
-class	Node;
-struct	sp;
-struct	matrix;
+class Node;
+struct sp;
+struct matrix;
 
-class	Sphere : public	Node
+class Sphere : public Node
 {
+	node_type getNodeType() { return SPHERE; }
 protected:
 	DECLARE_SERIAL(Sphere)
 public:
