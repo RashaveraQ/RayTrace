@@ -52,6 +52,8 @@ BEGIN_MESSAGE_MAP(CRayTraceView, CView)
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, CView::OnFilePrintPreview)
+	ON_COMMAND(ID_VIEW_RAYTRACE_BY_CUDA, &CRayTraceView::OnViewRaytraceByCuda)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_RAYTRACE_BY_CUDA, &CRayTraceView::OnUpdateViewRaytraceByCuda)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -462,6 +464,12 @@ void CRayTraceView::OnViewRaytrace()
 	Invalidate();
 }
 
+void CRayTraceView::OnViewRaytraceByCuda()
+{
+	m_ViewMode = eRayTraceByCuda;
+	Invalidate();
+}
+
 void CRayTraceView::OnViewWireframe()
 {
 	m_ViewMode = eWireFrame;
@@ -490,6 +498,7 @@ void CRayTraceView::OnViewGouraudshading()
 }
 
 void CRayTraceView::OnUpdateViewRaytrace(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eRayTrace); }
+void CRayTraceView::OnUpdateViewRaytraceByCuda(CCmdUI *pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eRayTraceByCuda); }
 void CRayTraceView::OnUpdateViewWireframe(CCmdUI* pCmdUI) {	pCmdUI->SetCheck(m_ViewMode == eWireFrame); }
 void CRayTraceView::OnUpdateViewD3dwireframe(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eD3DWireFrame); }
 void CRayTraceView::OnUpdateViewFlatshading(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eD3DFlatShading); }
@@ -637,3 +646,4 @@ void CRayTraceView::OnDestroy()
 		m_pd3dDevice = NULL;
 	}
 }
+

@@ -36,6 +36,7 @@ public:
 		eD3DGouraudShading,
 		eRayTrace,
 		eWireFrame,
+		eRayTraceByCuda,
 	} m_ViewMode;
 
 private:
@@ -111,6 +112,10 @@ protected:
 
 friend Node;
 friend class CScnTreeView;
+public:
+	afx_msg void OnViewRaytraceByCuda();
+public:
+	afx_msg void OnUpdateViewRaytraceByCuda(CCmdUI *pCmdUI);
 };
 
 #ifndef _DEBUG  // RayTraceView.cpp ファイルがデバッグ環境の時使用されます。

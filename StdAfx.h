@@ -48,6 +48,7 @@
 
 #include <mmsystem.h>
 #include <d3dx9.h>
+#include <cutil.h>
 #include <cuda_runtime.h>
 
 struct CUSTOMVERTEX

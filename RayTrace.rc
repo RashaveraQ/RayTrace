@@ -195,7 +195,8 @@ BEGIN
         MENUITEM "ｽﾃｰﾀｽ ﾊﾞｰ(&S)",               ID_VIEW_STATUS_BAR
         MENUITEM SEPARATOR
         MENUITEM "旧ﾜｲﾔｰﾌﾚｰﾑ(&O)",               ID_VIEW_WIREFRAME, CHECKED
-        MENUITEM "ﾚｲﾄﾚｰｽ(&R)",                  ID_ADD_CORN
+        MENUITEM "ﾚｲﾄﾚｰｽ(&R)",                  ID_VIEW_RAYTRACE
+        MENUITEM "ﾚｲﾄﾚｰｽ by CUDA(&C)",          ID_VIEW_RAYTRACE_BY_CUDA
         MENUITEM "ﾜｲﾔｰﾌﾚｰﾑ(&W)",                ID_VIEW_D3DWIREFRAME
         MENUITEM "ﾌﾗｯﾄｼｪｰﾃﾞｨﾝｸﾞ(&F)",           ID_VIEW_FLATSHADING
         MENUITEM "ｸﾞﾛｰｼｪｰﾃﾞｨﾝｸﾞ(&G)",           ID_VIEW_GOURAUDSHADING
@@ -622,7 +623,7 @@ BEGIN
     ID_ADD_POLYGON          "カーソル位置にポリゴンを追加します。"
     ID_TEXTURE              "テクスチャを選択します。"
     IDC_VIEW_WIREFRAME      "ワイヤーフレーム表示に切り換えます。"
-    ID_ADD_CORN             "レイトレース表示に切り換えます。"
+    ID_VIEW_RAYTRACE        "レイトレース表示に切り換えます。"
     ID_VIEW_WIREFRAME       "ワイヤーフレーム表示に切り換えます。"
     ID_ADD_CYLINDER         "カーソル位置に円柱を追加します。"
     ID_ADD_CONE             "カーソル位置に円錐を追加します。"
@@ -631,6 +632,7 @@ BEGIN
     ID_VIEW_FLATSHADING     "Direct3D によるﾌﾗｯﾄｼｪｰﾃﾞｨﾝｸﾞ表示に切り換えます。"
     ID_VIEW_GOURAUDSHADING  "Direct3D によるｸﾞﾛｰｼｪｰﾃﾞｨﾝｸﾞ表示に切り換えます。"
     ID_ADD_TEAPOT           "カーソル位置にティーポットを追加します。"
+    ID_VIEW_RAYTRACE_BY_CUDA "CUDAを使用したレイトレース表示に切り換えます。"
 END
 
 #endif    // Japanese resources

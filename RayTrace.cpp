@@ -54,7 +54,9 @@ CRayTraceApp theApp;
 
 BOOL CRayTraceApp::InitInstance()
 {
-    // Create the D3D object, which is needed to create the D3DDevice.
+	CUT_DEVICE_INIT(0,0);
+
+	// Create the D3D object, which is needed to create the D3DDevice.
     if (NULL == (g_pD3D = Direct3DCreate9(D3D_SDK_VERSION)))
         return FALSE;
 
