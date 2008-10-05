@@ -99,6 +99,26 @@ BOOL CRayTraceView::PreCreateWindow(CREATESTRUCT& cs)
 void CRayTraceView::OnDraw(CDC* pDC)
 {
 	switch (m_ViewMode) {
+	case eRayTraceByCuda:
+	{
+		void DoCuda(COLORREF* colorrefs, Task* task, const int imageW, const int imageH, const matrix* m, const sp* light);
+		// 色配列のメモリ領域確保(サイズが変化した時に確保すべき
+		size_t size = m_ClientSize.cx * m_ClientSize.cy * sizeof(COLORREF);
+		COLORREF* colorrefs = (COLORREF*)malloc(size);
+
+		for (int y = 0; y < m_ClientSize.cy; y++)
+			for (int x = 0; x < m_ClientSize.cx; x++)
+				colorrefs[x + y * m_ClientSize.cx] = RGB(x % 255, y % 255, 0xee);
+
+		matrix m = m_Viewport.getMatrix().Inv();
+		DoCuda(colorrefs, GetDocument()->d_pTask, m_ClientSize.cx, m_ClientSize.cy, &m, &GetDocument()->m_Light);
+
+		for (int y = 0; y < m_ClientSize.cy; y++)
+			for (int x = 0; x < m_ClientSize.cx; x++)
+				m_MemoryDC.SetPixel(x, y, colorrefs[x + y * m_ClientSize.cx]);
+
+		free(colorrefs);
+	}
 	case eRayTrace:
 		pDC->BitBlt(0, 0, m_ClientSize.cx, m_ClientSize.cy, &m_MemoryDC, 0, 0, SRCCOPY);
 		break;
@@ -271,6 +291,9 @@ void CRayTraceView::GetVectorFromPoint(sp& k, sp& l, int px, int py)
 
 void CRayTraceView::OnTimer(UINT nIDEvent) 
 {
+	if (m_ViewMode != eRayTrace)
+		return;
+
 	CRayTraceDoc	*pDoc = GetDocument();
 
 	for (int i = 0; i < 1000; i ++) {
@@ -282,8 +305,7 @@ void CRayTraceView::OnTimer(UINT nIDEvent)
 			m_Job = Go_ahead(m_NowX, m_NowY, m_NowSize, m_StartX, m_StartY, m_ClientSize, START_SQUARE);
 		}
 	}
-	if (m_ViewMode == eRayTrace)
-		Invalidate(FALSE);
+	Invalidate(FALSE);
 }
 
 int CRayTraceView::Go_ahead(int& X, int& Y, int& S, int& X0, int& Y0, CSize& cs, int MAX )

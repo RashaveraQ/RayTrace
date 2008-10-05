@@ -3,6 +3,11 @@
 
 #include "matrix.h"
 
+enum node_type 
+{
+	SPHERE = 1, PLANE, PLUS, MINUS, MULTIPLE, CONE, CYLINDER, TORUS, POLYGON, CUBE, TEAPOT
+};
+
 struct Task {
 	const Task*	next;
 	node_type	type;
@@ -12,7 +17,7 @@ struct Task {
 			int member;
 		} gathering;
 	};
-	Task() : next(0) {}
+	TARGET Task() : next(0) {}
 };
 
 #endif // __TASK_H__
