@@ -67,7 +67,7 @@ CRayTraceView::CRayTraceView()
 	m_View.right  = 10;
 	m_View.top    = -10;
 	m_View.bottom = 10;
-	m_ViewMode = eD3DFlatShading; //eWireFrame;
+	m_ViewMode = eRayTraceByCuda; //eD3DFlatShading; //eWireFrame;
 	m_Alt = FALSE;
 	m_AltStart.x = m_AltStart.y = 0;
 	m_SelectedNode = NULL;
