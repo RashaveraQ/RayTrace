@@ -109,10 +109,10 @@ void CRayTraceDoc::UpdateAllViews(CView* pSender, LPARAM lHint, CObject* pHint)
 	Task t;
 	const Task* devPtr = d_pTask;
 	while (devPtr) {
-		cudaMemcpy(&t, devPtr, sizeof(Task), cudaMemcpyDeviceToHost);
+		CUDA_SAFE_CALL(cudaMemcpy(&t, devPtr, sizeof(Task), cudaMemcpyDeviceToHost));
 		Task n;
-		cudaMemcpy(&n, t.next, sizeof(Task), cudaMemcpyDeviceToHost);
-		cudaFree((void*)devPtr);
+		CUDA_SAFE_CALL(cudaMemcpy(&n, t.next, sizeof(Task), cudaMemcpyDeviceToHost));
+		CUDA_SAFE_CALL(cudaFree((void*)devPtr));
 		devPtr = n.next;
 	}
 

@@ -141,8 +141,8 @@ Task* Gathering::MakeTask(const matrix& m1, const Task* next) const
 	task.gathering.member = m_Member;
 
 	Task* p;
-	cudaMalloc((void**)&p, sizeof(Task));
-	cudaMemcpy((void*)p, (const void*)&task, sizeof(Task), cudaMemcpyHostToDevice);
+	CUDA_SAFE_CALL(cudaMalloc((void**)&p, sizeof(Task)));
+	CUDA_SAFE_CALL(cudaMemcpy((void*)p, (const void*)&task, sizeof(Task), cudaMemcpyHostToDevice));
 
 	for (int i = 0; i < m_Member; i++) {
 		p = m_Node[i]->MakeTask(m2, p);
