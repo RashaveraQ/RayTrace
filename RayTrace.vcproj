@@ -51,9 +51,9 @@
 				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Release/RayTrace.pch"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile=""
 				AssemblerListingLocation=".\Release/"
 				ObjectFile="$(IntDir)\"
 				ProgramDataBaseFileName="$(IntDir)\vc80.pdb"
@@ -74,7 +74,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="d3d9.lib d3dx9.lib winmm.lib dxerr9.lib cudart.lib cutil32.lib"
-				OutputFile=".\Release/RayTrace.exe"
+				OutputFile="$(ConfigurationName)/RayTrace.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				SubSystem="2"
@@ -169,7 +169,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="d3d9.lib d3dx9.lib winmm.lib dxerr9.lib cudart.lib cutil32D.lib"
-				OutputFile=".\Debug/RayTrace.exe"
+				OutputFile="$(ConfigurationName)/RayTrace.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
@@ -540,6 +540,15 @@
 			<File
 				RelativePath=".\DoCuda.cu"
 				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="$(CUDA_BIN_PATH)\nvcc.exe -ccbin &quot;$(VCInstallDir)bin&quot; -c -DWIN32 -D_CONSOLE -D_MBCS -Xcompiler /EHsc,/W3,/nologo,/Wp64,/O2,/Zi,/MT -I&quot;$(CUDA_INC_PATH)&quot; -I&quot;../../NVIDIA CUDA SDK/common/inc&quot; -o $(ConfigurationName)\DoCuda.obj DoCuda.cu"
+						Outputs="$(ConfigurationName)\DoCuda.obj"
+					/>
+				</FileConfiguration>
 				<FileConfiguration
 					Name="Debug|Win32"
 					>
