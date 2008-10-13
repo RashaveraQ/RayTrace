@@ -56,6 +56,9 @@ BOOL CRayTraceApp::InitInstance()
 {
 	CUT_DEVICE_INIT(0,0);
 
+    cudaDeviceProp deviceProp;
+    CUDA_SAFE_CALL_NO_SYNC(cudaGetDeviceProperties(&deviceProp, 0));
+
 	// Create the D3D object, which is needed to create the D3DDevice.
     if (NULL == (g_pD3D = Direct3DCreate9(D3D_SDK_VERSION)))
         return FALSE;

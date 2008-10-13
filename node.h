@@ -105,7 +105,7 @@ public:
 
 	matrix getMatrix() { return m_Matrix; }
 
-	virtual Task* MakeTask(const matrix&, const Task* = 0) const;
+	virtual void MakeTask(const matrix&) const;
 
 	// インプリメンテーション
 	friend CDlgMatrix;

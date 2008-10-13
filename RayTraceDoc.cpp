@@ -106,17 +106,9 @@ BOOL CRayTraceDoc::OnOpenDocument(LPCTSTR lpszPathName)
 void CRayTraceDoc::UpdateAllViews(CView* pSender, LPARAM lHint, CObject* pHint)
 {
 	// É^ÉXÉNÇÃèâä˙âª
-	Task t;
-	const Task* devPtr = d_pTask;
-	while (devPtr) {
-		CUDA_SAFE_CALL(cudaMemcpy(&t, devPtr, sizeof(Task), cudaMemcpyDeviceToHost));
-		Task n;
-		CUDA_SAFE_CALL(cudaMemcpy(&n, t.next, sizeof(Task), cudaMemcpyDeviceToHost));
-		CUDA_SAFE_CALL(cudaFree((void*)devPtr));
-		devPtr = n.next;
-	}
+	ClearTask();
 
-	d_pTask = m_Root.MakeTask(matrix());
+	m_Root.MakeTask(matrix());
 
 	CDocument::UpdateAllViews(pSender,lHint,pHint);
 }

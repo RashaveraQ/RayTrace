@@ -55,6 +55,7 @@ private:
 	BOOL		m_Alt;
 	POINT		m_AltStart;
 	void GetVectorFromPoint(sp& k, sp& l, int px, int py);
+
 // オペレーション
 public:
 

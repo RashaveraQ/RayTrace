@@ -9,15 +9,9 @@ enum node_type
 };
 
 struct Task {
-	const Task*	next;
 	node_type	type;
-	matrix		Matrix;
-	union {
-		struct {
-			int member;
-		} gathering;
-	};
-	TARGET Task() : next(0) {}
+	float		m[4][4];
+	int			member;
 };
 
 #endif // __TASK_H__

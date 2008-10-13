@@ -130,22 +130,22 @@ void Gathering::SetDocument(const CRayTraceDoc* const pDoc)
 		m_Node[i]->SetDocument(pDoc);
 }
 
-Task* Gathering::MakeTask(const matrix& m1, const Task* next) const
+void Gathering::MakeTask(const matrix& m1) const
 {
 	matrix m2 = m1 * m_Matrix;
+	matrix im = m2.Inv();
 
-	Task  task;
+	Task task;
 	task.type = getNodeType();
-	task.Matrix = m2.Inv();
-	task.next = next;
-	task.gathering.member = m_Member;
-
-	Task* p;
-	CUDA_SAFE_CALL(cudaMalloc((void**)&p, sizeof(Task)));
-	CUDA_SAFE_CALL(cudaMemcpy((void*)p, (const void*)&task, sizeof(Task), cudaMemcpyHostToDevice));
-
-	for (int i = 0; i < m_Member; i++) {
-		p = m_Node[i]->MakeTask(m2, p);
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			task.m[i][j] = (float)im.m_data[i][j];
+		}
 	}
-	return p;
+	task.member = m_Member;
+
+	AddTask(task);
+	for (int i = 0; i < m_Member; i++) {
+		m_Node[i]->MakeTask(m2);
+	}
 }

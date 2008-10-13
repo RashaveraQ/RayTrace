@@ -26,7 +26,7 @@ public:
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	BOOL Delete(Node*);	
 	void Serialize(CArchive& ar);
-	Task* MakeTask(const matrix&, const Task* = 0) const;
+	void MakeTask(const matrix&) const;
 };
 
 #endif

@@ -101,7 +101,6 @@ void CRayTraceView::OnDraw(CDC* pDC)
 	switch (m_ViewMode) {
 	case eRayTraceByCuda:
 	{
-		void DoCuda(COLORREF* colorrefs, Task* task, const int imageW, const int imageH, const matrix* m, const sp* light);
 		// 色配列のメモリ領域確保(サイズが変化した時に確保すべき
 		size_t size = m_ClientSize.cx * m_ClientSize.cy * sizeof(COLORREF);
 		COLORREF* colorrefs = (COLORREF*)malloc(size);
@@ -111,7 +110,7 @@ void CRayTraceView::OnDraw(CDC* pDC)
 				colorrefs[x + y * m_ClientSize.cx] = RGB(x % 255, y % 255, 0xee);
 
 		matrix m = m_Viewport.getMatrix().Inv();
-		DoCuda(colorrefs, GetDocument()->d_pTask, m_ClientSize.cx, m_ClientSize.cy, &m, &GetDocument()->m_Light);
+		DoCuda(colorrefs, m_ClientSize.cx, m_ClientSize.cy, &m, &GetDocument()->m_Light);
 
 		for (int y = 0; y < m_ClientSize.cy; y++)
 			for (int x = 0; x < m_ClientSize.cx; x++)
