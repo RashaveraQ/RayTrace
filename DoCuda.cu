@@ -39,13 +39,14 @@ void DoCuda(unsigned long* out, const int imageW, const int imageH, const matrix
 	unsigned long* d_data;
     unsigned int mem_size = imageW * imageH * sizeof(unsigned long);
     
+
     CUDA_SAFE_CALL(cudaMalloc((void**)&d_data, mem_size));
 	CUDA_SAFE_CALL(cudaMalloc((void**)&pMatrix, sizeof(matrix)));
 	CUDA_SAFE_CALL(cudaMalloc((void**)&pLight, sizeof(sp)));
 
 	CUDA_SAFE_CALL(cudaMemcpy(pMatrix, m, sizeof(matrix), cudaMemcpyHostToDevice));
 	CUDA_SAFE_CALL(cudaMemcpy(pLight, light, sizeof(sp), cudaMemcpyHostToDevice));
-	CUDA_SAFE_CALL(cudaMemcpyToSymbol(&cTaskIndex, &sTaskIndex, sizeof(int)));
+	CUDA_SAFE_CALL(cudaMemcpyToSymbol<int>(cTaskIndex, &sTaskIndex, sizeof(int)));
 
     dim3 threads(16,16);
     dim3 grid(16,16);
@@ -67,11 +68,11 @@ void DoCuda(unsigned long* out, const int imageW, const int imageH, const matrix
 void ClearTask()
 {
 	sTaskIndex = 0;
-	CUDA_SAFE_CALL(cudaMemcpyToSymbol(&cTaskIndex, &sTaskIndex, sizeof(int)));
+	CUDA_SAFE_CALL(cudaMemcpyToSymbol<int>(cTaskIndex, &sTaskIndex, sizeof(int)));
 }
 
 void AddTask(const Task& task)
 {
-	CUDA_SAFE_CALL(cudaMemcpyToSymbol(cTask + sTaskIndex, &task, sizeof(Task)));
+	CUDA_SAFE_CALL(cudaMemcpyToSymbol<Task>(cTask[0], &task, sizeof(Task), sTaskIndex * sizeof(Task)));
 	sTaskIndex++;
 }

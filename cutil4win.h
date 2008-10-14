@@ -4,4 +4,5 @@
 		MessageBox(0, buf, "fprintf", MB_OK);	\
 		} while (0)
 
+#include <cuda_runtime.h>
 #include <cutil.h>
