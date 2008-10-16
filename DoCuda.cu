@@ -5,25 +5,8 @@
 
 #define TARGET __device__
 #include "task.h"
+#include "sp.h"
 #include "matrix.h"
-
-struct Info
-{
-	bool			valid;
-	D3DMATERIAL9	Material;
-	BOOL			isEnter;	// 入り込む
-	double			Distance;	// 交点までの距離
-	sp				Cross;		// 交点座標
-	sp				Vertical;	// 法線ベクトル
-	double			Refractive;	// 屈折率
-	NodeInfo		nodeInfo;	//
-};
-
-struct Stack
-{
-	Info*	data[100];
-	int		index;
-};
 
 #ifndef M_PI
 #define M_PI (4.0*atan(1.0))
@@ -33,8 +16,42 @@ __constant__ Task cTask[100];
 __constant__ int  cTaskIndex;
 static int sTaskIndex = 0;
 
+struct Info4cuda
+{
+	bool			valid;
+	D3DMATERIAL9	Material;
+	BOOL			isEnter;	// 入り込む
+	double			Distance;	// 交点までの距離
+	double			Cross_x;	// 交点座標x
+	double			Cross_y;	// 交点座標y
+	double			Cross_z;	// 交点座標z
+	double			Vertical_x;	// 法線ベクトルx
+	double			Vertical_y;	// 法線ベクトルy
+	double			Vertical_z;	// 法線ベクトルz
+	double			Refractive;	// 屈折率
+	NodeInfo		nodeInfo;	//
+};
+
+#define STACK_SIZE	50
+
+struct Stack {
+	int				Index;
+	bool			valid		[STACK_SIZE];
+	D3DMATERIAL9	Material	[STACK_SIZE];
+	BOOL			isEnter		[STACK_SIZE];	// 入り込む
+	double			Distance	[STACK_SIZE];	// 交点までの距離
+	double			Cross_x		[STACK_SIZE];	// 交点座標x
+	double			Cross_y		[STACK_SIZE];	// 交点座標y
+	double			Cross_z		[STACK_SIZE];	// 交点座標z
+	double			Vertical_x	[STACK_SIZE];	// 法線ベクトルx
+	double			Vertical_y	[STACK_SIZE];	// 法線ベクトルy
+	double			Vertical_z	[STACK_SIZE];	// 法線ベクトルz
+	double			Refractive	[STACK_SIZE];	// 屈折率
+	NodeInfo		nodeInfo	[STACK_SIZE];	//
+};
+
 __device__
-void GetInfo_Sphere(const Task& task, const sp& K, const sp& L, Info& info)
+void GetInfo_Sphere(const Task& task, const sp& K, const sp& L, Info4cuda& info)
 {
 	double	a = K * K;
 	double	b = K * L;
@@ -67,14 +84,18 @@ void GetInfo_Sphere(const Task& task, const sp& K, const sp& L, Info& info)
 		}
 	}
 
-	info.Cross = info.Vertical = K * t + L;
+	sp cross = K * t + L;
+	info.Cross_x = info.Vertical_x = cross.x;
+	info.Cross_y = info.Vertical_y = cross.y;
+	info.Cross_z = info.Vertical_z = cross.z;
+	
 	info.Distance = t * sqrt(K * K);
 
 	double x,y,z, th, phy;
 
-	x = info.Vertical.x;
-	y = info.Vertical.y;
-	z = info.Vertical.z;
+	x = info.Vertical_x;
+	y = info.Vertical_y;
+	z = info.Vertical_z;
 
 	th = atan2(y, sqrt(x*x+z*z)) / M_PI + .5;
 	phy = atan2(x, -z) / (2 * M_PI) + .5;
@@ -88,16 +109,18 @@ void GetInfo_Sphere(const Task& task, const sp& K, const sp& L, Info& info)
 }
 
 __device__
-bool GetInfo2(const sp& K, const sp& L, Info& info)
+void GetInfo_Plus(const Task& task, const sp& K, const sp& L, Info4cuda& info, Stack& stack)
 {
-	Stack	stack;
-	stack.index = 0;
-	
-	// stack.data のメモリ確保をする事。
 
-	
+}
+
+__device__
+bool GetInfo2(const sp& K, const sp& L, Info4cuda& info)
+{
+	Stack stack;
+
 	for (int idx = 0; idx < cTaskIndex; idx++) {
-		Info	inf;
+		Info4cuda	inf;
 		
 		matrix m;
 		for (int i = 0; i < 4; i++) {
@@ -113,14 +136,11 @@ bool GetInfo2(const sp& K, const sp& L, Info& info)
 		switch (cTask[idx].type) {
 		case SPHERE:
 			GetInfo_Sphere(cTask[idx], K2, L2, inf);
-
-			// inf をスタックに積む。
-	
 			break;
 		case PLANE:
 			break;
 		case PLUS:
-//			GetInfo_Plus(cTask[idx], k, l, inf);
+			GetInfo_Plus(cTask[idx], K2, L2, inf, stack);
 			break;
 		case MINUS:
 			break;
@@ -139,12 +159,25 @@ bool GetInfo2(const sp& K, const sp& L, Info& info)
 		case TEAPOT:
 			break;
 		}
+		
+		// inf をスタックに積む。
+		stack.valid			[stack.Index] = inf.valid;
+		stack.Material		[stack.Index] = inf.Material;
+		stack.isEnter		[stack.Index] = inf.isEnter;	// 入り込む
+		stack.Distance		[stack.Index] = inf.Distance;	// 交点までの距離
+		stack.Cross_x		[stack.Index] = inf.Cross_x;	// 交点座標x
+		stack.Cross_y		[stack.Index] = inf.Cross_y;	// 交点座標y
+		stack.Cross_z		[stack.Index] = inf.Cross_z;	// 交点座標z
+		stack.Vertical_x	[stack.Index] = inf.Vertical_x;	// 法線ベクトルx
+		stack.Vertical_y	[stack.Index] = inf.Vertical_y;	// 法線ベクトルy
+		stack.Vertical_z	[stack.Index] = inf.Vertical_z;	// 法線ベクトルz
+		stack.Refractive	[stack.Index] = inf.Refractive;	// 屈折率
+		stack.nodeInfo		[stack.Index] = inf.nodeInfo;	//
+		stack.Index++;
 	}
 
-	bool ans = stack.data[0]->valid;
-	
-	// stack.data のメモリを解放する事。
-	
+	bool ans = stack.valid[0];
+
 	return ans;
 }
 
@@ -158,7 +191,7 @@ sp GetColor(sp K, sp L, const sp& Light)
 	};
 	eMode mode = eNone;
 
-	Info info;
+	Info4cuda info;
 	
 	for (int i = 0; i < 10; i++) {
 		
@@ -179,12 +212,15 @@ sp GetColor(sp K, sp L, const sp& Light)
 			break;
 			
 		sp k = K.e();
-		sp v = info.Vertical.e();
+		sp v(info.Vertical_x, info.Vertical_y, info.Vertical_y);
+
+		v = v.e();
 
 		// 反射率がある場合、
 		if (info.nodeInfo.m_Reflect > 0) {
 			sp k2 = k - 2 * (v * k) * v;
-			sp l2 = info.Cross + 1E-05 * k2;
+			sp cross(info.Cross_x, info.Cross_y, info.Cross_z);
+			sp l2 = cross + 1E-05 * k2;
 			// 反射した視線ベクトルから色を取得。
 			K = k2, L = l2, mode = eReflect;
 			continue;
@@ -195,14 +231,17 @@ sp GetColor(sp K, sp L, const sp& Light)
 			double r = info.Refractive;
 			double i = k * v;
 			sp k2 = r * (k -i * v - sqrt(r * r - 1.0 + i * i) * v);
-			sp l2 = info.Cross + 1E-05 * k2;
+			sp cross(info.Cross_x, info.Cross_y, info.Cross_z);
+			sp l2 = cross + 1E-05 * k2;
 			// 屈折した視線ベクトルから色を取得。
 			K = k2, L = l2, mode = eThrough;
 			continue;
 		}
 
 		// 光源より色を補正。
-		double	x = -Light.e() * info.Vertical.e();
+		sp vertical(info.Vertical_x, info.Vertical_y, info.Vertical_z);
+		
+		double	x = -Light.e() * vertical.e();
 		x = (x > 0.0) ? x : 0.0;
 		double t = 64 + 191 * sin(M_PI / 2 * x);
 		double b = 191 * (1 - cos(M_PI / 2 * x));
