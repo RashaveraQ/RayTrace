@@ -138,19 +138,21 @@ void GetInfo_Plus(const Task& task, const sp& K, const sp& L, Info4cuda& info, S
 
 	if (l < 0) {
 		info.valid = false;
+		stack.Index++;
 		return;
 	}
 
 	if (info.Material.Diffuse.r < 0)
 		info.Material = task.nodeInfo.m_Material;
-
 	info.valid = true;
+	stack.Index++;
 }
 
 __device__
 bool GetInfo2(const sp& K, const sp& L, Info4cuda& info)
 {
 	Stack stack;
+	stack.Index = 0;
 
 	for (int idx = 0; idx < cTaskIndex; idx++) {
 		Info4cuda	inf;
@@ -207,11 +209,10 @@ bool GetInfo2(const sp& K, const sp& L, Info4cuda& info)
 		stack.Refractive	[stack.Index] = inf.Refractive;	// ‹üÜ—¦
 		stack.nodeInfo		[stack.Index] = inf.nodeInfo;	//
 		stack.Index++;
+		info = inf;
 	}
 
-	bool ans = stack.valid[0];
-
-	return ans;
+	return info.valid;
 }
 
 __device__
