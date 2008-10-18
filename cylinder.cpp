@@ -98,13 +98,11 @@ BOOL Cylinder::IsInside(const sp& L) const
 
 BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info) const
 {
-	if (L.y < -1)
-	{
+	if (L.y < -1) {
 		if (K.y <= 0)
 			return FALSE;
 
 		double t = -(1 + L.y)/K.y;
-
 		sp	p = K*t+L;
 
 		if (p.x * p.x + p.z * p.z <= 1) {
@@ -118,8 +116,7 @@ BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info) const
 		}
 	}
 
-	if (L.y > 1)
-	{
+	if (L.y > 1) {
 		if (K.y >= 0)
 			return FALSE;
 
