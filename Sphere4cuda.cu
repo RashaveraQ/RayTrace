@@ -39,16 +39,16 @@ void GetInfo_Sphere(const Task& task, const sp& K, const sp& L, Info4cuda& info)
 	
 	info.Distance = t * sqrt(K * K);
 
-	double x,y,z, th, phy;
-
+/*
+	double x, y, z, th, phy;
 	x = info.Vertical_x;
 	y = info.Vertical_y;
 	z = info.Vertical_z;
-
+	double th, phy
 	th = atan2(y, sqrt(x*x+z*z)) / M_PI + .5;
 	phy = atan2(x, -z) / (2 * M_PI) + .5;
-
-	//info.Material = GetPixel(phy, th).getMaterial();
+	info.Material = GetPixel(phy, th).getMaterial();
+*/
 	info.Material = sp(	256 * task.nodeInfo.m_Material.Diffuse.r,
 						256 * task.nodeInfo.m_Material.Diffuse.g,
 						256 * task.nodeInfo.m_Material.Diffuse.b).getMaterial();

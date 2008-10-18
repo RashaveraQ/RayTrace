@@ -65,7 +65,6 @@ bool GetInfo2(const sp& K, const sp& L, Info4cuda& info)
 	
 	for (int idx = 0; idx < cTaskIndex; idx++) {
 		Info4cuda	inf;
-		
 		matrix m;
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {

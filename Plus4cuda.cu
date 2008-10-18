@@ -1,9 +1,7 @@
 __device__
 void GetInfo_Plus(const Task& task, const sp& K, const sp& L, Info4cuda& info, Stack& stack)
 {
-	Info4cuda	tmp;
 	double	l = -1;
-
 	for (int i = 0; i < task.data.gathering.member; i++) {
 		int j = --stack.Index;
 		if (stack.valid[j]) {

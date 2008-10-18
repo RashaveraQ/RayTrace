@@ -539,37 +539,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\DoCuda.cu"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="$(CUDA_BIN_PATH)\nvcc.exe -ccbin &quot;$(VCInstallDir)bin&quot; -c -DWIN32 -D_CONSOLE -D_MBCS -Xcompiler /EHsc,/W3,/nologo,/Wp64,/O2,/Zi,/MT -I&quot;$(CUDA_INC_PATH)&quot; -I&quot;../../NVIDIA CUDA SDK/common/inc&quot; -o $(ConfigurationName)\DoCuda.obj DoCuda.cu&#x0D;&#x0A;"
-						Outputs="$(ConfigurationName)\DoCuda.obj"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="$(CUDA_BIN_PATH)\nvcc.exe -ccbin &quot;$(VCInstallDir)bin&quot; -c -DWIN32 -D_CONSOLE -D_MBCS -Xcompiler /EHsc,/W3,/nologo,/Wp64,/O2,/Zi,/MT -I&quot;$(CUDA_INC_PATH)&quot; -I&quot;../../NVIDIA CUDA SDK/common/inc&quot; -o $(ConfigurationName)\DoCuda.obj DoCuda.cu&#x0D;&#x0A;"
-						Outputs="$(ConfigurationName)\DoCuda.obj"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="EmuDebug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="$(CUDA_BIN_PATH)\nvcc.exe -keep -ccbin &quot;$(VCInstallDir)bin&quot; -deviceemu -c -D_DEBUG -DWIN32 -D_CONSOLE -D_MBCS -Xcompiler /EHsc,/W3,/nologo,/Wp64,/Od,/Zi,/RTC1,/MTd -I&quot;$(CUDA_INC_PATH)&quot; -I&quot;../../NVIDIA CUDA SDK/common/inc&quot; -o $(ConfigurationName)\DoCuda.obj DoCuda.cu&#x0D;&#x0A;"
-						Outputs="$(ConfigurationName)\DoCuda.obj"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="expand.cpp"
 				>
 				<FileConfiguration
@@ -1342,6 +1311,86 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<Filter
+				Name="nVIDIA CUDA Files"
+				>
+				<File
+					RelativePath=".\Cone4cuda.cu"
+					>
+					<FileConfiguration
+						Name="EmuDebug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\Cube4cuda.cu"
+					>
+				</File>
+				<File
+					RelativePath=".\Cylinder4cuda.cu"
+					>
+				</File>
+				<File
+					RelativePath=".\DoCuda.cu"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							CommandLine="$(CUDA_BIN_PATH)\nvcc.exe -ccbin &quot;$(VCInstallDir)bin&quot; -c -DWIN32 -D_CONSOLE -D_MBCS -Xcompiler /EHsc,/W3,/nologo,/Wp64,/O2,/Zi,/MT -I&quot;$(CUDA_INC_PATH)&quot; -I&quot;../../NVIDIA CUDA SDK/common/inc&quot; -o $(ConfigurationName)\DoCuda.obj DoCuda.cu&#x0D;&#x0A;"
+							Outputs="$(ConfigurationName)\DoCuda.obj"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							CommandLine="$(CUDA_BIN_PATH)\nvcc.exe -ccbin &quot;$(VCInstallDir)bin&quot; -c -DWIN32 -D_CONSOLE -D_MBCS -Xcompiler /EHsc,/W3,/nologo,/Wp64,/O2,/Zi,/MT -I&quot;$(CUDA_INC_PATH)&quot; -I&quot;../../NVIDIA CUDA SDK/common/inc&quot; -o $(ConfigurationName)\DoCuda.obj DoCuda.cu&#x0D;&#x0A;"
+							Outputs="$(ConfigurationName)\DoCuda.obj"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="EmuDebug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							CommandLine="$(CUDA_BIN_PATH)\nvcc.exe -keep -ccbin &quot;$(VCInstallDir)bin&quot; -deviceemu -c -D_DEBUG -DWIN32 -D_CONSOLE -D_MBCS -Xcompiler /EHsc,/W3,/nologo,/Wp64,/Od,/Zi,/RTC1,/MTd -I&quot;$(CUDA_INC_PATH)&quot; -I&quot;../../NVIDIA CUDA SDK/common/inc&quot; -o $(ConfigurationName)\DoCuda.obj DoCuda.cu&#x0D;&#x0A;"
+							Outputs="$(ConfigurationName)\DoCuda.obj"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\Plus4cuda.cu"
+					>
+				</File>
+				<File
+					RelativePath=".\Sphere4cuda.cu"
+					>
+					<FileConfiguration
+						Name="EmuDebug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\Torus4cuda.cu"
+					>
+					<FileConfiguration
+						Name="EmuDebug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -1543,58 +1592,6 @@
 			<File
 				RelativePath="Â‚¢Ú°½•Ò‚Ý 16.bmp"
 				>
-			</File>
-		</Filter>
-		<Filter
-			Name="nVIDIA CUDA Files"
-			>
-			<File
-				RelativePath=".\Cone4cuda.cu"
-				>
-				<FileConfiguration
-					Name="EmuDebug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\Cube4cuda.cu"
-				>
-			</File>
-			<File
-				RelativePath=".\Cylinder4cuda.cu"
-				>
-			</File>
-			<File
-				RelativePath=".\Plus4cuda.cu"
-				>
-			</File>
-			<File
-				RelativePath=".\Sphere4cuda.cu"
-				>
-				<FileConfiguration
-					Name="EmuDebug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\Torus4cuda.cu"
-				>
-				<FileConfiguration
-					Name="EmuDebug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 		</Filter>
 		<File
