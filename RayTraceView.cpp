@@ -67,7 +67,7 @@ CRayTraceView::CRayTraceView()
 	m_View.right  = 10;
 	m_View.top    = -10;
 	m_View.bottom = 10;
-	m_ViewMode = eRayTraceByCuda; //eD3DFlatShading; //eWireFrame;
+	m_ViewMode = eWireFrame; // eRayTraceByCuda; //eD3DFlatShading;
 	m_Alt = FALSE;
 	m_AltStart.x = m_AltStart.y = 0;
 	m_SelectedNode = NULL;
@@ -601,6 +601,7 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 	} else {
 		switch (m_ViewMode) {
 		case eRayTrace:
+		case eRayTraceByCuda:
 		case eWireFrame:
 			OnUpdate(0, 0, 0);
 			break;

@@ -32,7 +32,7 @@ struct Info4cuda
 	NodeInfo		nodeInfo;	//
 };
 
-#define STACK_SIZE	50
+#define STACK_SIZE	20
 
 struct Stack {
 	int				Index;
@@ -115,8 +115,7 @@ void GetInfo_Plus(const Task& task, const sp& K, const sp& L, Info4cuda& info, S
 	double	l = -1;
 
 	for (int i = 0; i < task.member; i++) {
-		int j = stack.Index--;
-		//if (m_Node[i]->GetInfo2(K, L, tmp)) {
+		int j = --stack.Index;
 		if (stack.valid[j]) {
 			if (l == -1 || stack.Distance[j] < l) {
 				l = stack.Distance[j];
@@ -138,14 +137,12 @@ void GetInfo_Plus(const Task& task, const sp& K, const sp& L, Info4cuda& info, S
 
 	if (l < 0) {
 		info.valid = false;
-		stack.Index++;
 		return;
 	}
 
 	if (info.Material.Diffuse.r < 0)
 		info.Material = task.nodeInfo.m_Material;
 	info.valid = true;
-	stack.Index++;
 }
 
 __device__
@@ -153,7 +150,7 @@ bool GetInfo2(const sp& K, const sp& L, Info4cuda& info)
 {
 	Stack stack;
 	stack.Index = 0;
-
+	
 	for (int idx = 0; idx < cTaskIndex; idx++) {
 		Info4cuda	inf;
 		
@@ -163,10 +160,9 @@ bool GetInfo2(const sp& K, const sp& L, Info4cuda& info)
 				m.m_data[i][j] = cTask[idx].m[i][j];
 			}
 		}
-		matrix Inv_m = m.Inv();
 
-		sp L2 = Inv_m * L;
-		sp K2 = Inv_m * (K + L) - L2;
+		sp L2 = m * L;
+		sp K2 = m * (K + L) - L2;
 
 		switch (cTask[idx].type) {
 		case SPHERE:
@@ -193,7 +189,27 @@ bool GetInfo2(const sp& K, const sp& L, Info4cuda& info)
 			break;
 		case TEAPOT:
 			break;
+		default:
+			break;
 		}
+		
+		sp vertical(inf.Vertical_x, inf.Vertical_y, inf.Vertical_z);
+		sp cross(inf.Cross_x, inf.Cross_y, inf.Cross_z);
+		
+		matrix Inv_m = m.Inv();
+		vertical = Inv_m * (vertical + cross) - Inv_m * cross;
+		cross = Inv_m * cross;
+		inf.Distance = (cross - L).abs();
+		inf.Refractive = inf.nodeInfo.m_Refractive;
+		if (inf.isEnter)
+			inf.Refractive = 1 / inf.Refractive;
+
+		inf.Vertical_x = vertical.x;
+		inf.Vertical_y = vertical.y;
+		inf.Vertical_z = vertical.z;
+		inf.Cross_x = cross.x;
+		inf.Cross_y = cross.y;
+		inf.Cross_z = cross.z;
 		
 		// inf をスタックに積む。
 		stack.valid			[stack.Index] = inf.valid;
@@ -249,7 +265,7 @@ sp GetColor(sp K, sp L, const sp& Light)
 		sp v(info.Vertical_x, info.Vertical_y, info.Vertical_y);
 
 		v = v.e();
-
+/*
 		// 反射率がある場合、
 		if (info.nodeInfo.m_Reflect > 0) {
 			sp k2 = k - 2 * (v * k) * v;
@@ -271,7 +287,7 @@ sp GetColor(sp K, sp L, const sp& Light)
 			K = k2, L = l2, mode = eThrough;
 			continue;
 		}
-
+*/
 		// 光源より色を補正。
 		sp vertical(info.Vertical_x, info.Vertical_y, info.Vertical_z);
 		
@@ -301,7 +317,6 @@ void kernel(unsigned long* dst, int imageW, int imageH, matrix* pMatrix, sp* pLi
 	l = *pMatrix * l;
 
 	sp c = GetColor(k, l, *pLight);
-//	sp c((imageW * cTaskIndex) % 256, (imageH * cTaskIndex) % 256, 0);
 
 	if (px <= imageW && py <= imageH) {
 		dst[px + py * imageW] = RGB(c.x, c.y, c.z);
@@ -324,8 +339,8 @@ void DoCuda(unsigned long* out, const int imageW, const int imageH, const matrix
 	CUDA_SAFE_CALL(cudaMemcpy(pLight, light, sizeof(sp), cudaMemcpyHostToDevice));
 	CUDA_SAFE_CALL(cudaMemcpyToSymbol<int>(cTaskIndex, &sTaskIndex, sizeof(int)));
 
-    dim3 threads(16,16);
-    dim3 grid(16,16);
+    dim3 threads(1,1);
+    dim3 grid(488,488);
 //    dim3 grid(iDivUp(imageW, 16), iDivUp(imageH, 16));
 
 	// execute the kernel

@@ -130,22 +130,22 @@ void Gathering::SetDocument(const CRayTraceDoc* const pDoc)
 		m_Node[i]->SetDocument(pDoc);
 }
 
-void Gathering::MakeTask(const matrix& m1) const
+void Gathering::MakeTask(const matrix& M) const
 {
-	matrix m2 = m1 * m_Matrix;
-	matrix im = m2.Inv();
+	matrix m = m_Move * m_Rotate * m_Scale * M;
+	matrix Inv_m = m.Inv();
+
+	for (int i = 0; i < m_Member; i++) {
+		m_Node[i]->MakeTask(Inv_m);
+	}
 
 	Task task;
 	task.type = getNodeType();
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
-			task.m[i][j] = (float)im.m_data[i][j];
+			task.m[i][j] = (float)m.m_data[i][j];
 		}
 	}
 	task.member = m_Member;
-
 	AddTask(task);
-	for (int i = 0; i < m_Member; i++) {
-		m_Node[i]->MakeTask(m2);
-	}
 }

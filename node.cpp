@@ -629,14 +629,16 @@ void Node::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) const
 	pDC->SelectObject(old_pen);
 }
 
-void Node::MakeTask(const matrix& m) const
+void Node::MakeTask(const matrix& M) const
 {
+	matrix m = m_Move * m_Rotate * m_Scale * M;
+	matrix Inv_m = m.Inv();
+
 	Task  task;
 	task.type = getNodeType();
-	matrix m1 = m * m_Matrix;
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
-			task.m[i][j] = (float)m1.m_data[i][j];
+			task.m[i][j] = (float)m.m_data[i][j];
 		}
 	}
 	task.nodeInfo.m_Material = m_Material;
