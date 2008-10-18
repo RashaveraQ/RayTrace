@@ -19,9 +19,15 @@ struct Task {
 	node_type	type;
 	float		m[4][4];
 	NodeInfo	nodeInfo;
-	int			gathering_member;
-	double		torus_R;
-	double		torus_r;
+	union {
+		struct {
+			int		member;
+		} gathering;
+		struct {
+			double	R;
+			double	r;
+		} torus;
+	} data;
 };
 
 #endif // __TASK_H__

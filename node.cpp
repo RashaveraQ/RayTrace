@@ -638,7 +638,7 @@ Task Node::getTask(const matrix& M) const
 	task.type = getNodeType();
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
-			task.m[i][j] = (float)m.m_data[i][j];
+			task.m[i][j] = (float)Inv_m.m_data[i][j];
 		}
 	}
 	task.nodeInfo.m_Material = m_Material;

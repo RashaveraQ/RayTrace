@@ -146,6 +146,6 @@ void Gathering::MakeTask(const matrix& M) const
 			task.m[i][j] = (float)m.m_data[i][j];
 		}
 	}
-	task.gathering_member = m_Member;
+	task.data.gathering.member = m_Member;
 	AddTask(task);
 }

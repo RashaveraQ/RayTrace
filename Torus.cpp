@@ -209,7 +209,7 @@ BOOL Torus::Edit()
 void Torus::MakeTask(const matrix& M) const
 {
 	Task task = getTask(M);
-	task.torus_R = m_R;
-	task.torus_r = m_r;
+	task.data.torus.R = m_R;
+	task.data.torus.r = m_r;
 	AddTask(task);
 }

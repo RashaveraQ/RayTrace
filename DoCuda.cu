@@ -410,7 +410,7 @@ void GetInfo_Plus(const Task& task, const sp& K, const sp& L, Info4cuda& info, S
 	Info4cuda	tmp;
 	double	l = -1;
 
-	for (int i = 0; i < task.gathering_member; i++) {
+	for (int i = 0; i < task.data.gathering.member; i++) {
 		int j = --stack.Index;
 		if (stack.valid[j]) {
 			if (l == -1 || stack.Distance[j] < l) {

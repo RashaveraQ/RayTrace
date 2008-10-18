@@ -6,8 +6,8 @@ void GetInfo_Torus(const Task& task, const sp& K, const sp& L, Info4cuda& info)
 {
 	int Solve_Polynomial(int d, double *k, double min, double max, double *r);
 
-	double m_R = task.torus_R;
-	double m_r = task.torus_r;
+	double m_R = task.data.torus.R;
+	double m_r = task.data.torus.r;
 
 	double	R2 = m_R * m_R;
 	double	a = K * K;
