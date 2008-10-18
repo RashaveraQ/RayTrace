@@ -18,8 +18,10 @@ struct NodeInfo {
 struct Task {
 	node_type	type;
 	float		m[4][4];
-	int			member;
 	NodeInfo	nodeInfo;
+	int			gathering_member;
+	double		torus_R;
+	double		torus_r;
 };
 
 #endif // __TASK_H__

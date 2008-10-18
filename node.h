@@ -56,6 +56,7 @@ protected:
 		m_Matrix = m_Move * m_Rotate * m_Scale;
 	}
 	virtual node_type getNodeType() const = 0;
+	Task getTask(const matrix& M) const;
 
 public:
 
@@ -104,6 +105,7 @@ public:
 	virtual	void Serialize(CArchive& ar);
 
 	matrix getMatrix() { return m_Matrix; }
+
 
 	virtual void MakeTask(const matrix&) const;
 

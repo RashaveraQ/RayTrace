@@ -205,3 +205,11 @@ BOOL Torus::Edit()
 
 	return TRUE;
 }
+
+void Torus::MakeTask(const matrix& M) const
+{
+	Task task = getTask(M);
+	task.torus_R = m_R;
+	task.torus_r = m_r;
+	AddTask(task);
+}

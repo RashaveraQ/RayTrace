@@ -25,6 +25,7 @@ public:
 	const Node*	MakeCopy() const { return new Torus(*this); }
 	BOOL Edit();
 	void Serialize(CArchive& ar);
+	void MakeTask(const matrix&) const;
 };
 
 #endif

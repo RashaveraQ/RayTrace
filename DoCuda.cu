@@ -304,6 +304,8 @@ void GetInfo_Cylinder(const Task& task, const sp& K, const sp& L, Info4cuda& inf
 	info.valid = true;
 }
 
+#include "Torus4cuda.cu"
+
 __device__
 void GetInfo_Cube(const Task& task, const sp& K, const sp& L, Info4cuda& info)
 {
@@ -408,7 +410,7 @@ void GetInfo_Plus(const Task& task, const sp& K, const sp& L, Info4cuda& info, S
 	Info4cuda	tmp;
 	double	l = -1;
 
-	for (int i = 0; i < task.member; i++) {
+	for (int i = 0; i < task.gathering_member; i++) {
 		int j = --stack.Index;
 		if (stack.valid[j]) {
 			if (l == -1 || stack.Distance[j] < l) {
@@ -478,6 +480,7 @@ bool GetInfo2(const sp& K, const sp& L, Info4cuda& info)
 			GetInfo_Cylinder(cTask[idx], K2, L2, inf);
 			break;
 		case TORUS:
+			GetInfo_Torus(cTask[idx], K2, L2, inf);
 			break;
 		case POLYGON:
 			break;

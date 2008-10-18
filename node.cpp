@@ -629,7 +629,7 @@ void Node::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) const
 	pDC->SelectObject(old_pen);
 }
 
-void Node::MakeTask(const matrix& M) const
+Task Node::getTask(const matrix& M) const
 {
 	matrix m = m_Move * m_Rotate * m_Scale * M;
 	matrix Inv_m = m.Inv();
@@ -646,5 +646,10 @@ void Node::MakeTask(const matrix& M) const
 	task.nodeInfo.m_Refractive = m_Refractive;
 	task.nodeInfo.m_Through = m_Through;
 
-	AddTask(task);
+	return task;
+}
+
+void Node::MakeTask(const matrix& M) const
+{
+	AddTask(getTask(M));
 }
