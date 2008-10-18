@@ -1315,18 +1315,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Torus4cuda.cu"
-				>
-				<FileConfiguration
-					Name="EmuDebug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="Viewport.cpp"
 				>
 				<FileConfiguration
@@ -1555,6 +1543,58 @@
 			<File
 				RelativePath="Â‚¢Ú°½•Ò‚Ý 16.bmp"
 				>
+			</File>
+		</Filter>
+		<Filter
+			Name="nVIDIA CUDA Files"
+			>
+			<File
+				RelativePath=".\Cone4cuda.cu"
+				>
+				<FileConfiguration
+					Name="EmuDebug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\Cube4cuda.cu"
+				>
+			</File>
+			<File
+				RelativePath=".\Cylinder4cuda.cu"
+				>
+			</File>
+			<File
+				RelativePath=".\Plus4cuda.cu"
+				>
+			</File>
+			<File
+				RelativePath=".\Sphere4cuda.cu"
+				>
+				<FileConfiguration
+					Name="EmuDebug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\Torus4cuda.cu"
+				>
+				<FileConfiguration
+					Name="EmuDebug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<File
