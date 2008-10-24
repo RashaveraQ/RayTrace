@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include "cutil4win.h"
-#include <d3dx9.h>
-#include <atltypes.h>
+//#include <atltypes.h>
 
 #define TARGET __device__
 #include "task.h"
-#include "sp.h"
-#include "matrix.h"
+#include "sp4cuda.cpp"
+#include "matrix4cuda.cpp"
 
 #ifndef M_PI
 #define M_PI (4.0*atan(1.0))
@@ -51,29 +50,35 @@ struct Stack {
 };
 
 #include "Sphere4cuda.cu"
-#include "Cone4cuda.cu"
-#include "Cylinder4cuda.cu"
-#include "Torus4cuda.cu"
-#include "Cube4cuda.cu"
+//#include "Cone4cuda.cu"
+//#include "Cylinder4cuda.cu"
+//#include "Torus4cuda.cu"
+//#include "Cube4cuda.cu"
 #include "Plus4cuda.cu"
 
 __device__
-bool GetInfo2(const sp& K, const sp& L, Info4cuda& info)
+bool GetInfo2(const sp4cuda& K, const sp4cuda& L, Info4cuda& info)
 {
 	Stack stack;
 	stack.Index = 0;
 	
 	for (int idx = 0; idx < cTaskIndex; idx++) {
 		Info4cuda	inf;
-		matrix m;
+		matrix4cuda m;
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				m.m_data[i][j] = cTask[idx].m[i][j];
 			}
 		}
 
-		sp L2 = m * L;
-		sp K2 = m * (K + L) - L2;
+		sp4cuda L2 = sp_sp(matrix_multiple(m, matrix_matrix(L)));
+//		L2.x = m.m_data[0][0] * L.x + m.m_data[0][1] * L.y + m.m_data[0][2] * L.z;
+//		L2.y = m.m_data[1][0] * L.x + m.m_data[1][1] * L.y + m.m_data[1][2] * L.z;
+//		L2.z = m.m_data[2][0] * L.x + m.m_data[2][1] * L.y + m.m_data[2][2] * L.z;
+		sp4cuda K2 = sp_minus(sp_sp(matrix_multiple(m, matrix_matrix(sp_plus(K,L)))), L2);
+//		K2.x = m.m_data[0][0] * (K.x + L.x) + m.m_data[0][1] * (K.y + L.y) + m.m_data[0][2] * (K.z + L.z) - L2.x;
+//		K2.y = m.m_data[1][0] * (K.x + L.x) + m.m_data[1][1] * (K.y + L.y) + m.m_data[1][2] * (K.z + L.z) - L2.x;
+//		K2.z = m.m_data[2][0] * (K.x + L.x) + m.m_data[2][1] * (K.y + L.y) + m.m_data[2][2] * (K.z + L.z) - L2.x;
 
 		switch (cTask[idx].type) {
 		case SPHERE:
@@ -89,18 +94,18 @@ bool GetInfo2(const sp& K, const sp& L, Info4cuda& info)
 		case MULTIPLE:
 			break;
 		case CONE:
-			GetInfo_Cone(cTask[idx], K2, L2, inf);
+			//GetInfo_Cone(cTask[idx], K2, L2, inf);
 			break;
 		case CYLINDER:
-			GetInfo_Cylinder(cTask[idx], K2, L2, inf);
+			//GetInfo_Cylinder(cTask[idx], K2, L2, inf);
 			break;
 		case TORUS:
-			GetInfo_Torus(cTask[idx], K2, L2, inf);
+			//GetInfo_Torus(cTask[idx], K2, L2, inf);
 			break;
 		case POLYGON:
 			break;
 		case CUBE:
-			GetInfo_Cube(cTask[idx], K2, L2, inf);
+			//GetInfo_Cube(cTask[idx], K2, L2, inf);
 			break;
 		case TEAPOT:
 			break;
@@ -108,13 +113,15 @@ bool GetInfo2(const sp& K, const sp& L, Info4cuda& info)
 			break;
 		}
 		
-		sp vertical(inf.Vertical_x, inf.Vertical_y, inf.Vertical_z);
-		sp cross(inf.Cross_x, inf.Cross_y, inf.Cross_z);
+		sp4cuda vertical = sp_sp(inf.Vertical_x, inf.Vertical_y, inf.Vertical_z);
+		sp4cuda cross = sp_sp(inf.Cross_x, inf.Cross_y, inf.Cross_z);
 		
-		matrix Inv_m = m.Inv();
-		vertical = Inv_m * (vertical + cross) - Inv_m * cross;
-		cross = Inv_m * cross;
-		inf.Distance = (cross - L).abs();
+		matrix4cuda Inv_m = matrix_Inv(m);
+		vertical = sp_sp(matrix_minus(matrix_multiple(Inv_m, matrix_matrix(sp_plus(vertical, cross))),
+						matrix_multiple(Inv_m, matrix_matrix(cross))));
+		cross = sp_sp(matrix_multiple(Inv_m, matrix_matrix(cross)));
+
+		inf.Distance = sp_abs(sp_minus(cross, L));
 		inf.Refractive = inf.nodeInfo.m_Refractive;
 		if (inf.isEnter)
 			inf.Refractive = 1 / inf.Refractive;
@@ -147,9 +154,9 @@ bool GetInfo2(const sp& K, const sp& L, Info4cuda& info)
 }
 
 __device__
-sp GetColor(sp K, sp L, const sp& Light)
+sp4cuda GetColor(sp4cuda K, sp4cuda L, const sp4cuda& Light)
 {
-	sp ans(127,127,127);
+	sp4cuda ans = sp_sp(127,127,127);
 
 	enum eMode {
 		eNone, eReflect, eThrough
@@ -165,21 +172,25 @@ sp GetColor(sp K, sp L, const sp& Light)
 			break;
 		case eReflect:
 			// 反射率で色を混ぜる。
-			info.Material = (info.nodeInfo.m_Reflect * ans + (1 - info.nodeInfo.m_Reflect) * sp(info.Material)).getMaterial();
+			info.Material = sp_getMaterial(sp_plus(
+				sp_multiple(info.nodeInfo.m_Reflect, ans),
+				sp_multiple(1 - info.nodeInfo.m_Reflect, sp_sp(info.Material))));
 			break;
 		case eThrough:
 			// 透過率で色を混ぜる。
-			info.Material = (info.nodeInfo.m_Through * ans + (1 - info.nodeInfo.m_Through) * sp(info.Material)).getMaterial();
+			info.Material = sp_getMaterial(sp_plus(
+				sp_multiple(info.nodeInfo.m_Through, ans),
+				sp_multiple(1 - info.nodeInfo.m_Through, sp_sp(info.Material))));
 			break;
 		}
 
 		if (!GetInfo2(K, L, info))
 			break;
 			
-		sp k = K.e();
-		sp v(info.Vertical_x, info.Vertical_y, info.Vertical_y);
+		sp4cuda k = sp_e(K);
+		sp4cuda v = sp_sp(info.Vertical_x, info.Vertical_y, info.Vertical_y);
 
-		v = v.e();
+		v = sp_e(v);
 /*
 		// 反射率がある場合、
 		if (info.nodeInfo.m_Reflect > 0) {
@@ -204,54 +215,54 @@ sp GetColor(sp K, sp L, const sp& Light)
 		}
 */
 		// 光源より色を補正。
-		sp vertical(info.Vertical_x, info.Vertical_y, info.Vertical_z);
+		sp4cuda vertical = sp_sp(info.Vertical_x, info.Vertical_y, info.Vertical_z);
 		
-		double	x = -Light.e() * vertical.e();
+		double	x = -sp_multiple(sp_e(Light), sp_e(vertical));
 		x = (x > 0.0) ? x : 0.0;
 		double t = 64 + 191 * sin(M_PI / 2 * x);
 		double b = 191 * (1 - cos(M_PI / 2 * x));
 		
-		ans =  (t - b) * sp(info.Material) / 255 + sp(b,b,b);
+		ans = sp_plus(sp_divide(sp_multiple(t - b, sp_sp(info.Material)), 255), sp_sp(b,b,b));
 	}
 
 	return ans;
 }
 
 __global__
-void kernel(unsigned long* dst, int imageW, int imageH, matrix* pMatrix, sp* pLight)
+void kernel(unsigned long* dst, int imageW, int imageH, matrix4cuda* pMatrix, sp4cuda* pLight)
 {
     const int px = blockDim.x * blockIdx.x + threadIdx.x;
     const int py = blockDim.y * blockIdx.y + threadIdx.y;
-   	double rx = 20.0 * px / imageW - 10.0;
-	double ry = 20.0 * py / imageH - 10.0;
 
-	sp k(0.01 * rx / 20.0, 0.01 * ry / 20.0, 0.01);
-	sp l(rx, ry, -20);
-    
-	k = *pMatrix * (k + l) - *pMatrix * l;
-	l = *pMatrix * l;
+	if (px < imageW && py < imageH) {
+   		double rx = 20.0 * px / imageW - 10.0;
+		double ry = 20.0 * py / imageH - 10.0;
 
-	sp c = GetColor(k, l, *pLight);
+		sp4cuda k = sp_sp(0.01 * rx / 20.0, 0.01 * ry / 20.0, 0.01);
+		sp4cuda l = sp_sp(rx, ry, -20);
+	    
+		k = sp_sp(matrix_minus(matrix_multiple(*pMatrix, matrix_matrix(sp_plus(k, l))), matrix_multiple(*pMatrix, matrix_matrix(l))));
+		l = sp_sp(matrix_multiple(*pMatrix, matrix_matrix(l)));
 
-	if (px <= imageW && py <= imageH) {
+		sp4cuda c = GetColor(k, l, *pLight);
+
 		dst[px + py * imageW] = RGB(c.x, c.y, c.z);
 	}
 }
 
-void DoCuda(unsigned long* out, const int imageW, const int imageH, const matrix* m, const sp* light)
+void DoCuda(unsigned long* out, const int imageW, const int imageH, const matrix4cuda* m, const sp4cuda* light)
 {
-	matrix*		pMatrix;
-	sp*			pLight;
+	matrix4cuda*		pMatrix;
+	sp4cuda*			pLight;
 	unsigned long* d_data;
     unsigned int mem_size = imageW * imageH * sizeof(unsigned long);
     
-
     CUDA_SAFE_CALL(cudaMalloc((void**)&d_data, mem_size));
-	CUDA_SAFE_CALL(cudaMalloc((void**)&pMatrix, sizeof(matrix)));
-	CUDA_SAFE_CALL(cudaMalloc((void**)&pLight, sizeof(sp)));
+	CUDA_SAFE_CALL(cudaMalloc((void**)&pMatrix, sizeof(matrix4cuda)));
+	CUDA_SAFE_CALL(cudaMalloc((void**)&pLight, sizeof(sp4cuda)));
 
-	CUDA_SAFE_CALL(cudaMemcpy(pMatrix, m, sizeof(matrix), cudaMemcpyHostToDevice));
-	CUDA_SAFE_CALL(cudaMemcpy(pLight, light, sizeof(sp), cudaMemcpyHostToDevice));
+	CUDA_SAFE_CALL(cudaMemcpy(pMatrix, m, sizeof(matrix4cuda), cudaMemcpyHostToDevice));
+	CUDA_SAFE_CALL(cudaMemcpy(pLight, light, sizeof(sp4cuda), cudaMemcpyHostToDevice));
 	CUDA_SAFE_CALL(cudaMemcpyToSymbol<int>(cTaskIndex, &sTaskIndex, sizeof(int)));
 
     dim3 threads(1,1);
@@ -282,3 +293,70 @@ void AddTask(const Task& task)
 	CUDA_SAFE_CALL(cudaMemcpyToSymbol<Task>(cTask[0], &task, sizeof(Task), sTaskIndex * sizeof(Task)));
 	sTaskIndex++;
 }
+
+// The dimensions of the thread block
+#define BLOCKDIM_X 16
+#define BLOCKDIM_Y 16
+
+#define ABS(n) ((n) < 0 ? -(n) : (n))
+
+// The Mandelbrot CUDA GPU thread function
+template<class T>
+__global__ void Mandelbrot0(unsigned long* dst, const int imageW, const int imageH, const int crunch, const T xOff, const T yOff, const T scale, const uchar4 colors, const int frame, const int animationFrame, matrix4cuda* pMatrix, sp4cuda* pLight)
+{
+    const int px = blockDim.x * blockIdx.x + threadIdx.x;
+    const int py = blockDim.y * blockIdx.y + threadIdx.y;
+
+	if (px < imageW && py < imageH) {
+   		double rx = 20.0 * px / imageW - 10.0;
+		double ry = 20.0 * py / imageH - 10.0;
+
+		sp4cuda k = sp_sp(0.01 * rx / 20.0, 0.01 * ry / 20.0, 0.01);
+		sp4cuda l = sp_sp(rx, ry, -20);
+	    
+		k = sp_sp(matrix_minus(matrix_multiple(*pMatrix, matrix_matrix(sp_plus(k, l))), matrix_multiple(*pMatrix, matrix_matrix(l))));
+		l = sp_sp(matrix_multiple(*pMatrix, matrix_matrix(l)));
+
+		sp4cuda c = GetColor(k, l, *pLight);
+
+		dst[px + py * imageW] = RGB(c.x, c.y, c.z);
+	}
+} // Mandelbrot0
+
+// Increase the grid size by 1 if the image width or height does not divide evenly
+// by the thread block dimensions
+inline int iDivUp(int a, int b)
+{
+    return ((a % b) != 0) ? (a / b + 1) : (a / b);
+} // iDivUp
+
+// The host CPU Mandebrot thread spawner
+void RunMandelbrot0(unsigned long* out, const int imageW, const int imageH, const int crunch, const double xOff, const double yOff, const double scale, const uchar4 colors, const int frame, const int animationFrame, const matrix4cuda* m, const sp4cuda* light)
+{
+	matrix4cuda*		pMatrix;
+	sp4cuda*			pLight;
+	unsigned long* d_data;
+    unsigned int mem_size = imageW * imageH * sizeof(unsigned long);
+    
+    CUDA_SAFE_CALL(cudaMalloc((void**)&d_data, mem_size));
+	CUDA_SAFE_CALL(cudaMalloc((void**)&pMatrix, sizeof(matrix4cuda)));
+	CUDA_SAFE_CALL(cudaMalloc((void**)&pLight, sizeof(sp4cuda)));
+
+	CUDA_SAFE_CALL(cudaMemcpy(pMatrix, m, sizeof(matrix4cuda), cudaMemcpyHostToDevice));
+	CUDA_SAFE_CALL(cudaMemcpy(pLight, light, sizeof(sp4cuda), cudaMemcpyHostToDevice));
+	CUDA_SAFE_CALL(cudaMemcpyToSymbol<int>(cTaskIndex, &sTaskIndex, sizeof(int)));
+
+    dim3 threads(BLOCKDIM_X, BLOCKDIM_Y);
+    dim3 grid(iDivUp(imageW, BLOCKDIM_X), iDivUp(imageH, BLOCKDIM_Y));
+
+	Mandelbrot0<float><<<grid, threads>>>(out, imageW, imageH, crunch, (float)xOff, (float)yOff, (float)scale, colors, frame, animationFrame, pMatrix, pLight);
+    CUT_CHECK_ERROR("Mandelbrot kernel execution failed.\n");
+
+    // copy results from device to host
+    CUDA_SAFE_CALL(cudaMemcpy(out, d_data, mem_size, cudaMemcpyDeviceToHost));
+
+    // cleanup memory
+    CUDA_SAFE_CALL(cudaFree(d_data));
+    CUDA_SAFE_CALL(cudaFree(pMatrix));
+    CUDA_SAFE_CALL(cudaFree(pLight));
+} // RunMandelbrot0

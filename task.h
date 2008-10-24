@@ -1,7 +1,7 @@
 #ifndef __TASK_H__
 #define __TASK_H__
 
-#include "matrix.h"
+#include <d3dx9.h>
 
 enum node_type 
 {
@@ -17,7 +17,7 @@ struct NodeInfo {
 
 struct Task {
 	node_type	type;
-	float		m[4][4];
+	double		m[4][4];
 	NodeInfo	nodeInfo;
 	union {
 		struct {

@@ -1,6 +1,8 @@
 #ifndef __SP_H
 #define __SP_H
 
+#include "sp4cuda.h"
+
 struct	matrix;
 
 struct sp
@@ -25,6 +27,7 @@ struct sp
 	POINT getPOINT(const CSize& size) const;
 friend 	sp	operator*(  double, const sp& );
 	D3DMATERIAL9 getMaterial() const;
+	operator sp4cuda() const { return sp_sp(x,y,z); }
 };
 
 #include "matrix.h"

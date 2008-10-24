@@ -1,4 +1,4 @@
-#define TARGET __device__
+#define TARGET __device__ __host__
 #include "Solve_Polynomial.inc"
 
 __device__

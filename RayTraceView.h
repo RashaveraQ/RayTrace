@@ -56,6 +56,35 @@ private:
 	POINT		m_AltStart;
 	void GetVectorFromPoint(sp& k, sp& l, int px, int py);
 
+	//Original image width and height
+	int imageW, imageH;
+
+	// Starting iteration limit
+	int crunch;		// no use
+
+	// Starting position and scale
+	double xOff;	// no use
+	double yOff;	// no use
+	double scale;
+
+	// Starting stationary position and scale motion
+	double xdOff;	// no use
+	double ydOff;	// no use
+	double dscale;	// no use
+
+	// Starting animation frame and anti-aliasing pass 
+	int animationFrame;
+	int animationStep;
+	int pass;
+
+	// Starting color multipliers and random seed
+	uchar4 colors;
+
+	// Timer ID
+	unsigned int hTimer;
+
+	void GetSample(int sampleIndex, float &x, float &y);
+
 // オペレーション
 public:
 

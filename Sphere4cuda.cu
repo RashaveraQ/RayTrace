@@ -1,11 +1,11 @@
 __device__
-void GetInfo_Sphere(const Task& task, const sp& K, const sp& L, Info4cuda& info)
+void GetInfo_Sphere(const Task& task, const sp4cuda& K, const sp4cuda& L, Info4cuda& info)
 {
-	double	a = K * K;
-	double	b = K * L;
-	double	c = L * L - 1.0; 
+	double	a = sp_multiple(K, K);
+	double	b = sp_multiple(K, L);
+	double	c = sp_multiple(L, L) - 1.0; 
 
-	double	bb_ac = b*b - a*c;
+	double	bb_ac = b * b - a * c;
 
 	if (bb_ac < 0) {
 		info.valid = false;
@@ -32,12 +32,12 @@ void GetInfo_Sphere(const Task& task, const sp& K, const sp& L, Info4cuda& info)
 		}
 	}
 
-	sp cross = K * t + L;
+	sp4cuda cross = sp_plus(sp_multiple(K, t), L);
 	info.Cross_x = info.Vertical_x = cross.x;
 	info.Cross_y = info.Vertical_y = cross.y;
 	info.Cross_z = info.Vertical_z = cross.z;
 	
-	info.Distance = t * sqrt(K * K);
+	info.Distance = t * sqrt(sp_multiple(K,K));
 
 /*
 	double x, y, z, th, phy;
@@ -49,9 +49,7 @@ void GetInfo_Sphere(const Task& task, const sp& K, const sp& L, Info4cuda& info)
 	phy = atan2(x, -z) / (2 * M_PI) + .5;
 	info.Material = GetPixel(phy, th).getMaterial();
 */
-	info.Material = sp(	256 * task.nodeInfo.m_Material.Diffuse.r,
-						256 * task.nodeInfo.m_Material.Diffuse.g,
-						256 * task.nodeInfo.m_Material.Diffuse.b).getMaterial();
+	info.Material = sp_getMaterial(sp_sp(256 * task.nodeInfo.m_Material.Diffuse.r, 256 * task.nodeInfo.m_Material.Diffuse.g, 256 * task.nodeInfo.m_Material.Diffuse.b));
 	info.nodeInfo = task.nodeInfo;
 	info.valid = true;
 }

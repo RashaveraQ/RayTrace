@@ -1,6 +1,8 @@
 #ifndef __MATRIX_H
 #define __MATRIX_H
 
+#include "matrix4cuda.h"
+
 struct	sp;
 
 struct	matrix
@@ -23,6 +25,7 @@ struct	matrix
 	double	M(int,int) const;	// ¬s—ñ®
 	matrix	Inv() const;		// ‹ts—ñ
 	TARGET double* operator[](int x) { return m_data[x]; }
+	operator matrix4cuda() const { return matrix_matrix(m_Width, m_Height, m_data); }
 };
 
 #include "sp.h"

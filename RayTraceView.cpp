@@ -76,6 +76,31 @@ CRayTraceView::CRayTraceView()
 	m_pd3dDevice = NULL;
 	m_vEyePt = D3DXVECTOR3(0.0f, 5.0f, -30.0f);
 	m_vLookatPt = D3DXVECTOR3(0.0f, 10.0f, 0.0f);
+
+    imageW = 800;
+	imageH = 600;
+    colors.w = 0;
+    colors.x = 3;
+    colors.y = 5;
+    colors.z = 7;
+
+	// Starting iteration limit
+	crunch = 512;
+
+	// Starting position and scale
+	xOff = -0.5;
+	yOff = 0.0;
+	scale = 3.2;
+
+	// Starting stationary position and scale motion
+	xdOff = 0.0;
+	ydOff = 0.0;
+	dscale = 1.0;
+
+	// Starting animation frame and anti-aliasing pass 
+	animationFrame = 0;
+	animationStep = 0;
+	pass = 0;
 }
 
 CRayTraceView::~CRayTraceView()
@@ -95,6 +120,34 @@ BOOL CRayTraceView::PreCreateWindow(CREATESTRUCT& cs)
 
 /////////////////////////////////////////////////////////////////////////////
 // CRayTraceView ƒNƒ‰ƒX‚Ì•`‰æ
+// Get a sub-pixel sample location
+void CRayTraceView::GetSample(int sampleIndex, float &x, float &y)
+{    
+    static const unsigned char pairData[128][2] = {
+        { 64,  64}, {  0,   0}, {  1,  63}, { 63,   1}, { 96,  32}, { 97,  95}, { 36,  96}, { 30,  31},
+        { 95, 127}, {  4,  97}, { 33,  62}, { 62,  33}, { 31, 126}, { 67,  99}, { 99,  65}, {  2,  34},
+        { 81,  49}, { 19,  80}, {113,  17}, {112, 112}, { 80,  16}, {115,  81}, { 46,  15}, { 82,  79},
+        { 48,  78}, { 16,  14}, { 49, 113}, {114,  48}, { 45,  45}, { 18,  47}, { 20, 109}, { 79, 115},
+        { 65,  82}, { 52,  94}, { 15, 124}, { 94, 111}, { 61,  18}, { 47,  30}, { 83, 100}, { 98,  50},
+        {110,   2}, {117,  98}, { 50,  59}, { 77,  35}, {  3, 114}, {  5,  77}, { 17,  66}, { 32,  13},
+        {127,  20}, { 34,  76}, { 35, 110}, {100,  12}, {116,  67}, { 66,  46}, { 14,  28}, { 23,  93},
+        {102,  83}, { 86,  61}, { 44, 125}, { 76,   3}, {109,  36}, {  6,  51}, { 75,  89}, { 91,  21},
+        { 60, 117}, { 29,  43}, {119,  29}, { 74,  70}, {126,  87}, { 93,  75}, { 71,  24}, {106, 102},
+        {108,  58}, { 89,   9}, {103,  23}, { 72,  56}, {120,   8}, { 88,  40}, { 11,  88}, {104, 120},
+        { 57, 105}, {118, 122}, { 53,   6}, {125,  44}, { 43,  68}, { 58,  73}, { 24,  22}, { 22,   5},
+        { 40,  86}, {122, 108}, { 87,  90}, { 56,  42}, { 70, 121}, {  8,   7}, { 37,  52}, { 25,  55},
+        { 69,  11}, { 10, 106}, { 12,  38}, { 26,  69}, { 27, 116}, { 38,  25}, { 59,  54}, {107,  72},
+        {121,  57}, { 39,  37}, { 73, 107}, { 85, 123}, { 28, 103}, {123,  74}, { 55,  85}, {101,  41},
+        { 42, 104}, { 84,  27}, {111,  91}, {  9,  19}, { 21,  39}, { 90,  53}, { 41,  60}, { 54,  26},
+        { 92, 119}, { 51,  71}, {124, 101}, { 68,  92}, { 78,  10}, { 13, 118}, {  7,  84}, {105,   4}
+    };
+
+    x = (1.0f / 128.0f) * (0.5f + (float)pairData[sampleIndex][0]);
+    y = (1.0f / 128.0f) * (0.5f + (float)pairData[sampleIndex][1]);
+} // GetSample
+
+//extern "C"
+void RunMandelbrot0(unsigned long* dst, const int imageW, const int imageH, const int crunch, const double xOff, const double yOff, const double scale, const uchar4 colors, const int frame, const int animationFrame, const matrix* m, const sp* light);
 
 void CRayTraceView::OnDraw(CDC* pDC)
 {
@@ -110,7 +163,55 @@ void CRayTraceView::OnDraw(CDC* pDC)
 				colorrefs[x + y * m_ClientSize.cx] = RGB(x % 255, y % 255, 0xee);
 
 		matrix m = m_Viewport.getMatrix().Inv();
-		DoCuda(colorrefs, m_ClientSize.cx, m_ClientSize.cy, &m, &GetDocument()->m_Light);
+#if 0
+		if ((xdOff != 0.0) || (ydOff != 0.0)) {
+			xOff += xdOff;
+			yOff += ydOff;
+			pass = 0;
+		}
+		if (dscale != 1.0) {
+			scale *= dscale;
+			pass = 0;
+		}
+		if (animationStep) {
+			animationFrame -= animationStep;
+			pass = 0;
+		}
+		if (pass < 128) {
+			float timeEstimate;
+			int startPass = pass;
+			//uchar4 *d_dst = NULL;
+			cutResetTimer(hTimer);
+			//CUDA_SAFE_CALL(cudaGLMapBufferObject((void**)&d_dst, gl_PBO));
+
+			// Render anti-aliasing passes until we run out time (60fps approximately)
+			do {
+				float xs, ys;
+
+				// Get the anti-alias sub-pixel sample location
+				GetSample(pass & 127, xs, ys);
+
+				// Get the pixel scale and offset
+				double s = scale / (float)imageW;
+				double x = (xs - (double)imageW * 0.5f) * s + xOff;
+				double y = (ys - (double)imageH * 0.5f) * s + yOff;
+
+				// Run the mandelbrot generator
+				if (pass && !startPass) // Use the adaptive sampling version when animating.
+					RunMandelbrot1(d_dst, imageW, imageH, crunch, x, y, s, colors, pass++, animationFrame);
+				else
+					RunMandelbrot0(d_dst, imageW, imageH, crunch, x, y, s, colors, pass++, animationFrame);
+				RunMandelbrot0(colorrefs, imageW, imageH, crunch, x, y, s, colors, pass++, animationFrame, &m, &GetDocument()->m_Light);
+				cudaThreadSynchronize();
+
+				// Estimate the total time of the frame if one more pass is rendered
+				timeEstimate = 0.001f * cutGetTimerValue(hTimer) * ((float)(pass + 1 - startPass) / (float)(pass - startPass));
+			} while ((pass < 128) && (timeEstimate < 1.0f / 60.0f));
+			//CUDA_SAFE_CALL(cudaGLUnmapBufferObject(gl_PBO));
+		}
+#else
+		DoCuda(colorrefs, m_ClientSize.cx, m_ClientSize.cy, (matrix4cuda*)&m, (sp4cuda*)&GetDocument()->m_Light);
+#endif
 
 		for (int y = 0; y < m_ClientSize.cy; y++)
 			for (int x = 0; x < m_ClientSize.cx; x++)
@@ -341,6 +442,9 @@ void CRayTraceView::OnSize(UINT nType, int cx, int cy)
 {
 	m_ClientSize.cx = cx;
 	m_ClientSize.cy = cy;
+    imageW = cx;
+    imageH = cy;
+    pass = 0;
 	
 	if (!m_Iconized && nType != SIZE_MINIMIZED)	{
 		m_MemoryDC.DeleteDC();

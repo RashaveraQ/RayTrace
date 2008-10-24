@@ -39,7 +39,8 @@ static double walk(int d, double *k, double min, double max)
 
 	if ( f * g > 0 ) {
 		//MessageBox ( NULL, "Error!", "Solve_Polynomial", MB_OK );
-		exit(0);
+		return 0;
+//		exit(0);
 	}
 
 	a = min, b = max;

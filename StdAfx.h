@@ -102,7 +102,9 @@ bool InitVertexBuffer(LPDIRECT3DDEVICE9 pd3dDevice, LPDIRECT3DVERTEXBUFFER9& pVB
 //#define _CRTDBG_MAP_ALLOC
 //#include <crtdbg.h>
 
-void DoCuda(unsigned long* out, const int imageW, const int imageH, const matrix* m, const sp* light);
+#include "sp4cuda.h"
+
+void DoCuda(unsigned long* out, const int imageW, const int imageH, const matrix4cuda* m, const sp4cuda* light);
 void ClearTask();
 void AddTask(const Task& task);
 

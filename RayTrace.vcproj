@@ -20,7 +20,7 @@
 			OutputDirectory="$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
@@ -112,7 +112,7 @@
 			OutputDirectory="$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
@@ -144,6 +144,7 @@
 				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
+				ExceptionHandling="0"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\Debug/RayTrace.pch"
 				AssemblerListingLocation=".\Debug/"
@@ -209,7 +210,7 @@
 			OutputDirectory="$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
@@ -649,6 +650,10 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\matrix4cuda.cpp"
+				>
 			</File>
 			<File
 				RelativePath="minus.cpp"
@@ -1167,6 +1172,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\sp4cuda.cpp"
+				>
+			</File>
+			<File
 				RelativePath="sphere.cpp"
 				>
 				<FileConfiguration
@@ -1556,6 +1565,18 @@
 				RelativePath="Viewport.h"
 				>
 			</File>
+			<Filter
+				Name="nVIDIA CUDA Files"
+				>
+				<File
+					RelativePath=".\matrix4cuda.h"
+					>
+				</File>
+				<File
+					RelativePath=".\sp4cuda.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

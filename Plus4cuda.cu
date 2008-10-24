@@ -1,5 +1,5 @@
 __device__
-void GetInfo_Plus(const Task& task, const sp& K, const sp& L, Info4cuda& info, Stack& stack)
+void GetInfo_Plus(const Task& task, const sp4cuda& K, const sp4cuda& L, Info4cuda& info, Stack& stack)
 {
 	double	l = -1;
 	for (int i = 0; i < task.data.gathering.member; i++) {
