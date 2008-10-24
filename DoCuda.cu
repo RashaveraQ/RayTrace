@@ -239,6 +239,13 @@ void kernel(unsigned long* dst, int imageW, int imageH, matrix4cuda* pMatrix, sp
 	}
 }
 
+// Increase the grid size by 1 if the image width or height does not divide evenly
+// by the thread block dimensions
+inline int iDivUp(int a, int b)
+{
+    return ((a % b) != 0) ? (a / b + 1) : (a / b);
+} // iDivUp
+
 extern "C"
 void DoCuda(unsigned long* out, const int imageW, const int imageH, const matrix4cuda* m, const sp4cuda* light)
 {
@@ -255,9 +262,9 @@ void DoCuda(unsigned long* out, const int imageW, const int imageH, const matrix
 	CUDA_SAFE_CALL(cudaMemcpy(pLight, light, sizeof(sp4cuda), cudaMemcpyHostToDevice));
 	CUDA_SAFE_CALL(cudaMemcpyToSymbol<int>(cTaskIndex, &sTaskIndex, sizeof(int)));
 
-    dim3 threads(1,1);
-    dim3 grid(488,488);
-//    dim3 grid(iDivUp(imageW, 16), iDivUp(imageH, 16));
+    dim3 threads(16,16);
+//    dim3 grid(488,488);
+    dim3 grid(iDivUp(imageW, 16), iDivUp(imageH, 16));
 
 	// execute the kernel
 	kernel<<< grid, threads >>>(d_data, imageW, imageH, pMatrix, pLight);
@@ -316,12 +323,6 @@ __global__ void Mandelbrot0(unsigned long* dst, const int imageW, const int imag
 	}
 } // Mandelbrot0
 
-// Increase the grid size by 1 if the image width or height does not divide evenly
-// by the thread block dimensions
-inline int iDivUp(int a, int b)
-{
-    return ((a % b) != 0) ? (a / b + 1) : (a / b);
-} // iDivUp
 
 // The host CPU Mandebrot thread spawner
 void RunMandelbrot0(unsigned long* out, const int imageW, const int imageH, const int crunch, const double xOff, const double yOff, const double scale, const uchar4 colors, const int frame, const int animationFrame, const matrix4cuda* m, const sp4cuda* light)
