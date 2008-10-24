@@ -10,9 +10,9 @@ struct sp
 	double	x;
 	double	y;
 	double	z;
-	TARGET sp() : x(0), y(0), z(0) {} 
-	TARGET sp(double ix, double iy, double iz) : x(ix), y(iy), z(iz) {}
-	TARGET sp( const sp& isp) : x(isp.x), y(isp.y), z(isp.z) {}
+	sp() : x(0), y(0), z(0) {} 
+	sp(double ix, double iy, double iz) : x(ix), y(iy), z(iz) {}
+	sp( const sp& isp) : x(isp.x), y(isp.y), z(isp.z) {}
 	sp( const matrix& mat );
 	sp( const D3DMATERIAL9& mtrl);
 	sp&	operator=( const sp& );
@@ -23,7 +23,7 @@ struct sp
 	sp	operator*( double ) const;
 	sp	operator/( double ) const;
 	sp	e() const;
-	TARGET double	abs() { return sqrt(x*x+y*y+z*z); };
+	double	abs() { return sqrt(x*x+y*y+z*z); };
 	POINT getPOINT(const CSize& size) const;
 friend 	sp	operator*(  double, const sp& );
 	D3DMATERIAL9 getMaterial() const;

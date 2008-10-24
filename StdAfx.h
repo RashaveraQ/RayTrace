@@ -102,11 +102,8 @@ bool InitVertexBuffer(LPDIRECT3DDEVICE9 pd3dDevice, LPDIRECT3DVERTEXBUFFER9& pVB
 //#define _CRTDBG_MAP_ALLOC
 //#include <crtdbg.h>
 
-#include "sp4cuda.h"
+#include "DoCuda.h"
 
-void DoCuda(unsigned long* out, const int imageW, const int imageH, const matrix4cuda* m, const sp4cuda* light);
-void ClearTask();
-void AddTask(const Task& task);
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Developer Studio は前行の直前に追加の宣言を挿入します。

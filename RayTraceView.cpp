@@ -147,7 +147,6 @@ void CRayTraceView::GetSample(int sampleIndex, float &x, float &y)
 } // GetSample
 
 //extern "C"
-void RunMandelbrot0(unsigned long* dst, const int imageW, const int imageH, const int crunch, const double xOff, const double yOff, const double scale, const uchar4 colors, const int frame, const int animationFrame, const matrix* m, const sp* light);
 
 void CRayTraceView::OnDraw(CDC* pDC)
 {

@@ -239,6 +239,7 @@ void kernel(unsigned long* dst, int imageW, int imageH, matrix4cuda* pMatrix, sp
 	}
 }
 
+extern "C"
 void DoCuda(unsigned long* out, const int imageW, const int imageH, const matrix4cuda* m, const sp4cuda* light)
 {
 	matrix4cuda*		pMatrix;
@@ -271,18 +272,21 @@ void DoCuda(unsigned long* out, const int imageW, const int imageH, const matrix
     CUDA_SAFE_CALL(cudaFree(pLight));
 }
 
+extern "C"
 void ClearTask()
 {
 	sTaskIndex = 0;
 	CUDA_SAFE_CALL(cudaMemcpyToSymbol<int>(cTaskIndex, &sTaskIndex, sizeof(int)));
 }
 
+extern "C"
 void AddTask(const Task& task)
 {
 	CUDA_SAFE_CALL(cudaMemcpyToSymbol<Task>(cTask[0], &task, sizeof(Task), sTaskIndex * sizeof(Task)));
 	sTaskIndex++;
 }
 
+#if 0
 // The dimensions of the thread block
 #define BLOCKDIM_X 16
 #define BLOCKDIM_Y 16
@@ -349,3 +353,5 @@ void RunMandelbrot0(unsigned long* out, const int imageW, const int imageH, cons
     CUDA_SAFE_CALL(cudaFree(pMatrix));
     CUDA_SAFE_CALL(cudaFree(pLight));
 } // RunMandelbrot0
+
+#endif

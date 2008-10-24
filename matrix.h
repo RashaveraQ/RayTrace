@@ -13,8 +13,8 @@ struct	matrix
 	matrix(int=4,int=4);
 	matrix(const matrix&);
 	matrix(const sp&, double d = 1.0);
-	TARGET int	get_width() const { return m_Width; }
-	TARGET int	get_height() const { return m_Height; }
+	int	get_width() const { return m_Width; }
+	int	get_height() const { return m_Height; }
 	matrix	operator=(const matrix&);
 	matrix	operator+(const matrix&) const;
 	matrix	operator-(const matrix&) const;
@@ -24,7 +24,7 @@ struct	matrix
 	double	d() const;			// s—ñ®
 	double	M(int,int) const;	// ¬s—ñ®
 	matrix	Inv() const;		// ‹ts—ñ
-	TARGET double* operator[](int x) { return m_data[x]; }
+	double* operator[](int x) { return m_data[x]; }
 	operator matrix4cuda() const { return matrix_matrix(m_Width, m_Height, m_data); }
 };
 
