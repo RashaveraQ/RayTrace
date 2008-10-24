@@ -654,6 +654,14 @@
 			<File
 				RelativePath=".\matrix4cuda.cpp"
 				>
+				<FileConfiguration
+					Name="EmuDebug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="minus.cpp"
@@ -1174,6 +1182,14 @@
 			<File
 				RelativePath=".\sp4cuda.cpp"
 				>
+				<FileConfiguration
+					Name="EmuDebug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="sphere.cpp"

@@ -2,7 +2,7 @@
 #include "cutil4win.h"
 //#include <atltypes.h>
 
-#define TARGET __device__
+#define TARGET __device__ __host__
 #include "task.h"
 #include "sp4cuda.cpp"
 #include "matrix4cuda.cpp"
@@ -64,21 +64,10 @@ bool GetInfo2(const sp4cuda& K, const sp4cuda& L, Info4cuda& info)
 	
 	for (int idx = 0; idx < cTaskIndex; idx++) {
 		Info4cuda	inf;
-		matrix4cuda m;
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				m.m_data[i][j] = cTask[idx].m[i][j];
-			}
-		}
+		matrix4cuda m = matrix_matrix(4,4,cTask[idx].m);
 
 		sp4cuda L2 = sp_sp(matrix_multiple(m, matrix_matrix(L)));
-//		L2.x = m.m_data[0][0] * L.x + m.m_data[0][1] * L.y + m.m_data[0][2] * L.z;
-//		L2.y = m.m_data[1][0] * L.x + m.m_data[1][1] * L.y + m.m_data[1][2] * L.z;
-//		L2.z = m.m_data[2][0] * L.x + m.m_data[2][1] * L.y + m.m_data[2][2] * L.z;
 		sp4cuda K2 = sp_minus(sp_sp(matrix_multiple(m, matrix_matrix(sp_plus(K,L)))), L2);
-//		K2.x = m.m_data[0][0] * (K.x + L.x) + m.m_data[0][1] * (K.y + L.y) + m.m_data[0][2] * (K.z + L.z) - L2.x;
-//		K2.y = m.m_data[1][0] * (K.x + L.x) + m.m_data[1][1] * (K.y + L.y) + m.m_data[1][2] * (K.z + L.z) - L2.x;
-//		K2.z = m.m_data[2][0] * (K.x + L.x) + m.m_data[2][1] * (K.y + L.y) + m.m_data[2][2] * (K.z + L.z) - L2.x;
 
 		switch (cTask[idx].type) {
 		case SPHERE:
