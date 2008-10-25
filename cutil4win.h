@@ -1,3 +1,5 @@
+#include <windows.h>
+
 #define fprintf(fp, fmt, ...) do {				\
 		char buf[200];							\
 		sprintf_s(buf, 200, fmt, __VA_ARGS__);	\

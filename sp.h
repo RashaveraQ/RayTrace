@@ -27,19 +27,19 @@ struct sp
 	POINT getPOINT(const CSize& size) const;
 friend 	sp	operator*(  double, const sp& );
 	D3DMATERIAL9 getMaterial() const;
-	operator sp4cuda() const { return sp_sp(x,y,z); }
+	operator sp4cuda() { return sp_sp(x,y,z); }
 };
 
 #include "matrix.h"
 
-TARGET inline sp::sp(const matrix& m)
+inline sp::sp(const matrix& m)
 {
 	x = m.m_data[0][0];
 	y = m.m_data[1][0];
 	z = m.m_data[2][0];
 }
 
-TARGET inline sp& sp::operator=(const sp& a)
+inline sp& sp::operator=(const sp& a)
 {
 	x = a.x;
 	y = a.y;
@@ -47,49 +47,49 @@ TARGET inline sp& sp::operator=(const sp& a)
 	return *this;
 }
 
-TARGET inline double sp::operator*(const sp& a) const
+inline double sp::operator*(const sp& a) const
 {
 	return x * a.x + y * a.y + z * a.z;
 }
 
-TARGET inline sp sp::operator+(const sp& a) const
+inline sp sp::operator+(const sp& a) const
 {
 	return sp(x + a.x, y + a.y, z + a.z);
 }
 
-TARGET inline sp sp::operator-(const sp& a) const
+inline sp sp::operator-(const sp& a) const
 {
 	return sp(x - a.x, y - a.y, z - a.z);
 }
 
-TARGET inline sp sp::operator-(void) const
+inline sp sp::operator-(void) const
 {
 	return sp(-x, -y, -z);
 }
 
-TARGET inline sp sp::operator*(double k) const
+inline sp sp::operator*(double k) const
 {
 	return sp(x * k, y * k, z * k);
 }
 
-TARGET inline sp sp::operator/( double a ) const
+inline sp sp::operator/( double a ) const
 {
 	return sp( x/a, y/a, z/a );
 }
 
-TARGET inline sp operator*( double k, const sp& a)
+inline sp operator*( double k, const sp& a)
 {
 	return a*k;
 }
 
-TARGET inline sp sp::e() const
+inline sp sp::e() const
 {
 	double	r = sqrt( x*x+y*y+z*z );
 
 	return sp( x/r, y/r, z/r );
 }
 
-TARGET inline POINT sp::getPOINT(const CSize& size) const
+inline POINT sp::getPOINT(const CSize& size) const
 {
 #define PERSPECTIVE_RATIO 0.1
 	POINT ans;
@@ -103,7 +103,7 @@ TARGET inline POINT sp::getPOINT(const CSize& size) const
 	return ans;
 }
 
-TARGET inline D3DMATERIAL9 sp::getMaterial() const
+inline D3DMATERIAL9 sp::getMaterial() const
 {
 	D3DMATERIAL9	mtrl;
 	ZeroMemory(&mtrl, sizeof(D3DMATERIAL9));
@@ -114,7 +114,7 @@ TARGET inline D3DMATERIAL9 sp::getMaterial() const
 	return mtrl;
 }
 
-TARGET inline sp::sp(const D3DMATERIAL9& mtrl)
+inline sp::sp(const D3DMATERIAL9& mtrl)
 {
 	x = 256 * mtrl.Diffuse.r;
 	y = 256 * mtrl.Diffuse.g;

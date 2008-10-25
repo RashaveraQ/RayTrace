@@ -1260,7 +1260,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						PreprocessorDefinitions=""
-						UsePrecompiledHeader="1"
+						UsePrecompiledHeader="0"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1269,7 +1269,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						PreprocessorDefinitions=""
-						UsePrecompiledHeader="1"
+						UsePrecompiledHeader="0"
 						PrecompiledHeaderThrough="stdafx.h"
 					/>
 				</FileConfiguration>
@@ -1279,7 +1279,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						PreprocessorDefinitions=""
-						UsePrecompiledHeader="1"
+						UsePrecompiledHeader="0"
 						PrecompiledHeaderThrough="stdafx.h"
 					/>
 				</FileConfiguration>

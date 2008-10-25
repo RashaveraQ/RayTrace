@@ -641,7 +641,9 @@ Task Node::getTask(const matrix& M) const
 			task.m[i][j] = (float)Inv_m.m_data[i][j];
 		}
 	}
-	task.nodeInfo.m_Material = m_Material;
+	task.nodeInfo.m_Color_r = 256 * m_Material.Diffuse.r;
+	task.nodeInfo.m_Color_g = 256 * m_Material.Diffuse.g;
+	task.nodeInfo.m_Color_b = 256 * m_Material.Diffuse.b;
 	task.nodeInfo.m_Reflect = m_Reflect;
 	task.nodeInfo.m_Refractive = m_Refractive;
 	task.nodeInfo.m_Through = m_Through;

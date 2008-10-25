@@ -1,6 +1,7 @@
 #ifndef __NODE_H
 #define __NODE_H
 
+#include "sp4cuda.h"
 
 enum eType { eSELECT, eMOVE, eROTATE, eSCALE, ePIVOT_MOVE };
 enum eAxis { eNONE, eX, eY, eZ };

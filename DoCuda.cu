@@ -2,7 +2,7 @@
 #include "cutil4win.h"
 //#include <atltypes.h>
 
-#define TARGET __device__ __host__
+#define TARGET __device__ extern "C"
 #include "task.h"
 #include "sp4cuda.cpp"
 #include "matrix4cuda.cpp"
@@ -11,15 +11,19 @@
 #define M_PI (4.0*atan(1.0))
 #endif
 
-__constant__ Task cTask[100];
-__constant__ int  cTaskIndex;
+//__constant__ Task cTask[100];
+//__constant__ int  cTaskIndex;
 static int sTaskIndex = 0;
+static Task sTask[100];
 
 struct Info4cuda
 {
 	bool			valid;
-	D3DMATERIAL9	Material;
-	BOOL			isEnter;	// 入り込む
+//	D3DMATERIAL9	Material;
+	double			Color_r;
+	double			Color_g;
+	double			Color_b;
+	bool			isEnter;	// 入り込む
 	double			Distance;	// 交点までの距離
 	double			Cross_x;	// 交点座標x
 	double			Cross_y;	// 交点座標y
@@ -36,8 +40,11 @@ struct Info4cuda
 struct Stack {
 	int				Index;
 	bool			valid		[STACK_SIZE];
-	D3DMATERIAL9	Material	[STACK_SIZE];
-	BOOL			isEnter		[STACK_SIZE];	// 入り込む
+//	D3DMATERIAL9	Material	[STACK_SIZE];
+	double			Color_r		[STACK_SIZE];
+	double			Color_g		[STACK_SIZE];
+	double			Color_b		[STACK_SIZE];
+	bool			isEnter		[STACK_SIZE];	// 入り込む
 	double			Distance	[STACK_SIZE];	// 交点までの距離
 	double			Cross_x		[STACK_SIZE];	// 交点座標x
 	double			Cross_y		[STACK_SIZE];	// 交点座標y
@@ -56,45 +63,44 @@ struct Stack {
 //#include "Cube4cuda.cu"
 #include "Plus4cuda.cu"
 
-__device__
-bool GetInfo2(const sp4cuda& K, const sp4cuda& L, Info4cuda& info)
+extern "C" __device__
+bool GetInfo2(sp4cuda K, sp4cuda L, Info4cuda* info, int taskIndex, Task *task)
 {
 	Stack stack;
 	stack.Index = 0;
-	
-	for (int idx = 0; idx < cTaskIndex; idx++) {
+	for (int idx = 0; idx < taskIndex; idx++) {
 		Info4cuda	inf;
-		matrix4cuda m = matrix_matrix(4,4,cTask[idx].m);
+		matrix4cuda m = matrix_matrix(4,4,task[idx].m);
 
-		sp4cuda L2 = sp_sp(matrix_multiple(m, matrix_matrix(L)));
-		sp4cuda K2 = sp_minus(sp_sp(matrix_multiple(m, matrix_matrix(sp_plus(K,L)))), L2);
+		sp4cuda L2 = sp_sp3(matrix_multiple(m, matrix_matrix3(L)));
+		sp4cuda K2 = sp_minus(sp_sp3(matrix_multiple(m, matrix_matrix3(sp_plus(K,L)))), L2);
 
-		switch (cTask[idx].type) {
+		switch (task[idx].type) {
 		case SPHERE:
-			GetInfo_Sphere(cTask[idx], K2, L2, inf);
+			GetInfo_Sphere(task[idx], K2, L2, &inf);
 			break;
 		case PLANE:
 			break;
 		case PLUS:
-			GetInfo_Plus(cTask[idx], K2, L2, inf, stack);
+			GetInfo_Plus(task[idx], K2, L2, &inf, &stack);
 			break;
 		case MINUS:
 			break;
 		case MULTIPLE:
 			break;
 		case CONE:
-			//GetInfo_Cone(cTask[idx], K2, L2, inf);
+			//GetInfo_Cone(task[idx], K2, L2, inf);
 			break;
 		case CYLINDER:
-			//GetInfo_Cylinder(cTask[idx], K2, L2, inf);
+			//GetInfo_Cylinder(task[idx], K2, L2, inf);
 			break;
 		case TORUS:
-			//GetInfo_Torus(cTask[idx], K2, L2, inf);
+			//GetInfo_Torus(task[idx], K2, L2, inf);
 			break;
 		case POLYGON:
 			break;
 		case CUBE:
-			//GetInfo_Cube(cTask[idx], K2, L2, inf);
+			//GetInfo_Cube(task[idx], K2, L2, inf);
 			break;
 		case TEAPOT:
 			break;
@@ -106,9 +112,9 @@ bool GetInfo2(const sp4cuda& K, const sp4cuda& L, Info4cuda& info)
 		sp4cuda cross = sp_sp(inf.Cross_x, inf.Cross_y, inf.Cross_z);
 		
 		matrix4cuda Inv_m = matrix_Inv(m);
-		vertical = sp_sp(matrix_minus(matrix_multiple(Inv_m, matrix_matrix(sp_plus(vertical, cross))),
-						matrix_multiple(Inv_m, matrix_matrix(cross))));
-		cross = sp_sp(matrix_multiple(Inv_m, matrix_matrix(cross)));
+		vertical = sp_sp3(matrix_minus(matrix_multiple(Inv_m, matrix_matrix3(sp_plus(vertical, cross))),
+						matrix_multiple(Inv_m, matrix_matrix3(cross))));
+		cross = sp_sp3(matrix_multiple(Inv_m, matrix_matrix3(cross)));
 
 		inf.Distance = sp_abs(sp_minus(cross, L));
 		inf.Refractive = inf.nodeInfo.m_Refractive;
@@ -124,7 +130,9 @@ bool GetInfo2(const sp4cuda& K, const sp4cuda& L, Info4cuda& info)
 		
 		// inf をスタックに積む。
 		stack.valid			[stack.Index] = inf.valid;
-		stack.Material		[stack.Index] = inf.Material;
+		stack.Color_r		[stack.Index] = inf.Color_r;
+		stack.Color_g		[stack.Index] = inf.Color_g;
+		stack.Color_b		[stack.Index] = inf.Color_b;
 		stack.isEnter		[stack.Index] = inf.isEnter;	// 入り込む
 		stack.Distance		[stack.Index] = inf.Distance;	// 交点までの距離
 		stack.Cross_x		[stack.Index] = inf.Cross_x;	// 交点座標x
@@ -136,14 +144,14 @@ bool GetInfo2(const sp4cuda& K, const sp4cuda& L, Info4cuda& info)
 		stack.Refractive	[stack.Index] = inf.Refractive;	// 屈折率
 		stack.nodeInfo		[stack.Index] = inf.nodeInfo;	//
 		stack.Index++;
-		info = inf;
+		*info = inf;
 	}
 
-	return info.valid;
+	return info->valid;
 }
 
-__device__
-sp4cuda GetColor(sp4cuda K, sp4cuda L, const sp4cuda& Light)
+extern "C" __device__ 
+sp4cuda GetColor(sp4cuda K, sp4cuda L, sp4cuda Light, int taskIndex, Task* task)
 {
 	sp4cuda ans = sp_sp(127,127,127);
 
@@ -161,19 +169,29 @@ sp4cuda GetColor(sp4cuda K, sp4cuda L, const sp4cuda& Light)
 			break;
 		case eReflect:
 			// 反射率で色を混ぜる。
-			info.Material = sp_getMaterial(sp_plus(
-				sp_multiple(info.nodeInfo.m_Reflect, ans),
-				sp_multiple(1 - info.nodeInfo.m_Reflect, sp_sp(info.Material))));
+			{
+			sp4cuda s = sp_plus(
+				sp_multiple2(info.nodeInfo.m_Reflect, ans),
+				sp_multiple2(1 - info.nodeInfo.m_Reflect, sp_sp(info.Color_r, info.Color_g, info.Color_b)));
+			info.Color_r = s.x;
+			info.Color_g = s.y;
+			info.Color_b = s.z;
+			}
 			break;
 		case eThrough:
 			// 透過率で色を混ぜる。
-			info.Material = sp_getMaterial(sp_plus(
-				sp_multiple(info.nodeInfo.m_Through, ans),
-				sp_multiple(1 - info.nodeInfo.m_Through, sp_sp(info.Material))));
+			{
+			sp4cuda s = sp_plus(
+				sp_multiple2(info.nodeInfo.m_Through, ans),
+				sp_multiple2(1 - info.nodeInfo.m_Through, sp_sp(info.Color_r, info.Color_g, info.Color_b)));
+			info.Color_r = s.x;
+			info.Color_g = s.y;
+			info.Color_b = s.z;
+			}
 			break;
 		}
 
-		if (!GetInfo2(K, L, info))
+		if (!GetInfo2(K, L, &info, taskIndex, task))
 			break;
 			
 		sp4cuda k = sp_e(K);
@@ -206,19 +224,19 @@ sp4cuda GetColor(sp4cuda K, sp4cuda L, const sp4cuda& Light)
 		// 光源より色を補正。
 		sp4cuda vertical = sp_sp(info.Vertical_x, info.Vertical_y, info.Vertical_z);
 		
-		double	x = -sp_multiple(sp_e(Light), sp_e(vertical));
+		double	x = -sp_internal_multiple(sp_e(Light), sp_e(vertical));
 		x = (x > 0.0) ? x : 0.0;
 		double t = 64 + 191 * sin(M_PI / 2 * x);
 		double b = 191 * (1 - cos(M_PI / 2 * x));
 		
-		ans = sp_plus(sp_divide(sp_multiple(t - b, sp_sp(info.Material)), 255), sp_sp(b,b,b));
+		ans = sp_plus(sp_divide(sp_multiple2(t - b, sp_sp(info.Color_r, info.Color_g, info.Color_b)), 255), sp_sp(b,b,b));
 	}
 
 	return ans;
 }
 
-__global__
-void kernel(unsigned long* dst, int imageW, int imageH, matrix4cuda* pMatrix, sp4cuda* pLight)
+extern "C" __global__ 
+void kernel(unsigned long* dst, int imageW, int imageH, matrix4cuda* pMatrix, sp4cuda* pLight, int taskIndex, Task* task)
 {
     const int px = blockDim.x * blockIdx.x + threadIdx.x;
     const int py = blockDim.y * blockIdx.y + threadIdx.y;
@@ -229,11 +247,10 @@ void kernel(unsigned long* dst, int imageW, int imageH, matrix4cuda* pMatrix, sp
 
 		sp4cuda k = sp_sp(0.01 * rx / 20.0, 0.01 * ry / 20.0, 0.01);
 		sp4cuda l = sp_sp(rx, ry, -20);
-	    
-		k = sp_sp(matrix_minus(matrix_multiple(*pMatrix, matrix_matrix(sp_plus(k, l))), matrix_multiple(*pMatrix, matrix_matrix(l))));
-		l = sp_sp(matrix_multiple(*pMatrix, matrix_matrix(l)));
+		k = sp_sp3(matrix_minus(matrix_multiple(*pMatrix, matrix_matrix3(sp_plus(k,l))), matrix_multiple(*pMatrix, matrix_matrix3(l))));
+		l = sp_sp3(matrix_multiple(*pMatrix, matrix_matrix3(l)));
 
-		sp4cuda c = GetColor(k, l, *pLight);
+		sp4cuda c = GetColor(k, l, *pLight, taskIndex, task);
 
 		dst[px + py * imageW] = RGB(c.x, c.y, c.z);
 	}
@@ -247,27 +264,29 @@ inline int iDivUp(int a, int b)
 } // iDivUp
 
 extern "C"
-void DoCuda(unsigned long* out, const int imageW, const int imageH, const matrix4cuda* m, const sp4cuda* light)
+void DoCuda(unsigned long* out, int imageW, int imageH, matrix4cuda m, sp4cuda light)
 {
 	matrix4cuda*		pMatrix;
 	sp4cuda*			pLight;
+	Task*				dTask;
 	unsigned long* d_data;
     unsigned int mem_size = imageW * imageH * sizeof(unsigned long);
     
     CUDA_SAFE_CALL(cudaMalloc((void**)&d_data, mem_size));
 	CUDA_SAFE_CALL(cudaMalloc((void**)&pMatrix, sizeof(matrix4cuda)));
 	CUDA_SAFE_CALL(cudaMalloc((void**)&pLight, sizeof(sp4cuda)));
+	CUDA_SAFE_CALL(cudaMalloc((void**)&dTask, sTaskIndex * sizeof(Task)));
 
-	CUDA_SAFE_CALL(cudaMemcpy(pMatrix, m, sizeof(matrix4cuda), cudaMemcpyHostToDevice));
-	CUDA_SAFE_CALL(cudaMemcpy(pLight, light, sizeof(sp4cuda), cudaMemcpyHostToDevice));
-	CUDA_SAFE_CALL(cudaMemcpyToSymbol<int>(cTaskIndex, &sTaskIndex, sizeof(int)));
+	CUDA_SAFE_CALL(cudaMemcpy(pMatrix, &m, sizeof(matrix4cuda), cudaMemcpyHostToDevice));
+	CUDA_SAFE_CALL(cudaMemcpy(pLight, &light, sizeof(sp4cuda), cudaMemcpyHostToDevice));
+//	CUDA_SAFE_CALL(cudaMemcpyToSymbol<int>(cTaskIndex, &sTaskIndex, sizeof(int)));
+	CUDA_SAFE_CALL(cudaMemcpy(dTask, sTask, sTaskIndex * sizeof(Task), cudaMemcpyHostToDevice));
 
     dim3 threads(16,16);
-//    dim3 grid(488,488);
     dim3 grid(iDivUp(imageW, 16), iDivUp(imageH, 16));
 
 	// execute the kernel
-	kernel<<< grid, threads >>>(d_data, imageW, imageH, pMatrix, pLight);
+	kernel<<< grid, threads >>>(d_data, imageW, imageH, pMatrix, pLight, sTaskIndex, dTask);
 	CUT_CHECK_ERROR("kernel failed.");
 
     // copy results from device to host
@@ -277,19 +296,21 @@ void DoCuda(unsigned long* out, const int imageW, const int imageH, const matrix
     CUDA_SAFE_CALL(cudaFree(d_data));
     CUDA_SAFE_CALL(cudaFree(pMatrix));
     CUDA_SAFE_CALL(cudaFree(pLight));
+    CUDA_SAFE_CALL(cudaFree(dTask));
 }
 
 extern "C"
 void ClearTask()
 {
 	sTaskIndex = 0;
-	CUDA_SAFE_CALL(cudaMemcpyToSymbol<int>(cTaskIndex, &sTaskIndex, sizeof(int)));
+//	CUDA_SAFE_CALL(cudaMemcpyToSymbol<int>(cTaskIndex, &sTaskIndex, sizeof(int)));
 }
 
 extern "C"
-void AddTask(const Task& task)
+void AddTask(Task task)
 {
-	CUDA_SAFE_CALL(cudaMemcpyToSymbol<Task>(cTask[0], &task, sizeof(Task), sTaskIndex * sizeof(Task)));
+//	CUDA_SAFE_CALL(cudaMemcpyToSymbol<Task>(cTask[0], &task, sizeof(Task), sTaskIndex * sizeof(Task)));
+	memcpy(sTask + sTaskIndex, &task, sizeof(Task));
 	sTaskIndex++;
 }
 

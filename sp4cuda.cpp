@@ -3,12 +3,12 @@
 #endif	// TARGET
 
 #include <math.h>
-#include <d3dx9.h>
+//#include <d3dx9.h>
 
 #include "sp4cuda.h"
 #include "matrix4cuda.h"
 
-TARGET
+extern "C" __device__ __host__
 sp4cuda sp_sp(double ix, double iy, double iz)
 {
 	sp4cuda ans;
@@ -18,73 +18,74 @@ sp4cuda sp_sp(double ix, double iy, double iz)
 	return ans;
 }
 
-TARGET
-sp4cuda sp_sp(const sp4cuda& in)
+extern "C" __device__
+sp4cuda sp_sp2(sp4cuda in)
 {
 	return sp_sp(in.x, in.y, in.z);
 }
 
-TARGET
-double sp_abs(const sp4cuda& in)
+extern "C" __device__
+double sp_abs(sp4cuda in)
 {
 	return sqrt(in.x * in.x + in.y * in.y + in.z * in.z);
 }
 
-TARGET
-sp4cuda sp_sp(const matrix4cuda& m)
+extern "C" __device__
+sp4cuda sp_sp3(matrix4cuda m)
 {
 	return sp_sp(m.m_data[0][0], m.m_data[1][0], m.m_data[2][0]);
 }
 
-TARGET
-sp4cuda sp_plus(const sp4cuda& lhs, const sp4cuda& rhs)
+extern "C" __device__
+sp4cuda sp_plus(sp4cuda lhs, sp4cuda rhs)
 {
 	return sp_sp(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z); 
 }
 
-TARGET
-double sp_multiple(const sp4cuda& lhs, const sp4cuda& rhs)
+extern "C" __device__
+double sp_internal_multiple(sp4cuda lhs, sp4cuda rhs)
 {
 	return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z; 
 }
 
-TARGET
-sp4cuda sp_minus(const sp4cuda& lhs, const sp4cuda& rhs)
+extern "C" __device__
+sp4cuda sp_minus(sp4cuda lhs, sp4cuda rhs)
 {
 	return sp_sp(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z);
 }
 
-TARGET
-sp4cuda sp_minus(const sp4cuda& lhs)
+extern "C" __device__
+sp4cuda sp_minus_signed(sp4cuda lhs)
 {
 	return sp_sp(-lhs.x, -lhs.y, -lhs.z);
 }
 
-TARGET
-sp4cuda sp_multiple(const sp4cuda& lhs, double k)
+extern "C" __device__
+sp4cuda sp_multiple(sp4cuda lhs, double k)
 {
 	return sp_sp(lhs.x * k, lhs.y * k, lhs.z * k);
 }
 
-TARGET
-sp4cuda sp_divide(const sp4cuda& lhs, double a)
+extern "C" __device__
+sp4cuda sp_divide(sp4cuda lhs, double a)
 {
 	return sp_sp(lhs.x / a, lhs.y / a, lhs.z / a);
 }
 
-TARGET
-sp4cuda sp_multiple(double k, const sp4cuda& rhs)
+extern "C" __device__
+sp4cuda sp_multiple2(double k, sp4cuda rhs)
 {
 	return sp_sp(k * rhs.x, k * rhs.y, k * rhs.z);
 }
 
-TARGET
-sp4cuda sp_e(const sp4cuda& lhs)
+extern "C" __device__
+sp4cuda sp_e(sp4cuda lhs)
 {
 	double r = sqrt(lhs.x * lhs.x + lhs.y * lhs.y + lhs.z * lhs.z);
 	return sp_sp(lhs.x / r, lhs.y / r, lhs.z / r);
 }
 
+/*
 TARGET
 D3DMATERIAL9 sp_getMaterial(const sp4cuda& s)
 {
@@ -102,3 +103,4 @@ sp4cuda sp_sp(const D3DMATERIAL9& mtrl)
 {
 	return sp_sp(256 * mtrl.Diffuse.r, 256 * mtrl.Diffuse.g, 256 * mtrl.Diffuse.b);
 }
+*/

@@ -1,4 +1,7 @@
-#define TARGET __device__ __host__
+#ifndef TARGET
+#define TARGET extern "C"
+#endif // TARGET
+
 #include "Solve_Polynomial.inc"
 
 __device__

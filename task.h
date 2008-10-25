@@ -1,7 +1,7 @@
 #ifndef __TASK_H__
 #define __TASK_H__
 
-#include <d3dx9.h>
+//#include <d3dx9.h>
 
 enum node_type 
 {
@@ -9,7 +9,10 @@ enum node_type
 };
 
 struct NodeInfo {
-	D3DMATERIAL9	m_Material;
+//	D3DMATERIAL9	m_Material;
+	double			m_Color_r;
+	double			m_Color_g;
+	double			m_Color_b;
 	double			m_Reflect ;		// îΩéÀó¶
 	double			m_Through ;  	// ìßâﬂó¶
 	double			m_Refractive ;	// ã¸ê‹ó¶

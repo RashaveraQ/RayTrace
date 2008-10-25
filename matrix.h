@@ -25,12 +25,12 @@ struct	matrix
 	double	M(int,int) const;	// è¨çsóÒéÆ
 	matrix	Inv() const;		// ãtçsóÒ
 	double* operator[](int x) { return m_data[x]; }
-	operator matrix4cuda() const { return matrix_matrix(m_Width, m_Height, m_data); }
+	operator matrix4cuda() { return matrix_matrix(m_Width, m_Height, m_data); }
 };
 
 #include "sp.h"
 
-TARGET inline matrix::matrix(int gyo,int retu)
+inline matrix::matrix(int gyo,int retu)
 {
 	m_Height = gyo;
 	m_Width = retu;
@@ -53,7 +53,7 @@ TARGET inline matrix::matrix(int gyo,int retu)
 	m_data[3][2] = 0.0;
 }
 
-TARGET inline matrix::matrix(const matrix& Matrix)
+inline matrix::matrix(const matrix& Matrix)
 {
 	m_Width = Matrix.get_width();
 	m_Height = Matrix.get_height();
@@ -63,7 +63,7 @@ TARGET inline matrix::matrix(const matrix& Matrix)
 			m_data[i][j] = Matrix.m_data[i][j];
 }
 
-TARGET inline matrix::matrix(const sp& Sp, double d)
+inline matrix::matrix(const sp& Sp, double d)
 {
 	m_Width = 1;
 	m_Height = 4;
@@ -74,7 +74,7 @@ TARGET inline matrix::matrix(const sp& Sp, double d)
 	m_data[3][0] = d;
 }
 
-TARGET inline matrix matrix::operator=(const matrix& Matrix)
+inline matrix matrix::operator=(const matrix& Matrix)
 {
 	for ( int i = 0; i < m_Height; i++ )
 		for ( int j = 0; j < m_Width; j++ )
@@ -82,7 +82,7 @@ TARGET inline matrix matrix::operator=(const matrix& Matrix)
 	return *this;
 }
 
-TARGET inline matrix matrix::operator-(const matrix& Matrix) const
+inline matrix matrix::operator-(const matrix& Matrix) const
 {
 	matrix	ans( m_Height, m_Width );
 
@@ -93,7 +93,7 @@ TARGET inline matrix matrix::operator-(const matrix& Matrix) const
 	return ans;
 }
 
-TARGET inline matrix matrix::operator+(const matrix& Matrix) const
+inline matrix matrix::operator+(const matrix& Matrix) const
 {
 	matrix	ans( m_Height, m_Width );
 
@@ -104,7 +104,7 @@ TARGET inline matrix matrix::operator+(const matrix& Matrix) const
 	return ans;
 }
 
-TARGET inline matrix matrix::operator*(double k) const
+inline matrix matrix::operator*(double k) const
 {
 	matrix	ans( m_Height, m_Width );
 
@@ -115,7 +115,7 @@ TARGET inline matrix matrix::operator*(double k) const
 	return ans;
 }
 
-TARGET inline matrix matrix::operator/(double k) const
+inline matrix matrix::operator/(double k) const
 {
 	matrix	ans( m_Height, m_Width );
 
@@ -126,7 +126,7 @@ TARGET inline matrix matrix::operator/(double k) const
 	return ans;
 }
 
-TARGET inline matrix matrix::operator*(const matrix& Matrix) const
+inline matrix matrix::operator*(const matrix& Matrix) const
 {
 	matrix	ans( m_Height, Matrix.get_width() );
 
@@ -142,7 +142,7 @@ TARGET inline matrix matrix::operator*(const matrix& Matrix) const
 	return ans;
 }
 
-TARGET inline double matrix::M( int gyo, int retu ) const
+inline double matrix::M( int gyo, int retu ) const
 {
 	double ans = 0;
 
@@ -248,7 +248,7 @@ TARGET inline double matrix::M( int gyo, int retu ) const
 	return ans;
 }
 
-TARGET inline double matrix::d() const
+inline double matrix::d() const
 {
 	double	ans = 0;
 
@@ -296,7 +296,7 @@ TARGET inline double matrix::d() const
 	return ans;
 }
 
-TARGET inline matrix matrix::Inv() const
+inline matrix matrix::Inv() const
 {
 	matrix	mat( m_Width, m_Height );
 

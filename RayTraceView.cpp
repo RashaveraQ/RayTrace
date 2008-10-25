@@ -209,7 +209,8 @@ void CRayTraceView::OnDraw(CDC* pDC)
 			//CUDA_SAFE_CALL(cudaGLUnmapBufferObject(gl_PBO));
 		}
 #else
-		DoCuda(colorrefs, m_ClientSize.cx, m_ClientSize.cy, (matrix4cuda*)&m, (sp4cuda*)&GetDocument()->m_Light);
+		DoCuda(colorrefs, m_ClientSize.cx, m_ClientSize.cy, (matrix4cuda)m, (sp4cuda)GetDocument()->m_Light);
+		cudaThreadSynchronize();
 #endif
 
 		for (int y = 0; y < m_ClientSize.cy; y++)

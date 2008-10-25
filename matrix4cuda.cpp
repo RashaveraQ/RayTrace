@@ -4,7 +4,23 @@
 
 #include "matrix4cuda.h"
 
-TARGET matrix4cuda matrix_matrix(int gyo, int retu)
+extern "C" __device__ __host__
+matrix4cuda matrix_matrix(int w, int h, double d[4][4])
+{
+	matrix4cuda ans;
+
+	ans.m_Width = w;
+	ans.m_Height = h;
+
+	for (int i = 0; i < ans.m_Height; i++)
+		for (int j = 0; j < ans.m_Width; j++)
+			ans.m_data[i][j] = d[i][j];
+
+	return ans;
+}
+
+extern "C" __device__
+matrix4cuda matrix_matrix1(int gyo, int retu)
 {
 	matrix4cuda ans;
 
@@ -31,7 +47,8 @@ TARGET matrix4cuda matrix_matrix(int gyo, int retu)
 	return ans;
 }
 
-TARGET matrix4cuda matrix_matrix(const matrix4cuda& Matrix)
+extern "C" __device__
+matrix4cuda matrix_matrix2(matrix4cuda Matrix)
 {
 	matrix4cuda ans;
 
@@ -45,21 +62,8 @@ TARGET matrix4cuda matrix_matrix(const matrix4cuda& Matrix)
 	return ans;
 }
 
-TARGET matrix4cuda matrix_matrix(const int w, const int h, const double d[4][4])
-{
-	matrix4cuda ans;
-
-	ans.m_Width = w;
-	ans.m_Height = h;
-
-	for (int i = 0; i < ans.m_Height; i++)
-		for (int j = 0; j < ans.m_Width; j++)
-			ans.m_data[i][j] = d[i][j];
-
-	return ans;
-}
-
-TARGET matrix4cuda matrix_matrix(const sp4cuda& Sp, double d)
+extern "C" __device__
+matrix4cuda matrix_matrix3(sp4cuda Sp, double d)
 {
 	matrix4cuda ans;
 	
@@ -74,9 +78,10 @@ TARGET matrix4cuda matrix_matrix(const sp4cuda& Sp, double d)
 	return ans;
 }
 
-TARGET matrix4cuda matrix_minus(const matrix4cuda& lhs, const matrix4cuda& rhs)
+extern "C" __device__
+matrix4cuda matrix_minus(matrix4cuda lhs, matrix4cuda rhs)
 {
-	matrix4cuda ans = matrix_matrix(lhs.m_Height, lhs.m_Width);
+	matrix4cuda ans = matrix_matrix1(lhs.m_Height, lhs.m_Width);
 
 	for (int i = 0; i < lhs.m_Height; i++)
 		for (int j = 0; j < lhs.m_Width; j++)
@@ -85,9 +90,10 @@ TARGET matrix4cuda matrix_minus(const matrix4cuda& lhs, const matrix4cuda& rhs)
 	return ans;
 }
 
-TARGET matrix4cuda matrix_plus(const matrix4cuda& lhs, const matrix4cuda& rhs)
+extern "C" __device__
+matrix4cuda matrix_plus(matrix4cuda lhs, matrix4cuda rhs)
 {
-	matrix4cuda ans = matrix_matrix(lhs.m_Height, lhs.m_Width);
+	matrix4cuda ans = matrix_matrix1(lhs.m_Height, lhs.m_Width);
 
 	for (int i = 0; i < lhs.m_Height; i++)
 		for (int j = 0; j < lhs.m_Width; j++)
@@ -96,9 +102,10 @@ TARGET matrix4cuda matrix_plus(const matrix4cuda& lhs, const matrix4cuda& rhs)
 	return ans;
 }
 
-TARGET matrix4cuda matrix_multiple(const matrix4cuda& lhs, double k)
+extern "C" __device__
+matrix4cuda matrix_scalar_multiple(matrix4cuda lhs, double k)
 {
-	matrix4cuda ans = matrix_matrix(lhs.m_Height, lhs.m_Width);
+	matrix4cuda ans = matrix_matrix1(lhs.m_Height, lhs.m_Width);
 
 	for (int i = 0; i < lhs.m_Height; i++)
 		for (int j = 0; j < lhs.m_Width; j++)
@@ -107,9 +114,10 @@ TARGET matrix4cuda matrix_multiple(const matrix4cuda& lhs, double k)
 	return ans;
 }
 
-TARGET matrix4cuda matrix_divide(const matrix4cuda& lhs, double k)
+extern "C" __device__
+matrix4cuda matrix_divide(matrix4cuda lhs, double k)
 {
-	matrix4cuda ans = matrix_matrix(lhs.m_Height, lhs.m_Width);
+	matrix4cuda ans = matrix_matrix1(lhs.m_Height, lhs.m_Width);
 
 	for (int i = 0; i < lhs.m_Height; i++)
 		for (int j = 0; j < lhs.m_Width; j++)
@@ -118,9 +126,10 @@ TARGET matrix4cuda matrix_divide(const matrix4cuda& lhs, double k)
 	return ans;
 }
 
-TARGET matrix4cuda matrix_multiple(const matrix4cuda& lhs, const matrix4cuda& rhs)
+extern "C" __device__
+matrix4cuda matrix_multiple(matrix4cuda lhs, matrix4cuda rhs)
 {
-	matrix4cuda ans = matrix_matrix(lhs.m_Height, rhs.m_Width);
+	matrix4cuda ans = matrix_matrix1(lhs.m_Height, rhs.m_Width);
 
 	for (int i = 0; i < ans.m_Height; i++) {
 		for (int j = 0; j < ans.m_Width; j++) {
@@ -134,7 +143,8 @@ TARGET matrix4cuda matrix_multiple(const matrix4cuda& lhs, const matrix4cuda& rh
 	return ans;
 }
 
-TARGET double matrix_M(const matrix4cuda& in, int gyo, int retu)
+extern "C" __device__
+double matrix_M(matrix4cuda in, int gyo, int retu)
 {
 	double ans = 0;
 
@@ -235,7 +245,8 @@ TARGET double matrix_M(const matrix4cuda& in, int gyo, int retu)
 	return ans;
 }
 
-TARGET double matrix_d(const matrix4cuda& in)
+extern "C" __device__
+double matrix_d(matrix4cuda in)
 {
 	double	ans = 0;
 
@@ -282,9 +293,10 @@ TARGET double matrix_d(const matrix4cuda& in)
 	return ans;
 }
 
-TARGET matrix4cuda matrix_Inv(const matrix4cuda& in)
+extern "C" __device__
+matrix4cuda matrix_Inv(matrix4cuda in)
 {
-	matrix4cuda	mat = matrix_matrix(in.m_Width, in.m_Height);
+	matrix4cuda	mat = matrix_matrix1(in.m_Width, in.m_Height);
 
 	double	m;
 	double	A = matrix_d(in);
