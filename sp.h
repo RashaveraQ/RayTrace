@@ -7,25 +7,25 @@ struct	matrix;
 
 struct sp
 {
-	double	x;
-	double	y;
-	double	z;
+	float	x;
+	float	y;
+	float	z;
 	sp() : x(0), y(0), z(0) {} 
-	sp(double ix, double iy, double iz) : x(ix), y(iy), z(iz) {}
+	sp(float ix, float iy, float iz) : x(ix), y(iy), z(iz) {}
 	sp( const sp& isp) : x(isp.x), y(isp.y), z(isp.z) {}
 	sp( const matrix& mat );
 	sp( const D3DMATERIAL9& mtrl);
 	sp&	operator=( const sp& );
-	double	operator*( const sp& ) const;
+	float	operator*( const sp& ) const;
 	sp	operator+( const sp& ) const;
 	sp	operator-( const sp& ) const;
 	sp	operator-( void ) const;
-	sp	operator*( double ) const;
-	sp	operator/( double ) const;
+	sp	operator*( float ) const;
+	sp	operator/( float ) const;
 	sp	e() const;
-	double	abs() { return sqrt(x*x+y*y+z*z); };
+	float	abs() { return sqrt(x*x+y*y+z*z); };
 	POINT getPOINT(const CSize& size) const;
-friend 	sp	operator*(  double, const sp& );
+friend 	sp	operator*(  float, const sp& );
 	D3DMATERIAL9 getMaterial() const;
 	operator sp4cuda() { return sp_sp(x,y,z); }
 };
@@ -47,7 +47,7 @@ inline sp& sp::operator=(const sp& a)
 	return *this;
 }
 
-inline double sp::operator*(const sp& a) const
+inline float sp::operator*(const sp& a) const
 {
 	return x * a.x + y * a.y + z * a.z;
 }
@@ -67,24 +67,24 @@ inline sp sp::operator-(void) const
 	return sp(-x, -y, -z);
 }
 
-inline sp sp::operator*(double k) const
+inline sp sp::operator*(float k) const
 {
 	return sp(x * k, y * k, z * k);
 }
 
-inline sp sp::operator/( double a ) const
+inline sp sp::operator/( float a ) const
 {
 	return sp( x/a, y/a, z/a );
 }
 
-inline sp operator*( double k, const sp& a)
+inline sp operator*( float k, const sp& a)
 {
 	return a*k;
 }
 
 inline sp sp::e() const
 {
-	double	r = sqrt( x*x+y*y+z*z );
+	float	r = sqrt( x*x+y*y+z*z );
 
 	return sp( x/r, y/r, z/r );
 }

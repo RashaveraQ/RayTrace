@@ -1,15 +1,9 @@
-#ifndef TARGET
-#define TARGET
-#endif	// TARGET
-
 #include <math.h>
-//#include <d3dx9.h>
-
 #include "sp4cuda.h"
 #include "matrix4cuda.h"
 
 extern "C" __device__ __host__
-sp4cuda sp_sp(double ix, double iy, double iz)
+sp4cuda sp_sp(float ix, float iy, float iz)
 {
 	sp4cuda ans;
 	ans.x = ix;
@@ -25,9 +19,9 @@ sp4cuda sp_sp2(sp4cuda in)
 }
 
 extern "C" __device__
-double sp_abs(sp4cuda in)
+float sp_abs(sp4cuda in)
 {
-	return sqrt(in.x * in.x + in.y * in.y + in.z * in.z);
+	return sqrtf(in.x * in.x + in.y * in.y + in.z * in.z);
 }
 
 extern "C" __device__
@@ -43,7 +37,7 @@ sp4cuda sp_plus(sp4cuda lhs, sp4cuda rhs)
 }
 
 extern "C" __device__
-double sp_internal_multiple(sp4cuda lhs, sp4cuda rhs)
+float sp_internal_multiple(sp4cuda lhs, sp4cuda rhs)
 {
 	return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z; 
 }
@@ -61,19 +55,19 @@ sp4cuda sp_minus_signed(sp4cuda lhs)
 }
 
 extern "C" __device__
-sp4cuda sp_multiple(sp4cuda lhs, double k)
+sp4cuda sp_multiple(sp4cuda lhs, float k)
 {
 	return sp_sp(lhs.x * k, lhs.y * k, lhs.z * k);
 }
 
 extern "C" __device__
-sp4cuda sp_divide(sp4cuda lhs, double a)
+sp4cuda sp_divide(sp4cuda lhs, float a)
 {
 	return sp_sp(lhs.x / a, lhs.y / a, lhs.z / a);
 }
 
 extern "C" __device__
-sp4cuda sp_multiple2(double k, sp4cuda rhs)
+sp4cuda sp_multiple2(float k, sp4cuda rhs)
 {
 	return sp_sp(k * rhs.x, k * rhs.y, k * rhs.z);
 }
@@ -81,7 +75,7 @@ sp4cuda sp_multiple2(double k, sp4cuda rhs)
 extern "C" __device__
 sp4cuda sp_e(sp4cuda lhs)
 {
-	double r = sqrt(lhs.x * lhs.x + lhs.y * lhs.y + lhs.z * lhs.z);
+	float r = sqrtf(lhs.x * lhs.x + lhs.y * lhs.y + lhs.z * lhs.z);
 	return sp_sp(lhs.x / r, lhs.y / r, lhs.z / r);
 }
 

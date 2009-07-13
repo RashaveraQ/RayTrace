@@ -15,7 +15,7 @@ void Cone::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Mat
 	POINT	P[COUNT];
 
 	for (int i = 0; i < COUNT; i++) {
-		double th = 6.28 * (double)i / COUNT;
+		float th = 6.28f * (float)i / COUNT;
 		P[i] = sp(m * sp(cos(th), 1, sin(th))).getPOINT(size);
 	}
 	pDC->Polygon(P, COUNT);
@@ -45,7 +45,7 @@ void Cone::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 
 		int i;
 		for (i = 0; i < COUNT; i++) {
-			double th = 6.28 * (double)i / COUNT;
+			float th = 6.28f * (float)i / COUNT;
 			sp p = m * sp(cos(th), 0, sin(th));
 			pVertices[i].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 			pVertices[i].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
@@ -62,7 +62,7 @@ void Cone::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 		}
 		for (int i = 0; i < LINES; i++) {
 			pVertices[2*i] = pVertices[0];
-			double th = 6.28 * (double)(i)/ LINES;
+			float th = 6.28f * (float)(i)/ LINES;
 			sp p = m * sp(cos(th), 0, sin(th));
 			pVertices[2*i+1].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 			pVertices[2*i+1].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
@@ -98,7 +98,7 @@ BOOL Cone::GetInfo(const sp& K, const sp& L, Info& info) const
 		if (K.y >= 0)
 			return FALSE;
 
-		double t = (1 - L.y) / K.y;
+		float t = (1 - L.y) / K.y;
 
 		sp p = K*t + L;
 
@@ -107,7 +107,7 @@ BOOL Cone::GetInfo(const sp& K, const sp& L, Info& info) const
 			info.Vertical = sp(0,1,0);
 			info.Distance = t * sqrt(K*K);
 			info.isEnter = 1;
-			info.Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
+			info.Material = GetPixel(.5f*(p.x+1),.5f*(p.z+1)).getMaterial();
 			info.pNode = this;
 			info.Refractive = m_Refractive;
 
@@ -115,7 +115,7 @@ BOOL Cone::GetInfo(const sp& K, const sp& L, Info& info) const
 		}
 	}
 
-	double	a, b, c, d, t, t1, t2;
+	float	a, b, c, d, t, t1, t2;
 
 	c = K.x * L.y - K.y * L.x, c *= c, d = c;
 	c = K.z * L.y - K.y * L.z, c *= c, d += c;

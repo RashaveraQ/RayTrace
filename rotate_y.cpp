@@ -1,8 +1,8 @@
 #include "stdafx.h"
 
-rotate_y::rotate_y( double angle ) : matrix( 4, 4 )
+rotate_y::rotate_y( float angle ) : matrix( 4, 4 )
 {
-	double	th = angle / 180.0 * M_PI;
+	float	th = angle / 180.0 * M_PI;
 
 	m_data[0][0] = cos(th);
 	m_data[0][2] = sin(th);

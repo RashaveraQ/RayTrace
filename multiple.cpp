@@ -18,7 +18,7 @@ BOOL Multiple::IsInside(const sp& L) const
 BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info) const
 {
 	Info	tmp;
-	double	l = -1;
+	float	l = -1;
 	int		i, j, n = -1;
 	BOOL	flag;
 

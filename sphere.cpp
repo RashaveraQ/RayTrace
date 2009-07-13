@@ -21,14 +21,14 @@ void Sphere::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& M
 	POINT	P[50];
 
 	int i, j;
-	double th, ph;
+	float th, ph;
 
 	sp p0 = m * sp(0,0,0);
 
 	for (i = 0; i < 5; i++ ) {
 		for (j = 0; j < 50; j++ ) {
-			th = 3.14 * (double)i / 5;
-			ph = 6.28 * (double)j / 50;
+			th = 3.14 * (float)i / 5;
+			ph = 6.28 * (float)j / 50;
 			sp p = m * sp(cos(th) * sin(ph), cos(ph), sin(th) * sin(ph));
 			P[j] = p.getPOINT(size);
 		}
@@ -37,8 +37,8 @@ void Sphere::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& M
 	
 	for (i = 0; i < 5; i++ ) {
 		for (j = 0; j < 50; j++ ) {
-			ph = 3.14 * (double)i / 5;
-			th = 6.28 * (double)j / 50;
+			ph = 3.14 * (float)i / 5;
+			th = 6.28 * (float)j / 50;
 			sp p = m * sp(cos(th) * sin(ph), cos(ph), sin(th) * sin(ph));
 			P[j] = p.getPOINT(size);
 		}
@@ -63,8 +63,8 @@ void Sphere::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometr
 		int i;
 		for (i = 0; i < 5; i++) {
 			for (int j = 0; j < 50; j++) {
-				double th = 3.14 * (double)i / 5;
-				double ph = 6.28 * (double)j / 50;
+				float th = 3.14 * (float)i / 5;
+				float ph = 6.28 * (float)j / 50;
 				sp p = m * sp(cos(th)*sin(ph), cos(ph), sin(th)*sin(ph));
 				pVertices[50*i+j].position = pVertices[50*i+j].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 			}
@@ -72,8 +72,8 @@ void Sphere::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometr
 		
 		for (i = 0; i < 5; i++) {
 			for (int j = 0; j < 50; j++) {
-				double ph = 3.14 * (double)i / 5;
-				double th = 6.28 * (double)j / 50;
+				float ph = 3.14 * (float)i / 5;
+				float th = 6.28 * (float)j / 50;
 				sp p = m * sp(cos(th)*sin(ph), cos(ph), sin(th)*sin(ph));
 				pVertices[250+50*i+j].position = pVertices[250+50*i+j].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 			}
@@ -120,18 +120,18 @@ BOOL Sphere::IsInside(const sp& L) const
 
 BOOL Sphere::GetInfo(const sp& K, const sp& L, Info& info) const
 {
-	double	a = K * K;
-	double	b = K * L;
-	double	c = L * L - 1.0; 
+	float	a = K * K;
+	float	b = K * L;
+	float	c = L * L - 1.0; 
 
-	double	bb_ac = b*b - a*c;
+	float	bb_ac = b*b - a*c;
 
 	if (bb_ac < 0)
 		return FALSE;
 
-	double	t;
-	double	t1 = (-b + sqrt(bb_ac)) / a;
-	double	t2 = (-b - sqrt(bb_ac)) / a;
+	float	t;
+	float	t1 = (-b + sqrt(bb_ac)) / a;
+	float	t2 = (-b - sqrt(bb_ac)) / a;
 
 	info.isEnter = 0;
 	if (t1 > 0) {
@@ -150,7 +150,7 @@ BOOL Sphere::GetInfo(const sp& K, const sp& L, Info& info) const
 	info.Cross = info.Vertical = K * t + L;
 	info.Distance = t * sqrt(K * K);
 
-	double x,y,z, th, phy;
+	float x,y,z, th, phy;
 
 	x = info.Vertical.x;
 	y = info.Vertical.y;

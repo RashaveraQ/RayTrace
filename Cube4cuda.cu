@@ -14,7 +14,7 @@ void GetInfo_Cube(const Task& task, const sp& K, const sp& L, Info4cuda& info)
 	}
 
 	int		i, j, k;
-	double	T[6], t1, t;
+	float	T[6], t1, t;
 	sp		c;
 
 	// ‘S‚Ä‚Ì–Ê‚Ü‚Å‚Ì‹——£‚ğ‹‚ß‚éB

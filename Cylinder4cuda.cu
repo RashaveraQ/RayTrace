@@ -7,7 +7,7 @@ void GetInfo_Cylinder(const Task& task, const sp& K, const sp& L, Info4cuda& inf
 			return;
 		}
 
-		double t = -(1 + L.y) / K.y;
+		float t = -(1 + L.y) / K.y;
 		sp	p = K * t + L;
 
 		if (p.x * p.x + p.z * p.z <= 1) {
@@ -35,7 +35,7 @@ void GetInfo_Cylinder(const Task& task, const sp& K, const sp& L, Info4cuda& inf
 			return;
 		}
 
-		double t = (1 - L.y) / K.y;
+		float t = (1 - L.y) / K.y;
 
 		sp	p = K*t+L;
 
@@ -58,7 +58,7 @@ void GetInfo_Cylinder(const Task& task, const sp& K, const sp& L, Info4cuda& inf
 		}
 	}
 
-	double	a, b, c, d, t, t1, t2;
+	float	a, b, c, d, t, t1, t2;
 
 	c = K.x * L.z - K.z * L.x;
 	c *= c;

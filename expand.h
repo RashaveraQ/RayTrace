@@ -5,7 +5,7 @@
 
 struct	expand : public matrix
 {
-	expand( double r = 1.0 );
+	expand( float r = 1.0 );
 };
 
 #endif

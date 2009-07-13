@@ -147,5 +147,5 @@ void Gathering::MakeTask(const matrix& M) const
 		}
 	}
 	task.data.gathering.member = m_Member;
-	AddTask(task);
+	task_[taskIndex_++] = task;
 }

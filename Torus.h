@@ -10,8 +10,8 @@ class Torus : public Node
 protected:
 	DECLARE_SERIAL(Torus)
 private:
-	double	m_R;
-	double	m_r;
+	float	m_R;
+	float	m_r;
 public:
 	// コンストラクタ
 	Torus(const CRayTraceDoc* const pDoc = 0, const char* const Name = "Torus", const sp Color = sp(255,255,255));

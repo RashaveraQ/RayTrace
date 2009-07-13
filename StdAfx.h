@@ -50,8 +50,6 @@
 #include <d3dx9.h>
 #include "cutil4win.h"
 
-#define TARGET extern "C"
-
 struct CUSTOMVERTEX
 {
     D3DXVECTOR3 position; // The 3D position for the vertex

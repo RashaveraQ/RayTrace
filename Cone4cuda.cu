@@ -6,7 +6,7 @@ void GetInfo_Cone(const Task& task, const sp& K, const sp& L, Info4cuda& info)
 			info.valid = false;
 			return;
 		}
-		double t = (1 - L.y) / K.y;
+		float t = (1 - L.y) / K.y;
 		sp p = K*t + L;
 		if (p.x * p.x + p.z * p.z <= 1) {
 			info.Cross_x = p.x;
@@ -28,7 +28,7 @@ void GetInfo_Cone(const Task& task, const sp& K, const sp& L, Info4cuda& info)
 		}
 	}
 
-	double	a, b, c, d, t, t1, t2;
+	float	a, b, c, d, t, t1, t2;
 	c = K.x * L.y - K.y * L.x, c *= c, d = c;
 	c = K.z * L.y - K.y * L.z, c *= c, d += c;
 	c = K.x * L.z - K.z * L.x, c *= c, d -= c;

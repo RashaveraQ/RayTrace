@@ -1,11 +1,7 @@
-#ifndef TARGET
-#define TARGET
-#endif	// TARGET
-
 #include "matrix4cuda.h"
 
 extern "C" __device__ __host__
-matrix4cuda matrix_matrix(int w, int h, double d[4][4])
+matrix4cuda matrix_matrix(int w, int h, float d[4][4])
 {
 	matrix4cuda ans;
 
@@ -63,7 +59,7 @@ matrix4cuda matrix_matrix2(matrix4cuda Matrix)
 }
 
 extern "C" __device__
-matrix4cuda matrix_matrix3(sp4cuda Sp, double d)
+matrix4cuda matrix_matrix3(sp4cuda Sp, float d)
 {
 	matrix4cuda ans;
 	
@@ -103,7 +99,7 @@ matrix4cuda matrix_plus(matrix4cuda lhs, matrix4cuda rhs)
 }
 
 extern "C" __device__
-matrix4cuda matrix_scalar_multiple(matrix4cuda lhs, double k)
+matrix4cuda matrix_scalar_multiple(matrix4cuda lhs, float k)
 {
 	matrix4cuda ans = matrix_matrix1(lhs.m_Height, lhs.m_Width);
 
@@ -115,7 +111,7 @@ matrix4cuda matrix_scalar_multiple(matrix4cuda lhs, double k)
 }
 
 extern "C" __device__
-matrix4cuda matrix_divide(matrix4cuda lhs, double k)
+matrix4cuda matrix_divide(matrix4cuda lhs, float k)
 {
 	matrix4cuda ans = matrix_matrix1(lhs.m_Height, lhs.m_Width);
 
@@ -133,7 +129,7 @@ matrix4cuda matrix_multiple(matrix4cuda lhs, matrix4cuda rhs)
 
 	for (int i = 0; i < ans.m_Height; i++) {
 		for (int j = 0; j < ans.m_Width; j++) {
-			double data = 0.0;
+			float data = 0.0;
 			for (int k = 0; k < lhs.m_Width; k++)
 				data += lhs.m_data[i][k] * rhs.m_data[k][j];
 			ans.m_data[i][j] = data;
@@ -144,9 +140,9 @@ matrix4cuda matrix_multiple(matrix4cuda lhs, matrix4cuda rhs)
 }
 
 extern "C" __device__
-double matrix_M(matrix4cuda in, int gyo, int retu)
+float matrix_M(matrix4cuda in, int gyo, int retu)
 {
-	double ans = 0;
+	float ans = 0;
 
 	switch (retu) {
 	case 1:
@@ -246,9 +242,9 @@ double matrix_M(matrix4cuda in, int gyo, int retu)
 }
 
 extern "C" __device__
-double matrix_d(matrix4cuda in)
+float matrix_d(matrix4cuda in)
 {
-	double	ans = 0;
+	float	ans = 0;
 
 	switch (in.m_Height)	{
 	case 2:
@@ -298,8 +294,11 @@ matrix4cuda matrix_Inv(matrix4cuda in)
 {
 	matrix4cuda	mat = matrix_matrix1(in.m_Width, in.m_Height);
 
-	double	m;
-	double	A = matrix_d(in);
+	float	m;
+	float	A = matrix_d(in);
+
+	if (A == 0.f)
+		return mat;
 
 	int	gyo, retu;
 

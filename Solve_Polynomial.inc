@@ -3,34 +3,31 @@
 
 #define ENOUGH_SMALL 0.00001
 
-TARGET
-static double func(int d, double *k, double x)
+static float func(int d, float *k, float x)
 {
 	int		i;
-	double	ans = 0;
+	float	ans = 0;
 
 	for ( i = 0; i <= d; i++ ) ans += k[i] * pow(x,i);
 
 	return ans;
 }
 
-TARGET
 static int compare( const void *arg1, const void *arg2 )
 {
-	double *p1, *p2;
+	float *p1, *p2;
 
-	p1 = (double*)arg1;
-	p2 = (double*)arg2;
+	p1 = (float*)arg1;
+	p2 = (float*)arg2;
 
 	if ( *p1 == *p2 ) return 0;
 	else if ( *p1 > *p2 ) return 1;
 	else return -1;
 }
 
-TARGET
-static double walk(int d, double *k, double min, double max)
+static float walk(int d, float *k, float min, float max)
 {
-	double a, b, f, g, x, y;
+	float a, b, f, g, x, y;
 
 	long l = 0;
 
@@ -75,12 +72,11 @@ static double walk(int d, double *k, double min, double max)
 	return x;
 }
 
-TARGET
-int Solve_Polynomial(int d, double *k, double min, double max, double *r)
+int Solve_Polynomial(int d, float *k, float min, float max, float *r)
 {
 	int		i, j, N, ans;
-	double	D;
-//	double	*K, *R, *y;
+	float	D;
+//	float	*K, *R, *y;
 
 	switch ( d )
 	{
@@ -119,13 +115,13 @@ int Solve_Polynomial(int d, double *k, double min, double max, double *r)
 		return 0;
 	}
 
-//	K = new double [2*d];
-//	R = new double [2*d+4];
-//	y = new double [2*d+4];
+//	K = new float [2*d];
+//	R = new float [2*d+4];
+//	y = new float [2*d+4];
 #define MAX_D 4
-	double K[2 * MAX_D];
-	double R[2 * MAX_D + 4];
-	double y[2 * MAX_D + 4];
+	float K[2 * MAX_D];
+	float R[2 * MAX_D + 4];
+	float y[2 * MAX_D + 4];
 		
 	for ( i = 1; i <= d; i++ )
 		K[i-1] = i * k[i] / k[d] / d;
@@ -145,7 +141,7 @@ int Solve_Polynomial(int d, double *k, double min, double max, double *r)
 		r[ans++] = walk(d,k,R[i],R[i+1]);
 	}
 
-	qsort((void*)r, (size_t)ans, sizeof( double ), compare );
+	qsort((void*)r, (size_t)ans, sizeof( float ), compare );
 
 	for ( i = 0; i < ans - 1; i++ )
 	{

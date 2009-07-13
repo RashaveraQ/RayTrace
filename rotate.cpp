@@ -1,20 +1,20 @@
 #include "stdafx.h"
 
-rotate::rotate(	double nx, double ny, double nz, double angle )
+rotate::rotate(	float nx, float ny, float nz, float angle )
 	: matrix( 4, 4 )
 {
 	init( nx, ny, nz, angle );
 }
 
-rotate::rotate(sp axis, double angle) : matrix(4,4)
+rotate::rotate(sp axis, float angle) : matrix(4,4)
 {
 	init( axis.x, axis.y, axis.z, angle);
 }
 
-void	rotate::init( double nx, double ny, double nz, double angle )
+void	rotate::init( float nx, float ny, float nz, float angle )
 {
-	double	th1, th2;
-	double	r;
+	float	th1, th2;
+	float	r;
 
 	th1 = th2 = 0.0;
 

@@ -106,7 +106,7 @@ BOOL CRayTraceDoc::OnOpenDocument(LPCTSTR lpszPathName)
 void CRayTraceDoc::UpdateAllViews(CView* pSender, LPARAM lHint, CObject* pHint)
 {
 	// É^ÉXÉNÇÃèâä˙âª
-	ClearTask();
+	taskIndex_ = 0;
 
 	m_Root.MakeTask(matrix());
 

@@ -67,7 +67,7 @@ CRayTraceView::CRayTraceView()
 	m_View.right  = 10;
 	m_View.top    = -10;
 	m_View.bottom = 10;
-	m_ViewMode = eWireFrame; // eRayTraceByCuda; //eD3DFlatShading;
+	m_ViewMode = eRayTraceByCuda; // eWireFrame; //eD3DFlatShading;
 	m_Alt = FALSE;
 	m_AltStart.x = m_AltStart.y = 0;
 	m_SelectedNode = NULL;
@@ -154,8 +154,8 @@ void CRayTraceView::OnDraw(CDC* pDC)
 	case eRayTraceByCuda:
 	{
 		// 色配列のメモリ領域確保(サイズが変化した時に確保すべき
-		size_t size = m_ClientSize.cx * m_ClientSize.cy * sizeof(COLORREF);
-		COLORREF* colorrefs = (COLORREF*)malloc(size);
+		size_t size = m_ClientSize.cx * m_ClientSize.cy * sizeof(unsigned long);
+		unsigned long* colorrefs = (unsigned long*)malloc(size);
 
 		for (int y = 0; y < m_ClientSize.cy; y++)
 			for (int x = 0; x < m_ClientSize.cx; x++)
@@ -191,9 +191,9 @@ void CRayTraceView::OnDraw(CDC* pDC)
 				GetSample(pass & 127, xs, ys);
 
 				// Get the pixel scale and offset
-				double s = scale / (float)imageW;
-				double x = (xs - (double)imageW * 0.5f) * s + xOff;
-				double y = (ys - (double)imageH * 0.5f) * s + yOff;
+				float s = scale / (float)imageW;
+				float x = (xs - (float)imageW * 0.5f) * s + xOff;
+				float y = (ys - (float)imageH * 0.5f) * s + yOff;
 
 				// Run the mandelbrot generator
 				if (pass && !startPass) // Use the adaptive sampling version when animating.
@@ -209,7 +209,7 @@ void CRayTraceView::OnDraw(CDC* pDC)
 			//CUDA_SAFE_CALL(cudaGLUnmapBufferObject(gl_PBO));
 		}
 #else
-		DoCuda(colorrefs, m_ClientSize.cx, m_ClientSize.cy, (matrix4cuda)m, (sp4cuda)GetDocument()->m_Light);
+		DoCuda(colorrefs, m_ClientSize.cx, m_ClientSize.cy, (matrix4cuda)m, (sp4cuda)GetDocument()->m_Light, taskIndex_, task_);
 		cudaThreadSynchronize();
 #endif
 
@@ -378,8 +378,8 @@ int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	
 void CRayTraceView::GetVectorFromPoint(sp& k, sp& l, int px, int py)
 {
-	double rx = (m_View.right - m_View.left) * px / m_ClientSize.cx + m_View.left;
-	double ry = (m_View.bottom - m_View.top) * py / m_ClientSize.cx + m_View.top;
+	float rx = (m_View.right - m_View.left) * px / m_ClientSize.cx + m_View.left;
+	float ry = (m_View.bottom - m_View.top) * py / m_ClientSize.cx + m_View.top;
 
 	k = sp(0.01 * rx / (m_View.right - m_View.left), 0.01 * ry / (m_View.bottom - m_View.top), 0.01);
 	l = sp(rx, ry, -20);

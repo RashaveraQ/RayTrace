@@ -9,22 +9,22 @@ struct	matrix
 {
 	int		m_Width;
 	int		m_Height;
-	double	m_data[4][4];
+	float	m_data[4][4];
 	matrix(int=4,int=4);
 	matrix(const matrix&);
-	matrix(const sp&, double d = 1.0);
+	matrix(const sp&, float d = 1.0);
 	int	get_width() const { return m_Width; }
 	int	get_height() const { return m_Height; }
 	matrix	operator=(const matrix&);
 	matrix	operator+(const matrix&) const;
 	matrix	operator-(const matrix&) const;
 	matrix	operator*(const matrix&) const;
-	matrix	operator*(double) const;
-	matrix	operator/(double) const;
-	double	d() const;			// 行列式
-	double	M(int,int) const;	// 小行列式
+	matrix	operator*(float) const;
+	matrix	operator/(float) const;
+	float	d() const;			// 行列式
+	float	M(int,int) const;	// 小行列式
 	matrix	Inv() const;		// 逆行列
-	double* operator[](int x) { return m_data[x]; }
+	float* operator[](int x) { return m_data[x]; }
 	operator matrix4cuda() { return matrix_matrix(m_Width, m_Height, m_data); }
 };
 
@@ -63,7 +63,7 @@ inline matrix::matrix(const matrix& Matrix)
 			m_data[i][j] = Matrix.m_data[i][j];
 }
 
-inline matrix::matrix(const sp& Sp, double d)
+inline matrix::matrix(const sp& Sp, float d)
 {
 	m_Width = 1;
 	m_Height = 4;
@@ -104,7 +104,7 @@ inline matrix matrix::operator+(const matrix& Matrix) const
 	return ans;
 }
 
-inline matrix matrix::operator*(double k) const
+inline matrix matrix::operator*(float k) const
 {
 	matrix	ans( m_Height, m_Width );
 
@@ -115,7 +115,7 @@ inline matrix matrix::operator*(double k) const
 	return ans;
 }
 
-inline matrix matrix::operator/(double k) const
+inline matrix matrix::operator/(float k) const
 {
 	matrix	ans( m_Height, m_Width );
 
@@ -132,7 +132,7 @@ inline matrix matrix::operator*(const matrix& Matrix) const
 
 	for (int i = 0; i < ans.m_Height; i++) {
 		for (int j = 0; j < ans.m_Width; j++) {
-			double data = 0.0;
+			float data = 0.0;
 			for ( int k = 0; k < m_Width; k++ )
 				data += m_data[i][k] * Matrix.m_data[k][j];
 			ans.m_data[i][j] = data;
@@ -142,9 +142,9 @@ inline matrix matrix::operator*(const matrix& Matrix) const
 	return ans;
 }
 
-inline double matrix::M( int gyo, int retu ) const
+inline float matrix::M( int gyo, int retu ) const
 {
-	double ans = 0;
+	float ans = 0;
 
 	switch ( retu )
 	{
@@ -248,9 +248,9 @@ inline double matrix::M( int gyo, int retu ) const
 	return ans;
 }
 
-inline double matrix::d() const
+inline float matrix::d() const
 {
-	double	ans = 0;
+	float	ans = 0;
 
 	switch ( m_Height )
 	{
@@ -300,8 +300,8 @@ inline matrix matrix::Inv() const
 {
 	matrix	mat( m_Width, m_Height );
 
-	double	m;
-	double	A = d();
+	float	m;
+	float	A = d();
 
 	int	gyo, retu;
 

@@ -24,12 +24,12 @@ void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Ma
 	POINT	P[B];
 
 	int i, j;
-	double th, ph;
+	float th, ph;
 
 	for (i = 0; i < A; i++) {
 		for (j = 0; j < B; j++) {
-			th = 6.28 * (double)i / A;
-			ph = 6.28 * (double)j / B;
+			th = 6.28f * (float)i / A;
+			ph = 6.28f * (float)j / B;
 			sp p = m * sp((m_R+m_r*cos(ph))*cos(th), (m_R+m_r*cos(ph))*sin(th), m_r*sin(ph));
 			P[j] = p.getPOINT(size);
 		}
@@ -38,8 +38,8 @@ void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Ma
 	
 	for (i = 0; i < A; i++) {
 		for (j = 0; j < B; j++) {
-			ph = 6.28 * (double)i / A;
-			th = 6.28 * (double)j / B;
+			ph = 6.28f * (float)i / A;
+			th = 6.28f * (float)j / B;
 			sp p = m * sp((m_R+m_r*cos(ph))*cos(th), (m_R+m_r*cos(ph))*sin(th), m_r*sin(ph));
 			P[j] = p.getPOINT(size);
 		}
@@ -63,12 +63,12 @@ void Torus::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry
 
 
 		int i, j;
-		double th, ph;
+		float th, ph;
 
 		for (i = 0; i < A; i++) {
 			for (j = 0; j < B; j++) {
-				th = 6.28 * (double)i / A;
-				ph = 6.28 * (double)j / B;
+				th = 6.28 * (float)i / A;
+				ph = 6.28 * (float)j / B;
 				sp p = m * sp((m_R+m_r*cos(ph))*cos(th), (m_R+m_r*cos(ph))*sin(th), m_r*sin(ph));
 				pVertices[B*i+j].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 				pVertices[B*i+j].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
@@ -77,8 +77,8 @@ void Torus::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry
 		
 		for (i = 0; i < A; i++) {
 			for (j = 0; j < B; j++) {
-				ph = 6.28 * (double)i / A;
-				th = 6.28 * (double)j / B;
+				ph = 6.28 * (float)i / A;
+				th = 6.28 * (float)j / B;
 				sp p = m * sp((m_R+m_r*cos(ph))*cos(th), (m_R+m_r*cos(ph))*sin(th), m_r*sin(ph));
 				pVertices[A*B+B*i+j].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 				pVertices[A*B+B*i+j].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
@@ -106,7 +106,7 @@ void Torus::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry
 
 BOOL Torus::IsInside(const sp& L) const
 {
-	double	d;
+	float	d;
 
 	d = m_R - sqrt(L.x * L.x + L.y * L.y);
 	d *= d;
@@ -116,14 +116,14 @@ BOOL Torus::IsInside(const sp& L) const
 
 BOOL Torus::GetInfo(const sp& K, const sp& L, Info& info) const
 {
-	int Solve_Polynomial(int d, double *k, double min, double max, double *r);
+	int Solve_Polynomial(int d, float *k, float min, float max, float *r);
 
-	double	R2 = m_R * m_R;
-	double	a = K * K;
-	double	b = 2 * (K * L);
-	double	c = L * L + R2 - m_r * m_r;
+	float	R2 = m_R * m_R;
+	float	a = K * K;
+	float	b = 2 * (K * L);
+	float	c = L * L + R2 - m_r * m_r;
 
-	double	k[20], r[50];
+	float	k[20], r[50];
 	int		n;
 
 	k[4] = a * a;
@@ -141,7 +141,7 @@ BOOL Torus::GetInfo(const sp& K, const sp& L, Info& info) const
 		return FALSE;
 
 	sp		p;
-	double	th;
+	float	th;
 
 	info.isEnter = IsInside(L) == TRUE ? 1 : 0;
 	info.Cross = p = K * r[0] + L;
@@ -155,7 +155,7 @@ BOOL Torus::GetInfo(const sp& K, const sp& L, Info& info) const
 
 	info.Distance = r[0] * sqrt(K * K);
 
-	double x,y,z, phy;
+	float x,y,z, phy;
 
 	x = info.Vertical.x;
 	y = info.Vertical.y;
@@ -211,5 +211,5 @@ void Torus::MakeTask(const matrix& M) const
 	Task task = getTask(M);
 	task.data.torus.R = m_R;
 	task.data.torus.r = m_r;
-	AddTask(task);
+	task_[taskIndex_++] = task;
 }

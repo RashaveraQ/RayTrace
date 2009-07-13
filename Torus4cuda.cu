@@ -1,23 +1,19 @@
-#ifndef TARGET
-#define TARGET extern "C"
-#endif // TARGET
+include "Solve_Polynomial.inc"
 
-#include "Solve_Polynomial.inc"
-
-__device__
+extern "C" __device__
 void GetInfo_Torus(const Task& task, const sp& K, const sp& L, Info4cuda& info)
 {
-	int Solve_Polynomial(int d, double *k, double min, double max, double *r);
+	int Solve_Polynomial(int d, float *k, float min, float max, float *r);
 
-	double m_R = task.data.torus.R;
-	double m_r = task.data.torus.r;
+	float m_R = task.data.torus.R;
+	float m_r = task.data.torus.r;
 
-	double	R2 = m_R * m_R;
-	double	a = K * K;
-	double	b = 2 * (K * L);
-	double	c = L * L + R2 - m_r * m_r;
+	float	R2 = m_R * m_R;
+	float	a = K * K;
+	float	b = 2 * (K * L);
+	float	c = L * L + R2 - m_r * m_r;
 
-	double	k[20], r[50];
+	float	k[20], r[50];
 	int		n;
 
 	k[4] = a * a;
@@ -33,9 +29,9 @@ void GetInfo_Torus(const Task& task, const sp& K, const sp& L, Info4cuda& info)
 		return;
 	}
 
-	double	th;
+	float	th;
 
-	double d = m_R - sqrt(L.x * L.x + L.y * L.y);
+	float d = m_R - sqrt(L.x * L.x + L.y * L.y);
 	d *= d;
 
 	info.isEnter = (m_r * m_r <= d + L.z * L.z);
@@ -58,7 +54,7 @@ void GetInfo_Torus(const Task& task, const sp& K, const sp& L, Info4cuda& info)
 
 	info.Distance = r[0] * sqrt(K * K);
 
-	double x,y,z, phy;
+	float x,y,z, phy;
 
 	x = info.Vertical_x;
 	y = info.Vertical_y;
