@@ -62,6 +62,7 @@
 #define ID_ADD_POLYGON                  32785
 #define ID_TEXTURE                      32786
 #define IDC_VIEW_WIREFRAME              32787
+#define ID_ADD_CORN                     32788
 #define ID_VIEW_RAYTRACE                32788
 #define ID_VIEW_WIREFRAME               32789
 #define ID_ADD_CYLINDER                 32790
@@ -71,7 +72,6 @@
 #define ID_VIEW_FLATSHADING             32794
 #define ID_VIEW_GOURAUDSHADING          32795
 #define ID_ADD_TEAPOT                   32796
-#define ID_VIEW_RAYTRACE_BY_CUDA        32799
 
 // Next default values for new objects
 // 
@@ -79,7 +79,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        138
-#define _APS_NEXT_COMMAND_VALUE         32800
+#define _APS_NEXT_COMMAND_VALUE         32798
 #define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

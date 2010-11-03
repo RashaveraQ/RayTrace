@@ -6,7 +6,6 @@ struct	matrix;
 
 class Cube : public Node
 {
-	node_type getNodeType() const { return CUBE; }
 protected:
 	DECLARE_SERIAL(Cube)
 public:

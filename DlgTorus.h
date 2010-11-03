@@ -19,8 +19,8 @@ public:
 // ダイアログ データ
 	//{{AFX_DATA(CDlgTorus)
 	enum { IDD = IDD_TORUS };
-	float	m_R;
-	float	m_r;
+	double	m_R;
+	double	m_r;
 	//}}AFX_DATA
 
 

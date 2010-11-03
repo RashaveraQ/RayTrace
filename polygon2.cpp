@@ -41,18 +41,18 @@ BOOL	Polygon2::IsInside( const sp& L ) const
 
 BOOL Polygon2::GetInfo(const sp& K, const sp& L, Info& info) const
 {
-	float	a = K * K;
-	float	b = K * L;
-	float	c = L * L - 1.0; 
+	double	a = K * K;
+	double	b = K * L;
+	double	c = L * L - 1.0; 
 
-	float	bb_ac = b*b - a*c;
+	double	bb_ac = b*b - a*c;
 
 	if (bb_ac < 0)
 		return FALSE;
 
-	float	t;
-	float	t1 = (-b + sqrt(bb_ac)) / a;
-	float	t2 = (-b - sqrt(bb_ac)) / a;
+	double	t;
+	double	t1 = (-b + sqrt(bb_ac)) / a;
+	double	t2 = (-b - sqrt(bb_ac)) / a;
 
 	info.isEnter = 0;
 	if (t1 > 0)

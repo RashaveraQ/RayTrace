@@ -5,11 +5,11 @@
 
 struct	move : public matrix
 {
-	move( float x = 0.0, float y = 0.0, float z = 0.0 ) : matrix( 4, 4 )
+	move( double x = 0.0, double y = 0.0, double z = 0.0 ) : matrix( 4, 4 )
 	{
 		init( x, y, z );
 	}
-	void	init( float x, float y, float z )
+	void	init( double x, double y, double z )
 	{
 		m_data[0][3] = x;
 		m_data[1][3] = y;

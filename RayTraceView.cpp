@@ -52,8 +52,6 @@ BEGIN_MESSAGE_MAP(CRayTraceView, CView)
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, CView::OnFilePrintPreview)
-	ON_COMMAND(ID_VIEW_RAYTRACE_BY_CUDA, &CRayTraceView::OnViewRaytraceByCuda)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_RAYTRACE_BY_CUDA, &CRayTraceView::OnUpdateViewRaytraceByCuda)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -67,7 +65,7 @@ CRayTraceView::CRayTraceView()
 	m_View.right  = 10;
 	m_View.top    = -10;
 	m_View.bottom = 10;
-	m_ViewMode = eRayTraceByCuda; // eWireFrame; //eD3DFlatShading;
+	m_ViewMode = eD3DFlatShading; //eWireFrame;
 	m_Alt = FALSE;
 	m_AltStart.x = m_AltStart.y = 0;
 	m_SelectedNode = NULL;
@@ -76,31 +74,6 @@ CRayTraceView::CRayTraceView()
 	m_pd3dDevice = NULL;
 	m_vEyePt = D3DXVECTOR3(0.0f, 5.0f, -30.0f);
 	m_vLookatPt = D3DXVECTOR3(0.0f, 10.0f, 0.0f);
-
-    imageW = 800;
-	imageH = 600;
-    colors.w = 0;
-    colors.x = 3;
-    colors.y = 5;
-    colors.z = 7;
-
-	// Starting iteration limit
-	crunch = 512;
-
-	// Starting position and scale
-	xOff = -0.5;
-	yOff = 0.0;
-	scale = 3.2;
-
-	// Starting stationary position and scale motion
-	xdOff = 0.0;
-	ydOff = 0.0;
-	dscale = 1.0;
-
-	// Starting animation frame and anti-aliasing pass 
-	animationFrame = 0;
-	animationStep = 0;
-	pass = 0;
 }
 
 CRayTraceView::~CRayTraceView()
@@ -120,105 +93,10 @@ BOOL CRayTraceView::PreCreateWindow(CREATESTRUCT& cs)
 
 /////////////////////////////////////////////////////////////////////////////
 // CRayTraceView クラスの描画
-// Get a sub-pixel sample location
-void CRayTraceView::GetSample(int sampleIndex, float &x, float &y)
-{    
-    static const unsigned char pairData[128][2] = {
-        { 64,  64}, {  0,   0}, {  1,  63}, { 63,   1}, { 96,  32}, { 97,  95}, { 36,  96}, { 30,  31},
-        { 95, 127}, {  4,  97}, { 33,  62}, { 62,  33}, { 31, 126}, { 67,  99}, { 99,  65}, {  2,  34},
-        { 81,  49}, { 19,  80}, {113,  17}, {112, 112}, { 80,  16}, {115,  81}, { 46,  15}, { 82,  79},
-        { 48,  78}, { 16,  14}, { 49, 113}, {114,  48}, { 45,  45}, { 18,  47}, { 20, 109}, { 79, 115},
-        { 65,  82}, { 52,  94}, { 15, 124}, { 94, 111}, { 61,  18}, { 47,  30}, { 83, 100}, { 98,  50},
-        {110,   2}, {117,  98}, { 50,  59}, { 77,  35}, {  3, 114}, {  5,  77}, { 17,  66}, { 32,  13},
-        {127,  20}, { 34,  76}, { 35, 110}, {100,  12}, {116,  67}, { 66,  46}, { 14,  28}, { 23,  93},
-        {102,  83}, { 86,  61}, { 44, 125}, { 76,   3}, {109,  36}, {  6,  51}, { 75,  89}, { 91,  21},
-        { 60, 117}, { 29,  43}, {119,  29}, { 74,  70}, {126,  87}, { 93,  75}, { 71,  24}, {106, 102},
-        {108,  58}, { 89,   9}, {103,  23}, { 72,  56}, {120,   8}, { 88,  40}, { 11,  88}, {104, 120},
-        { 57, 105}, {118, 122}, { 53,   6}, {125,  44}, { 43,  68}, { 58,  73}, { 24,  22}, { 22,   5},
-        { 40,  86}, {122, 108}, { 87,  90}, { 56,  42}, { 70, 121}, {  8,   7}, { 37,  52}, { 25,  55},
-        { 69,  11}, { 10, 106}, { 12,  38}, { 26,  69}, { 27, 116}, { 38,  25}, { 59,  54}, {107,  72},
-        {121,  57}, { 39,  37}, { 73, 107}, { 85, 123}, { 28, 103}, {123,  74}, { 55,  85}, {101,  41},
-        { 42, 104}, { 84,  27}, {111,  91}, {  9,  19}, { 21,  39}, { 90,  53}, { 41,  60}, { 54,  26},
-        { 92, 119}, { 51,  71}, {124, 101}, { 68,  92}, { 78,  10}, { 13, 118}, {  7,  84}, {105,   4}
-    };
-
-    x = (1.0f / 128.0f) * (0.5f + (float)pairData[sampleIndex][0]);
-    y = (1.0f / 128.0f) * (0.5f + (float)pairData[sampleIndex][1]);
-} // GetSample
-
-//extern "C"
 
 void CRayTraceView::OnDraw(CDC* pDC)
 {
 	switch (m_ViewMode) {
-	case eRayTraceByCuda:
-	{
-		// 色配列のメモリ領域確保(サイズが変化した時に確保すべき
-		size_t size = m_ClientSize.cx * m_ClientSize.cy * sizeof(unsigned long);
-		unsigned long* colorrefs = (unsigned long*)malloc(size);
-
-		for (int y = 0; y < m_ClientSize.cy; y++)
-			for (int x = 0; x < m_ClientSize.cx; x++)
-				colorrefs[x + y * m_ClientSize.cx] = RGB(x % 255, y % 255, 0xee);
-
-		matrix m = m_Viewport.getMatrix().Inv();
-#if 0
-		if ((xdOff != 0.0) || (ydOff != 0.0)) {
-			xOff += xdOff;
-			yOff += ydOff;
-			pass = 0;
-		}
-		if (dscale != 1.0) {
-			scale *= dscale;
-			pass = 0;
-		}
-		if (animationStep) {
-			animationFrame -= animationStep;
-			pass = 0;
-		}
-		if (pass < 128) {
-			float timeEstimate;
-			int startPass = pass;
-			//uchar4 *d_dst = NULL;
-			cutResetTimer(hTimer);
-			//CUDA_SAFE_CALL(cudaGLMapBufferObject((void**)&d_dst, gl_PBO));
-
-			// Render anti-aliasing passes until we run out time (60fps approximately)
-			do {
-				float xs, ys;
-
-				// Get the anti-alias sub-pixel sample location
-				GetSample(pass & 127, xs, ys);
-
-				// Get the pixel scale and offset
-				float s = scale / (float)imageW;
-				float x = (xs - (float)imageW * 0.5f) * s + xOff;
-				float y = (ys - (float)imageH * 0.5f) * s + yOff;
-
-				// Run the mandelbrot generator
-				if (pass && !startPass) // Use the adaptive sampling version when animating.
-					RunMandelbrot1(d_dst, imageW, imageH, crunch, x, y, s, colors, pass++, animationFrame);
-				else
-					RunMandelbrot0(d_dst, imageW, imageH, crunch, x, y, s, colors, pass++, animationFrame);
-				RunMandelbrot0(colorrefs, imageW, imageH, crunch, x, y, s, colors, pass++, animationFrame, &m, &GetDocument()->m_Light);
-				cudaThreadSynchronize();
-
-				// Estimate the total time of the frame if one more pass is rendered
-				timeEstimate = 0.001f * cutGetTimerValue(hTimer) * ((float)(pass + 1 - startPass) / (float)(pass - startPass));
-			} while ((pass < 128) && (timeEstimate < 1.0f / 60.0f));
-			//CUDA_SAFE_CALL(cudaGLUnmapBufferObject(gl_PBO));
-		}
-#else
-		DoCuda(colorrefs, m_ClientSize.cx, m_ClientSize.cy, (matrix4cuda)m, (sp4cuda)GetDocument()->m_Light, taskIndex_, task_);
-		cudaThreadSynchronize();
-#endif
-
-		for (int y = 0; y < m_ClientSize.cy; y++)
-			for (int x = 0; x < m_ClientSize.cx; x++)
-				m_MemoryDC.SetPixel(x, y, colorrefs[x + y * m_ClientSize.cx]);
-
-		free(colorrefs);
-	}
 	case eRayTrace:
 		pDC->BitBlt(0, 0, m_ClientSize.cx, m_ClientSize.cy, &m_MemoryDC, 0, 0, SRCCOPY);
 		break;
@@ -378,8 +256,8 @@ int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	
 void CRayTraceView::GetVectorFromPoint(sp& k, sp& l, int px, int py)
 {
-	float rx = (m_View.right - m_View.left) * px / m_ClientSize.cx + m_View.left;
-	float ry = (m_View.bottom - m_View.top) * py / m_ClientSize.cx + m_View.top;
+	double rx = (m_View.right - m_View.left) * px / m_ClientSize.cx + m_View.left;
+	double ry = (m_View.bottom - m_View.top) * py / m_ClientSize.cx + m_View.top;
 
 	k = sp(0.01 * rx / (m_View.right - m_View.left), 0.01 * ry / (m_View.bottom - m_View.top), 0.01);
 	l = sp(rx, ry, -20);
@@ -391,9 +269,6 @@ void CRayTraceView::GetVectorFromPoint(sp& k, sp& l, int px, int py)
 
 void CRayTraceView::OnTimer(UINT nIDEvent) 
 {
-	if (m_ViewMode != eRayTrace)
-		return;
-
 	CRayTraceDoc	*pDoc = GetDocument();
 
 	for (int i = 0; i < 1000; i ++) {
@@ -405,7 +280,8 @@ void CRayTraceView::OnTimer(UINT nIDEvent)
 			m_Job = Go_ahead(m_NowX, m_NowY, m_NowSize, m_StartX, m_StartY, m_ClientSize, START_SQUARE);
 		}
 	}
-	Invalidate(FALSE);
+	if (m_ViewMode == eRayTrace)
+		Invalidate(FALSE);
 }
 
 int CRayTraceView::Go_ahead(int& X, int& Y, int& S, int& X0, int& Y0, CSize& cs, int MAX )
@@ -442,9 +318,6 @@ void CRayTraceView::OnSize(UINT nType, int cx, int cy)
 {
 	m_ClientSize.cx = cx;
 	m_ClientSize.cy = cy;
-    imageW = cx;
-    imageH = cy;
-    pass = 0;
 	
 	if (!m_Iconized && nType != SIZE_MINIMIZED)	{
 		m_MemoryDC.DeleteDC();
@@ -589,12 +462,6 @@ void CRayTraceView::OnViewRaytrace()
 	Invalidate();
 }
 
-void CRayTraceView::OnViewRaytraceByCuda()
-{
-	m_ViewMode = eRayTraceByCuda;
-	Invalidate();
-}
-
 void CRayTraceView::OnViewWireframe()
 {
 	m_ViewMode = eWireFrame;
@@ -623,7 +490,6 @@ void CRayTraceView::OnViewGouraudshading()
 }
 
 void CRayTraceView::OnUpdateViewRaytrace(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eRayTrace); }
-void CRayTraceView::OnUpdateViewRaytraceByCuda(CCmdUI *pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eRayTraceByCuda); }
 void CRayTraceView::OnUpdateViewWireframe(CCmdUI* pCmdUI) {	pCmdUI->SetCheck(m_ViewMode == eWireFrame); }
 void CRayTraceView::OnUpdateViewD3dwireframe(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eD3DWireFrame); }
 void CRayTraceView::OnUpdateViewFlatshading(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eD3DFlatShading); }
@@ -705,7 +571,6 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 	} else {
 		switch (m_ViewMode) {
 		case eRayTrace:
-		case eRayTraceByCuda:
 		case eWireFrame:
 			OnUpdate(0, 0, 0);
 			break;
@@ -772,4 +637,3 @@ void CRayTraceView::OnDestroy()
 		m_pd3dDevice = NULL;
 	}
 }
-

@@ -17,32 +17,32 @@ public:
 // ダイアログ データ
 	//{{AFX_DATA(CDlgMatrix)
 	enum { IDD = IDD_MATRIX };
-	float	m_1_2;
-	float	m_1_3;
-	float	m_1_4;
-	float	m_2_1;
-	float	m_2_2;
-	float	m_2_3;
-	float	m_2_4;
-	float	m_3_1;
-	float	m_3_2;
-	float	m_3_3;
-	float	m_3_4;
-	float	m_4_1;
-	float	m_4_2;
-	float	m_4_3;
-	float	m_4_4;
-	float	m_1_1;
-	float	m_move_x;
-	float	m_move_y;
-	float	m_move_z;
-	float	m_rotate_angle;
-	float	m_rotate_axis_x;
-	float	m_rotate_axis_y;
-	float	m_rotate_axis_z;
-	float	m_scale_x;
-	float	m_scale_y;
-	float	m_scale_z;
+	double	m_1_2;
+	double	m_1_3;
+	double	m_1_4;
+	double	m_2_1;
+	double	m_2_2;
+	double	m_2_3;
+	double	m_2_4;
+	double	m_3_1;
+	double	m_3_2;
+	double	m_3_3;
+	double	m_3_4;
+	double	m_4_1;
+	double	m_4_2;
+	double	m_4_3;
+	double	m_4_4;
+	double	m_1_1;
+	double	m_move_x;
+	double	m_move_y;
+	double	m_move_z;
+	double	m_rotate_angle;
+	double	m_rotate_axis_x;
+	double	m_rotate_axis_y;
+	double	m_rotate_axis_z;
+	double	m_scale_x;
+	double	m_scale_y;
+	double	m_scale_z;
 	//}}AFX_DATA
 
 

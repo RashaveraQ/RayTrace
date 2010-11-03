@@ -1,7 +1,10 @@
 #ifndef __NODE_H
 #define __NODE_H
 
-#include "sp4cuda.h"
+enum node_type 
+{
+	SPHERE = 1, PLANE, PLUS, MINUS, MULTIPLE, CONE, CYLINDER, TORUS, POLYGON, CUBE, TEAPOT
+};
 
 enum eType { eSELECT, eMOVE, eROTATE, eSCALE, ePIVOT_MOVE };
 enum eAxis { eNONE, eX, eY, eZ };
@@ -17,10 +20,10 @@ struct	matrix;
 
 struct fsize
 {
-	float	top;
-	float	left;
-	float	bottom;
-	float	right;
+	double	top;
+	double	left;
+	double	bottom;
+	double	right;
 };
 #define PERSPECTIVE_RATIO 0.1
 
@@ -38,13 +41,13 @@ protected:
 	matrix		m_Pivot;	// マニュピレータの中心点
 	matrix		m_Matrix;
 
-	float		m_Reflect ;		// 反射率
-	float		m_Through ;  	// 透過率
-	float		m_Refractive ;	// 屈折率
+	double		m_Reflect ;		// 反射率
+	double		m_Through ;  	// 透過率
+	double		m_Refractive ;	// 屈折率
 
 	struct tagBoundary {
 		sp		Center;	// 中心
-		float	Radius;	// 半径
+		double	Radius;	// 半径
 		tagBoundary() : Center(), Radius(1) {}
 	} m_Boundary;	// 境界
 
@@ -56,8 +59,6 @@ protected:
 	void updateMatrix() {
 		m_Matrix = m_Move * m_Rotate * m_Scale;
 	}
-	virtual node_type getNodeType() const = 0;
-	Task getTask(const matrix& M) const;
 
 public:
 
@@ -79,16 +80,16 @@ public:
 
 			sp GetColor(const sp& K, const sp& L, int nest = 0) const;
 			BOOL GetInfo2(const sp& K, const sp& L, Info& info) const;
-			sp GetPixel(float x, float y) const;
+			sp GetPixel(double x, double y) const;
 	virtual	BOOL GetInfo(const sp& K, const sp& L, Info& info) const = 0;
 	virtual	BOOL IsInside(const sp& L) const = 0;
 	
-	void Move(eAxis axis, float d);
+	void Move(eAxis axis, double d);
 	void Move(POINT d);
-	void Rotate(eAxis axis, float d);
+	void Rotate(eAxis axis, double d);
 	void Rotate(POINT d);
-	void Scale(eAxis axis, float d);
-	void MovePivot(eAxis axis, float d);
+	void Scale(eAxis axis, double d);
+	void MovePivot(eAxis axis, double d);
 
 	virtual void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
 	virtual bool SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& m) const;
@@ -106,9 +107,6 @@ public:
 	virtual	void Serialize(CArchive& ar);
 
 	matrix getMatrix() { return m_Matrix; }
-
-
-	virtual void MakeTask(const matrix&) const;
 
 	// インプリメンテーション
 	friend CDlgMatrix;

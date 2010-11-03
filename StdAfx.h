@@ -48,7 +48,6 @@
 
 #include <mmsystem.h>
 #include <d3dx9.h>
-#include "cutil4win.h"
 
 struct CUSTOMVERTEX
 {
@@ -71,7 +70,6 @@ typedef CList<Geometry,Geometry&> CListGeometry;
 
 bool InitVertexBuffer(LPDIRECT3DDEVICE9 pd3dDevice, LPDIRECT3DVERTEXBUFFER9& pVB, CUSTOMVERTEX*& pVertices, UINT count);
 
-#include "Task.h"
 #include "move.h"
 #include "expand.h"
 #include "rotate_x.h"
@@ -99,8 +97,6 @@ bool InitVertexBuffer(LPDIRECT3DDEVICE9 pd3dDevice, LPDIRECT3DVERTEXBUFFER9& pVB
 
 //#define _CRTDBG_MAP_ALLOC
 //#include <crtdbg.h>
-
-#include "DoCuda.h"
 
 
 //{{AFX_INSERT_LOCATION}}

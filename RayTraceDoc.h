@@ -20,10 +20,10 @@ protected: // シリアライズ機能のみから作成します。
 public:
 	sp			m_Light;		//	光源の方向ベクトル
 	Plus		m_Root;
-	Task*		d_pTask;		// タスクのCUDAデバイス用ポインタ
+
 // オペレーション
 public:
-	void UpdateAllViews(CView* pSender, LPARAM lHint = 0L, CObject* pHint = NULL);
+
 //オーバーライド
 	// ClassWizard は仮想関数のオーバーライドを生成します。
 	//{{AFX_VIRTUAL(CRayTraceDoc)

@@ -5,7 +5,7 @@
 
 struct	rotate_x : public matrix
 {
-	rotate_x( float angle );
+	rotate_x( double angle );
 };
 
 #endif

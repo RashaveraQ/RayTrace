@@ -190,7 +190,7 @@ BOOL Node::MakeMemoryDCfromTextureFileName()
 	return TRUE;
 }
 
-sp Node::GetPixel(float x, float y) const
+sp Node::GetPixel(double x, double y) const
 {
 	COLORREF	c;
 
@@ -229,9 +229,9 @@ sp Node::GetColor(const sp& K, const sp& L, int nest) const
 
 	// 透過率がある場合、
 	if (info.pNode->m_Through > 0) {
-		float r = info.Refractive;
-		float i = k * v;
-		sp k2 = r * (k -i * v - sqrt(r * r - 1.0f + i * i) * v);
+		double r = info.Refractive;
+		double i = k * v;
+		sp k2 = r * (k -i * v - sqrt(r * r - 1.0 + i * i) * v);
 		//sp k2 = (k + v)/r - v;
 		sp l2 = info.Cross + 1E-05 * k2;
 		// 屈折した視線ベクトルから色を取得。
@@ -241,10 +241,10 @@ sp Node::GetColor(const sp& K, const sp& L, int nest) const
 	}
 
 	// 光源より色を補正。
-	float	x = -m_pDoc->m_Light.e() * info.Vertical.e();
+	double	x = -m_pDoc->m_Light.e() * info.Vertical.e();
 	x = (x > 0.0) ? x : 0.0;
-	float t = 64 + 191 * sin(M_PI / 2 * x);
-	float b = 191 * (1 - cos(M_PI / 2 * x));
+	double t = 64 + 191 * sin(M_PI / 2 * x);
+	double b = 191 * (1 - cos(M_PI / 2 * x));
 
 	return (t - b) * sp(info.Material) / 255 + sp(b,b,b);
 }
@@ -255,15 +255,15 @@ BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info) const
 {
 	// START Boundary 
 /*
-	float a = gK * gK;
-	float b = (gL - m_Boundary.Center) * gK;
-	float c = (m_Boundary.Center - gL) * (m_Boundary.Center - gL) - m_Boundary.Radius * m_Boundary.Radius;
-	float bb_ac = b*b-a*c;
+	double a = gK * gK;
+	double b = (gL - m_Boundary.Center) * gK;
+	double c = (m_Boundary.Center - gL) * (m_Boundary.Center - gL) - m_Boundary.Radius * m_Boundary.Radius;
+	double bb_ac = b*b-a*c;
 
 	if (bb_ac < 0)
 		return FALSE;
 
-	float t1, t2;
+	double t1, t2;
 
 	t1 = (-b+sqrt(bb_ac))/a;
 	t2 = (-b-sqrt(bb_ac))/a;
@@ -292,24 +292,24 @@ BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info) const
 	return TRUE;
 }
 
-void Node::Move(eAxis axis, float d)
+void Node::Move(eAxis axis, double d)
 {
 	switch (axis) {
-	case eX:	m_Move.m_data[2][3] -= (float)d / 20;	break;
-	case eY:	m_Move.m_data[1][3] -= (float)d / 20;	break;
-	case eZ:	m_Move.m_data[0][3] -= (float)d / 20;	break;
+	case eX:	m_Move.m_data[2][3] -= (double)d / 20;	break;
+	case eY:	m_Move.m_data[1][3] -= (double)d / 20;	break;
+	case eZ:	m_Move.m_data[0][3] -= (double)d / 20;	break;
 	}
 	updateMatrix();
 }
 
 void Node::Move(POINT d)
 {
-	m_Move.m_data[0][3] -= (float)d.x / 20;
-	m_Move.m_data[1][3] -= (float)d.y / 20;
+	m_Move.m_data[0][3] -= (double)d.x / 20;
+	m_Move.m_data[1][3] -= (double)d.y / 20;
 	updateMatrix();
 }
 
-void Node::Rotate(eAxis axis, float d)
+void Node::Rotate(eAxis axis, double d)
 {
 	switch (axis) {
 	case eX:
@@ -327,12 +327,12 @@ void Node::Rotate(eAxis axis, float d)
 
 void Node::Rotate(POINT d)
 {
-	rotate	r(-d.y, -d.x, 0, sqrt((float)d.x*d.x+d.y*d.y) / 2);
+	rotate	r(-d.y, -d.x, 0, sqrt((double)d.x*d.x+d.y*d.y) / 2);
 	m_Rotate = r * m_Rotate;
 	updateMatrix();
 }
 
-void Node::Scale(eAxis axis, float d)
+void Node::Scale(eAxis axis, double d)
 {
 	if (axis == eX || axis == eNONE)
 		m_Scale.m_data[2][2] -= d / 50;
@@ -343,12 +343,12 @@ void Node::Scale(eAxis axis, float d)
 	updateMatrix();
 }
 
-void Node::MovePivot(eAxis axis, float d)
+void Node::MovePivot(eAxis axis, double d)
 {
 	switch (axis) {
-	case eX:	m_Pivot.m_data[2][3] -= (float)d / 20;	break;
-	case eY:	m_Pivot.m_data[1][3] -= (float)d / 20;	break;
-	case eZ:	m_Pivot.m_data[0][3] -= (float)d / 20;	break;
+	case eX:	m_Pivot.m_data[2][3] -= (double)d / 20;	break;
+	case eY:	m_Pivot.m_data[1][3] -= (double)d / 20;	break;
+	case eZ:	m_Pivot.m_data[0][3] -= (double)d / 20;	break;
 	}
 }
 
@@ -405,11 +405,11 @@ bool Node::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& Ma
 			eAxis tbl[] = {eX, eZ, eY};
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 50; j++) {
-					float th = (i == 2) ? (6.28 * (float)j / 50) : (3.14 * (float)i / 2);
-					float ph = (i == 2) ? (3.14 / 2) : (6.28 * (float)j / 50);
+					double th = (i == 2) ? (6.28 * (double)j / 50) : (3.14 * (double)i / 2);
+					double ph = (i == 2) ? (3.14 / 2) : (6.28 * (double)j / 50);
 					sp p = m * sp(2 * cos(th)*sin(ph), 2 * cos(ph), 2 * sin(th)*sin(ph));
-					float dx = (P0.x + (r - 10) * (p - p0).e().x) - point.x;
-					float dy = (P0.y + (r - 10) * (p - p0).e().y) - point.y;
+					double dx = (P0.x + (r - 10) * (p - p0).e().x) - point.x;
+					double dy = (P0.y + (r - 10) * (p - p0).e().y) - point.y;
 					if (dx*dx+dy*dy < 20) {
 						rtv.m_Manipulator.Axis = tbl[i];
 						return true;
@@ -505,11 +505,11 @@ void Node::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 		if (!InitVertexBuffer(pd3dDevice, pVB, pVertices, 150))
 			return;
 		{
-			float th, ph;
+			double th, ph;
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 50; j++) {
-					th = (i == 2) ? (6.28 * (float)j / 50) : (3.14 * (float)i / 2);
-					ph = (i == 2) ? (3.14 / 2) : (6.28 * (float)j / 50);
+					th = (i == 2) ? (6.28 * (double)j / 50) : (3.14 * (double)i / 2);
+					ph = (i == 2) ? (3.14 / 2) : (6.28 * (double)j / 50);
 					sp p = m * sp(2 * cos(th)*sin(ph), 2 * cos(ph), 2 * sin(th)*sin(ph));
 					pVertices[50*i+j].position = pVertices[50*i+j].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 				}
@@ -588,13 +588,13 @@ void Node::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) const
 		pDC->SelectObject(&g_pen);
 		
 		int i, j;
-		float th, ph;
+		double th, ph;
 		POINT	P[50];
 
 		for (i = 0; i < 3; i++) {
 			for (j = 0; j < 50; j++) {
-				th = (i == 2) ? (6.28f * (float)j / 50) : (3.14f * (float)i / 2);
-				ph = (i == 2) ? (3.14f / 2) : (6.28f * (float)j / 50);
+				th = (i == 2) ? (6.28 * (double)j / 50) : (3.14 * (double)i / 2);
+				ph = (i == 2) ? (3.14 / 2) : (6.28 * (double)j / 50);
 				sp p = m * sp(2 * cos(th)*sin(ph), 2 * cos(ph), 2 * sin(th)*sin(ph));
 				P[j].x = (long)(P0.x + (r - 10) * (p - p0).e().x);
 				P[j].y = (long)(P0.y + (r - 10) * (p - p0).e().y);
@@ -629,29 +629,3 @@ void Node::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) const
 	pDC->SelectObject(old_pen);
 }
 
-Task Node::getTask(const matrix& M) const
-{
-	matrix m = m_Move * m_Rotate * m_Scale * M;
-	matrix Inv_m = m.Inv();
-
-	Task  task;
-	task.type = getNodeType();
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
-			task.m[i][j] = (float)Inv_m.m_data[i][j];
-		}
-	}
-	task.nodeInfo.m_Color_r = 256 * m_Material.Diffuse.r;
-	task.nodeInfo.m_Color_g = 256 * m_Material.Diffuse.g;
-	task.nodeInfo.m_Color_b = 256 * m_Material.Diffuse.b;
-	task.nodeInfo.m_Reflect = m_Reflect;
-	task.nodeInfo.m_Refractive = m_Refractive;
-	task.nodeInfo.m_Through = m_Through;
-
-	return task;
-}
-
-void Node::MakeTask(const matrix& M) const
-{
-	task_[taskIndex_++] = getTask(M);
-}

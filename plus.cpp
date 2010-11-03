@@ -18,7 +18,7 @@ BOOL Plus::GetInfo(const sp& K, const sp& L, Info& info) const
 {
 	Info	tmp;
 	int		n;
-	float	l = -1;
+	double	l = -1;
 
 	for (int i = 0; i < m_Member; i++) {
 		if (m_Node[i]->GetInfo2(K, L, tmp)) {

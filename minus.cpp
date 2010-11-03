@@ -53,7 +53,7 @@ BOOL Minus::GetInfo(const sp& K, const sp& L, Info& info) const
 	return TRUE;
 }
 
-int	Minus::cmp_distance(float a, float b) const
+int	Minus::cmp_distance(double a, double b) const
 {
 	if (a >= 0) {
 		if (b >= 0)

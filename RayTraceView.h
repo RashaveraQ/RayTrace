@@ -36,7 +36,6 @@ public:
 		eD3DGouraudShading,
 		eRayTrace,
 		eWireFrame,
-		eRayTraceByCuda,
 	} m_ViewMode;
 
 private:
@@ -55,37 +54,6 @@ private:
 	BOOL		m_Alt;
 	POINT		m_AltStart;
 	void GetVectorFromPoint(sp& k, sp& l, int px, int py);
-
-
-	//Original image width and height
-	int imageW, imageH;
-
-	// Starting iteration limit
-	int crunch;		// no use
-
-	// Starting position and scale
-	float xOff;	// no use
-	float yOff;	// no use
-	float scale;
-
-	// Starting stationary position and scale motion
-	float xdOff;	// no use
-	float ydOff;	// no use
-	float dscale;	// no use
-
-	// Starting animation frame and anti-aliasing pass 
-	int animationFrame;
-	int animationStep;
-	int pass;
-
-	// Starting color multipliers and random seed
-	uchar4 colors;
-
-	// Timer ID
-	unsigned int hTimer;
-
-	void GetSample(int sampleIndex, float &x, float &y);
-
 // オペレーション
 public:
 
@@ -143,10 +111,6 @@ protected:
 
 friend Node;
 friend class CScnTreeView;
-public:
-	afx_msg void OnViewRaytraceByCuda();
-public:
-	afx_msg void OnUpdateViewRaytraceByCuda(CCmdUI *pCmdUI);
 };
 
 #ifndef _DEBUG  // RayTraceView.cpp ファイルがデバッグ環境の時使用されます。

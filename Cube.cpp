@@ -16,13 +16,13 @@ BOOL Cube::GetInfo(const sp& K, const sp& L, Info& info) const
 	}
 
 	int		i, j, k;
-	float	T[6], t1, t;
+	double	T[6], t1, t;
 	sp		c;
 
 	// 全ての面までの距離を求める。
-	T[0] = (1.0f - L.x) / K.x; T[1] = - (1.0f + L.x) / K.x;
-	T[2] = (1.0f - L.y) / K.y; T[3] = - (1.0f + L.y) / K.y;
-	T[4] = (1.0f - L.z) / K.z; T[5] = - (1.0f + L.z) / K.z;
+	T[0] = (1.0 - L.x) / K.x; T[1] = - (1.0 + L.x) / K.x;
+	T[2] = (1.0 - L.y) / K.y; T[3] = - (1.0 + L.y) / K.y;
+	T[4] = (1.0 - L.z) / K.z; T[5] = - (1.0 + L.z) / K.z;
 
 	// t1 に最大値を代入する。
 	for (i = 1, t1 = T[0]; i < 6; i++)

@@ -16,8 +16,8 @@ void Cylinder::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix&
 
 	for (int j = 0; j < 2; j++) {
 		for (int i = 0; i < COUNT; i++) {
-			float th = 6.28f * (float)i / COUNT;
-			sp	p = m * sp(cos(th), j == 0 ? -1.f : 1.f, sin(th));
+			double th = 6.28 * (double)i / COUNT;
+			sp	p = m * sp(cos(th), j == 0 ? -1 : 1, sin(th));
 			P[j][i] = p.getPOINT(size);
 		}
 		pDC->Polygon(P[j], COUNT);
@@ -54,8 +54,8 @@ void Cylinder::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeome
 
 		for (j = 0; j < 2; j++) {
 			for (i = 0; i < COUNT; i++) {
-				float th = 6.28f * (float)i / COUNT;
-				sp	p = m * sp(cos(th), j == 0 ? -1.f : 1.f, sin(th));
+				double th = 6.28 * (double)i / COUNT;
+				sp	p = m * sp(cos(th), j == 0 ? -1 : 1, sin(th));
 				pVertices[COUNT*j+i].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 				pVertices[COUNT*j+i].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 			}
@@ -98,11 +98,13 @@ BOOL Cylinder::IsInside(const sp& L) const
 
 BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info) const
 {
-	if (L.y < -1) {
+	if (L.y < -1)
+	{
 		if (K.y <= 0)
 			return FALSE;
 
-		float t = -(1 + L.y)/K.y;
+		double t = -(1 + L.y)/K.y;
+
 		sp	p = K*t+L;
 
 		if (p.x * p.x + p.z * p.z <= 1) {
@@ -110,17 +112,18 @@ BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info) const
 			info.Vertical = sp(0,-1,0);
 			info.Distance = t * sqrt(K*K);
 			info.isEnter = 1;
-			info.Material = GetPixel(.5f*(p.x+1),.5f*(p.z+1)).getMaterial();
+			info.Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
 			info.pNode = this;
 			return TRUE;
 		}
 	}
 
-	if (L.y > 1) {
+	if (L.y > 1)
+	{
 		if (K.y >= 0)
 			return FALSE;
 
-		float t = (1 - L.y) / K.y;
+		double t = (1 - L.y) / K.y;
 
 		sp	p = K*t+L;
 
@@ -129,14 +132,14 @@ BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info) const
 			info.Vertical = sp(0,1,0);
 			info.Distance = t * sqrt(K*K);
 			info.isEnter = 1;
-			info.Material = GetPixel(.5f*(p.x+1),.5f*(p.z+1)).getMaterial();
+			info.Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
 			info.pNode = this;
 
 			return TRUE;
 		}
 	}
 
-	float	a, b, c, d, t, t1, t2;
+	double	a, b, c, d, t, t1, t2;
 
 	c = K.x * L.z - K.z * L.x;
 	c *= c;

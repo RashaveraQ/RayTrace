@@ -21,9 +21,9 @@ public:
 // ダイアログ データ
 	//{{AFX_DATA(CDlgMaterial)
 	enum { IDD = IDD_MATERIAL };
-	float	m_Reflect;
-	float	m_Through;
-	float	m_Refractive;
+	double	m_Reflect;
+	double	m_Through;
+	double	m_Refractive;
 	int		m_Material;
 	//}}AFX_DATA
 

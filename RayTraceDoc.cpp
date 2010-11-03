@@ -52,7 +52,6 @@ void CRayTraceDoc::InitDocument()
 {
 	m_Root.SetDocument( this );
 	m_Light = sp( 1,1,1 );
-	d_pTask = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -101,14 +100,4 @@ BOOL CRayTraceDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	InitDocument();
 	
 	return TRUE;
-}
-
-void CRayTraceDoc::UpdateAllViews(CView* pSender, LPARAM lHint, CObject* pHint)
-{
-	// É^ÉXÉNÇÃèâä˙âª
-	taskIndex_ = 0;
-
-	m_Root.MakeTask(matrix());
-
-	CDocument::UpdateAllViews(pSender,lHint,pHint);
 }

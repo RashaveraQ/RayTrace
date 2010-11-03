@@ -1,17 +1,16 @@
 #ifndef __TORUS_H
 #define __TORUS_H
 
-class Node;
-struct matrix;
+class	Node;
+struct	matrix;
 
-class Torus : public Node
+class	Torus : public	Node
 {
-	node_type getNodeType() const { return TORUS; }
 protected:
 	DECLARE_SERIAL(Torus)
 private:
-	float	m_R;
-	float	m_r;
+	double	m_R;
+	double	m_r;
 public:
 	// コンストラクタ
 	Torus(const CRayTraceDoc* const pDoc = 0, const char* const Name = "Torus", const sp Color = sp(255,255,255));
@@ -25,7 +24,6 @@ public:
 	const Node*	MakeCopy() const { return new Torus(*this); }
 	BOOL Edit();
 	void Serialize(CArchive& ar);
-	void MakeTask(const matrix&) const;
 };
 
 #endif

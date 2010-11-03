@@ -6,14 +6,11 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
-		EmuDebug|Win32 = EmuDebug|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2676A0F8-536B-4FEC-A565-8620B7E0DC9D}.Debug|Win32.ActiveCfg = Debug|Win32
 		{2676A0F8-536B-4FEC-A565-8620B7E0DC9D}.Debug|Win32.Build.0 = Debug|Win32
-		{2676A0F8-536B-4FEC-A565-8620B7E0DC9D}.EmuDebug|Win32.ActiveCfg = EmuDebug|Win32
-		{2676A0F8-536B-4FEC-A565-8620B7E0DC9D}.EmuDebug|Win32.Build.0 = EmuDebug|Win32
 		{2676A0F8-536B-4FEC-A565-8620B7E0DC9D}.Release|Win32.ActiveCfg = Release|Win32
 		{2676A0F8-536B-4FEC-A565-8620B7E0DC9D}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
