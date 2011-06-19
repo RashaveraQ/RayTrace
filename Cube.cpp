@@ -63,8 +63,7 @@ BOOL Cube::GetInfo(const sp& K, const sp& L, Info& info) const
 			}
 		}
 
-		if (info.isEnter)
-			return FALSE;
+		return FALSE;
 	}
 
 	info.Cross = K * t + L;
