@@ -196,6 +196,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "旧ﾜｲﾔｰﾌﾚｰﾑ(&O)",               ID_VIEW_WIREFRAME, CHECKED
         MENUITEM "ﾚｲﾄﾚｰｽ(&R)",                  ID_ADD_CORN
+        MENUITEM "旧ワイヤーフレーム&レイトレース",            ID_VIEW_WIREFRAME_WITH_RAYTRACE
         MENUITEM "ﾜｲﾔｰﾌﾚｰﾑ(&W)",                ID_VIEW_D3DWIREFRAME
         MENUITEM "ﾌﾗｯﾄｼｪｰﾃﾞｨﾝｸﾞ(&F)",           ID_VIEW_FLATSHADING
         MENUITEM "ｸﾞﾛｰｼｪｰﾃﾞｨﾝｸﾞ(&G)",           ID_VIEW_GOURAUDSHADING

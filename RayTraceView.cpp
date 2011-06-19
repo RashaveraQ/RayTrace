@@ -52,6 +52,7 @@ BEGIN_MESSAGE_MAP(CRayTraceView, CView)
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, CView::OnFilePrintPreview)
+	ON_COMMAND(ID_VIEW_WIREFRAME_WITH_RAYTRACE, &CRayTraceView::OnViewWireframeWithRaytrace)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -98,8 +99,10 @@ void CRayTraceView::OnDraw(CDC* pDC)
 {
 	switch (m_ViewMode) {
 	case eRayTrace:
+	case eWireFrameWithRayTrace:
 		pDC->BitBlt(0, 0, m_ClientSize.cx, m_ClientSize.cy, &m_MemoryDC, 0, 0, SRCCOPY);
-		break;
+		if (m_ViewMode == eRayTrace)
+			break;
 	case eWireFrame:
 		pDC->SelectStockObject(NULL_BRUSH);
 		m_Viewport.Draw_Outline(pDC, *this, matrix(4,4));
@@ -280,7 +283,7 @@ void CRayTraceView::OnTimer(UINT nIDEvent)
 			m_Job = Go_ahead(m_NowX, m_NowY, m_NowSize, m_StartX, m_StartY, m_ClientSize, START_SQUARE);
 		}
 	}
-	if (m_ViewMode == eRayTrace)
+	if (m_ViewMode == eRayTrace || m_ViewMode == eWireFrameWithRayTrace)
 		Invalidate(FALSE);
 }
 
@@ -441,17 +444,19 @@ void CRayTraceView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 {
 	switch (m_ViewMode)
 	{
-	case eRayTrace:
-		m_StartX = m_StartY = m_NowX = m_NowY = 0;
-		m_NowSize = START_SQUARE;
-		m_Job = CONTINUED;
-		break;
 	case eD3DWireFrame:
 	case eD3DFlatShading:
 	case eD3DGouraudShading:
 		UpdateDevice();
 	case eWireFrame:
+	case eWireFrameWithRayTrace:
 		Invalidate();
+		if (m_ViewMode == eWireFrame)
+			break;
+	case eRayTrace:
+		m_StartX = m_StartY = m_NowX = m_NowY = 0;
+		m_NowSize = START_SQUARE;
+		m_Job = CONTINUED;
 		break;
 	}
 }
@@ -465,6 +470,12 @@ void CRayTraceView::OnViewRaytrace()
 void CRayTraceView::OnViewWireframe()
 {
 	m_ViewMode = eWireFrame;
+	Invalidate();
+}
+
+void CRayTraceView::OnViewWireframeWithRaytrace()
+{
+	m_ViewMode = eWireFrameWithRayTrace;
 	Invalidate();
 }
 
@@ -572,6 +583,7 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 		switch (m_ViewMode) {
 		case eRayTrace:
 		case eWireFrame:
+		case eWireFrameWithRayTrace:
 			OnUpdate(0, 0, 0);
 			break;
 		case eD3DWireFrame:
@@ -637,3 +649,4 @@ void CRayTraceView::OnDestroy()
 		m_pd3dDevice = NULL;
 	}
 }
+
