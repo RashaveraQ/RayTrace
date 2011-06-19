@@ -158,6 +158,7 @@ BOOL Cone::GetInfo(const sp& K, const sp& L, Info& info) const
 	info.isEnter = !IsInside( L );
 	sp p = K * t + L;
 	info.Cross = info.Vertical = p;
+	info.Vertical = m_Scale.Inv() * info.Vertical;
 
 	if (p.y < 0 || p.x*p.x + p.z*p.z > 1) 
 		return FALSE;

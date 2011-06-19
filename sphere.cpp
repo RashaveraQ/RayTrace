@@ -149,6 +149,7 @@ BOOL Sphere::GetInfo(const sp& K, const sp& L, Info& info) const
 
 	info.Cross = info.Vertical = K * t + L;
 	info.Distance = t * sqrt(K * K);
+	info.Vertical = m_Scale.Inv() * info.Vertical;
 
 	double x,y,z, th, phy;
 
