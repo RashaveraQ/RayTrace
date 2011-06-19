@@ -4,83 +4,73 @@ IMPLEMENT_SERIAL(Cube, CObject, 1)
 
 BOOL Cube::GetInfo(const sp& K, const sp& L, Info& info) const
 {
+	double t;
+
 	info.isEnter = !IsInside(L);
 
-	if (info.isEnter)
-	{
-		//外側から外に向かう場合、
-		if ((L.x < -1.0 && K.x <= 0.0) || (1.0 < L.x && 0.0 <= K.x) ||
-			(L.y < -1.0 && K.y <= 0.0) || (1.0 < L.y && 0.0 <= K.y) ||
-			(L.z < -1.0 && K.z <= 0.0) || (1.0 < L.z && 0.0 <= K.z))
-			 return FALSE;
+	for(;;) {
+		if (K.x > 0 && L.x < -1) {
+			t = (-1 - L.x) / K.x;
+			sp p = K * t + L;
+			if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
+				info.Vertical = sp(-1,0,0);
+				break;
+			}
+		}
+		
+		if(K.x < 0 && L.x > 1) {
+			t = (1 - L.x) / K.x;
+			sp p = K * t + L;
+			if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
+				info.Vertical = sp(1,0,0);
+				break;
+			}
+		}
+
+		if (K.y > 0 && L.y < -1) {
+			t = (-1 - L.y) / K.y;
+			sp p = K * t + L;
+			if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
+				info.Vertical = sp(0,-1,0);
+				break;
+			}
+		}
+		
+		if(K.y < 0 && L.y > 1) {
+			t = (1 - L.y) / K.y;
+			sp p = K * t + L;
+			if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
+				info.Vertical = sp(0,1,0);
+				break;
+			}
+		}
+
+		if (K.z > 0 && L.z < -1) {
+			t = (-1 - L.z) / K.z;
+			sp p = K * t + L;
+			if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
+				info.Vertical = sp(0,0,-1);
+				break;
+			}
+		}
+		
+		if(K.z < 0 && L.z > 1) {
+			t = (1 - L.z) / K.z;
+			sp p = K * t + L;
+			if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
+				info.Vertical = sp(0,0,1);
+				break;
+			}
+		}
+
+		if (info.isEnter)
+			return FALSE;
 	}
-
-	int		i, j, k;
-	double	T[6], t1, t;
-	sp		c;
-
-	// 全ての面までの距離を求める。
-	T[0] = (1.0 - L.x) / K.x; T[1] = - (1.0 + L.x) / K.x;
-	T[2] = (1.0 - L.y) / K.y; T[3] = - (1.0 + L.y) / K.y;
-	T[4] = (1.0 - L.z) / K.z; T[5] = - (1.0 + L.z) / K.z;
-
-	// t1 に最大値を代入する。
-	for (i = 1, t1 = T[0]; i < 6; i++)
-		if (t1 < T[i])
-			t1 = T[i];
-
-	// 負の場合、t1 を代入する。
-	for (i = 0; i < 6; i++)
-		if (T[i] < 0.0)
-			T[i] = t1;
-
-	for (k = 0; k < 3; k++)
-	{
-		for (i = 1, j = 0, t= T[0]; i < 6; i++)
-			if (t > T[i])
-				t = T[i], j = i;
-
-		if (!info.isEnter)
-			break;
-
-		c = K * t + L;
-
-		if (-1.0 <= c.x && c.x <= 1.0 && -1.0 <= c.y && c.y <= 1.0 && -1.0 <= c.z && c.z <= 1.0)
-			break;
-
-		T[j] = t1;
-	}
-
-	if (k == 3)
-		return FALSE;
 
 	info.Cross = K * t + L;
 	info.Distance = t * sqrt(K * K);
 	info.Material = m_Material;
-
-	switch (j)
-	{
-	case 0:
-		info.Vertical = sp(1, 0, 0);
-		break;
-	case 1:
-		info.Vertical = sp(-1, 0, 0);
-		break;
-	case 2:
-		info.Vertical = sp(0, 1, 0);
-		break;
-	case 3:
-		info.Vertical = sp(0,-1, 0);
-		break;
-	case 4:
-		info.Vertical = sp(0, 0, 1);
-		break;
-	case 5:
-		info.Vertical = sp(0, 0,-1);
-		break;
-	}
 	info.pNode = this;
-
 	return TRUE;
 }
 
