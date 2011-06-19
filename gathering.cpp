@@ -76,7 +76,7 @@ void Gathering::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeom
 
 bool Gathering::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& Matrix) const
 {
-	matrix m = Matrix * m_Matrix;
+	matrix m = m_Matrix * Matrix;
 	for (int i = 0; i < m_Member; i++) {
 		if (m_Node[i]->SetManipulatorAxis(rtv, point, m))
 			return true;

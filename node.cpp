@@ -558,9 +558,9 @@ void Node::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) const
 	}
 
 	POINT	P0 = p0.getPOINT(size),
-			PX = { (long)(P0.x + r * (px - p0).e().x), (long)(P0.y + r * (px - p0).e().y)}, 
-			PY = { (long)(P0.x + r * (py - p0).e().x), (long)(P0.y + r * (py - p0).e().y)}, 
-			PZ = { (long)(P0.x + r * (pz - p0).e().x), (long)(P0.y + r * (pz - p0).e().y)};
+			PX = px.getPOINT(size),
+			PY = py.getPOINT(size),
+			PZ = pz.getPOINT(size);
 
 	// X-Axis
 	CPen *old_pen;
