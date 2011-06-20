@@ -605,7 +605,7 @@ void CRayTraceView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	case 87: m_Manipulator.Type = eMOVE;		break;
 	case 69: m_Manipulator.Type = eROTATE;		break;
 	case 82: m_Manipulator.Type = eSCALE;		break;
-	case 45: m_Manipulator.Type = ePIVOT_MOVE;	break;
+	case 45: m_Manipulator.Type = ePIVOT_MOVE;	break;	// Insert Key
 	}
 
 	if (m_SelectedNode)

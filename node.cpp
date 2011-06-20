@@ -371,23 +371,17 @@ bool Node::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& Ma
 	case ePIVOT_MOVE:
 		r = 50;
 	case eMOVE:
+	case eSCALE:
 		px = p0 + viewport.m_Rotate * sp( 0,  0, -2);
 		py = p0 + viewport.m_Rotate * sp( 0, -2,  0);
 		pz = p0 + viewport.m_Rotate * sp(-2,  0,  0);
 		break;
 	default:
-		px = m * m_Pivot * sp( 0,  0, -2);
-		py = m * m_Pivot * sp( 0, -2,  0);
-		pz = m * m_Pivot * sp(-2,  0,  0);
+		px = m * m_Pivot * sp( 0,  0, -1 / m_Scale.m_data[2][2]);
+		py = m * m_Pivot * sp( 0, -1 / m_Scale.m_data[1][1],  0);
+		pz = m * m_Pivot * sp(-1 / m_Scale.m_data[0][0],  0,  0);
 	}
 
-/*
-	POINT	P0 = { (long)((p0.x - view.left) * size.cx / (view.right - view.left)),
-				   (long)((p0.y - view.top) * size.cx / (view.bottom - view.top)) },
-			PX = { (long)(P0.x + r * (px - p0).e().x), (long)(P0.y + r * (px - p0).e().y)}, 
-			PY = { (long)(P0.x + r * (py - p0).e().x), (long)(P0.y + r * (py - p0).e().y)}, 
-			PZ = { (long)(P0.x + r * (pz - p0).e().x), (long)(P0.y + r * (pz - p0).e().y)};
-*/
 	POINT	P0 = p0.getPOINT(size),
 			PX = px.getPOINT(size),
 			PY = py.getPOINT(size),
@@ -547,14 +541,15 @@ void Node::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) const
 	case ePIVOT_MOVE:
 		r = 50;
 	case eMOVE:
+	case eSCALE:
 		px = p0 + viewport.m_Rotate * sp( 0,  0, -2);
 		py = p0 + viewport.m_Rotate * sp( 0, -2,  0);
 		pz = p0 + viewport.m_Rotate * sp(-2,  0,  0);
 		break;
 	default:
-		px = m * m_Pivot * sp( 0,  0, -2);
-		py = m * m_Pivot * sp( 0, -2,  0);
-		pz = m * m_Pivot * sp(-2,  0,  0);
+		px = m * m_Pivot * sp( 0,  0, -1 / m_Scale.m_data[2][2]);
+		py = m * m_Pivot * sp( 0, -1 / m_Scale.m_data[1][1],  0);
+		pz = m * m_Pivot * sp(-1 / m_Scale.m_data[0][0],  0,  0);
 	}
 
 	POINT	P0 = p0.getPOINT(size),
