@@ -132,7 +132,7 @@ BOOL Torus::GetInfo(const sp& K, const sp& L, Info& info) const
 	k[1] = 2 * b * c - 8 * R2 * (K.x * L.x + K.y * L.y);
 	k[0] = c * c - 4 * R2 * (L.x * L.x + L.y * L.y);
 
-	n = Solve_Polynomial(4, k, 0.0, 2000, r);
+	n = Solve_Polynomial(4, k, 0.0, 20000, r);
 
 	if (n == 0)
 		return FALSE;
