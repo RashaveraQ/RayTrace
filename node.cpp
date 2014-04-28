@@ -229,15 +229,18 @@ sp Node::GetColor(const sp& K, const sp& L, int nest) const
 
 	// 透過率がある場合、
 	if (info.pNode->m_Through > 0) {
-		double r = info.Refractive;
+		double r = info.Refractive / m_Refractive;
 		double i = k * v;
-		sp k2 = r * (k -i * v - sqrt(r * r - 1.0 + i * i) * v);
-		//sp k2 = (k + v)/r - v;
-		sp l2 = info.Cross + 1E-05 * k2;
-		// 屈折した視線ベクトルから色を取得。
-		sp c = m_pDoc->m_Root.GetColor(k2, l2, nest + 1);
-		// 透過率で色を混ぜる。
-		info.Material = (info.pNode->m_Through * c + (1 - info.pNode->m_Through) * sp(info.Material)).getMaterial();
+		// 全反射でない場合、
+		if (r > 1.0 || asin(r) > acos(-i)) {
+			sp k2 = r * (k -i * v - sqrt(r * r - 1.0 + i * i) * v);
+			//sp k2 = (k + v)/r - v;
+			sp l2 = info.Cross + 1E-05 * k2;
+			// 屈折した視線ベクトルから色を取得。
+			sp c = m_pDoc->m_Root.GetColor(k2, l2, nest + 1);
+			// 透過率で色を混ぜる。
+			info.Material = (info.pNode->m_Through * c + (1 - info.pNode->m_Through) * sp(info.Material)).getMaterial();
+		}
 	}
 
 	// 光源より色を補正。
