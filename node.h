@@ -78,10 +78,10 @@ public:
 			void Set_Name(const char* const str) { strncpy_s(m_Name, sizeof(m_Name), str, 99); }  
 	virtual void SetDocument(const CRayTraceDoc* const pDoc) { m_pDoc = (const CRayTraceDoc*)pDoc; }
 
-			sp GetColor(const sp& K, const sp& L, int nest = 0) const;
-			BOOL GetInfo2(const sp& K, const sp& L, Info& info) const;
+			sp GetColor(const sp& K, const sp& L, int nest, const Info* pHint) const;
+			BOOL GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint) const;
 			sp GetPixel(double x, double y) const;
-	virtual	BOOL GetInfo(const sp& K, const sp& L, Info& info) const = 0;
+	virtual	BOOL GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const = 0;
 	virtual	BOOL IsInside(const sp& L) const = 0;
 	
 	void Move(eAxis axis, double d);

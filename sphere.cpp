@@ -118,8 +118,11 @@ BOOL Sphere::IsInside(const sp& L) const
 	return (sqrt(L * L) <= 1.0);
 }
 
-BOOL Sphere::GetInfo(const sp& K, const sp& L, Info& info) const
+BOOL Sphere::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const
 {
+	if (pHint && pHint->pNode == this && pHint->isReflecting)
+		return FALSE;
+
 	double	a = K * K;
 	double	b = K * L;
 	double	c = L * L - 1.0; 
@@ -133,17 +136,25 @@ BOOL Sphere::GetInfo(const sp& K, const sp& L, Info& info) const
 	double	t1 = (-b + sqrt(bb_ac)) / a;
 	double	t2 = (-b - sqrt(bb_ac)) / a;
 
-	info.isEnter = 0;
 	if (t1 > 0) {
 		if (t2 > 0) {
-			t = (t1 < t2) ? t1 : t2;
-			info.isEnter = 1;
-		} else
+			if (pHint && pHint->pNode == this && pHint->isEnter) {
+				t = (t1 < t2) ? t2 : t1;
+			} else {
+				t = (t1 < t2) ? t1 : t2;
+				info.isEnter = 1;
+			}
+		} else {
+			if (pHint && pHint->pNode == this && !pHint->isEnter)
+				return FALSE;
 			t = t1;
+		}
 	} else {
-		if (t2 > 0)
+		if (t2 > 0) {
+			if (pHint && pHint->pNode == this && !pHint->isEnter)
+				return FALSE;
 			t = t2;
-		else
+		} else
 			return FALSE;
 	}
 

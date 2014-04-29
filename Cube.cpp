@@ -2,7 +2,7 @@
 
 IMPLEMENT_SERIAL(Cube, CObject, 1)
 
-BOOL Cube::GetInfo(const sp& K, const sp& L, Info& info) const
+BOOL Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const
 {
 	double t;
 

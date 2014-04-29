@@ -15,7 +15,7 @@ BOOL Multiple::IsInside(const sp& L) const
 	return TRUE;
 }
 
-BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info) const
+BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const
 {
 	Info	tmp;
 	double	l = -1;
@@ -29,7 +29,7 @@ BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info) const
 	for (i = 0; i < m_Member; i++)
 	{
 		// 視点の先に、交点がない場合。
-		if (!m_Node[i]->GetInfo2(K, L, tmp))
+		if (!m_Node[i]->GetInfo2(K, L, tmp, pHint))
 			return FALSE;
 
 		if (tmp.Distance <= l || !tmp.isEnter)
@@ -52,7 +52,7 @@ BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info) const
 	if (n < 0)
 		return FALSE;
 
-	m_Node[n]->GetInfo2(K, L, info);
+	m_Node[n]->GetInfo2(K, L, info, pHint);
 
 	if (info.Material.Diffuse.r < 0)
 		info.Material = m_Material;
