@@ -136,6 +136,7 @@ BOOL Sphere::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) co
 	double	t1 = (-b + sqrt(bb_ac)) / a;
 	double	t2 = (-b - sqrt(bb_ac)) / a;
 
+	info.isEnter = 0;
 	if (t1 > 0) {
 		if (t2 > 0) {
 			if (pHint && pHint->pNode == this && pHint->isEnter) {
