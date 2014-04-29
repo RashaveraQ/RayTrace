@@ -21,7 +21,7 @@ struct	sp
 	sp	operator*( double ) const;
 	sp	operator/( double ) const;
 	sp	e() const;
-	double	abs() { return sqrt(x*x+y*y+z*z); };
+	double	abs() const { return sqrt(x*x+y*y+z*z); };
 	void	print();
 	POINT getPOINT(const CSize& size) const;
 friend 	sp	operator*(  double, const sp& );
