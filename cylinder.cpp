@@ -98,6 +98,9 @@ BOOL Cylinder::IsInside(const sp& L) const
 
 BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const
 {
+	if (pHint && pHint->pNode == this && pHint->isReflecting)
+		return FALSE;
+
 	if (L.y < -1)
 	{
 		if (K.y <= 0)

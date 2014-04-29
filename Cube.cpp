@@ -4,6 +4,9 @@ IMPLEMENT_SERIAL(Cube, CObject, 1)
 
 BOOL Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const
 {
+	if (pHint && pHint->pNode == this && pHint->isReflecting)
+		return FALSE;
+
 	double t;
 
 	info.isEnter = !IsInside(L);
