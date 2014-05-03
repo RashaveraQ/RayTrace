@@ -18,7 +18,6 @@ BOOL Multiple::IsInside(const sp& L) const
 BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const
 {
 	Info	tmp;
-	double	l = -1;
 	int		i, j, n = -1;
 	BOOL	flag;
 
@@ -26,27 +25,21 @@ BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) 
 		return FALSE;
 
 	// すべての要素について、
-	for (i = 0; i < m_Member; i++)
-	{
+	for (i = 0; i < m_Member; i++) {
 		// 視点の先に、交点がない場合。
 		if (!m_Node[i]->GetInfo2(K, L, tmp, pHint))
 			return FALSE;
-
-		if (tmp.Distance <= l || !tmp.isEnter)
-			continue;
-
-		info.Cross = tmp.Cross;
 
 		for (flag = TRUE, j = 0; j < m_Member; j++) {
 			if (i == j)
 				continue;
 
-			if (!m_Node[j]->IsInside(m_Matrix * info.Cross))
+			if (!m_Node[j]->IsInside(m_Node[j]->getMatrix().Inv() * tmp.Cross))
 				flag = FALSE;
 		}
 
 		if (flag)
-			l = tmp.Distance, n = i;
+			n = i;
 	}
 
 	if (n < 0)
