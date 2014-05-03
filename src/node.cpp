@@ -300,6 +300,10 @@ BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint) con
 	return TRUE;
 }
 
+BOOL Node::IsInside2(const sp& L) const {
+	return IsInside(m_Matrix.Inv() * L);
+}
+
 void Node::Move(eAxis axis, double d)
 {
 	switch (axis) {

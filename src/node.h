@@ -82,8 +82,11 @@ public:
 			BOOL GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint) const;
 			sp GetPixel(double x, double y) const;
 	virtual	BOOL GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const = 0;
+private:
 	virtual	BOOL IsInside(const sp& L) const = 0;
-	
+public:
+			BOOL IsInside2(const sp& L) const;
+
 	void Move(eAxis axis, double d);
 	void Move(POINT d);
 	void Rotate(eAxis axis, double d);

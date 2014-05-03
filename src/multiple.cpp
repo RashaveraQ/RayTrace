@@ -9,7 +9,7 @@ BOOL Multiple::IsInside(const sp& L) const
 		return FALSE;
 
 	for (int i = 0; i < m_Member; i++) {
-		if (!m_Node[i]->IsInside(m_Matrix * L))
+		if (!m_Node[i]->IsInside2(L))
 			return FALSE;
 	}
 	return TRUE;
@@ -17,35 +17,30 @@ BOOL Multiple::IsInside(const sp& L) const
 
 BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const
 {
-	Info	tmp;
-	int		i, j, n = -1;
-	BOOL	flag;
-
 	if (!m_Member)
 		return FALSE;
 
 	// すべての要素について、
+	int	i;
 	for (i = 0; i < m_Member; i++) {
 		// 視点の先に、交点がない場合。
-		if (!m_Node[i]->GetInfo2(K, L, tmp, pHint))
+		if (!m_Node[i]->GetInfo2(K, L, info, pHint))
 			return FALSE;
 
-		for (flag = TRUE, j = 0; j < m_Member; j++) {
+		int j;
+		for (j = 0; j < m_Member; j++) {
 			if (i == j)
 				continue;
-
-			if (!m_Node[j]->IsInside(m_Node[j]->getMatrix().Inv() * tmp.Cross))
-				flag = FALSE;
+			if (!m_Node[j]->IsInside2(info.Cross))
+				break;
 		}
 
-		if (flag)
-			n = i;
+		if (j == m_Member)
+			break;
 	}
 
-	if (n < 0)
+	if (i == m_Member)
 		return FALSE;
-
-	m_Node[n]->GetInfo2(K, L, info, pHint);
 
 	if (info.Material.Diffuse.r < 0)
 		info.Material = m_Material;
