@@ -230,18 +230,16 @@ sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fr
 
 	// 透過率がある場合、
 	if (info.pNode->m_Through > 0) {
-		double r = m_Refractive / info.Refractive;
-		if (info.isEnter) {
-			r = 1/r;
-		}
+		double r = info.Refractive;
 		double i = k * v;
 		// 全反射でない場合、
 		if (r > 1.0 || asin(r) > acos(-i)) {
-			k2 = r * (k -i * v - sqrt(r * r - 1.0 + i * i) * v);
+			k2 = r * (k + v) - v;
 			l2 = info.Cross;
+			fromOutSide = !fromOutSide;
 		}
 		// 屈折した視線ベクトルから色を取得。
-		sp c = m_pDoc->m_Root.GetColor(k2, l2, nest + 1, &info, true);
+		sp c = m_pDoc->m_Root.GetColor(k2, l2, nest + 1, &info, fromOutSide);
 		// 透過率で色を混ぜる。
 		info.Material = (info.pNode->m_Through * c + (1 - info.pNode->m_Through) * sp(info.Material)).getMaterial();
 	}
@@ -291,8 +289,8 @@ BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	info.Vertical = m * (info.Vertical + info.Cross) - m * info.Cross;
 	info.Cross = m * info.Cross;
 	info.Distance = (info.Cross - L).abs();
-	info.Refractive = info.pNode->m_Refractive;
-	if (info.isEnter)
+	info.Refractive = info.pNode->m_Refractive / ((pHint) ? pHint->Refractive : 1.0);
+	if (!info.isEnter)
 		info.Refractive = 1 / info.Refractive;
 
 	return TRUE;
