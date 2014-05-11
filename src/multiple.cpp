@@ -15,7 +15,7 @@ BOOL Multiple::IsInside(const sp& L) const
 	return TRUE;
 }
 
-BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const
+BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	if (!m_Member)
 		return FALSE;
@@ -24,7 +24,7 @@ BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) 
 	int	i;
 	for (i = 0; i < m_Member; i++) {
 		// 視点の先に、交点がない場合。
-		if (!m_Node[i]->GetInfo2(K, L, info, pHint))
+		if (!m_Node[i]->GetInfo2(K, L, info, pHint, fromOutSide))
 			return FALSE;
 
 		int j;

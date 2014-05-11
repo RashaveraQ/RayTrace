@@ -91,10 +91,10 @@ BOOL Cone::IsInside(const sp& L) const
 	return (0 <= L.y && L.y <= 1 && sqrt( L.x * L.x + L.z * L.z ) <= L.y);
 }
 
-BOOL Cone::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const
+BOOL Cone::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
-	if (pHint && pHint->pNode == this && pHint->isReflecting)
-		return FALSE;
+//	if (pHint && pHint->pNode == this && pHint->isReflecting)
+//		return FALSE;
 
 	if (L.y > 1) {
 

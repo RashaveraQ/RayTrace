@@ -12,7 +12,7 @@ public:
 	Minus(const Minus& other) : Gathering(other) {}
 
 	BOOL AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target);
-	BOOL GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const;
+	BOOL GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
 	BOOL IsInside(const sp& L) const;
 	int cmp_distance(double,double) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);

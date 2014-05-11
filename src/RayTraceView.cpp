@@ -278,7 +278,7 @@ void CRayTraceView::OnTimer(UINT nIDEvent)
 		if (m_Job == CONTINUED) {
 			sp k, l;
 			GetVectorFromPoint(k, l, m_NowX, m_NowY);
-			sp	   c  = pDoc->m_Root.GetColor(k, l, 0, NULL);
+			sp	   c  = pDoc->m_Root.GetColor(k, l, 0, NULL, true);
 			m_MemoryDC.FillSolidRect(CRect(m_NowX, m_NowY, m_NowX+m_NowSize, m_NowY+m_NowSize), RGB(c.x, c.y, c.z));
 			m_Job = Go_ahead(m_NowX, m_NowY, m_NowSize, m_StartX, m_StartY, m_ClientSize, START_SQUARE);
 		}
@@ -361,7 +361,7 @@ void CRayTraceView::OnLButtonDown(UINT nFlags, CPoint point)
 	sp k, l;
 	GetVectorFromPoint(k, l, point.x, point.y);
 
-	if (pDoc->m_Root.GetInfo2(k, l, info, NULL)) {
+	if (pDoc->m_Root.GetInfo2(k, l, info, NULL, true)) {
 		m_SelectedNode = (Node*)info.pNode;
 	} else {
 		m_SelectedNode = NULL;
@@ -377,7 +377,7 @@ void CRayTraceView::OnLButtonUp(UINT nFlags, CPoint point)
 	sp k, l;
 	GetVectorFromPoint(k, l, point.x, point.y);
 
-	if (pDoc->m_Root.GetInfo2(k, l, info, NULL)) {
+	if (pDoc->m_Root.GetInfo2(k, l, info, NULL, true)) {
 		m_SelectedNode = (Node*)info.pNode;
 	}
 

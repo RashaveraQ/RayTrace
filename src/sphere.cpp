@@ -118,10 +118,10 @@ BOOL Sphere::IsInside(const sp& L) const
 	return (sqrt(L * L) <= 1.0);
 }
 
-BOOL Sphere::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const
+BOOL Sphere::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
-	if (pHint && pHint->pNode == this && pHint->isReflecting)
-		return FALSE;
+//	if (pHint && pHint->pNode == this && pHint->isReflecting)
+//		return FALSE;
 
 	double	a = K * K;
 	double	b = K * L;

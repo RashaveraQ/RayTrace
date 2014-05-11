@@ -96,9 +96,9 @@ BOOL Cylinder::IsInside(const sp& L) const
 	return (-1 <= L.y && L.y <= 1 && sqrt(L.x*L.x+L.z*L.z) <= 1.0);
 }
 
-BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const
+BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
-	if (pHint && pHint->pNode == this && pHint->isReflecting)
+	if (pHint && pHint->pNode == this && fromOutSide)
 		return FALSE;
 
 	if (L.y < -1)

@@ -14,14 +14,14 @@ BOOL Plus::IsInside( const sp& L ) const
 	return FALSE;
 }
 
-BOOL Plus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const
+BOOL Plus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	Info	tmp;
 	int		n;
 	double	l = -1;
 
 	for (int i = 0; i < m_Member; i++) {
-		if (m_Node[i]->GetInfo2(K, L, tmp, pHint)) {
+		if (m_Node[i]->GetInfo2(K, L, tmp, pHint, fromOutSide)) {
 			if (l == -1 || tmp.Distance < l) {
 				l = tmp.Distance;
 				n = i;

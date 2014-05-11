@@ -15,18 +15,18 @@ BOOL Minus::IsInside(const sp& L) const
 	return ((m_Member >= 1 && m_Node[0]->IsInside2(L)) && !( m_Member >= 2 && m_Node[1]->IsInside2(L)));
 }
 
-BOOL Minus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const
+BOOL Minus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	Info	l_info;
 	Info	r_info;
 	sp		l = L;
 	int		left, right;
 
-	if (!(m_Member >= 1 && m_Node[0]->GetInfo2(K, l, l_info, pHint)))
+	if (!(m_Member >= 1 && m_Node[0]->GetInfo2(K, l, l_info, pHint, fromOutSide)))
 		return FALSE;
 	do {
-		left  = (m_Member >= 1) ? m_Node[0]->GetInfo2(K, l, l_info, pHint) : 0;
-		right = (m_Member >= 2) ? m_Node[1]->GetInfo2(K, l, r_info, pHint) : 0;
+		left  = (m_Member >= 1) ? m_Node[0]->GetInfo2(K, l, l_info, pHint, fromOutSide) : 0;
+		right = (m_Member >= 2) ? m_Node[1]->GetInfo2(K, l, r_info, pHint, fromOutSide) : 0;
 		
 		if (left == 0 && right == 0)
 			return FALSE;

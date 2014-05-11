@@ -206,12 +206,12 @@ sp Node::GetPixel(double x, double y) const
 }
 
 // 視線ベクトル(Kt+L)から色を返す。
-sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint) const
+sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fromOutSide) const
 {
 	Info	info;
 
 	// 再帰数が１０を越える又は、交点が存在しない場合、
-	if (nest > 10 || !GetInfo2(K, L, info, pHint))
+	if (nest > 10 || !GetInfo2(K, L, info, pHint, fromOutSide))
 		return sp(127, 127, 127);
 
 	sp k = K.e();
@@ -222,8 +222,7 @@ sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint) const
 		sp k2 = k - 2 * (v * k) * v;
 		sp l2 = info.Cross;
 		// 反射した視線ベクトルから色を取得。
-		info.isReflecting = TRUE;
-		sp c = m_pDoc->m_Root.GetColor(k2, l2, nest + 1, &info);
+		sp c = m_pDoc->m_Root.GetColor(k2, l2, nest + 1, &info, true);
 		// 反射率で色を混ぜる。
 		info.Material = (info.pNode->m_Reflect * c + (1 - info.pNode->m_Reflect) * sp(info.Material)).getMaterial();
 	}
@@ -241,8 +240,7 @@ sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint) const
 			//sp k2 = (k + v)/r - v;
 			sp l2 = info.Cross;
 			// 屈折した視線ベクトルから色を取得。
-			info.isReflecting = FALSE;
-			sp c = m_pDoc->m_Root.GetColor(k2, l2, nest + 1, &info);
+			sp c = m_pDoc->m_Root.GetColor(k2, l2, nest + 1, &info, true);
 			// 透過率で色を混ぜる。
 			info.Material = (info.pNode->m_Through * c + (1 - info.pNode->m_Through) * sp(info.Material)).getMaterial();
 		}
@@ -259,7 +257,7 @@ sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint) const
 
 // 視線ベクトル(Kt+L)と交差する物体の情報infoを返す。
 // 戻り値:true 交差あり,false 交差なし
-BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint) const
+BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	// START Boundary 
 /*
@@ -286,7 +284,7 @@ BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint) con
 	sp L2 = Inv_m * L;
 	sp K2 = Inv_m * (K + L) - L2;
 
-	if (!GetInfo(K2, L2, info, pHint)) {
+	if (!GetInfo(K2, L2, info, pHint, fromOutSide)) {
 		return FALSE;
 	}
 

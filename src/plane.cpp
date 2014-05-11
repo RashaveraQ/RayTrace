@@ -8,9 +8,9 @@ BOOL	Plane::IsInside( const sp& L ) const
 	return ( L.z >= 0.0 );
 }
 
-BOOL Plane::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const
+BOOL Plane::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
-	if (pHint && pHint->pNode == this && pHint->isReflecting)
+	if (pHint && pHint->pNode == this && fromOutSide)
 		return FALSE;
 
 	double	t = ( K.z ) ? -L.z / K.z : (( L.z > 0 ) ? DBL_MAX : -DBL_MAX);

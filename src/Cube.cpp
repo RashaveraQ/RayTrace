@@ -2,75 +2,80 @@
 
 IMPLEMENT_SERIAL(Cube, CObject, 1)
 
-BOOL Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint) const
+BOOL Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
-	if (pHint && pHint->pNode == this && pHint->isReflecting)
+	if (pHint && pHint->pNode == this && fromOutSide)
 		return FALSE;
 
-	double t;
+	double t[6];
+	sp	   v[6];
+	int i = 0;
+	
+	info.isEnter = (pHint && pHint->pNode == this) ? fromOutSide : !IsInside(L);
 
-	info.isEnter = !IsInside(L);
-
-	for(;;) {
-		if (K.x > 0 && L.x < -1) {
-			t = (-1 - L.x) / K.x;
-			sp p = K * t + L;
-			if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
-				info.Vertical = sp(-1,0,0);
-				break;
-			}
-		}
-		
-		if(K.x < 0 && L.x > 1) {
-			t = (1 - L.x) / K.x;
-			sp p = K * t + L;
-			if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
-				info.Vertical = sp(1,0,0);
-				break;
-			}
-		}
-
-		if (K.y > 0 && L.y < -1) {
-			t = (-1 - L.y) / K.y;
-			sp p = K * t + L;
-			if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
-				info.Vertical = sp(0,-1,0);
-				break;
-			}
-		}
-		
-		if(K.y < 0 && L.y > 1) {
-			t = (1 - L.y) / K.y;
-			sp p = K * t + L;
-			if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
-				info.Vertical = sp(0,1,0);
-				break;
-			}
-		}
-
-		if (K.z > 0 && L.z < -1) {
-			t = (-1 - L.z) / K.z;
-			sp p = K * t + L;
-			if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
-				info.Vertical = sp(0,0,-1);
-				break;
-			}
-		}
-		
-		if(K.z < 0 && L.z > 1) {
-			t = (1 - L.z) / K.z;
-			sp p = K * t + L;
-			if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
-				info.Vertical = sp(0,0,1);
-				break;
-			}
-		}
-
-		return FALSE;
+	t[i] = (-1 - L.x) / K.x;
+	sp p = K * t[i] + L;
+	if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
+		v[i] = sp(-1,0,0);
+		i++;
 	}
 
-	info.Cross = K * t + L;
-	info.Distance = t * sqrt(K * K);
+	t[i] = (1 - L.x) / K.x;
+	p = K * t[i] + L;
+	if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
+		v[i] = sp(1,0,0);
+		i++;
+	}
+
+	t[i] = (-1 - L.y) / K.y;
+	p = K * t[i] + L;
+	if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
+		v[i] = sp(0,-1,0);
+		i++;
+	}
+
+	t[i] = (1 - L.y) / K.y;
+	p = K * t[i] + L;
+	if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
+		v[i] = sp(0,1,0);
+		i++;
+	}
+
+	t[i] = (-1 - L.z) / K.z;
+	p = K * t[i] + L;
+	if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
+		v[i] = sp(0,0,-1);
+		i++;
+	}
+
+	t[i] = (1 - L.z) / K.z;
+	p = K * t[i] + L;
+	if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
+		v[i] = sp(0,0,1);
+		i++;
+	}
+
+	switch (i) {
+	case 0:
+		return FALSE;
+	case 1:
+		break;
+	default:
+		if (pHint && pHint->pNode == this) {
+			if (t[0] < t[1]) {
+				t[0] = t[1];
+				v[0] = v[1];
+			}
+		} else if (t[0] > t[1]) {
+			t[0] = t[1];
+			v[0] = v[1];
+		}
+		break;
+	}
+
+	info.Cross = K * t[0] + L;
+	info.Vertical = info.isEnter ? v[0] : -v[0];
+	info.Distance = t[0] * sqrt(K * K);
 	info.Material = m_Material;
 	info.pNode = this;
 	return TRUE;
