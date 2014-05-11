@@ -120,8 +120,8 @@ BOOL Sphere::IsInside(const sp& L) const
 
 BOOL Sphere::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
-//	if (pHint && pHint->pNode == this && pHint->isReflecting)
-//		return FALSE;
+	if (pHint && pHint->pNode == this && fromOutSide)
+		return FALSE;
 
 	double	a = K * K;
 	double	b = K * L;
@@ -139,29 +139,25 @@ BOOL Sphere::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bo
 	info.isEnter = 0;
 	if (t1 > 0) {
 		if (t2 > 0) {
-			if (pHint && pHint->pNode == this && pHint->isEnter) {
+			if (pHint && pHint->pNode == this && !fromOutSide) {
 				t = (t1 < t2) ? t2 : t1;
 			} else {
 				t = (t1 < t2) ? t1 : t2;
 				info.isEnter = 1;
 			}
 		} else {
-			if (pHint && pHint->pNode == this && !pHint->isEnter)
-				return FALSE;
 			t = t1;
 		}
 	} else {
 		if (t2 > 0) {
-			if (pHint && pHint->pNode == this && !pHint->isEnter)
-				return FALSE;
 			t = t2;
 		} else
 			return FALSE;
 	}
 
-	info.Cross = info.Vertical = K * t + L;
+	info.Cross = K * t + L;
+	info.Vertical = info.isEnter ? info.Cross : -info.Cross;
 	info.Distance = t * sqrt(K * K);
-	info.Vertical = m_Scale.Inv() * info.Vertical;
 
 	double x,y,z, th, phy;
 
