@@ -132,13 +132,21 @@ BOOL Torus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	k[1] = 2 * b * c - 8 * R2 * (K.x * L.x + K.y * L.y);
 	k[0] = c * c - 4 * R2 * (L.x * L.x + L.y * L.y);
 
-	n = Solve_Polynomial(4, k, 0.0, 20000, r);
+	n = Solve_Polynomial(4, k, 0, 20000, r);
 
 	if (n == 0)
 		return FALSE;
 
-	if (fabs(r[0]) < 1.0)
-		return FALSE;
+	if (pHint && pHint->pNode == this) {
+		if (fromOutSide && n % 2 == 1) {
+			if (n == 1)
+				return FALSE;
+			r[0] = r[1];
+		}
+		if (!fromOutSide && n % 2 == 0) {
+			r[0] = r[1];
+		}
+	}
 
 	sp		p;
 	double	th;
