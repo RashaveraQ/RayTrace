@@ -93,82 +93,96 @@ BOOL Cone::IsInside(const sp& L) const
 
 BOOL Cone::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
-//	if (pHint && pHint->pNode == this && pHint->isReflecting)
-//		return FALSE;
+	if (pHint && pHint->pNode == this && fromOutSide)
+		return FALSE;
 
-	if (L.y > 1) {
+	if (L.y > 1 && K.y >= 0)
+		return FALSE;
 
-		if (K.y >= 0)
-			return FALSE;
+	double t[2];
+	sp     v[2];
+	int i = 0;
 
-		double t = (1 - L.y) / K.y;
+	t[i] = (1 - L.y) / K.y;
+	sp p = K * t[i] + L;
 
-		sp p = K*t + L;
-
-		if (p.x * p.x + p.z * p.z <= 1) {
-			info.Cross = p;
-			info.Vertical = sp(0,1,0);
-			info.Distance = t * sqrt(K*K);
-			info.isEnter = 1;
-			info.Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
-			info.pNode = this;
-			info.Refractive = m_Refractive;
-
-			return TRUE;
-		}
+	if (p.x * p.x + p.z * p.z <= 1) {
+		v[i] = sp(0, 1, 0);
+		info.Material = GetPixel(.5 * (p.x + 1), .5 * (p.z + 1)).getMaterial();
+		info.pNode = this;
+		info.Refractive = m_Refractive;
+		i++;
 	}
 
-	double	a, b, c, d, t, t1, t2;
+	double	a, b, c, d, t1, t2;
 
 	c = K.x * L.y - K.y * L.x, c *= c, d = c;
 	c = K.z * L.y - K.y * L.z, c *= c, d += c;
 	c = K.x * L.z - K.z * L.x, c *= c, d -= c;
 
-	if ( d < 0 )
-		return FALSE;
+	if ( d >= 0 ) {
+		d = sqrt( d );
+		a = -( K.x * L.x + K.z * L.z - K.y * L.y );
+		b = K.x * K.x + K.z * K.z - K.y * K.y;
 
-	d = sqrt( d );
+		t1 = ( a + d ) / b;
+		p = K * t1 + L;
+		if (p.y < 0 || p.y > 1 || p.x * p.x + p.z * p.z > 1)
+			t1 = -1;
+		
+		t2 = ( a - d ) / b;
+		p = K * t2 + L;
+		if (p.y < 0 || p.y > 1 ||  p.x * p.x + p.z * p.z > 1)
+			t2 = -1;
 
-	a = -( K.x * L.x + K.z * L.z - K.y * L.y );
-	b = K.x * K.x + K.z * K.z - K.y * K.y;
-
-	t1 = ( a + d ) / b;
-	t2 = ( a - d ) / b;
-
-	if (fabs(t1) < 1E-10 || fabs(t2) < 1E-10)
-		return FALSE;
-
-	if ( t1 > 0 )
-	{
-		if ( t2 > 0 )
-		{
-			if ( t1 < t2 )
-				t = ( K.y * t1 + L.y > 0 ) ? t1 : t2;
-			else
-				t = ( K.y * t2 + L.y > 0 ) ? t2 : t1;
+		if ( t1 > 0 ) {
+			if ( t2 > 0 ) {
+				t[i] = ( t1 < t2 ) ? t1 : t2;
+				v[i] = K * t[i] + L;
+				v[i].y *= -1;
+				i++;
+				t[i] = ( t1 < t2 ) ? t2 : t1;
+				v[i] = K * t[i] + L;
+				v[i].y *= -1;
+				i++;
+			} else {
+				t[i] = t1;
+				v[i] = K * t[i] + L;
+				v[i].y *= -1;
+				i++;
+			}
+		} else {
+			if ( t2 > 0 ) {
+				t[i] = t2;
+				v[i] = K * t[i] + L;
+				v[i].y *= -1;
+				i++;
+			}
 		}
-		else
-			t = t1;
-	}
-	else
-	{
-		if ( t2 > 0 )
-			t = t2;
-		else
-			return FALSE;
 	}
 
-	info.isEnter = !IsInside( L );
-	sp p = K * t + L;
-	info.Cross = info.Vertical = p;
-	info.Vertical = m_Scale.Inv() * info.Vertical;
-
-	if (p.y < 0 || p.x*p.x + p.z*p.z > 1) 
+	switch (i) {
+	case 0:
 		return FALSE;
+	case 1:
+		break;
+	default:
+		if (pHint && pHint->pNode == this) {
+			if (t[0] < t[1]) {
+				t[0] = t[1];
+				v[0] = v[1];
+			}
+		} else if (t[0] > t[1]) {
+			t[0] = t[1];
+			v[0] = v[1];
+		}
+		break;
+	}
 
-	info.Vertical.y *= -1;
-
-	info.Distance = t * sqrt( K * K );
+	info.isEnter = (pHint && pHint->pNode == this) ? fromOutSide : !IsInside( L );
+	info.Cross = K * t[0] + L;
+	info.Vertical = info.isEnter ? v[0] : -v[0];
+	info.Distance = t[0] * sqrt(K * K);
 	info.Material = m_Material;
 	info.pNode = this;
 
