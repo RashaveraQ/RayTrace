@@ -276,7 +276,7 @@ BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 		return FALSE;
 	// End Boundary
 */
-	matrix m = m_Move * m_Rotate * m_Scale;
+	const matrix& m = m_Matrix;
 	matrix Inv_m = m.Inv();
 
 	sp L2 = Inv_m * L;
