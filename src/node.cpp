@@ -286,6 +286,7 @@ BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 		return FALSE;
 	}
 
+	info.Vertical = m_Scale.Inv() * info.Vertical;
 	info.Vertical = m * (info.Vertical + info.Cross) - m * info.Cross;
 	info.Cross = m * info.Cross;
 	info.Distance = (info.Cross - L).abs();
