@@ -3,6 +3,7 @@
 
 class	Plus : public Gathering
 {
+	Boundary getBoundary();
 protected:
 	DECLARE_SERIAL(Plus)
 public:

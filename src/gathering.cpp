@@ -12,28 +12,6 @@ Gathering::~Gathering()
 		delete m_Node[i];
 }
 
-Boundary Gathering::getBoundary()
-{
-	Boundary c1;
-	for (int i = 0; i < m_Member; i++) {
-		if (i == 0) {
-			c1 = m_Node[0]->getBoundary2();
-		} else {
-			Boundary c2 = m_Node[i]->getBoundary2();
-			if (c1.Center == c2.Center) {
-				c1.Radius = max(c1.Radius, c2.Radius);
-			} else {
-				sp e = (c1.Center - c2.Center).e();
-				sp p1 = c1.Center + c1.Radius * e;
-				sp p2 = c2.Center - c2.Radius * e;
-				c1.Center = (p1 + p2) / 2;
-				c1.Radius = (p1 - p2).abs() / 2;
-			}
-		}
-	}
-	return c1;
-}
-
 void	Gathering::Serialize(CArchive& ar)
 {
 	short	i;

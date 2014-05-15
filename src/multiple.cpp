@@ -3,6 +3,32 @@
 
 IMPLEMENT_SERIAL(Multiple, CObject, 1)
 
+Boundary Multiple::getBoundary()
+{
+	Boundary c1;
+	for (int i = 0; i < m_Member; i++) {
+		if (i == 0) {
+			c1 = m_Node[0]->getBoundary2();
+		} else {
+			Boundary c2 = m_Node[i]->getBoundary2();
+			if (c1.Center == c2.Center) {
+				c1.Radius = min(c1.Radius, c2.Radius);
+			} else {
+				double l = (c1.Center - c2.Center).abs();
+				if (l > c1.Radius + c2.Radius) {
+					return Boundary();
+				}
+				double x = (l*l + c2.Radius * c2.Radius - c1.Radius * c1.Radius) / (2 * l);
+				sp c = c2.Center + x / l * (c1.Center - c2.Center);
+				double r = sqrt(c2.Radius * c2.Radius - x * x);
+				c1.Center = c;
+				c1.Radius = r;
+			}
+		}
+	}
+	return c1;
+}
+
 BOOL Multiple::IsInside(const sp& L) const
 {
 	if (!m_Member)

@@ -3,6 +3,7 @@
 
 class	Multiple : public Gathering
 {
+	Boundary getBoundary();
 protected:
 	DECLARE_SERIAL(Multiple)
 public:

@@ -3,7 +3,6 @@
 
 class	Gathering : public Node
 {
-	Boundary getBoundary();
 protected:
 
 	short	m_Member;

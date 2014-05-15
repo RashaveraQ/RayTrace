@@ -2,6 +2,14 @@
 
 IMPLEMENT_SERIAL(Minus, CObject, 1)
 
+Boundary Minus::getBoundary()
+{
+	Boundary c1;
+	if (m_Member > 0)
+		c1 = m_Node[0]->getBoundary2();
+	return c1;
+}
+
 BOOL Minus::AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target)
 {
 	if (m_Member >= 2)
