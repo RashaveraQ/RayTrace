@@ -6,6 +6,8 @@ struct	matrix;
 
 class Cube : public Node
 {
+	static Boundary sBoundary;
+	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Cube)
 public:

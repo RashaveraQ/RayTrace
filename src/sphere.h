@@ -5,8 +5,10 @@ class	Node;
 struct	sp;
 struct	matrix;
 
-class	Sphere : public	Node
+class Sphere : public Node
 {
+	static Boundary sBoundary;
+	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Sphere)
 public:

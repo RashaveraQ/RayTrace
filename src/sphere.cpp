@@ -3,6 +3,8 @@
 
 IMPLEMENT_SERIAL(Sphere, CObject, 1)
 
+Boundary Sphere::sBoundary = Boundary(1);
+
 Sphere::Sphere(const CRayTraceDoc* const pDoc, const char* const Name, const sp Color)
 	: Node(pDoc, SPHERE, Name, Color)
 {

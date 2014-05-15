@@ -4,6 +4,8 @@
 
 IMPLEMENT_SERIAL(Polygon2, CObject, 1)
 
+Boundary Polygon2::sBoundary = Boundary(1);	// Žb’è
+
 Polygon2::Polygon2( const Polygon2& other ) : Node( other )
 {
 	int	i;

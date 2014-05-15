@@ -2,6 +2,8 @@
 
 IMPLEMENT_SERIAL(Cube, CObject, 1)
 
+Boundary Cube::sBoundary = Boundary(sqrt(3.0));
+
 BOOL Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)

@@ -7,6 +7,8 @@ struct	matrix;
 
 class	Teapot : public	Node
 {
+	static Boundary sBoundary;
+	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Teapot)
 public:

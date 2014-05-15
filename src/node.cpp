@@ -633,3 +633,11 @@ void Node::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) const
 	pDC->SelectObject(old_pen);
 }
 
+void Node::OnUpdateBoundary()
+{
+	const Boundary& b = getBoundary();
+	m_Boundary.Center = m_Matrix * b.Center;
+	m_Boundary.Radius = m_Matrix.d() * b.Radius;
+	if (m_pParent)
+		m_pParent->OnUpdateBoundary();
+}

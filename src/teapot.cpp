@@ -3,6 +3,8 @@
 
 IMPLEMENT_SERIAL(Teapot, CObject, 1)
 
+Boundary Teapot::sBoundary = Boundary(1);
+
 Teapot::Teapot(const CRayTraceDoc* const pDoc, const char* const Name, const sp Color)
 	: Node(pDoc, TEAPOT, Name, Color)
 {

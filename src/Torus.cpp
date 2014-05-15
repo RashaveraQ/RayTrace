@@ -7,6 +7,8 @@ IMPLEMENT_SERIAL(Torus, CObject, 1)
 #define A 10
 #define B 50
 
+Boundary Torus::sBoundary = Boundary(1);
+
 Torus::Torus(const CRayTraceDoc* const pDoc, const char* const Name, const sp Color)
 	: Node(pDoc, TORUS, Name, Color), m_R(0.7), m_r(0.3)
 {

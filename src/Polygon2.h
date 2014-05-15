@@ -8,6 +8,8 @@ class Polygon2 : public Node
 {
 	int	m_N;
 	sp	*m_P;
+	static Boundary sBoundary;
+	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Polygon2)
 

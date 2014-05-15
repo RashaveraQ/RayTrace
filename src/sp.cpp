@@ -7,6 +7,16 @@ sp::sp( const matrix& m )
 	z = m.m_data[2][0];
 }
 
+bool sp::operator==( const sp& a ) const
+{
+	return x == a.x && y == a.y && z == a.z;
+}
+
+bool sp::operator!=( const sp& a ) const
+{
+	return x != a.x || y != a.y || z != a.z;
+}
+
 sp&	sp::operator=( const sp& a )
 {
 	x = a.x;

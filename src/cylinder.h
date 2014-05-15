@@ -8,6 +8,8 @@ struct	Info;
 
 class	Cylinder : public Node
 {
+	static Boundary sBoundary;
+	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Cylinder)
 public:

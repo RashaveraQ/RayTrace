@@ -6,8 +6,10 @@ struct	matrix;
 struct	sp;
 struct	Info;
 
-class	Cone : public	Node
+class Cone : public Node
 {
+	static Boundary sBoundary;
+	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Cone)
 public:

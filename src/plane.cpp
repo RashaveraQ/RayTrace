@@ -3,7 +3,9 @@
 
 IMPLEMENT_SERIAL(Plane, CObject, 1)
 
-BOOL	Plane::IsInside( const sp& L ) const
+Boundary Plane::sBoundary = Boundary(1e+40); // 
+
+BOOL Plane::IsInside( const sp& L ) const
 {
 	return ( L.z >= 0.0 );
 }

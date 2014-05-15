@@ -13,6 +13,8 @@ struct	sp
 	sp( const sp& isp) : x(isp.x), y(isp.y), z(isp.z) {}
 	sp( const matrix& mat );
 	sp( const D3DMATERIAL9& mtrl);
+	bool operator==( const sp& ) const;
+	bool operator!=( const sp& ) const;
 	sp&	operator=( const sp& );
 	double	operator*( const sp& ) const;
 	sp	operator+( const sp& ) const;

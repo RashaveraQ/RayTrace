@@ -27,9 +27,17 @@ struct fsize
 };
 #define PERSPECTIVE_RATIO 0.1
 
+// 境界
+struct Boundary {
+	double	Radius;	// 半径
+	sp		Center;	// 中心
+	Boundary(double r = 0, const sp& c = sp(0,0,0)) : Radius(r), Center(c) {}
+};
+
 class	Node : public CObject
 {
 protected:
+	Node*		m_pParent;
 	// アトリビュート
 	node_type	m_NodeType;
 	char		m_Name[99];	// 名前
@@ -45,11 +53,7 @@ protected:
 	double		m_Through ;  	// 透過率
 	double		m_Refractive ;	// 屈折率
 
-	struct tagBoundary {
-		sp		Center;	// 中心
-		double	Radius;	// 半径
-		tagBoundary() : Center(), Radius(1) {}
-	} m_Boundary;	// 境界
+	struct Boundary m_Boundary;	// 境界
 
 	CString		m_TextureFileName;
 	CDC			m_TextureDC;		// テクスチャイメージ格納用
@@ -58,12 +62,15 @@ protected:
 	const CRayTraceDoc* m_pDoc;
 	void updateMatrix() {
 		m_Matrix = m_Move * m_Rotate * m_Scale;
+		OnUpdateBoundary();
 	}
-
+private:
+	virtual Boundary getBoundary() = 0;
+	void OnUpdateBoundary(); 
 public:
 
 	Node(const CRayTraceDoc* const pDoc, node_type NodeType, const char* const Name, const sp Color = sp(-1,-1,-1))
-	: m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1), m_TextureFileName("")
+	: m_pParent(0), m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1), m_TextureFileName("")
 	{
 		m_pDoc = (const CRayTraceDoc*)pDoc;
 		Set_Name( Name );
@@ -110,6 +117,11 @@ public:
 	virtual	void Serialize(CArchive& ar);
 
 	matrix getMatrix() { return m_Matrix; }
+	Boundary getBoundary2() { return m_Boundary; }
+
+	void SetParent(Node* pParent) {
+		m_pParent = pParent;
+	}
 
 	// インプリメンテーション
 	friend CDlgMatrix;
