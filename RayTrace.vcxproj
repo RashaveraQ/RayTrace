@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2676A0F8-536B-4FEC-A565-8620B7E0DC9D}</ProjectGuid>
+    <RootNamespace>RayTrace_old</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Release/RayTrace.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\Release/RayTrace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
+      <ObjectFileName>.\Release/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0411</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;winmm.lib;dxerr.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Release/RayTrace.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release/RayTrace.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Debug/RayTrace.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\Debug/RayTrace.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
+      <ObjectFileName>.\Debug/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
+      <BrowseInformationFile>.\Debug/</BrowseInformationFile>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0411</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;winmm.lib;dxerr.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Debug/RayTrace.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\Debug/RayTrace.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug/RayTrace.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ChildFrm.cpp" />
+    <ClCompile Include="src\Cone.cpp" />
+    <ClCompile Include="src\Cube.cpp" />
+    <ClCompile Include="src\cylinder.cpp" />
+    <ClCompile Include="src\DlgMaterial.cpp" />
+    <ClCompile Include="src\DlgMatrix.cpp" />
+    <ClCompile Include="src\DlgPolygon.cpp" />
+    <ClCompile Include="src\DlgTorus.cpp" />
+    <ClCompile Include="src\expand.cpp" />
+    <ClCompile Include="src\gathering.cpp" />
+    <ClCompile Include="src\Geometry.cpp" />
+    <ClCompile Include="src\MainFrm.cpp" />
+    <ClCompile Include="src\matrix.cpp" />
+    <ClCompile Include="src\minus.cpp" />
+    <ClCompile Include="src\move.cpp" />
+    <ClCompile Include="src\multiple.cpp" />
+    <ClCompile Include="src\node.cpp" />
+    <ClCompile Include="src\NodeTreeCtrl.cpp" />
+    <ClCompile Include="src\plane.cpp" />
+    <ClCompile Include="src\plus.cpp" />
+    <ClCompile Include="src\polygon2.cpp" />
+    <ClCompile Include="src\Polysolv.cpp" />
+    <ClCompile Include="src\povray.cpp" />
+    <ClCompile Include="src\RayTrace.cpp" />
+    <ClCompile Include="src\RayTraceDoc.cpp" />
+    <ClCompile Include="src\RayTraceView.cpp" />
+    <ClCompile Include="src\rotate.cpp" />
+    <ClCompile Include="src\rotate_x.cpp" />
+    <ClCompile Include="src\rotate_y.cpp" />
+    <ClCompile Include="src\rotate_z.cpp" />
+    <ClCompile Include="src\ScnTreeView.cpp" />
+    <ClCompile Include="src\Solve_Polynomial_forMFC.cpp" />
+    <ClCompile Include="src\sp.cpp" />
+    <ClCompile Include="src\sphere.cpp" />
+    <ClCompile Include="src\StdAfx.cpp" />
+    <ClCompile Include="src\teapot.cpp" />
+    <ClCompile Include="src\Torus.cpp" />
+    <ClCompile Include="src\Viewport.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\camera.h" />
+    <ClInclude Include="src\ChildFrm.h" />
+    <ClInclude Include="src\cone.h" />
+    <ClInclude Include="src\cube.h" />
+    <ClInclude Include="src\cylinder.h" />
+    <ClInclude Include="src\DlgMaterial.h" />
+    <ClInclude Include="src\DlgMatrix.h" />
+    <ClInclude Include="src\DlgPolygon.h" />
+    <ClInclude Include="src\DlgTorus.h" />
+    <ClInclude Include="src\expand.h" />
+    <ClInclude Include="src\Frame.h" />
+    <ClInclude Include="src\gathering.h" />
+    <ClInclude Include="src\Geometry.h" />
+    <ClInclude Include="src\head.h" />
+    <ClInclude Include="src\info.h" />
+    <ClInclude Include="src\MainFrm.h" />
+    <ClInclude Include="src\matrix.h" />
+    <ClInclude Include="src\minus.h" />
+    <ClInclude Include="src\move.h" />
+    <ClInclude Include="src\multiple.h" />
+    <ClInclude Include="src\node.h" />
+    <ClInclude Include="src\NodeTreeCtrl.h" />
+    <ClInclude Include="src\plane.h" />
+    <ClInclude Include="src\plus.h" />
+    <ClInclude Include="src\Polygon2.h" />
+    <ClInclude Include="src\polysolv.h" />
+    <ClInclude Include="src\povray.h" />
+    <ClInclude Include="src\RayTrace.h" />
+    <ClInclude Include="src\RayTraceDoc.h" />
+    <ClInclude Include="src\RayTraceView.h" />
+    <ClInclude Include="src\resource.h" />
+    <ClInclude Include="src\rotate.h" />
+    <ClInclude Include="src\rotate_x.h" />
+    <ClInclude Include="src\rotate_y.h" />
+    <ClInclude Include="src\rotate_z.h" />
+    <ClInclude Include="src\ScnTreeView.h" />
+    <ClInclude Include="src\sp.h" />
+    <ClInclude Include="src\sphere.h" />
+    <ClInclude Include="src\StdAfx.h" />
+    <ClInclude Include="src\teapot.h" />
+    <ClInclude Include="src\Torus.h" />
+    <ClInclude Include="src\vector.h" />
+    <ClInclude Include="src\Viewport.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\bitmap_n.bmp" />
+    <Image Include="res\bitmap_s.bmp" />
+    <Image Include="res\RayTrace.ico" />
+    <Image Include="res\RayTraceDoc.ico" />
+    <Image Include="res\Toolbar.bmp" />
+    <Image Include="青いﾚｰｽ編み 16.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RayTrace.reg" />
+    <None Include="RES\cursor1.cur" />
+    <None Include="res\RayTrace.rc2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="RayTrace.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+    <Text Include="ToDo.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="RayTrace.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
