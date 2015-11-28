@@ -1,6 +1,7 @@
 
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
+#include "DoCuda.cuh"
 
 #include <stdio.h>
 
@@ -120,10 +121,22 @@ Error:
 	return cudaStatus;
 }
 
-//#include "src/RayTraceDoc.h"
-//#include "src/RayTraceView.h"
+bool DoCuda_Init()
+{
+	return cudaSuccess == cudaSetDevice(0);
+}
 
-void DoCuda(class CRayTraceDoc* pDoc, class CRayTraceView* pView)
+bool DoCuda_OnSize(void** dst, const int imageW, const int imageH)
+{
+	return cudaSuccess == cudaMalloc(dst, imageW * imageH * sizeof(unsigned long));
+}
+
+void DoCuda_OnDraw(unsigned long* out, void* d_dst, class Node* root, const int imagew, const int imageh)
 {
 
+}
+
+bool DoCuda_Free(void* dst)
+{
+	return cudaSuccess == cudaFree(dst);
 }

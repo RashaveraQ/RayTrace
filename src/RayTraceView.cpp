@@ -6,6 +6,7 @@
 
 #include "RayTraceDoc.h"
 #include "RayTraceView.h"
+#include "DoCuda.cuh"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -75,12 +76,18 @@ CRayTraceView::CRayTraceView()
 	m_pd3dDevice = NULL;
 	m_vEyePt = D3DXVECTOR3(0.0f, 5.0f, -30.0f);
 	m_vLookatPt = D3DXVECTOR3(0.0f, 10.0f, 0.0f);
+	m_ColorRefs = NULL;
 }
 
 CRayTraceView::~CRayTraceView()
 {
 	m_MemoryDC.DeleteDC();
 	m_Viewport.DetachRoot();
+
+	if (m_ColorRefs) {
+		free(m_ColorRefs);
+		DoCuda_Free(m_deviceAllocateMemory);
+	}
 }
 
 BOOL CRayTraceView::PreCreateWindow(CREATESTRUCT& cs)
@@ -97,12 +104,15 @@ BOOL CRayTraceView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CRayTraceView::OnDraw(CDC* pDC)
 {
-	void DoCuda(CRayTraceDoc*, CRayTraceView*);
-
 	switch (m_ViewMode) {
 	case eRayTrace:
 	case eWireFrameWithRayTrace:
-		DoCuda(GetDocument(), this);
+		{
+			DoCuda_OnDraw(m_ColorRefs, m_deviceAllocateMemory, &GetDocument()->m_Root, m_ClientSize.cx, m_ClientSize.cy);
+			for (int y = 0; y < m_ClientSize.cy; y++)
+				for (int x = 0; x < m_ClientSize.cx; x++)
+					m_MemoryDC.FillSolidRect(CRect(x, y, x + 1, y + 1), m_ColorRefs[x + y * m_ClientSize.cx]);
+		}
 		pDC->BitBlt(0, 0, m_ClientSize.cx, m_ClientSize.cy, &m_MemoryDC, 0, 0, SRCCOPY);
 		if (m_ViewMode == eRayTrace)
 			break;
@@ -257,6 +267,9 @@ int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_Viewport.SetDocument(pDoc);
 	m_Viewport.AttachRoot(&(pDoc->m_Root));
 
+	if (!DoCuda_Init())
+		MessageBox("Failed to DoCuda_Init!");
+
 	return 0;
 }
 	
@@ -324,7 +337,13 @@ void CRayTraceView::OnSize(UINT nType, int cx, int cy)
 {
 	m_ClientSize.cx = cx;
 	m_ClientSize.cy = cy;
-	
+	if (m_ColorRefs) {
+		free(m_ColorRefs);
+		DoCuda_Free(m_deviceAllocateMemory);
+	}
+	m_ColorRefs = (COLORREF*)malloc(cx * cy * sizeof(COLORREF));
+	DoCuda_OnSize(&m_deviceAllocateMemory, cx, cy);
+
 	if (!m_Iconized && nType != SIZE_MINIMIZED)	{
 		m_MemoryDC.DeleteDC();
 		m_MemoryDC.CreateCompatibleDC(NULL);

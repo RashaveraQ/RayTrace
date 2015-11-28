@@ -29,6 +29,8 @@ public:
 	Viewport	m_Viewport;		//	視点開始オブジェクトのポインタ
 	Node*		m_SelectedNode;
 	CSize		m_ClientSize;
+	COLORREF*	m_ColorRefs;
+	void*		m_deviceAllocateMemory;
 
 	enum {
 		eD3DWireFrame = 0,
