@@ -119,3 +119,11 @@ Error:
 
 	return cudaStatus;
 }
+
+//#include "src/RayTraceDoc.h"
+//#include "src/RayTraceView.h"
+
+void DoCuda(class CRayTraceDoc* pDoc, class CRayTraceView* pView)
+{
+
+}
