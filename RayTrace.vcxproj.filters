@@ -300,6 +300,6 @@
     <Text Include="ToDo.txt" />
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="kernel.cu" />
+    <CudaCompile Include="src\kernel.cu" />
   </ItemGroup>
 </Project>
