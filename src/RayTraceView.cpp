@@ -108,16 +108,14 @@ BOOL CRayTraceView::PreCreateWindow(CREATESTRUCT& cs)
 void CRayTraceView::OnDraw(CDC* pDC)
 {
 	switch (m_ViewMode) {
+	case eCudaRayTrace:
+		if (!DoCuda_OnDraw(m_ColorRefs, m_deviceAllocateMemory, &GetDocument()->m_Root, m_ClientSize.cx, m_ClientSize.cy))
+			MessageBox("Failed to DoCuda_OnDraw.");
+		for (int y = 0; y < m_ClientSize.cy; y++)
+			for (int x = 0; x < m_ClientSize.cx; x++)
+				m_MemoryDC.FillSolidRect(CRect(x, y, x + 1, y + 1), m_ColorRefs[x + y * m_ClientSize.cx]);
 	case eRayTrace:
 	case eWireFrameWithRayTrace:
-	case eCudaRayTrace:
-		if (m_ViewMode == eCudaRayTrace) {
-			if (!DoCuda_OnDraw(m_ColorRefs, m_deviceAllocateMemory, &GetDocument()->m_Root, m_ClientSize.cx, m_ClientSize.cy))
-				MessageBox("Failed to DoCuda_OnDraw.");
-			for (int y = 0; y < m_ClientSize.cy; y++)
-				for (int x = 0; x < m_ClientSize.cx; x++)
-					m_MemoryDC.FillSolidRect(CRect(x, y, x + 1, y + 1), m_ColorRefs[x + y * m_ClientSize.cx]);
-		}
 		pDC->BitBlt(0, 0, m_ClientSize.cx, m_ClientSize.cy, &m_MemoryDC, 0, 0, SRCCOPY);
 		if (m_ViewMode == eRayTrace || m_ViewMode == eCudaRayTrace)
 			break;
