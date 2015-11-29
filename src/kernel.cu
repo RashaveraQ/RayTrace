@@ -121,9 +121,20 @@ Error:
 	return cudaStatus;
 }
 
+int numSMs = 0;
+
 bool DoCuda_Init()
 {
-	return cudaSuccess == cudaSetDevice(0);
+	cudaDeviceProp deviceProp;
+	if (cudaSuccess != cudaSetDevice(0))
+		return false;
+
+	if (cudaSuccess != cudaGetDeviceProperties(&deviceProp, 0))
+		return false;
+
+	numSMs = deviceProp.multiProcessorCount;
+
+	return true;
 }
 
 bool DoCuda_OnSize(void** dst, const int imageW, const int imageH)
@@ -131,9 +142,50 @@ bool DoCuda_OnSize(void** dst, const int imageW, const int imageH)
 	return cudaSuccess == cudaMalloc(dst, imageW * imageH * sizeof(unsigned long));
 }
 
-void DoCuda_OnDraw(unsigned long* out, void* d_dst, class Node* root, const int imagew, const int imageh)
+__global__
+void RayTrace(unsigned long* dst, const int imageW, const int imageH, class Node* root, const int gridWidth, const int numBlocks)
 {
+	// loop until all blocks completed
+	for (unsigned int blockIndex = blockIdx.x; blockIndex < numBlocks; blockIndex += gridDim.x)
+	{
+		unsigned int blockX = blockIndex % gridWidth;
+		unsigned int blockY = blockIndex / gridWidth;
 
+		// process this block
+		const int ix = blockDim.x * blockX + threadIdx.x;
+		const int iy = blockDim.y * blockY + threadIdx.y;
+
+		if ((ix < imageW) && (iy < imageH))
+		{
+			// Output the pixel
+			int pixel = imageW * iy + ix;
+			dst[pixel] = pixel;
+		}
+	}
+}
+
+// The dimensions of the thread block
+#define BLOCKDIM_X 16
+#define BLOCKDIM_Y 16
+
+// Increase the grid size by 1 if the image width or height does not divide evenly
+// by the thread block dimensions
+inline int iDivUp(int a, int b)
+{
+	return ((a % b) != 0) ? (a / b + 1) : (a / b);
+} // iDivUp
+
+bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class Node* root, const int imageW, const int imageH)
+{
+	dim3 threads(BLOCKDIM_X, BLOCKDIM_Y);
+	dim3 grid(iDivUp(imageW, BLOCKDIM_X), iDivUp(imageH, BLOCKDIM_Y));
+
+	int numWorkerBlocks = numSMs;
+
+	RayTrace<<<numWorkerBlocks, threads>>>((unsigned long*)d_dst, imageW, imageH, root, grid.x, grid.x * grid.y);
+
+	// Copy output vector from GPU buffer to host memory.
+	return cudaSuccess == cudaMemcpy(out, d_dst, imageW * imageH * sizeof(unsigned long), cudaMemcpyDeviceToHost);
 }
 
 bool DoCuda_Free(void* dst)

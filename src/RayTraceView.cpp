@@ -86,7 +86,8 @@ CRayTraceView::~CRayTraceView()
 
 	if (m_ColorRefs) {
 		free(m_ColorRefs);
-		DoCuda_Free(m_deviceAllocateMemory);
+		if (!DoCuda_Free(m_deviceAllocateMemory))
+			MessageBox("Failed to DoCuda_Free");
 	}
 }
 
@@ -108,7 +109,8 @@ void CRayTraceView::OnDraw(CDC* pDC)
 	case eRayTrace:
 	case eWireFrameWithRayTrace:
 		{
-			DoCuda_OnDraw(m_ColorRefs, m_deviceAllocateMemory, &GetDocument()->m_Root, m_ClientSize.cx, m_ClientSize.cy);
+			if (!DoCuda_OnDraw(m_ColorRefs, m_deviceAllocateMemory, &GetDocument()->m_Root, m_ClientSize.cx, m_ClientSize.cy))
+				MessageBox("Failed to DoCuda_OnDraw.");
 			for (int y = 0; y < m_ClientSize.cy; y++)
 				for (int x = 0; x < m_ClientSize.cx; x++)
 					m_MemoryDC.FillSolidRect(CRect(x, y, x + 1, y + 1), m_ColorRefs[x + y * m_ClientSize.cx]);
@@ -259,8 +261,8 @@ int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	if (!(m_TimerID = SetTimer(0,1,NULL)))
-		MessageBox("SetTimer is returned to 0!");
+	//if (!(m_TimerID = SetTimer(0,1,NULL)))
+	//	MessageBox("SetTimer is returned to 0!");
 
 	CRayTraceDoc	*pDoc = GetDocument();
 
@@ -339,7 +341,8 @@ void CRayTraceView::OnSize(UINT nType, int cx, int cy)
 	m_ClientSize.cy = cy;
 	if (m_ColorRefs) {
 		free(m_ColorRefs);
-		DoCuda_Free(m_deviceAllocateMemory);
+		if (!DoCuda_Free(m_deviceAllocateMemory))
+			MessageBox("Failed to DoCuda_Free.");
 	}
 	m_ColorRefs = (COLORREF*)malloc(cx * cy * sizeof(COLORREF));
 	DoCuda_OnSize(&m_deviceAllocateMemory, cx, cy);
