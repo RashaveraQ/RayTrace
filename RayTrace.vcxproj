@@ -241,7 +241,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <Text Include="ToDo.txt" />
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="src\kernel.cu" />
+    <CudaCompile Include="src\DoCuda.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

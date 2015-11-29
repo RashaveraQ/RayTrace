@@ -260,9 +260,7 @@
     <ClInclude Include="src\Viewport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DoCuda.cuh">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="src\DoCuda.cuh" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\bitmap_n.bmp">
@@ -303,6 +301,6 @@
     <Text Include="ToDo.txt" />
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="src\kernel.cu" />
+    <CudaCompile Include="src\DoCuda.cu" />
   </ItemGroup>
 </Project>
