@@ -54,6 +54,8 @@ BEGIN_MESSAGE_MAP(CRayTraceView, CView)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, CView::OnFilePrintPreview)
 	ON_COMMAND(ID_VIEW_WIREFRAME_WITH_RAYTRACE, &CRayTraceView::OnViewWireframeWithRaytrace)
+	ON_COMMAND(ID_VIEW_CUDA_RAYTRACE, &CRayTraceView::OnViewCudaRaytrace)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_CUDA_RAYTRACE, &CRayTraceView::OnUpdateViewCudaRaytrace)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -108,7 +110,8 @@ void CRayTraceView::OnDraw(CDC* pDC)
 	switch (m_ViewMode) {
 	case eRayTrace:
 	case eWireFrameWithRayTrace:
-		{
+	case eCudaRayTrace:
+		if (m_ViewMode == eCudaRayTrace) {
 			if (!DoCuda_OnDraw(m_ColorRefs, m_deviceAllocateMemory, &GetDocument()->m_Root, m_ClientSize.cx, m_ClientSize.cy))
 				MessageBox("Failed to DoCuda_OnDraw.");
 			for (int y = 0; y < m_ClientSize.cy; y++)
@@ -116,7 +119,7 @@ void CRayTraceView::OnDraw(CDC* pDC)
 					m_MemoryDC.FillSolidRect(CRect(x, y, x + 1, y + 1), m_ColorRefs[x + y * m_ClientSize.cx]);
 		}
 		pDC->BitBlt(0, 0, m_ClientSize.cx, m_ClientSize.cy, &m_MemoryDC, 0, 0, SRCCOPY);
-		if (m_ViewMode == eRayTrace)
+		if (m_ViewMode == eRayTrace || m_ViewMode == eCudaRayTrace)
 			break;
 	case eWireFrame:
 		pDC->SelectStockObject(NULL_BRUSH);
@@ -261,8 +264,8 @@ int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	//if (!(m_TimerID = SetTimer(0,1,NULL)))
-	//	MessageBox("SetTimer is returned to 0!");
+	if (!(m_TimerID = SetTimer(0,1,NULL)))
+		MessageBox("SetTimer is returned to 0!");
 
 	CRayTraceDoc	*pDoc = GetDocument();
 
@@ -525,11 +528,18 @@ void CRayTraceView::OnViewGouraudshading()
 	Invalidate();
 }
 
+void CRayTraceView::OnViewCudaRaytrace()
+{
+	m_ViewMode = eCudaRayTrace;
+	Invalidate();
+}
+
 void CRayTraceView::OnUpdateViewRaytrace(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eRayTrace); }
 void CRayTraceView::OnUpdateViewWireframe(CCmdUI* pCmdUI) {	pCmdUI->SetCheck(m_ViewMode == eWireFrame); }
 void CRayTraceView::OnUpdateViewD3dwireframe(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eD3DWireFrame); }
 void CRayTraceView::OnUpdateViewFlatshading(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eD3DFlatShading); }
 void CRayTraceView::OnUpdateViewGouraudshading(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eD3DGouraudShading); }
+void CRayTraceView::OnUpdateViewCudaRaytrace(CCmdUI *pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eCudaRayTrace); }
 
 BOOL CRayTraceView::OnEraseBkgnd(CDC* pDC) 
 {
@@ -674,4 +684,6 @@ void CRayTraceView::OnDestroy()
 		m_pd3dDevice = NULL;
 	}
 }
+
+
 

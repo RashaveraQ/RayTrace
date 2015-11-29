@@ -12,7 +12,7 @@
 	#error include 'stdafx.h' before including this file for PCH
 #endif
 
-#include "resource.h"       // メイン シンボル
+#include "..\resource.h"       // メイン シンボル
 
 /////////////////////////////////////////////////////////////////////////////
 // CRayTraceApp:

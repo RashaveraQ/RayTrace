@@ -175,6 +175,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="src\Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\ChildFrm.h" />
     <ClInclude Include="src\cone.h" />
@@ -206,7 +207,6 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="src\RayTrace.h" />
     <ClInclude Include="src\RayTraceDoc.h" />
     <ClInclude Include="src\RayTraceView.h" />
-    <ClInclude Include="src\resource.h" />
     <ClInclude Include="src\rotate.h" />
     <ClInclude Include="src\rotate_x.h" />
     <ClInclude Include="src\rotate_y.h" />

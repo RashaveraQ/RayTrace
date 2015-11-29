@@ -1,6 +1,6 @@
 // Microsoft Visual C++ generated resource script.
 //
-#include "src\resource.h"
+#include "resource.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -13,13 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Japanese resources
+// Japanese (Japan) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
-#ifdef _WIN32
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 #pragma code_page(932)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -83,7 +81,7 @@ IDB_BITMAP_STATE        BITMAP                  "res\\bitmap_s.bmp"
 // Toolbar
 //
 
-IDR_MAINFRAME TOOLBAR  16, 15
+IDR_MAINFRAME TOOLBAR 16, 15
 BEGIN
     BUTTON      ID_FILE_NEW
     BUTTON      ID_FILE_OPEN
@@ -114,7 +112,7 @@ END
 // Menu
 //
 
-IDR_MAINFRAME MENU 
+IDR_MAINFRAME MENU
 BEGIN
     POPUP "ﾌｧｲﾙ(&F)"
     BEGIN
@@ -138,7 +136,7 @@ BEGIN
     END
 END
 
-IDR_RAYTRATYPE MENU 
+IDR_RAYTRATYPE MENU
 BEGIN
     POPUP "ﾌｧｲﾙ(&F)"
     BEGIN
@@ -200,6 +198,7 @@ BEGIN
         MENUITEM "ﾜｲﾔｰﾌﾚｰﾑ(&W)",                ID_VIEW_D3DWIREFRAME
         MENUITEM "ﾌﾗｯﾄｼｪｰﾃﾞｨﾝｸﾞ(&F)",           ID_VIEW_FLATSHADING
         MENUITEM "ｸﾞﾛｰｼｪｰﾃﾞｨﾝｸﾞ(&G)",           ID_VIEW_GOURAUDSHADING
+        MENUITEM "CUDA によるレイトレース(&C)",          ID_VIEW_CUDA_RAYTRACE
     END
     POPUP "ｳｨﾝﾄﾞｳ(&W)"
     BEGIN
@@ -221,7 +220,7 @@ END
 // Accelerator
 //
 
-IDR_MAINFRAME ACCELERATORS 
+IDR_MAINFRAME ACCELERATORS
 BEGIN
     "A",            ID_AFIN,                VIRTKEY, ALT, NOINVERT
     "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
@@ -249,7 +248,7 @@ END
 // Dialog
 //
 
-IDD_ABOUTBOX DIALOG  0, 0, 217, 55
+IDD_ABOUTBOX DIALOG 0, 0, 217, 55
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "ﾊﾞｰｼﾞｮﾝ情報(RayTrace)"
 FONT 9, "ＭＳ Ｐゴシック"
@@ -302,7 +301,7 @@ BEGIN
     LTEXT           "Ｚ",IDC_STATIC,6,134,8,8
 END
 
-IDD_MATERIAL DIALOG  0, 0, 178, 79
+IDD_MATERIAL DIALOG 0, 0, 178, 79
 STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
 CAPTION "マテリアル"
 FONT 9, "ＭＳ Ｐゴシック"
@@ -319,7 +318,7 @@ BEGIN
     COMBOBOX        IDC_MATERIAL,29,7,70,61,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
 END
 
-IDD_TORUS DIALOG  0, 0, 166, 45
+IDD_TORUS DIALOG 0, 0, 166, 45
 STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
 CAPTION "トーラスの編集"
 FONT 9, "ＭＳ Ｐゴシック"
@@ -332,7 +331,7 @@ BEGIN
     LTEXT           "短半径",IDC_STATIC,7,7,28,11
 END
 
-IDD_POLYGON DIALOG  0, 0, 231, 145
+IDD_POLYGON DIALOG 0, 0, 231, 145
 STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
 CAPTION "ポリゴン"
 FONT 9, "ＭＳ Ｐゴシック"
@@ -387,7 +386,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
@@ -482,19 +481,19 @@ IDC_CURSOR1             CURSOR                  "res\\cursor1.cur"
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "RayTrace"
     IDR_RAYTRATYPE          "\nRayTra\nRayTra\nRayTra ﾌｧｲﾙ (*.scn)\n.scn\nRayTrace.Document\nRayTra Document"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_APP_TITLE       "RayTrace"
     AFX_IDS_IDLEMESSAGE     "ﾚﾃﾞｨ"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_INDICATOR_EXT        "EXT"
     ID_INDICATOR_CAPS       "CAP"
@@ -505,7 +504,7 @@ BEGIN
     ID_INDICATOR_KANA       "ｶﾅ"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_FILE_NEW             "新規にﾌｧｲﾙを作成\n新規ﾌｧｲﾙ"
     ID_FILE_OPEN            "既存のﾌｧｲﾙを開く\n開く"
@@ -518,13 +517,13 @@ BEGIN
     ID_FILE_PRINT_PREVIEW   "ﾌﾙｽｸﾘｰﾝで表示\n印刷ﾌﾟﾚﾋﾞｭｰ"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_APP_ABOUT            "ﾌﾟﾛｸﾞﾗﾑの情報、ﾊﾞｰｼﾞｮﾝそして著作権を表示\nﾊﾞｰｼﾞｮﾝ情報"
     ID_APP_EXIT             "ｱﾌﾟﾘｹｰｼｮﾝを終了し、ﾌｧｲﾙの保存を指示\n終了"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_FILE_MRU_FILE1       "指定のﾌｧｲﾙを開く"
     ID_FILE_MRU_FILE2       "指定のﾌｧｲﾙを開く"
@@ -544,13 +543,13 @@ BEGIN
     ID_FILE_MRU_FILE16      "指定のﾌｧｲﾙを開く"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_NEXT_PANE            "次のｳｨﾝﾄﾞｳに切り替える\n次ﾍﾟｰｼﾞ"
     ID_PREV_PANE            "前のｳｨﾝﾄﾞｳに切り替える\n前ﾍﾟｰｼﾞ"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_WINDOW_NEW           "作業中のｳｨﾝﾄﾞｳを複写して表示\n新規ｳｨﾝﾄﾞｳ"
     ID_WINDOW_ARRANGE       "ｳｨﾝﾄﾞｳの下部にｱｲｺﾝを整列\nｱｲｺﾝの整列"
@@ -560,7 +559,7 @@ BEGIN
     ID_WINDOW_SPLIT         "作業中のｳｨﾝﾄﾞｳを分割\n分割"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_EDIT_CLEAR           "選択範囲を消去\n消去"
     ID_EDIT_CLEAR_ALL       "すべて消去\nすべて消去"
@@ -575,13 +574,13 @@ BEGIN
     ID_EDIT_REDO            "直前に行った動作を繰り返す\nやり直し"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_VIEW_TOOLBAR         "ﾂｰﾙ ﾊﾞｰの表示/非表示\nﾂｰﾙ ﾊﾞｰの表示/非表示"
     ID_VIEW_STATUS_BAR      "ｽﾃｰﾀｽ ﾊﾞｰの表示/非表示\nｽﾃｰﾀｽ ﾊﾞｰの表示/非表示"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_SCSIZE          "ｳｨﾝﾄﾞｳのｻｲｽﾞを変更"
     AFX_IDS_SCMOVE          "ｳｨﾝﾄﾞｳの位置を変更"
@@ -592,19 +591,19 @@ BEGIN
     AFX_IDS_SCCLOSE         "作業中のｳｨﾝﾄﾞｳを閉じ、変更したﾌｧｲﾙの保存を指示"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_SCRESTORE       "ｳｨﾝﾄﾞｳを通常のｻｲｽﾞに戻す"
     AFX_IDS_SCTASKLIST      "ｱﾌﾟﾘｹｰｼｮﾝの切り替え"
     AFX_IDS_MDICHILD        "指定のｳｨﾝﾄﾞｳを表示"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_PREVIEW_CLOSE   "印刷ﾌﾟﾚﾋﾞｭｰ ﾓｰﾄﾞを閉じる\nﾌﾟﾚﾋﾞｭｰのｷｬﾝｾﾙ"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_ADD_SPHERE           "カーソル位置に球を追加します。"
     ID_ADD_PLANE            "カーソル位置に平面を追加します。"
@@ -618,7 +617,7 @@ BEGIN
     ID_PROPERTY             "対象のノードの属性を変更します。"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_ADD_POLYGON          "カーソル位置にポリゴンを追加します。"
     ID_TEXTURE              "テクスチャを選択します。"
@@ -634,7 +633,7 @@ BEGIN
     ID_ADD_TEAPOT           "カーソル位置にティーポットを追加します。"
 END
 
-#endif    // Japanese resources
+#endif    // Japanese (Japan) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
