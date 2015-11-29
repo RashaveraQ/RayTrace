@@ -6,7 +6,7 @@
 
 #include "RayTraceDoc.h"
 #include "RayTraceView.h"
-#include "DoCuda.cuh"
+#include "DoCuda.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -1,7 +1,7 @@
 
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
-#include "DoCuda.cuh"
+#include "DoCuda.h"
 
 #include <stdio.h>
 

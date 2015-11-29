@@ -185,7 +185,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="src\DlgMatrix.h" />
     <ClInclude Include="src\DlgPolygon.h" />
     <ClInclude Include="src\DlgTorus.h" />
-    <ClInclude Include="src\DoCuda.cuh" />
+    <ClInclude Include="src\DoCuda.h" />
     <ClInclude Include="src\expand.h" />
     <ClInclude Include="src\Frame.h" />
     <ClInclude Include="src\gathering.h" />
