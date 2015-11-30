@@ -143,7 +143,7 @@ bool DoCuda_OnSize(void** dst, const int imageW, const int imageH)
 }
 
 __global__
-void RayTrace(unsigned long* dst, const int imageW, const int imageH, class Node* root, const int gridWidth, const int numBlocks)
+void RayTrace(unsigned long* dst, const int imageW, const int imageH, class Node* root, const int gridWidth, const int numBlocks, const fsize* pView, const matrix* pMatrix)
 {
 	// loop until all blocks completed
 	for (unsigned int blockIndex = blockIdx.x; blockIndex < numBlocks; blockIndex += gridDim.x)
@@ -175,14 +175,14 @@ inline int iDivUp(int a, int b)
 	return ((a % b) != 0) ? (a / b + 1) : (a / b);
 } // iDivUp
 
-bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class Node* root, const int imageW, const int imageH)
+bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class Node* root, const int imageW, const int imageH, const fsize* pView, const matrix* pMatrix)
 {
 	dim3 threads(BLOCKDIM_X, BLOCKDIM_Y);
 	dim3 grid(iDivUp(imageW, BLOCKDIM_X), iDivUp(imageH, BLOCKDIM_Y));
 
 	int numWorkerBlocks = numSMs;
 
-	RayTrace<<<numWorkerBlocks, threads>>>((unsigned long*)d_dst, imageW, imageH, root, grid.x, grid.x * grid.y);
+	RayTrace<<<numWorkerBlocks, threads>>>((unsigned long*)d_dst, imageW, imageH, root, grid.x, grid.x * grid.y, pView, pMatrix);
 
 	// Copy output vector from GPU buffer to host memory.
 	return cudaSuccess == cudaMemcpy(out, d_dst, imageW * imageH * sizeof(unsigned long), cudaMemcpyDeviceToHost);
@@ -192,3 +192,4 @@ bool DoCuda_Free(void* dst)
 {
 	return cudaSuccess == cudaFree(dst);
 }
+

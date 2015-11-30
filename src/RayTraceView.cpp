@@ -110,7 +110,7 @@ void CRayTraceView::OnDraw(CDC* pDC)
 {
 	switch (m_ViewMode) {
 	case eCudaRayTrace:
-		if (!DoCuda_OnDraw(m_ColorRefs, m_deviceAllocateMemory, &GetDocument()->m_Root, m_ClientSize.cx, m_ClientSize.cy))
+		if (!DoCuda_OnDraw(m_ColorRefs, m_deviceAllocateMemory, GetDocument()->m_pDeviceRoot, m_ClientSize.cx, m_ClientSize.cy, &m_View, &m_Viewport.getMatrix()))
 			MessageBox("Failed to DoCuda_OnDraw.");
 		for (int y = 0; y < m_ClientSize.cy; y++)
 			for (int x = 0; x < m_ClientSize.cx; x++)
