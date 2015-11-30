@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "GetVectorFromPoint.h"
 
-#ifdef __NVCC__
-TARGET
 void GetVectorFromPoint(sp& k, sp& l, int px, int py, const fsize* pView, int cx, int cy, const matrix* pMatrix)
 {
 	double rx = (pView->right - pView->left) * px / cx + pView->left;
@@ -15,4 +13,3 @@ void GetVectorFromPoint(sp& k, sp& l, int px, int py, const fsize* pView, int cx
 	k = m * (k + l) - m * l;
 	l = m * l;
 }
-#endif // __NVCC__

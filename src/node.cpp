@@ -159,7 +159,6 @@ bool Node::MakeMemoryDCfromTextureFileName()
 	return true;
 }
 
-#else // __NVCC__
 void Node::Move(eAxis axis, double d)
 {
 	switch (axis) {
