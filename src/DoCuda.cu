@@ -4,7 +4,7 @@
 #include "DoCuda.h"
 
 #include <stdio.h>
-
+/*
 cudaError_t addWithCuda(int *c, const int *a, const int *b, unsigned int size);
 
 __global__ void addKernel(int *c, const int *a, const int *b)
@@ -120,7 +120,7 @@ Error:
 
 	return cudaStatus;
 }
-
+*/
 int numSMs = 0;
 
 bool DoCuda_Init()
