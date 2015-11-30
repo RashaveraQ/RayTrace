@@ -3,7 +3,7 @@
 
 struct	sp;
 
-struct	matrix
+struct matrix
 {
 	int		m_Width;
 	int		m_Height;

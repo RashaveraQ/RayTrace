@@ -5,8 +5,8 @@ IMPLEMENT_SERIAL(Sphere, CObject, 1)
 
 Boundary Sphere::sBoundary = Boundary(1);
 
-Sphere::Sphere(const CRayTraceDoc* const pDoc, const char* const Name, const sp Color)
-	: Node(pDoc, SPHERE, Name, Color)
+Sphere::Sphere(const Node* root, const char* const Name, const sp Color)
+	: Node(root, SPHERE, Name, Color)
 {
 
 }
@@ -115,12 +115,12 @@ void Sphere::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometr
 	Node::AddGeometry(pd3dDevice, lstGeometry, rtv, m);
 }
 
-BOOL Sphere::IsInside(const sp& L) const
+bool Sphere::IsInside(const sp& L) const
 {
 	return (sqrt(L * L) <= 1.0);
 }
 
-BOOL Sphere::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Sphere::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return FALSE;

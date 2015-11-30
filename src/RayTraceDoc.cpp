@@ -50,7 +50,7 @@ BOOL CRayTraceDoc::OnNewDocument()
 
 void CRayTraceDoc::InitDocument()
 {
-	m_Root.SetDocument( this );
+	m_Root.SetRoot( &m_Root );
 	m_Light = sp( 1,1,1 );
 }
 

@@ -26,7 +26,7 @@ Boundary Plus::getBoundary()
 	return c1;
 }
 
-BOOL Plus::IsInside( const sp& L ) const
+bool Plus::IsInside(const sp& L) const
 {
 	for (int i = 0; i < m_Member; i++) {
 		if (m_Node[i]->IsInside2(L))
@@ -36,7 +36,7 @@ BOOL Plus::IsInside( const sp& L ) const
 	return FALSE;
 }
 
-BOOL Plus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Plus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	Info	tmp;
 	int		n;

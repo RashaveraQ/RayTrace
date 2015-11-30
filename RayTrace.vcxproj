@@ -146,6 +146,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="src\expand.cpp" />
     <ClCompile Include="src\gathering.cpp" />
     <ClCompile Include="src\Geometry.cpp" />
+    <ClCompile Include="src\GetVectorFromPoint.cpp" />
     <ClCompile Include="src\MainFrm.cpp" />
     <ClCompile Include="src\matrix.cpp" />
     <ClCompile Include="src\minus.cpp" />
@@ -190,6 +191,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="src\Frame.h" />
     <ClInclude Include="src\gathering.h" />
     <ClInclude Include="src\Geometry.h" />
+    <ClInclude Include="src\GetVectorFromPoint.h" />
     <ClInclude Include="src\head.h" />
     <ClInclude Include="src\info.h" />
     <ClInclude Include="src\MainFrm.h" />

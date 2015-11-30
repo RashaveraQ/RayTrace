@@ -59,7 +59,9 @@ protected:
 	CDC			m_TextureDC;		// テクスチャイメージ格納用
 	CSize		m_TextureSize;
 
-	const CRayTraceDoc* m_pDoc;
+//	const CRayTraceDoc* m_pDoc;
+	const Node* m_Root;
+
 	void updateMatrix() {
 		m_Matrix = m_Move * m_Rotate * m_Scale;
 		OnUpdateBoundary();
@@ -69,10 +71,10 @@ private:
 	void OnUpdateBoundary(); 
 public:
 
-	Node(const CRayTraceDoc* const pDoc, node_type NodeType, const char* const Name, const sp Color = sp(-1,-1,-1))
-	: m_pParent(0), m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1), m_TextureFileName("")
+	Node(const Node* root, node_type NodeType, const char* const Name, const sp Color = sp(-1,-1,-1))
+	: m_Root(root), m_pParent(0), m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1)
+	, m_TextureFileName("")
 	{
-		m_pDoc = (const CRayTraceDoc*)pDoc;
 		Set_Name( Name );
 		MakeMemoryDCfromTextureFileName();
 		m_Material = Color.getMaterial();
@@ -83,27 +85,27 @@ public:
 
 	// オペレーション
 			void Set_Name(const char* const str) { strncpy_s(m_Name, sizeof(m_Name), str, 99); }  
-	virtual void SetDocument(const CRayTraceDoc* const pDoc) { m_pDoc = (const CRayTraceDoc*)pDoc; }
+	virtual void SetRoot(const Node* root) { m_Root = root; }
 
 			sp GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fromOutSide) const;
-			BOOL GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
+			bool GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
 			sp GetPixel(double x, double y) const;
-	virtual	BOOL GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const = 0;
+	virtual	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const = 0;
 private:
-	virtual	BOOL IsInside(const sp& L) const = 0;
+	virtual	bool IsInside(const sp& L) const = 0;
 public:
-			BOOL IsInside2(const sp& L) const;
+			bool IsInside2(const sp& L) const;
 
-	void Move(eAxis axis, double d);
-	void Move(POINT d);
-	void Rotate(eAxis axis, double d);
-	void Rotate(POINT d);
-	void Scale(eAxis axis, double d);
-	void MovePivot(eAxis axis, double d);
-
-	virtual void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
-	virtual bool SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& m) const;
 	virtual	BOOL AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target) { return FALSE; }
+	virtual void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
+			void Move(eAxis axis, double d);
+			void Move(POINT d);
+			void Rotate(eAxis axis, double d);
+			void Rotate(POINT d);
+			void Scale(eAxis axis, double d);
+			void MovePivot(eAxis axis, double d);
+	virtual bool SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& m) const;
+
 	virtual void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;
 	virtual void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST) = 0;
 	virtual BOOL Edit();
@@ -111,9 +113,16 @@ public:
 			BOOL EditColor();
 			BOOL EditMaterial();
 			BOOL EditTexture();
-			BOOL MakeMemoryDCfromTextureFileName();
+
+	// インプリメンテーション
+	friend CDlgMatrix;
+	friend CDlgMaterial;
+	friend Geometry;
+
+			bool MakeMemoryDCfromTextureFileName();
+
 	virtual const Node*		MakeCopy() const = 0;
-	virtual	BOOL Delete( Node* ) { return FALSE; }
+	virtual	bool Delete(Node*) { return false; }
 	virtual	void Serialize(CArchive& ar);
 
 	matrix getMatrix() { return m_Matrix; }
@@ -123,10 +132,6 @@ public:
 		m_pParent = pParent;
 	}
 
-	// インプリメンテーション
-	friend CDlgMatrix;
-	friend CDlgMaterial;
-	friend Geometry;
 };
 
 #endif

@@ -5,12 +5,12 @@ IMPLEMENT_SERIAL(Plane, CObject, 1)
 
 Boundary Plane::sBoundary = Boundary(1e+40); // 
 
-BOOL Plane::IsInside( const sp& L ) const
+bool Plane::IsInside(const sp& L) const
 {
 	return ( L.z >= 0.0 );
 }
 
-BOOL Plane::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Plane::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return FALSE;

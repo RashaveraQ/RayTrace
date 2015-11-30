@@ -16,12 +16,12 @@ Polygon2::Polygon2( const Polygon2& other ) : Node( other )
 		m_P[i] = other.m_P[i];
 }
 
-BOOL	Polygon2::IsInside( const sp& L ) const
+bool Polygon2::IsInside(const sp& L) const
 {
 	if ( L.z < 0.0 )
-		return FALSE;
+		return false;
 
-	BOOL	r = FALSE;
+	bool	r = false;
 	int		i,j;
 
 	for ( i = 0, j = m_N-1; i < m_N; j = i++ )
@@ -41,7 +41,7 @@ BOOL	Polygon2::IsInside( const sp& L ) const
 	return r;
 }
 
-BOOL Polygon2::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Polygon2::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	double	a = K * K;
 	double	b = K * L;

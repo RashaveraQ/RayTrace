@@ -134,7 +134,7 @@ matrix	matrix::Inv() const
 	return mat;
 }
 
-double	matrix::M( int gyo, int retu ) const
+double	matrix::M(int gyo, int retu) const
 {
 	double ans = 0;
 

@@ -88,12 +88,12 @@ void Cone::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 	Node::AddGeometry(pd3dDevice, lstGeometry, rtv, m);
 }
 
-BOOL Cone::IsInside(const sp& L) const
+bool Cone::IsInside(const sp& L) const
 {
 	return (0 <= L.y && L.y <= 1 && sqrt( L.x * L.x + L.z * L.z ) <= L.y);
 }
 
-BOOL Cone::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Cone::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return FALSE;

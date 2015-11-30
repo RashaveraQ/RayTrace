@@ -5,8 +5,8 @@ IMPLEMENT_SERIAL(Teapot, CObject, 1)
 
 Boundary Teapot::sBoundary = Boundary(1);
 
-Teapot::Teapot(const CRayTraceDoc* const pDoc, const char* const Name, const sp Color)
-	: Node(pDoc, TEAPOT, Name, Color)
+Teapot::Teapot(const Node* root, const char* const Name, const sp Color)
+	: Node(root, TEAPOT, Name, Color)
 {
 
 }
@@ -100,12 +100,12 @@ void Teapot::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometr
 	Node::AddGeometry(pd3dDevice, lstGeometry, rtv, m);
 }
 
-BOOL Teapot::IsInside(const sp& L) const
+bool Teapot::IsInside(const sp& L) const
 {
 	return (sqrt(L * L) <= 1.0);
 }
 
-BOOL Teapot::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Teapot::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	double	a = K * K;
 	double	b = K * L;

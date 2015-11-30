@@ -29,7 +29,7 @@ Boundary Multiple::getBoundary()
 	return c1;
 }
 
-BOOL Multiple::IsInside(const sp& L) const
+bool Multiple::IsInside(const sp& L) const
 {
 	if (!m_Member)
 		return FALSE;
@@ -41,7 +41,7 @@ BOOL Multiple::IsInside(const sp& L) const
 	return TRUE;
 }
 
-BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Multiple::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	if (!m_Member)
 		return FALSE;

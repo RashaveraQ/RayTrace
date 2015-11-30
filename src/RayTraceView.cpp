@@ -7,6 +7,7 @@
 #include "RayTraceDoc.h"
 #include "RayTraceView.h"
 #include "DoCuda.h"
+#include "GetVectorFromPoint.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -267,7 +268,7 @@ int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	CRayTraceDoc	*pDoc = GetDocument();
 
-	m_Viewport.SetDocument(pDoc);
+	m_Viewport.SetRoot(&pDoc->m_Root);
 	m_Viewport.AttachRoot(&(pDoc->m_Root));
 
 	if (!DoCuda_Init())
@@ -278,15 +279,7 @@ int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	
 void CRayTraceView::GetVectorFromPoint(sp& k, sp& l, int px, int py)
 {
-	double rx = (m_View.right - m_View.left) * px / m_ClientSize.cx + m_View.left;
-	double ry = (m_View.bottom - m_View.top) * py / m_ClientSize.cx + m_View.top;
-
-	k = sp(0.01 * rx / (m_View.right - m_View.left), 0.01 * ry / (m_View.bottom - m_View.top), 0.01);
-	l = sp(rx, ry, -20);
-
-	matrix m = m_Viewport.getMatrix().Inv();
-	k = m * (k + l) - m * l;
-	l = m * l;
+	::GetVectorFromPoint(k, l, px, py, &m_View, m_ClientSize.cx, m_ClientSize.cy, &m_Viewport.getMatrix());
 }
 
 void CRayTraceView::OnTimer(UINT nIDEvent) 

@@ -9,8 +9,8 @@ IMPLEMENT_SERIAL(Torus, CObject, 1)
 
 Boundary Torus::sBoundary = Boundary(1);
 
-Torus::Torus(const CRayTraceDoc* const pDoc, const char* const Name, const sp Color)
-	: Node(pDoc, TORUS, Name, Color), m_R(0.7), m_r(0.3)
+Torus::Torus(const Node* root, const char* const Name, const sp Color)
+	: Node(root, TORUS, Name, Color), m_R(0.7), m_r(0.3)
 {
 
 }
@@ -106,7 +106,7 @@ void Torus::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry
 	Node::AddGeometry(pd3dDevice, lstGeometry, rtv, m);
 }
 
-BOOL Torus::IsInside(const sp& L) const
+bool Torus::IsInside(const sp& L) const
 {
 	double	d;
 
@@ -116,7 +116,7 @@ BOOL Torus::IsInside(const sp& L) const
 	return (m_r * m_r <= d + L.z * L.z);
 }
 
-BOOL Torus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Torus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	int Solve_Polynomial(int d, double *k, double min, double max, double *r);
 

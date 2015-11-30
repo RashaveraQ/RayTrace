@@ -4,10 +4,10 @@ IMPLEMENT_SERIAL(Cube, CObject, 1)
 
 Boundary Cube::sBoundary = Boundary(sqrt(3.0));
 
-BOOL Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)
-		return FALSE;
+		return false;
 
 	double t[6];
 	sp	   v[6];
@@ -160,7 +160,7 @@ void Cube::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 	Node::AddGeometry(pd3dDevice, lstGeometry, rtv, m);
 }
 
-BOOL Cube::IsInside(const sp& L) const
+bool Cube::IsInside(const sp& L) const
 {
 	return (-1.0 <= L.x && L.x <= 1.0 && -1.0 <= L.y && L.y <= 1.0 && -1.0 <= L.z && L.z <= 1.0);
 }

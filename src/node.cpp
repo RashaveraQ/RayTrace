@@ -7,7 +7,7 @@
 
 //IMPLEMENT_DYNAMIC( Node, CObject ) 
 
-Node::Node(const Node& other) : m_Scale(4,4), m_Rotate(4,4), m_Move(4,4), m_Matrix(4,4)
+Node::Node(const Node& other) : m_Root(other.m_Root), m_Scale(4,4), m_Rotate(4,4), m_Move(4,4), m_Matrix(4,4)
 {
 	m_NodeType = other.m_NodeType;
 	strcpy_s(m_Name, sizeof(m_Name), other.m_Name);
@@ -22,172 +22,6 @@ Node::Node(const Node& other) : m_Scale(4,4), m_Rotate(4,4), m_Move(4,4), m_Matr
 	m_Refractive = other.m_Refractive;
 	m_TextureFileName = other.m_TextureFileName;
 	MakeMemoryDCfromTextureFileName();
-}
-
-void Node::Serialize(CArchive& ar)
-{
-	int		i;
-
-	if (ar.IsStoring())
-	{
-		ar << (WORD)m_NodeType;
-		for (i = 0; i < 99; i++)
-			ar << m_Name[i];
-
-		ar << m_Material.Diffuse.r;
-		ar << m_Material.Diffuse.g;
-		ar << m_Material.Diffuse.b;
-		ar << m_Material.Diffuse.a;
-		ar << m_Material.Ambient.r;
-		ar << m_Material.Ambient.g;
-		ar << m_Material.Ambient.b;
-		ar << m_Material.Ambient.a;
-		ar << m_Material.Specular.r;
-		ar << m_Material.Specular.g;
-		ar << m_Material.Specular.b;
-		ar << m_Material.Specular.a;
-		ar << m_Material.Emissive.r;
-		ar << m_Material.Emissive.g;
-		ar << m_Material.Emissive.b;
-		ar << m_Material.Emissive.a;
-		ar << m_Material.Power;
-
-		for (int i = 0; i < 3; i++) {
-			ar << m_Scale.m_data[i][i];
-			ar << m_Move.m_data[i][3];
-			for (int j = 0; j < 3; j++ )
-				ar << m_Rotate.m_data[i][j];
-		}
-		ar << m_Reflect;	ar << m_Through;	ar << m_Refractive;
-	}
-	else
-	{
-		for (i = 0; i < 99; i++)
-			ar >> m_Name[i];
-
-		ar >> m_Material.Diffuse.r;
-		ar >> m_Material.Diffuse.g;
-		ar >> m_Material.Diffuse.b;
-		ar >> m_Material.Diffuse.a;
-		ar >> m_Material.Ambient.r;
-		ar >> m_Material.Ambient.g;
-		ar >> m_Material.Ambient.b;
-		ar >> m_Material.Ambient.a;
-		ar >> m_Material.Specular.r;
-		ar >> m_Material.Specular.g;
-		ar >> m_Material.Specular.b;
-		ar >> m_Material.Specular.a;
-		ar >> m_Material.Emissive.r;
-		ar >> m_Material.Emissive.g;
-		ar >> m_Material.Emissive.b;
-		ar >> m_Material.Emissive.a;
-		ar >> m_Material.Power;
-
-		for (int i = 0; i < 3; i++) {
-			ar >> m_Scale.m_data[i][i];
-			ar >> m_Move.m_data[i][3];
-			for (int j = 0; j < 3; j++ )
-				ar >> m_Rotate.m_data[i][j];
-		}
-		m_Matrix = m_Move * m_Rotate * m_Scale;
-		ar >> m_Reflect;	ar >> m_Through;	ar >> m_Refractive;
-	}
-}
-
-BOOL Node::Edit()
-{
-	return FALSE;
-}
-
-BOOL Node::EditColor()
-{
-	COLORREF	color = RGB(256 * m_Material.Diffuse.r, 256 * m_Material.Diffuse.g, 256 * m_Material.Diffuse.b);
-
-	CColorDialog	color_dlg(color);
-
-	if (color_dlg.DoModal() != IDOK)
-		return FALSE;
-
-	color = color_dlg.GetColor();
-	m_Material.Diffuse.r = m_Material.Ambient.r = (float)(0xff & color) / 256;
-	m_Material.Diffuse.g = m_Material.Ambient.g = (float)(0xff & color >> 8) / 256;
-	m_Material.Diffuse.b = m_Material.Ambient.b = (float)(0xff & color >> 16) / 256;
-
-	return TRUE;
-}
-
-BOOL Node::EditAfin()
-{
-	CDlgMatrix	dlg_matrix;
-
-	dlg_matrix.Set(*this);
-
-	if (dlg_matrix.DoModal() != IDOK)
-		return FALSE;
-
-	dlg_matrix.Get(*this);
-
-	return TRUE;
-}
-
-BOOL Node::EditMaterial()
-{
-	CDlgMaterial dlg_material;
-
-	dlg_material.Set(*this);
-
-	if (dlg_material.DoModal() != IDOK)
-		return FALSE;
-
-	dlg_material.Get(*this);
-	
-	return TRUE;
-}
-
-BOOL Node::EditTexture()
-{
-	CFileDialog	dlg_file(TRUE);
-	CString		b = m_TextureFileName;
-
-	do {
-		if (dlg_file.DoModal() != IDOK)
-			return FALSE;
-
-		m_TextureFileName = dlg_file.GetPathName();
-
-		if (MakeMemoryDCfromTextureFileName())
-			return TRUE;
-
-		if (MessageBox(NULL, "ビットマップファイルの読み込みに失敗しました。", "テクスチャの選択エラー", MB_RETRYCANCEL|MB_ICONERROR) != IDRETRY)
-			return FALSE;
-	} while (1);
-
-	m_TextureFileName = b;
-
-	return FALSE;
-}
-
-BOOL Node::MakeMemoryDCfromTextureFileName()
-{
-	HBITMAP		h;
-	BITMAP		b;
-	CBitmap*	p;
-
-	m_TextureDC.DeleteDC();
-	m_TextureDC.CreateCompatibleDC(NULL);
-
-	if (!(h = (HBITMAP)LoadImage(NULL, m_TextureFileName, IMAGE_BITMAP, 0, 0, LR_DEFAULTSIZE|LR_LOADFROMFILE)))
-		return FALSE;
-
-	(p = CBitmap::FromHandle(h))->GetObject(sizeof(BITMAP), &b);
-
-	m_TextureSize.cx = b.bmWidth;
-	m_TextureSize.cy = b.bmHeight;
-
-	m_TextureDC.SelectObject(p);
-	m_TextureDC.BitBlt(0, 0, m_TextureSize.cx, m_TextureSize.cy, &m_TextureDC, 0, 0, SRCCOPY);
-
-	return TRUE;
 }
 
 sp Node::GetPixel(double x, double y) const
@@ -223,7 +57,7 @@ sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fr
 	// 反射率がある場合、
 	if (info.pNode->m_Reflect > 0) {
 		// 反射した視線ベクトルから色を取得。
-		sp c = m_pDoc->m_Root.GetColor(k2, l2, nest + 1, &info, true);
+		sp c = m_Root->GetColor(k2, l2, nest + 1, &info, true);
 		// 反射率で色を混ぜる。
 		info.Material = (info.pNode->m_Reflect * c + (1 - info.pNode->m_Reflect) * sp(info.Material)).getMaterial();
 	}
@@ -239,13 +73,14 @@ sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fr
 			fromOutSide = !fromOutSide;
 		}
 		// 屈折した視線ベクトルから色を取得。
-		sp c = m_pDoc->m_Root.GetColor(k2, l2, nest + 1, &info, fromOutSide);
+		sp c = m_Root->GetColor(k2, l2, nest + 1, &info, fromOutSide);
 		// 透過率で色を混ぜる。
 		info.Material = (info.pNode->m_Through * c + (1 - info.pNode->m_Through) * sp(info.Material)).getMaterial();
 	}
 
+	sp Light = sp(1, 1, 1);
 	// 光源より色を補正。
-	double	x = -m_pDoc->m_Light.e() * info.Vertical.e();
+	double	x = -Light.e() * info.Vertical.e();
 	x = (x > 0.0) ? x : 0.0;
 	double t = 64 + 191 * sin(M_PI / 2 * x);
 	double b = 191 * (1 - cos(M_PI / 2 * x));
@@ -255,7 +90,7 @@ sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fr
 
 // 視線ベクトル(Kt+L)と交差する物体の情報infoを返す。
 // 戻り値:true 交差あり,false 交差なし
-BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	// START Boundary 
 /*
@@ -283,7 +118,7 @@ BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	sp K2 = Inv_m * (K + L) - L2;
 
 	if (!GetInfo(K2, L2, info, pHint, fromOutSide)) {
-		return FALSE;
+		return false;
 	}
 
 	info.Vertical = m_Scale.Inv() * info.Vertical;
@@ -294,13 +129,37 @@ BOOL Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	if (!info.isEnter)
 		info.Refractive = 1 / info.Refractive;
 
-	return TRUE;
+	return true;
 }
 
-BOOL Node::IsInside2(const sp& L) const {
+bool Node::IsInside2(const sp& L) const {
 	return IsInside(m_Matrix.Inv() * L);
 }
 
+bool Node::MakeMemoryDCfromTextureFileName()
+{
+	HBITMAP		h;
+	BITMAP		b;
+	CBitmap*	p;
+
+	m_TextureDC.DeleteDC();
+	m_TextureDC.CreateCompatibleDC(NULL);
+
+	if (!(h = (HBITMAP)LoadImage(NULL, m_TextureFileName, IMAGE_BITMAP, 0, 0, LR_DEFAULTSIZE | LR_LOADFROMFILE)))
+		return FALSE;
+
+	(p = CBitmap::FromHandle(h))->GetObject(sizeof(BITMAP), &b);
+
+	m_TextureSize.cx = b.bmWidth;
+	m_TextureSize.cy = b.bmHeight;
+
+	m_TextureDC.SelectObject(p);
+	m_TextureDC.BitBlt(0, 0, m_TextureSize.cx, m_TextureSize.cy, &m_TextureDC, 0, 0, SRCCOPY);
+
+	return true;
+}
+
+#else // __NVCC__
 void Node::Move(eAxis axis, double d)
 {
 	switch (axis) {
@@ -641,3 +500,148 @@ void Node::OnUpdateBoundary()
 	if (m_pParent)
 		m_pParent->OnUpdateBoundary();
 }
+
+void Node::Serialize(CArchive& ar)
+{
+	int		i;
+
+	if (ar.IsStoring())
+	{
+		ar << (WORD)m_NodeType;
+		for (i = 0; i < 99; i++)
+			ar << m_Name[i];
+
+		ar << m_Material.Diffuse.r;
+		ar << m_Material.Diffuse.g;
+		ar << m_Material.Diffuse.b;
+		ar << m_Material.Diffuse.a;
+		ar << m_Material.Ambient.r;
+		ar << m_Material.Ambient.g;
+		ar << m_Material.Ambient.b;
+		ar << m_Material.Ambient.a;
+		ar << m_Material.Specular.r;
+		ar << m_Material.Specular.g;
+		ar << m_Material.Specular.b;
+		ar << m_Material.Specular.a;
+		ar << m_Material.Emissive.r;
+		ar << m_Material.Emissive.g;
+		ar << m_Material.Emissive.b;
+		ar << m_Material.Emissive.a;
+		ar << m_Material.Power;
+
+		for (int i = 0; i < 3; i++) {
+			ar << m_Scale.m_data[i][i];
+			ar << m_Move.m_data[i][3];
+			for (int j = 0; j < 3; j++)
+				ar << m_Rotate.m_data[i][j];
+		}
+		ar << m_Reflect;	ar << m_Through;	ar << m_Refractive;
+	}
+	else
+	{
+		for (i = 0; i < 99; i++)
+			ar >> m_Name[i];
+
+		ar >> m_Material.Diffuse.r;
+		ar >> m_Material.Diffuse.g;
+		ar >> m_Material.Diffuse.b;
+		ar >> m_Material.Diffuse.a;
+		ar >> m_Material.Ambient.r;
+		ar >> m_Material.Ambient.g;
+		ar >> m_Material.Ambient.b;
+		ar >> m_Material.Ambient.a;
+		ar >> m_Material.Specular.r;
+		ar >> m_Material.Specular.g;
+		ar >> m_Material.Specular.b;
+		ar >> m_Material.Specular.a;
+		ar >> m_Material.Emissive.r;
+		ar >> m_Material.Emissive.g;
+		ar >> m_Material.Emissive.b;
+		ar >> m_Material.Emissive.a;
+		ar >> m_Material.Power;
+
+		for (int i = 0; i < 3; i++) {
+			ar >> m_Scale.m_data[i][i];
+			ar >> m_Move.m_data[i][3];
+			for (int j = 0; j < 3; j++)
+				ar >> m_Rotate.m_data[i][j];
+		}
+		m_Matrix = m_Move * m_Rotate * m_Scale;
+		ar >> m_Reflect;	ar >> m_Through;	ar >> m_Refractive;
+	}
+}
+
+BOOL Node::Edit()
+{
+	return FALSE;
+}
+
+BOOL Node::EditColor()
+{
+	COLORREF	color = RGB(256 * m_Material.Diffuse.r, 256 * m_Material.Diffuse.g, 256 * m_Material.Diffuse.b);
+
+	CColorDialog	color_dlg(color);
+
+	if (color_dlg.DoModal() != IDOK)
+		return FALSE;
+
+	color = color_dlg.GetColor();
+	m_Material.Diffuse.r = m_Material.Ambient.r = (float)(0xff & color) / 256;
+	m_Material.Diffuse.g = m_Material.Ambient.g = (float)(0xff & color >> 8) / 256;
+	m_Material.Diffuse.b = m_Material.Ambient.b = (float)(0xff & color >> 16) / 256;
+
+	return TRUE;
+}
+
+BOOL Node::EditAfin()
+{
+	CDlgMatrix	dlg_matrix;
+
+	dlg_matrix.Set(*this);
+
+	if (dlg_matrix.DoModal() != IDOK)
+		return FALSE;
+
+	dlg_matrix.Get(*this);
+
+	return TRUE;
+}
+
+BOOL Node::EditMaterial()
+{
+	CDlgMaterial dlg_material;
+
+	dlg_material.Set(*this);
+
+	if (dlg_material.DoModal() != IDOK)
+		return FALSE;
+
+	dlg_material.Get(*this);
+
+	return TRUE;
+}
+
+BOOL Node::EditTexture()
+{
+	CFileDialog	dlg_file(TRUE);
+	CString		b = m_TextureFileName;
+
+	do {
+		if (dlg_file.DoModal() != IDOK)
+			return FALSE;
+
+		m_TextureFileName = dlg_file.GetPathName();
+
+		if (MakeMemoryDCfromTextureFileName())
+			return TRUE;
+
+		if (MessageBox(NULL, "ビットマップファイルの読み込みに失敗しました。", "テクスチャの選択エラー", MB_RETRYCANCEL | MB_ICONERROR) != IDRETRY)
+			return FALSE;
+	} while (1);
+
+	m_TextureFileName = b;
+
+	return FALSE;
+}
+
+

@@ -18,12 +18,12 @@ BOOL Minus::AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target)
 	return Gathering::AddNode(c, SelectItem, Target);
 }
 
-BOOL Minus::IsInside(const sp& L) const
+bool Minus::IsInside(const sp& L) const
 {
 	return ((m_Member >= 1 && m_Node[0]->IsInside2(L)) && !( m_Member >= 2 && m_Node[1]->IsInside2(L)));
 }
 
-BOOL Minus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Minus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	Info	l_info;
 	Info	r_info;
