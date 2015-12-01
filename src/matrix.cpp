@@ -21,6 +21,7 @@ matrix::matrix(int gyo,int retu)
 	m_data[3][0] = 0.0;
 	m_data[3][1] = 0.0;
 	m_data[3][2] = 0.0;
+	m_pInvMatrix = 0;
 }
 
 matrix::matrix(const matrix& Matrix)
@@ -31,6 +32,7 @@ matrix::matrix(const matrix& Matrix)
 	for ( int i = 0; i < m_Height; i++ )
 		for ( int j = 0; j < m_Width; j++ )
 			m_data[i][j] = Matrix.m_data[i][j];
+	m_pInvMatrix = 0;
 }
 
 matrix::matrix(const sp& Sp, double d)
@@ -42,13 +44,21 @@ matrix::matrix(const sp& Sp, double d)
 	m_data[1][0] = Sp.y;
 	m_data[2][0] = Sp.z;
 	m_data[3][0] = d;
+
+	m_pInvMatrix = 0;
 }
 
 matrix	matrix::operator=(const matrix& Matrix)
 {
+	if (m_pInvMatrix) {
+		delete m_pInvMatrix;
+		m_pInvMatrix = 0;
+	}
+
 	for ( int i = 0; i < m_Height; i++ )
 		for ( int j = 0; j < m_Width; j++ )
 			m_data[i][j] = Matrix.m_data[i][j];
+
 	return *this;
 }
 
@@ -112,26 +122,28 @@ matrix	matrix::operator*(const matrix& Matrix) const
 	return ans;
 }
 
-matrix	matrix::Inv() const
+matrix	matrix::Inv()
 {
-	matrix	mat( m_Width, m_Height );
+	if (!m_pInvMatrix) {
+		m_pInvMatrix = new matrix(m_Width, m_Height);
 
-	double	A = d();
-	double	m;
+		double	A = d();
+		double	m;
 
-	int	gyo, retu;
+		int	gyo, retu;
 
-	for ( gyo = 1; gyo <= m_Height; gyo++ )
-	{
-		for ( retu = 1; retu <= m_Width; retu++ )
+		for (gyo = 1; gyo <= m_Height; gyo++)
 		{
-			m = M(retu, gyo);
-			m = ( ( gyo + retu ) % 2 ) ? -m : m;
-			mat.m_data[gyo-1][retu-1] = m / A; // set_data( gyo, retu, m / A );
+			for (retu = 1; retu <= m_Width; retu++)
+			{
+				m = M(retu, gyo);
+				m = ((gyo + retu) % 2) ? -m : m;
+				m_pInvMatrix->m_data[gyo - 1][retu - 1] = m / A; // set_data( gyo, retu, m / A );
+			}
 		}
 	}
 
-	return mat;
+	return *m_pInvMatrix;
 }
 
 double	matrix::M(int gyo, int retu) const
@@ -297,6 +309,16 @@ void	matrix::print() const
 		for ( j = 0; j < m_Width; j++ )
 			printf( " %f", m_data[i][j] );
 		printf( "\n" );
+	}
+}
+
+void matrix::set_data(int gyo, int retu, double value)
+{
+	m_data[gyo - 1][retu - 1] = value;
+
+	if (m_pInvMatrix) {
+		delete m_pInvMatrix;
+		m_pInvMatrix = 0;
 	}
 }
 

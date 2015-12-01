@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "GetVectorFromPoint.h"
 
-void GetVectorFromPoint(sp& k, sp& l, int px, int py, const fsize* pView, int cx, int cy, const matrix* pMatrix)
+void GetVectorFromPoint(sp& k, sp& l, int px, int py, const fsize* pView, int cx, int cy, matrix* const pMatrix)
 {
 	double rx = (pView->right - pView->left) * px / cx + pView->left;
 	double ry = (pView->bottom - pView->top) * py / cx + pView->top;

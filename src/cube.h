@@ -12,7 +12,7 @@ protected:
 	DECLARE_SERIAL(Cube)
 public:
 	// コンストラクタ
-	Cube(const Node* root = 0, const char* const Name = "Cube", const sp Color = sp(255,255,255))
+	Cube(Node* const root = 0, const char* const Name = "Cube", const sp Color = sp(255, 255, 255))
 		: Node(root, CUBE, Name, Color) {}
 	Cube(const Cube& other) : Node(other) {}
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;

@@ -124,7 +124,7 @@ BOOL Gathering::AddNode(CTreeCtrl& c, HTREEITEM hitem, Node* pNode)
 	return TRUE;
 }
 
-void Gathering::SetRoot(const Node* root)
+void Gathering::SetRoot(Node* const root)
 {
 	m_Root = root;
 

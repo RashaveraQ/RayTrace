@@ -8,7 +8,7 @@ protected:
 	DECLARE_SERIAL(Multiple)
 public:
 	// コンストラクタ
-	Multiple(const Node* root = 0, const char* const Name = "乗法") : Gathering(root, MULTIPLE, Name) {}
+	Multiple(Node* const root = 0, const char* const Name = "乗法") : Gathering(root, MULTIPLE, Name) {}
 	Multiple(const Multiple& other) : Gathering(other) {}
 
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;

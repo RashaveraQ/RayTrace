@@ -13,7 +13,7 @@ protected:
 	DECLARE_SERIAL(Teapot)
 public:
 	// コンストラクタ
-	Teapot(const Node* root = 0, const char* const Name = "Teapot", const sp Color = sp(255,255,255));
+	Teapot(Node* const root = 0, const char* const Name = "Teapot", const sp Color = sp(255, 255, 255));
 	Teapot(const Teapot& other) : Node(other) {}
 
 	bool GetInfo(const struct sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;

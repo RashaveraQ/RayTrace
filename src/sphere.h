@@ -13,7 +13,7 @@ protected:
 	DECLARE_SERIAL(Sphere)
 public:
 	// コンストラクタ
-	Sphere(const Node* root = 0, const char* const Name = "Sphere", const sp Color = sp(255,255,255));
+	Sphere(Node* const root = 0, const char* const Name = "Sphere", const sp Color = sp(255, 255, 255));
 	Sphere(const Sphere& other) : Node(other) {}
 
 	bool GetInfo(const struct sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;

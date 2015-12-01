@@ -11,13 +11,10 @@ struct	move : public matrix
 	}
 	void	init( double x, double y, double z )
 	{
-		m_data[0][3] = x;
-		m_data[1][3] = y;
-		m_data[2][3] = z;
-/*		set_data( 1, 4, x );
+		set_data( 1, 4, x );
 		set_data( 2, 4, y );
 		set_data( 3, 4, z );
-*/	}
+	}
 };
 
 #endif

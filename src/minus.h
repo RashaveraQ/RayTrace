@@ -9,7 +9,7 @@ protected:
 
 public:
 	// コンストラクタ
-	Minus(const Node* root = 0, const char* const Name = "除法") : Gathering(root, MINUS, Name) {}
+	Minus(Node* const root = 0, const char* const Name = "除法") : Gathering(root, MINUS, Name) {}
 	Minus(const Minus& other) : Gathering(other) {}
 
 	BOOL AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target);

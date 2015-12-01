@@ -14,7 +14,7 @@ protected:
 	DECLARE_SERIAL(Cylinder)
 public:
 	// コンストラクタ
-	Cylinder(const Node* root = 0, const char* const Name = "Cylinder", const sp Color = sp(255,255,255))
+	Cylinder(Node* const root = 0, const char* const Name = "Cylinder", const sp Color = sp(255,255,255))
 		: Node(root, CYLINDER, Name, Color) {}
 	Cylinder(const Cylinder& other) : Node(other) {}
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;

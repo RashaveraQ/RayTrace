@@ -2,9 +2,9 @@
 
 sp::sp( const matrix& m )
 {
-	x = m.m_data[0][0];
-	y = m.m_data[1][0];
-	z = m.m_data[2][0];
+	x = m.get_data(1,1);
+	y = m.get_data(2,1);
+	z = m.get_data(3,1);
 }
 
 bool sp::operator==( const sp& a ) const

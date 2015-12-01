@@ -14,7 +14,7 @@ protected:
 	DECLARE_SERIAL(Polygon2)
 
 public:
-	Polygon2(const Node* root = 0, const char* const Name = "Polygon", const sp Color = sp(255,255,255))
+	Polygon2(Node* const root = 0, const char* const Name = "Polygon", const sp Color = sp(255, 255, 255))
 		: Node(root, POLYGON, Name, Color), m_N(0), m_P(0) {}
 	Polygon2(const Polygon2& other);
 	~Polygon2() { delete m_P; }

@@ -11,14 +11,14 @@ protected:
 public:
 
 	// コンストラクタ
-	Gathering(const Node* root, node_type NodeType, const char* const Name)
+	Gathering(Node* const root, node_type NodeType, const char* const Name)
 		: Node(root, NodeType, Name), m_Member( 0 ) {}
 	Gathering(const Gathering& other);
 
 	// デストラクタ
 	~Gathering();
 
-	void SetRoot(const Node* root);
+	void SetRoot(Node* const root);
 	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
 	bool SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& m) const;
 	BOOL AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target);

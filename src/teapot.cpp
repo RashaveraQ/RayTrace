@@ -5,7 +5,7 @@ IMPLEMENT_SERIAL(Teapot, CObject, 1)
 
 Boundary Teapot::sBoundary = Boundary(1);
 
-Teapot::Teapot(const Node* root, const char* const Name, const sp Color)
+Teapot::Teapot(Node* const root, const char* const Name, const sp Color)
 	: Node(root, TEAPOT, Name, Color)
 {
 

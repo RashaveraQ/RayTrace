@@ -15,7 +15,7 @@ private:
 	double	m_r;
 public:
 	// コンストラクタ
-	Torus(const Node* root = 0, const char* const Name = "Torus", const sp Color = sp(255,255,255));
+	Torus(Node* const root = 0, const char* const Name = "Torus", const sp Color = sp(255, 255, 255));
 	Torus(const Torus& other) : Node(other) ,m_R(other.m_R), m_r(other.m_r) {} 
 
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;

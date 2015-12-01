@@ -8,8 +8,8 @@ protected:
 	DECLARE_SERIAL(Plus)
 public:
 	// コンストラクタ
-	Plus( const Node* root = 0, const char* const Name = "加法" ) : Gathering( root, PLUS, Name ) {}
-	Plus( const Plus& other ) : Gathering( other ) {}
+	Plus(Node* const root = 0, const char* const Name = "加法") : Gathering(root, PLUS, Name) {}
+	Plus(const Plus& other) : Gathering(other) {}
 
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
 	bool IsInside(const sp& L) const;

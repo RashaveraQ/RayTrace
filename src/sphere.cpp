@@ -5,7 +5,7 @@ IMPLEMENT_SERIAL(Sphere, CObject, 1)
 
 Boundary Sphere::sBoundary = Boundary(1);
 
-Sphere::Sphere(const Node* root, const char* const Name, const sp Color)
+Sphere::Sphere(Node* const root, const char* const Name, const sp Color)
 	: Node(root, SPHERE, Name, Color)
 {
 

@@ -9,7 +9,7 @@ IMPLEMENT_SERIAL(Torus, CObject, 1)
 
 Boundary Torus::sBoundary = Boundary(1);
 
-Torus::Torus(const Node* root, const char* const Name, const sp Color)
+Torus::Torus(Node* const root, const char* const Name, const sp Color)
 	: Node(root, TORUS, Name, Color), m_R(0.7), m_r(0.3)
 {
 

@@ -5,9 +5,12 @@ struct	sp;
 
 struct matrix
 {
+private:
 	int		m_Width;
 	int		m_Height;
 	double	m_data[4][4];
+	matrix* m_pInvMatrix;
+public:
 	matrix(int=4,int=4);
 	matrix(const matrix&);
 	matrix(const sp&, double d = 1.0);
@@ -21,9 +24,11 @@ struct matrix
 	matrix	operator/(double) const;
 	double	d() const;			// 行列式
 	double	M(int,int) const;	// 小行列式
-	matrix	Inv() const;		// 逆行列
+	matrix	Inv();				// 逆行列
 	void	print() const;
-	double* operator[](int x) { return m_data[x]; }
+	//double* operator[](int x) { return m_data[x]; }
+	double get_data(int gyo, int retu) const { return m_data[gyo - 1][retu - 1]; }
+	void set_data(int gyo, int retu, double value);
 };
 
 #endif

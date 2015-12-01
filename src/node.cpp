@@ -40,7 +40,7 @@ sp Node::GetPixel(double x, double y) const
 }
 
 // 視線ベクトル(Kt+L)から色を返す。
-sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fromOutSide) const
+sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fromOutSide)
 {
 	Info	info;
 
@@ -90,7 +90,7 @@ sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fr
 
 // 視線ベクトル(Kt+L)と交差する物体の情報infoを返す。
 // 戻り値:true 交差あり,false 交差なし
-bool Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide)
 {
 	// START Boundary 
 /*
@@ -111,8 +111,8 @@ bool Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 		return FALSE;
 	// End Boundary
 */
-	const matrix& m = m_Matrix;
-	matrix Inv_m = m.Inv();
+	matrix& m = m_Matrix;
+	matrix& Inv_m = m.Inv();
 
 	sp L2 = Inv_m * L;
 	sp K2 = Inv_m * (K + L) - L2;
@@ -132,7 +132,7 @@ bool Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	return true;
 }
 
-bool Node::IsInside2(const sp& L) const {
+bool Node::IsInside2(const sp& L) {
 	return IsInside(m_Matrix.Inv() * L);
 }
 
@@ -162,17 +162,17 @@ bool Node::MakeMemoryDCfromTextureFileName()
 void Node::Move(eAxis axis, double d)
 {
 	switch (axis) {
-	case eX:	m_Move.m_data[2][3] -= (double)d / 20;	break;
-	case eY:	m_Move.m_data[1][3] -= (double)d / 20;	break;
-	case eZ:	m_Move.m_data[0][3] -= (double)d / 20;	break;
+	case eX:	m_Move.set_data(3,4, m_Move.get_data(3,4) - (double)d / 20);	break;
+	case eY:	m_Move.set_data(2,4, m_Move.get_data(2,4) - (double)d / 20);	break;
+	case eZ:	m_Move.set_data(1,4, m_Move.get_data(1,4) - (double)d / 20);	break;
 	}
 	updateMatrix();
 }
 
 void Node::Move(POINT d)
 {
-	m_Move.m_data[0][3] -= (double)d.x / 20;
-	m_Move.m_data[1][3] -= (double)d.y / 20;
+	m_Move.set_data(1,4, m_Move.get_data(1,4) - (double)d.x / 20);
+	m_Move.set_data(2,4, m_Move.get_data(2,4) - (double)d.y / 20);
 	updateMatrix();
 }
 
@@ -202,20 +202,20 @@ void Node::Rotate(POINT d)
 void Node::Scale(eAxis axis, double d)
 {
 	if (axis == eX || axis == eNONE)
-		m_Scale.m_data[2][2] -= d / 50;
+		m_Scale.set_data(3,3, m_Scale.get_data(3,3) - d / 50);
 	if (axis == eY || axis == eNONE)
-		m_Scale.m_data[1][1] -= d / 50;
+		m_Scale.set_data(2,2, m_Scale.get_data(2,2) - d / 50);
 	if (axis == eZ || axis == eNONE)
-		m_Scale.m_data[0][0] -= d / 50;
+		m_Scale.set_data(1, 1, m_Scale.get_data(1,1) - d / 50);
 	updateMatrix();
 }
 
 void Node::MovePivot(eAxis axis, double d)
 {
 	switch (axis) {
-	case eX:	m_Pivot.m_data[2][3] -= (double)d / 20;	break;
-	case eY:	m_Pivot.m_data[1][3] -= (double)d / 20;	break;
-	case eZ:	m_Pivot.m_data[0][3] -= (double)d / 20;	break;
+	case eX:	m_Pivot.set_data(3,4, m_Pivot.get_data(3,4) - (double)d / 20);	break;
+	case eY:	m_Pivot.set_data(2,4, m_Pivot.get_data(2,4) - (double)d / 20);	break;
+	case eZ:	m_Pivot.set_data(1,4, m_Pivot.get_data(1,4) - (double)d / 20);	break;
 	}
 }
 
@@ -244,9 +244,9 @@ bool Node::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& Ma
 		pz = p0 + viewport.m_Rotate * sp(-2,  0,  0);
 		break;
 	default:
-		px = m * m_Pivot * sp( 0,  0, -1 / m_Scale.m_data[2][2]);
-		py = m * m_Pivot * sp( 0, -1 / m_Scale.m_data[1][1],  0);
-		pz = m * m_Pivot * sp(-1 / m_Scale.m_data[0][0],  0,  0);
+		px = m * m_Pivot * sp( 0,  0, -1 / m_Scale.get_data(3,3));
+		py = m * m_Pivot * sp( 0, -1 / m_Scale.get_data(2,2), 0);
+		pz = m * m_Pivot * sp(-1 / m_Scale.get_data(1,1), 0, 0);
 	}
 
 	POINT	P0 = p0.getPOINT(size),
@@ -414,9 +414,9 @@ void Node::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) const
 		pz = p0 + viewport.m_Rotate * sp(-2,  0,  0);
 		break;
 	default:
-		px = m * m_Pivot * sp( 0,  0, -1 / m_Scale.m_data[2][2]);
-		py = m * m_Pivot * sp( 0, -1 / m_Scale.m_data[1][1],  0);
-		pz = m * m_Pivot * sp(-1 / m_Scale.m_data[0][0],  0,  0);
+		px = m * m_Pivot * sp( 0,  0, -1 / m_Scale.get_data(3,3));
+		py = m * m_Pivot * sp( 0, -1 / m_Scale.get_data(2,2),  0);
+		pz = m * m_Pivot * sp(-1 / m_Scale.get_data(1,1),  0,  0);
 	}
 
 	POINT	P0 = p0.getPOINT(size),
@@ -528,11 +528,11 @@ void Node::Serialize(CArchive& ar)
 		ar << m_Material.Emissive.a;
 		ar << m_Material.Power;
 
-		for (int i = 0; i < 3; i++) {
-			ar << m_Scale.m_data[i][i];
-			ar << m_Move.m_data[i][3];
-			for (int j = 0; j < 3; j++)
-				ar << m_Rotate.m_data[i][j];
+		for (int i = 1; i < 4; i++) {
+			ar << m_Scale.get_data(i, i);
+			ar << m_Move.get_data(i, 4);
+			for (int j = 1; j < 4; j++)
+				ar << m_Rotate.get_data(i, j);
 		}
 		ar << m_Reflect;	ar << m_Through;	ar << m_Refractive;
 	}
@@ -559,11 +559,16 @@ void Node::Serialize(CArchive& ar)
 		ar >> m_Material.Emissive.a;
 		ar >> m_Material.Power;
 
-		for (int i = 0; i < 3; i++) {
-			ar >> m_Scale.m_data[i][i];
-			ar >> m_Move.m_data[i][3];
-			for (int j = 0; j < 3; j++)
-				ar >> m_Rotate.m_data[i][j];
+		for (int i = 1; i < 4; i++) {
+			double value;
+			ar >> value;
+			m_Scale.set_data(i,i,value);
+			ar >> value;
+			m_Move.set_data(i,4,value);
+			for (int j = 1; j < 4; j++) {
+				ar >> value;
+				m_Rotate.set_data(i,j,value);
+			}
 		}
 		m_Matrix = m_Move * m_Rotate * m_Scale;
 		ar >> m_Reflect;	ar >> m_Through;	ar >> m_Refractive;

@@ -60,7 +60,7 @@ protected:
 	CSize		m_TextureSize;
 
 //	const CRayTraceDoc* m_pDoc;
-	const Node* m_Root;
+	Node* m_Root;
 
 	void updateMatrix() {
 		m_Matrix = m_Move * m_Rotate * m_Scale;
@@ -71,7 +71,7 @@ private:
 	void OnUpdateBoundary(); 
 public:
 
-	Node(const Node* root, node_type NodeType, const char* const Name, const sp Color = sp(-1,-1,-1))
+	Node(Node* const root, node_type NodeType, const char* const Name, const sp Color = sp(-1,-1,-1))
 	: m_Root(root), m_pParent(0), m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1)
 	, m_TextureFileName("")
 	{
@@ -85,16 +85,16 @@ public:
 
 	// オペレーション
 			void Set_Name(const char* const str) { strncpy_s(m_Name, sizeof(m_Name), str, 99); }  
-	virtual void SetRoot(const Node* root) { m_Root = root; }
+	virtual void SetRoot(Node* const root) { m_Root = root; }
 
-			sp GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fromOutSide) const;
-			bool GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
+			sp GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fromOutSide);
+			bool GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide);
 			sp GetPixel(double x, double y) const;
 	virtual	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const = 0;
 private:
 	virtual	bool IsInside(const sp& L) const = 0;
 public:
-			bool IsInside2(const sp& L) const;
+			bool IsInside2(const sp& L);
 
 	virtual	BOOL AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target) { return FALSE; }
 	virtual void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
