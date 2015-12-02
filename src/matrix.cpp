@@ -48,6 +48,12 @@ matrix::matrix(const sp& Sp, double d)
 	m_pInvMatrix = 0;
 }
 
+matrix::~matrix()
+{
+	if (m_pInvMatrix)
+		delete m_pInvMatrix;
+}
+
 matrix	matrix::operator=(const matrix& Matrix)
 {
 	if (m_pInvMatrix) {

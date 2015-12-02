@@ -279,7 +279,7 @@ int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	
 void CRayTraceView::GetVectorFromPoint(sp& k, sp& l, int px, int py)
 {
-	::GetVectorFromPoint(k, l, px, py, &m_View, m_ClientSize.cx, m_ClientSize.cy, &m_Viewport.getMatrix());
+	::GetVectorFromPoint(k, l, px, py, &m_View, m_ClientSize.cx, m_ClientSize.cy, &m_Viewport.getMatrix().Inv());
 }
 
 void CRayTraceView::OnTimer(UINT nIDEvent) 
