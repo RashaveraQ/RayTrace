@@ -227,6 +227,6 @@ bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class Node* root, const int 
 
 bool DoCuda_Free(void* dst)
 {
-	return cudaSuccess == cudaFree(dst);
+	return (dst) ? cudaSuccess == cudaFree(dst) : false;
 }
 

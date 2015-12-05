@@ -271,6 +271,7 @@ int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_Viewport.SetRoot(&pDoc->m_Root);
 	m_Viewport.AttachRoot(&(pDoc->m_Root));
 
+	m_deviceAllocateMemory = 0;
 	if (!DoCuda_Init())
 		MessageBox("Failed to DoCuda_Init!");
 

@@ -28,7 +28,10 @@ Node::Node(const Node& other) : m_Root(other.m_Root), m_Scale(4,4), m_Rotate(4,4
 
 Node::~Node()
 {
-	freeDevicePointer(m_devNode);
+	if (m_devNode) {
+		freeDevicePointer(m_devNode);
+		m_devNode = 0;
+	}
 }
 
 sp Node::GetPixel(double x, double y) const
