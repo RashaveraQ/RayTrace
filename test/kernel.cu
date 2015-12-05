@@ -104,7 +104,7 @@ cudaError_t addWithCuda(int *c, const int *a, const int *b, unsigned int size)
 		goto Error;
 	}
 	
-	newPoint<<<1, size>>>(dev_pShape);
+	newPoint<<<1, 1>>>(dev_pShape);
 	// Check for any errors launching the kernel
 	cudaStatus = cudaGetLastError();
 	if (cudaStatus != cudaSuccess) {
@@ -169,7 +169,7 @@ cudaError_t addWithCuda(int *c, const int *a, const int *b, unsigned int size)
         goto Error;
     }
 
-	deletePoint<<<1, size >>>(dev_pShape);
+	deletePoint<<<1, 1>>>(dev_pShape);
 	// Check for any errors launching the kernel
 	cudaStatus = cudaGetLastError();
 	if (cudaStatus != cudaSuccess) {
