@@ -4,6 +4,7 @@
 #include "DlgMaterial.h"
 #include "RayTraceDoc.h"
 #include "RayTraceView.h"
+#include "DoCuda.h"
 
 //IMPLEMENT_DYNAMIC( Node, CObject ) 
 
@@ -22,6 +23,12 @@ Node::Node(const Node& other) : m_Root(other.m_Root), m_Scale(4,4), m_Rotate(4,4
 	m_Refractive = other.m_Refractive;
 	m_TextureFileName = other.m_TextureFileName;
 	MakeMemoryDCfromTextureFileName();
+	mallocDevicePointer(&m_devNode);
+}
+
+Node::~Node()
+{
+	freeDevicePointer(m_devNode);
 }
 
 sp Node::GetPixel(double x, double y) const

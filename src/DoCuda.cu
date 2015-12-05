@@ -121,10 +121,45 @@ Error:
 	return cudaStatus;
 }
 */
-int numSMs = 0;
+
+int numSMs = -1;
+
+bool mallocDevicePointer(class Node*** devPtr)
+{
+	if (!DoCuda_Init())
+		return false;
+
+	cudaError_t cudaStatus;
+
+	cudaStatus = cudaMalloc(devPtr, sizeof(void*));
+	if (cudaStatus != cudaSuccess) {
+		fprintf(stderr, "cudaMalloc failed!");
+		goto Error;
+	}
+	return true;
+
+Error:
+	return false;
+}
+
+__global__ void deletePoint(Node** out)
+{
+	if (threadIdx.x == 0)
+		delete *out;
+}
+
+bool freeDevicePointer(class Node** pNode)
+{
+	deletePoint <<<1, 1 >>>(pNode);
+	cudaFree(pNode);
+	return true;
+}
 
 bool DoCuda_Init()
 {
+	if (numSMs > 0)
+		return true;
+
 	cudaDeviceProp deviceProp;
 	if (cudaSuccess != cudaSetDevice(0))
 		return false;
@@ -143,7 +178,7 @@ bool DoCuda_OnSize(void** dst, const int imageW, const int imageH)
 }
 
 __global__
-void RayTrace(unsigned long* dst, const int imageW, const int imageH, class Node* root, const int gridWidth, const int numBlocks, const fsize* pView, const matrix* pMatrix)
+void RayTrace(unsigned long* dst, const int imageW, const int imageH, class Node** root, const int gridWidth, const int numBlocks, const fsize* pView, const matrix* pMatrix)
 {
 	// loop until all blocks completed
 	for (unsigned int blockIndex = blockIdx.x; blockIndex < numBlocks; blockIndex += gridDim.x)
@@ -175,7 +210,7 @@ inline int iDivUp(int a, int b)
 	return ((a % b) != 0) ? (a / b + 1) : (a / b);
 } // iDivUp
 
-bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class Node* root, const int imageW, const int imageH, const fsize* pView, const matrix* pMatrix)
+bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class Node** root, const int imageW, const int imageH, const fsize* pView, const matrix* pMatrix)
 {
 	dim3 threads(BLOCKDIM_X, BLOCKDIM_Y);
 	dim3 grid(iDivUp(imageW, BLOCKDIM_X), iDivUp(imageH, BLOCKDIM_Y));

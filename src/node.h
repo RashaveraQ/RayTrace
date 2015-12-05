@@ -62,6 +62,7 @@ protected:
 //	const CRayTraceDoc* m_pDoc;
 	Node* m_Root;
 
+
 	void updateMatrix() {
 		m_Matrix = m_Move * m_Rotate * m_Scale;
 		OnUpdateBoundary();
@@ -70,6 +71,7 @@ private:
 	virtual Boundary getBoundary() = 0;
 	void OnUpdateBoundary(); 
 public:
+	Node** m_devNode;
 
 	Node(Node* const root, node_type NodeType, const char* const Name, const sp Color = sp(-1,-1,-1))
 	: m_Root(root), m_pParent(0), m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1)
@@ -81,7 +83,7 @@ public:
 	}
 	Node(const Node &other);
 
-	virtual	~Node() {}
+	virtual	~Node();
 
 	// オペレーション
 			void Set_Name(const char* const str) { strncpy_s(m_Name, sizeof(m_Name), str, 99); }  
