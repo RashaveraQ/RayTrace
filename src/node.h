@@ -71,7 +71,7 @@ private:
 	virtual Boundary getBoundary() = 0;
 	void OnUpdateBoundary(); 
 public:
-	Node** m_devNode;
+	Node* m_devNode;
 
 	Node(Node* const root, node_type NodeType, const char* const Name, const sp Color = sp(-1,-1,-1))
 	: m_Root(root), m_pParent(0), m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1)
