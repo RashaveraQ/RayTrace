@@ -13,6 +13,14 @@
       <UniqueIdentifier>{130b510c-0c8b-4baf-ab8d-7caf1c0389dc}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
+    <Filter Include="CUDA Source Files">
+      <UniqueIdentifier>{79a7c468-2db8-43f7-ae3c-4628f72c8d4f}</UniqueIdentifier>
+      <Extensions>cu</Extensions>
+    </Filter>
+    <Filter Include="CUDA Header Files">
+      <UniqueIdentifier>{82f612cd-d483-4e47-88e7-3f5b043ab554}</UniqueIdentifier>
+      <Extensions>cuh</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ChildFrm.cpp">
@@ -263,9 +271,23 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DoCuda.h" />
     <ClInclude Include="src\GetVectorFromPoint.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DoCuda.h">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Node.cuh">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Info.cuh">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sp.cuh">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Matrix.cuh">
+      <Filter>CUDA Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -307,6 +329,17 @@
     <Text Include="ToDo.txt" />
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="src\DoCuda.cu" />
+    <CudaCompile Include="src\DoCuda.cu">
+      <Filter>CUDA Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="src\Node.cu">
+      <Filter>CUDA Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="src\Matrix.cu">
+      <Filter>CUDA Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="src\Sp.cu">
+      <Filter>CUDA Source Files</Filter>
+    </CudaCompile>
   </ItemGroup>
 </Project>

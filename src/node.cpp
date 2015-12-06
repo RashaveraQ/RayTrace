@@ -23,15 +23,17 @@ Node::Node(const Node& other) : m_Root(other.m_Root), m_Scale(4,4), m_Rotate(4,4
 	m_Refractive = other.m_Refractive;
 	m_TextureFileName = other.m_TextureFileName;
 	MakeMemoryDCfromTextureFileName();
-	m_devNode = mallocDevicePointer();
+	//m_devNode = mallocDevicePointer();
 }
 
 Node::~Node()
 {
+	/*
 	if (m_devNode) {
 		freeDevicePointer(m_devNode);
 		m_devNode = 0;
 	}
+	*/
 }
 
 sp Node::GetPixel(double x, double y) const

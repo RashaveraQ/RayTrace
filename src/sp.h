@@ -5,9 +5,9 @@ struct	matrix;
 
 struct	sp
 {
-	double	x;
-	double	y;
-	double	z;
+	float	x;
+	float	y;
+	float	z;
 	sp() : x(0), y(0), z(0) {} 
 	sp(double ix, double iy, double iz) : x(ix), y(iy), z(iz) {}
 	sp( const sp& isp) : x(isp.x), y(isp.y), z(isp.z) {}

@@ -193,12 +193,15 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="src\Geometry.h" />
     <ClInclude Include="src\GetVectorFromPoint.h" />
     <ClInclude Include="src\head.h" />
+    <ClInclude Include="src\Info.cuh" />
     <ClInclude Include="src\info.h" />
     <ClInclude Include="src\MainFrm.h" />
+    <ClInclude Include="src\Matrix.cuh" />
     <ClInclude Include="src\matrix.h" />
     <ClInclude Include="src\minus.h" />
     <ClInclude Include="src\move.h" />
     <ClInclude Include="src\multiple.h" />
+    <ClInclude Include="src\Node.cuh" />
     <ClInclude Include="src\node.h" />
     <ClInclude Include="src\NodeTreeCtrl.h" />
     <ClInclude Include="src\plane.h" />
@@ -214,6 +217,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="src\rotate_y.h" />
     <ClInclude Include="src\rotate_z.h" />
     <ClInclude Include="src\ScnTreeView.h" />
+    <ClInclude Include="src\Sp.cuh" />
     <ClInclude Include="src\sp.h" />
     <ClInclude Include="src\sphere.h" />
     <ClInclude Include="src\StdAfx.h" />
@@ -243,7 +247,10 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <Text Include="ToDo.txt" />
   </ItemGroup>
   <ItemGroup>
+    <CudaCompile Include="src\Matrix.cu" />
+    <CudaCompile Include="src\Node.cu" />
     <CudaCompile Include="src\DoCuda.cu" />
+    <CudaCompile Include="src\Sp.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

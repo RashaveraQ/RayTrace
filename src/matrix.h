@@ -8,7 +8,7 @@ struct matrix
 private:
 	int		m_Width;
 	int		m_Height;
-	double	m_data[4][4];
+	float	m_data[4][4];
 	matrix* m_pInvMatrix;
 public:
 	matrix(int=4,int=4);
