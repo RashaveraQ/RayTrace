@@ -53,6 +53,19 @@ Matrix::Matrix(const Sp& Sp, float d)
 }
 
 __device__
+Matrix::Matrix(int w, int h, float data[4][4])
+{
+	m_Width = w;
+	m_Height = h;
+
+	for (int i = 0; i < m_Height; i++)
+		for (int j = 0; j < m_Width; j++)
+			m_data[i][j] = data[i][j];
+	m_pInvMatrix = 0;
+}
+
+
+__device__
 Matrix::~Matrix()
 {
 	if (m_pInvMatrix)

@@ -2,6 +2,11 @@
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #include "DoCuda.h"
+#include "GetVectorFromPoint.cuh"
+#include "Sp.cuh"
+#include "matrix.h"
+#include "Matrix.cuh"
+#include "Node.cuh"
 
 #include <stdio.h>
 /*
@@ -181,7 +186,7 @@ bool DoCuda_OnSize(void** dst, const int imageW, const int imageH)
 }
 
 __global__
-void RayTrace(unsigned long* dst, const int imageW, const int imageH, DevNode* root, const int gridWidth, const int numBlocks, const fsize* pView, const matrix* pMatrix)
+void RayTrace(unsigned long* dst, const int imageW, const int imageH, DevNode* root, const int gridWidth, const int numBlocks, const fsize* pView, const Matrix* pMatrix)
 {
 	// loop until all blocks completed
 	for (unsigned int blockIndex = blockIdx.x; blockIndex < numBlocks; blockIndex += gridDim.x)
@@ -197,7 +202,10 @@ void RayTrace(unsigned long* dst, const int imageW, const int imageH, DevNode* r
 		{
 			// Output the pixel
 			int pixel = imageW * iy + ix;
-			dst[pixel] = pixel;
+			Sp k, l;
+			GetVectorFromPoint(k, l, ix, iy, pView, imageW, imageH, pMatrix);
+			Sp c = root->GetColor(k, l, 0, NULL, true);
+			dst[pixel] = RGB(c.x, c.y, c.z);
 		}
 	}
 }
@@ -220,7 +228,12 @@ bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class DevNode* root, const i
 
 	int numWorkerBlocks = numSMs;
 
-	RayTrace<<<numWorkerBlocks, threads>>>((unsigned long*)d_dst, imageW, imageH, root, grid.x, grid.x * grid.y, pView, pMatrix);
+	Matrix m(pMatrix->get_width(), pMatrix->get_height());
+	for (int w = 0; w < m.get_width(); w++)
+		for (int h = 0; h < m.get_height(); h++)
+			m.set_data(w, h, pMatrix->get_data(w, h));
+
+	RayTrace<<<numWorkerBlocks, threads>>>((unsigned long*)d_dst, imageW, imageH, root, grid.x, grid.x * grid.y, pView, &m);
 
 	// Copy output vector from GPU buffer to host memory.
 	return cudaSuccess == cudaMemcpy(out, d_dst, imageW * imageH * sizeof(unsigned long), cudaMemcpyDeviceToHost);
