@@ -1,6 +1,8 @@
+#include <math.h>
 #include "Node.cuh"
 #include "Info.cuh"
 
+__device__
 Sp DevNode::GetColor(const Sp& K, const Sp& L, int nest, const DevInfo* pHint, bool fromOutSide)
 {
 	DevInfo	info;
@@ -15,6 +17,7 @@ Sp DevNode::GetColor(const Sp& K, const Sp& L, int nest, const DevInfo* pHint, b
 	Sp k2 = k - 2 * (v * k) * v;
 	Sp l2 = info.Cross;
 
+
 	// 反射率がある場合、
 	if (info.pNode->m_Reflect > 0) {
 		// 反射した視線ベクトルから色を取得。
@@ -23,12 +26,13 @@ Sp DevNode::GetColor(const Sp& K, const Sp& L, int nest, const DevInfo* pHint, b
 		info.Material = (info.pNode->m_Reflect * c + (1 - info.pNode->m_Reflect) * Sp(info.Material)).getMaterial();
 	}
 
+
 	// 透過率がある場合、
 	if (info.pNode->m_Through > 0) {
 		double r = info.Refractive;
 		double i = k * v;
 		// 全反射でない場合、
-		if (r > 1.0 || __asinf(r) > __acosf(-i)) {
+		if (r > 1.0 || asin(r) > acos(-i)) {
 			k2 = r * (k + v) - v;
 			l2 = info.Cross;
 			fromOutSide = !fromOutSide;
@@ -47,11 +51,11 @@ Sp DevNode::GetColor(const Sp& K, const Sp& L, int nest, const DevInfo* pHint, b
 	double b = 191 * (1 - cos(M_PI / 2 * x));
 
 	return (t - b) * Sp(info.Material) / 255 + Sp(b, b, b);
-
 }
 
 // 視線ベクトル(Kt+L)と交差する物体の情報infoを返す。
 // 戻り値:true 交差あり,false 交差なし
+__device__
 bool DevNode::GetInfo2(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide)
 {
 	// START Boundary 
@@ -73,8 +77,9 @@ bool DevNode::GetInfo2(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* p
 	return FALSE;
 	// End Boundary
 	*/
-	Matrix& m = m_Matrix;
-	Matrix& Inv_m = m.Inv();
+	
+	Matrix m = m_Matrix;
+	Matrix Inv_m = m.Inv();
 
 	Sp L2 = Inv_m * L;
 	Sp K2 = Inv_m * (K + L) - L2;

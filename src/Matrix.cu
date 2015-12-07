@@ -1,6 +1,7 @@
 #include "Matrix.cuh"
 #include "Sp.cuh"
 
+__device__ 
 Matrix::Matrix(int gyo, int retu)
 {
 	m_Height = gyo;
@@ -25,6 +26,7 @@ Matrix::Matrix(int gyo, int retu)
 	m_pInvMatrix = 0;
 }
 
+__device__
 Matrix::Matrix(const Matrix& mat)
 {
 	m_Width = mat.get_width();
@@ -36,7 +38,8 @@ Matrix::Matrix(const Matrix& mat)
 	m_pInvMatrix = 0;
 }
 
-Matrix::Matrix(const Sp& Sp, double d)
+__device__
+Matrix::Matrix(const Sp& Sp, float d)
 {
 	m_Width = 1;
 	m_Height = 4;
@@ -49,12 +52,14 @@ Matrix::Matrix(const Sp& Sp, double d)
 	m_pInvMatrix = 0;
 }
 
+__device__
 Matrix::~Matrix()
 {
 	if (m_pInvMatrix)
 		delete m_pInvMatrix;
 }
 
+__device__
 Matrix	Matrix::operator=(const Matrix& mat)
 {
 	if (m_pInvMatrix) {
@@ -69,6 +74,7 @@ Matrix	Matrix::operator=(const Matrix& mat)
 	return *this;
 }
 
+__device__
 Matrix	Matrix::operator-(const Matrix& mat) const
 {
 	Matrix	ans( m_Height, m_Width );
@@ -80,6 +86,7 @@ Matrix	Matrix::operator-(const Matrix& mat) const
 	return ans;
 }
 
+__device__
 Matrix	Matrix::operator+(const Matrix& mat) const
 {
 	Matrix	ans( m_Height, m_Width );
@@ -91,7 +98,8 @@ Matrix	Matrix::operator+(const Matrix& mat) const
 	return ans;
 }
 
-Matrix	Matrix::operator*(double k) const
+__device__
+Matrix	Matrix::operator*(float k) const
 {
 	Matrix	ans( m_Height, m_Width );
 
@@ -102,7 +110,8 @@ Matrix	Matrix::operator*(double k) const
 	return ans;
 }
 
-Matrix	Matrix::operator/(double k) const
+__device__
+Matrix	Matrix::operator/(float k) const
 {
 	Matrix	ans( m_Height, m_Width );
 
@@ -113,6 +122,7 @@ Matrix	Matrix::operator/(double k) const
 	return ans;
 }
 
+__device__
 Matrix	Matrix::operator*(const Matrix& mat) const
 {
 	Matrix	ans( m_Height, mat.get_width() );
@@ -129,13 +139,14 @@ Matrix	Matrix::operator*(const Matrix& mat) const
 	return ans;
 }
 
-Matrix	Matrix::Inv()
+__device__
+Matrix	Matrix::Inv(void)
 {
 	if (!m_pInvMatrix) {
 		m_pInvMatrix = new Matrix(m_Width, m_Height);
 
-		double	A = d();
-		double	m;
+		float	A = d();
+		float	m;
 
 		int	gyo, retu;
 
@@ -153,9 +164,10 @@ Matrix	Matrix::Inv()
 	return *m_pInvMatrix;
 }
 
-double	Matrix::M(int gyo, int retu) const
+__device__
+float	Matrix::M(int gyo, int retu) const
 {
-	double ans = 0;
+	float ans = 0;
 
 	switch ( retu )
 	{
@@ -259,9 +271,10 @@ double	Matrix::M(int gyo, int retu) const
 	return ans;
 }
 
-double	Matrix::d() const
+__device__
+float	Matrix::d() const
 {
-	double	ans = 0;
+	float	ans = 0;
 
 	switch ( m_Height )
 	{
@@ -319,7 +332,9 @@ void	Matrix::print() const
 	}
 }
 */
-void Matrix::set_data(int gyo, int retu, double value)
+
+__device__
+void Matrix::set_data(int gyo, int retu, float value)
 {
 	m_data[gyo - 1][retu - 1] = value;
 

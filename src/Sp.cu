@@ -1,26 +1,31 @@
 #pragma once
 
+#include <math.h>
 #include "sp.cuh"
 #include "Matrix.cuh"
 
-Sp::Sp( const Matrix& m )
+__device__
+Sp::Sp(const Matrix& m)
 {
 	x = m.get_data(1,1);
 	y = m.get_data(2,1);
 	z = m.get_data(3,1);
 }
 
+__device__
 bool Sp::operator==( const Sp& a ) const
 {
 	return x == a.x && y == a.y && z == a.z;
 }
 
-bool Sp::operator!=( const Sp& a ) const
+__device__ 
+bool Sp::operator!=(const Sp& a) const
 {
 	return x != a.x || y != a.y || z != a.z;
 }
 
-Sp&	Sp::operator=( const Sp& a )
+__device__ 
+Sp&	Sp::operator=(const Sp& a)
 {
 	x = a.x;
 	y = a.y;
@@ -28,32 +33,38 @@ Sp&	Sp::operator=( const Sp& a )
 	return *this;
 }
 
-double	Sp::operator*( const Sp& a ) const
+__device__ 
+float	Sp::operator*(const Sp& a) const
 {
 	return x*a.x+y*a.y+z*a.z;
 }
 
-Sp Sp::operator+( const Sp& a) const
+__device__ 
+Sp Sp::operator+(const Sp& a) const
 {
 	return Sp( x+a.x, y+a.y, z+a.z );
 }
 
-Sp Sp::operator-( const Sp& a) const
+__device__
+Sp Sp::operator-(const Sp& a) const
 {
 	return Sp( x-a.x, y-a.y, z-a.z );
 }
 
+__device__
 Sp Sp::operator-( void ) const
 {
 	return Sp( -x, -y, -z );
 }
 
-Sp Sp::operator*( double k ) const
+__device__
+Sp Sp::operator*(float k) const
 {
 	return Sp( x*k, y*k, z*k );
 }
 
-Sp Sp::operator/( double a ) const
+__device__
+Sp Sp::operator/(float a) const
 {
 	return Sp( x/a, y/a, z/a );
 }
@@ -63,11 +74,14 @@ void Sp::print()
 	printf( "(%f,%f,%f)\n", x, y, z );
 }
 */
-Sp	operator*( double k, const Sp& a)
+
+__device__ 
+Sp	operator*(float k, const Sp& a)
 {
 	return a*k;
 }
 
+__device__
 Sp	Sp::e() const
 {
 	double	r = sqrt( x*x+y*y+z*z );
@@ -90,6 +104,7 @@ POINT sp::getPOINT(const CSize& size) const
 }
 */
 
+__device__
 D3DMATERIAL9 Sp::getMaterial() const
 {
 	D3DMATERIAL9	mtrl;
@@ -101,6 +116,7 @@ D3DMATERIAL9 Sp::getMaterial() const
 	return mtrl;
 }
 
+__device__ 
 Sp::Sp(const D3DMATERIAL9& mtrl)
 {
 	x = 256 * mtrl.Diffuse.r;
