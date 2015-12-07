@@ -229,8 +229,8 @@ bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class DevNode* root, const i
 	int numWorkerBlocks = numSMs;
 
 	Matrix m(pMatrix->get_width(), pMatrix->get_height());
-	for (int w = 0; w < m.get_width(); w++)
-		for (int h = 0; h < m.get_height(); h++)
+	for (int w = 1; w <= m.get_width(); w++)
+		for (int h = 1; h <= m.get_height(); h++)
 			m.set_data(w, h, pMatrix->get_data(w, h));
 
 	RayTrace<<<numWorkerBlocks, threads>>>((unsigned long*)d_dst, imageW, imageH, root, grid.x, grid.x * grid.y, pView, &m);
