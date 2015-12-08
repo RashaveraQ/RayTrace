@@ -60,7 +60,7 @@ bool Minus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	return TRUE;
 }
 
-int	Minus::cmp_distance(double a, double b) const
+int	Minus::cmp_distance(float a, float b) const
 {
 	if (a >= 0) {
 		if (b >= 0)

@@ -8,7 +8,7 @@ struct Counter_Struct
 };
 
 #ifndef DBL
-#define DBL double
+#define DBL float
 #endif
 
 #define Max_Distance 1.0e7

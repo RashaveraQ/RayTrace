@@ -576,25 +576,25 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 	switch(type){
 	case eMOVE:
 		if (m_SelectedNode)
-			p->Move(axis, d.x);
+			p->Move(axis, (float)d.x);
 		else {
 			p->Move(d);
 		}
 		break;
 	case eROTATE:
 		if (m_SelectedNode)
-			p->Rotate(axis, d.x);
+			p->Rotate(axis, (float)d.x);
 		else {
 			p->Rotate(d);
 		}
 		break;
 	case eSCALE:
-		p->Scale(axis,d.x);
+		p->Scale(axis, (float)d.x);
 		break;
 	case ePIVOT_MOVE:
 		if (!m_SelectedNode)
 			return;
-		p->MovePivot(axis, d.x);
+		p->MovePivot(axis, (float)d.x);
 		break;
 	default:
 		return;

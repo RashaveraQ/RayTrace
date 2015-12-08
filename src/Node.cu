@@ -29,8 +29,8 @@ Sp DevNode::GetColor(const Sp& K, const Sp& L, int nest, const DevInfo* pHint, b
 
 	// 透過率がある場合、
 	if (info.pNode->m_Through > 0) {
-		double r = info.Refractive;
-		double i = k * v;
+		float r = info.Refractive;
+		float i = k * v;
 		// 全反射でない場合、
 		if (r > 1.0 || asin(r) > acos(-i)) {
 			k2 = r * (k + v) - v;
@@ -45,10 +45,10 @@ Sp DevNode::GetColor(const Sp& K, const Sp& L, int nest, const DevInfo* pHint, b
 
 	Sp Light = Sp(1, 1, 1);
 	// 光源より色を補正。
-	double	x = -Light.e() * info.Vertical.e();
+	float	x = -Light.e() * info.Vertical.e();
 	x = (x > 0.0) ? x : 0.0;
-	double t = 64 + 191 * sin(M_PI / 2 * x);
-	double b = 191 * (1 - cos(M_PI / 2 * x));
+	float t = 64 + 191 * sin(M_PI / 2 * x);
+	float b = 191 * (1 - cos(M_PI / 2 * x));
 
 	return (t - b) * Sp(info.Material) / 255 + Sp(b, b, b);
 }
@@ -60,15 +60,15 @@ bool DevNode::GetInfo2(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* p
 {
 	// START Boundary 
 	/*
-	double a = gK * gK;
-	double b = (gL - m_Boundary.Center) * gK;
-	double c = (m_Boundary.Center - gL) * (m_Boundary.Center - gL) - m_Boundary.Radius * m_Boundary.Radius;
-	double bb_ac = b*b-a*c;
+	float a = gK * gK;
+	float b = (gL - m_Boundary.Center) * gK;
+	float c = (m_Boundary.Center - gL) * (m_Boundary.Center - gL) - m_Boundary.Radius * m_Boundary.Radius;
+	float bb_ac = b*b-a*c;
 
 	if (bb_ac < 0)
 	return FALSE;
 
-	double t1, t2;
+	float t1, t2;
 
 	t1 = (-b+sqrt(bb_ac))/a;
 	t2 = (-b-sqrt(bb_ac))/a;

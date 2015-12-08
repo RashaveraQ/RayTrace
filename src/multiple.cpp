@@ -14,13 +14,13 @@ Boundary Multiple::getBoundary()
 			if (c1.Center == c2.Center) {
 				c1.Radius = min(c1.Radius, c2.Radius);
 			} else {
-				double l = (c1.Center - c2.Center).abs();
+				float l = (c1.Center - c2.Center).abs();
 				if (l > c1.Radius + c2.Radius) {
 					return Boundary();
 				}
-				double x = (l*l + c2.Radius * c2.Radius - c1.Radius * c1.Radius) / (2 * l);
+				float x = (l*l + c2.Radius * c2.Radius - c1.Radius * c1.Radius) / (2 * l);
 				sp c = c2.Center + x / l * (c1.Center - c2.Center);
-				double r = sqrt(c2.Radius * c2.Radius - x * x);
+				float r = sqrt(c2.Radius * c2.Radius - x * x);
 				c1.Center = c;
 				c1.Radius = r;
 			}

@@ -191,6 +191,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="src\DoCuda.h" />
     <ClInclude Include="src\expand.h" />
     <ClInclude Include="src\Frame.h" />
+    <ClInclude Include="src\gathering.cuh" />
     <ClInclude Include="src\gathering.h" />
     <ClInclude Include="src\Geometry.h" />
     <ClInclude Include="src\GetVectorFromPoint.cuh" />

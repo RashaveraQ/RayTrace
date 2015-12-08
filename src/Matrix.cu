@@ -142,7 +142,7 @@ Matrix	Matrix::operator*(const Matrix& mat) const
 
 	for (int i = 0; i < ans.m_Height; i++) {
 		for (int j = 0; j < ans.m_Width; j++) {
-			double data = 0.0;
+			float data = 0.0;
 			for ( int k = 0; k < m_Width; k++ )
 				data += m_data[i][k] * mat.m_data[k][j];
 			ans.m_data[i][j] = data;

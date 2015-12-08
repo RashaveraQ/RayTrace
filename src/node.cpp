@@ -5,8 +5,20 @@
 #include "RayTraceDoc.h"
 #include "RayTraceView.h"
 #include "DoCuda.h"
+#include "cuda_runtime.h"
 
 //IMPLEMENT_DYNAMIC( Node, CObject ) 
+Node::Node(Node* const root, node_type NodeType, const char* const Name, const sp Color)
+	: m_Root(root), m_pParent(0), m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1)
+	, m_TextureFileName("")
+{
+	Set_Name(Name);
+	MakeMemoryDCfromTextureFileName();
+	m_Material = Color.getMaterial();
+	if (cudaSuccess != cudaMalloc((void**)&m_devNode, sizeof(void*))) {
+		exit(1);
+	}
+}
 
 Node::Node(const Node& other) : m_Root(other.m_Root), m_Scale(4,4), m_Rotate(4,4), m_Move(4,4), m_Matrix(4,4)
 {
@@ -36,7 +48,7 @@ Node::~Node()
 	*/
 }
 
-sp Node::GetPixel(double x, double y) const
+sp Node::GetPixel(float x, float y) const
 {
 	COLORREF	c;
 
@@ -76,8 +88,8 @@ sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fr
 
 	// 透過率がある場合、
 	if (info.pNode->m_Through > 0) {
-		double r = info.Refractive;
-		double i = k * v;
+		float r = info.Refractive;
+		float i = k * v;
 		// 全反射でない場合、
 		if (r > 1.0 || asin(r) > acos(-i)) {
 			k2 = r * (k + v) - v;
@@ -92,10 +104,10 @@ sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fr
 
 	sp Light = sp(1, 1, 1);
 	// 光源より色を補正。
-	double	x = -Light.e() * info.Vertical.e();
+	float	x = -Light.e() * info.Vertical.e();
 	x = (x > 0.0) ? x : 0.0;
-	double t = 64 + 191 * sin(M_PI / 2 * x);
-	double b = 191 * (1 - cos(M_PI / 2 * x));
+	float t = 64 + 191 * sin(M_PI / 2 * x);
+	float b = 191 * (1 - cos(M_PI / 2 * x));
 
 	return (t - b) * sp(info.Material) / 255 + sp(b,b,b);
 }
@@ -106,15 +118,15 @@ bool Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 {
 	// START Boundary 
 /*
-	double a = gK * gK;
-	double b = (gL - m_Boundary.Center) * gK;
-	double c = (m_Boundary.Center - gL) * (m_Boundary.Center - gL) - m_Boundary.Radius * m_Boundary.Radius;
-	double bb_ac = b*b-a*c;
+	float a = gK * gK;
+	float b = (gL - m_Boundary.Center) * gK;
+	float c = (m_Boundary.Center - gL) * (m_Boundary.Center - gL) - m_Boundary.Radius * m_Boundary.Radius;
+	float bb_ac = b*b-a*c;
 
 	if (bb_ac < 0)
 		return FALSE;
 
-	double t1, t2;
+	float t1, t2;
 
 	t1 = (-b+sqrt(bb_ac))/a;
 	t2 = (-b-sqrt(bb_ac))/a;
@@ -171,24 +183,24 @@ bool Node::MakeMemoryDCfromTextureFileName()
 	return true;
 }
 
-void Node::Move(eAxis axis, double d)
+void Node::Move(eAxis axis, float d)
 {
 	switch (axis) {
-	case eX:	m_Move.set_data(3,4, m_Move.get_data(3,4) - (double)d / 20);	break;
-	case eY:	m_Move.set_data(2,4, m_Move.get_data(2,4) - (double)d / 20);	break;
-	case eZ:	m_Move.set_data(1,4, m_Move.get_data(1,4) - (double)d / 20);	break;
+	case eX:	m_Move.set_data(3,4, m_Move.get_data(3,4) - (float)d / 20);	break;
+	case eY:	m_Move.set_data(2,4, m_Move.get_data(2,4) - (float)d / 20);	break;
+	case eZ:	m_Move.set_data(1,4, m_Move.get_data(1,4) - (float)d / 20);	break;
 	}
 	updateMatrix();
 }
 
 void Node::Move(POINT d)
 {
-	m_Move.set_data(1,4, m_Move.get_data(1,4) - (double)d.x / 20);
-	m_Move.set_data(2,4, m_Move.get_data(2,4) - (double)d.y / 20);
+	m_Move.set_data(1,4, m_Move.get_data(1,4) - (float)d.x / 20);
+	m_Move.set_data(2,4, m_Move.get_data(2,4) - (float)d.y / 20);
 	updateMatrix();
 }
 
-void Node::Rotate(eAxis axis, double d)
+void Node::Rotate(eAxis axis, float d)
 {
 	switch (axis) {
 	case eX:
@@ -206,12 +218,12 @@ void Node::Rotate(eAxis axis, double d)
 
 void Node::Rotate(POINT d)
 {
-	rotate	r(-d.y, -d.x, 0, sqrt((double)d.x*d.x+d.y*d.y) / 2);
+	rotate	r(-d.y, -d.x, 0, sqrt((float)d.x*d.x+d.y*d.y) / 2);
 	m_Rotate = r * m_Rotate;
 	updateMatrix();
 }
 
-void Node::Scale(eAxis axis, double d)
+void Node::Scale(eAxis axis, float d)
 {
 	if (axis == eX || axis == eNONE)
 		m_Scale.set_data(3,3, m_Scale.get_data(3,3) - d / 50);
@@ -222,12 +234,12 @@ void Node::Scale(eAxis axis, double d)
 	updateMatrix();
 }
 
-void Node::MovePivot(eAxis axis, double d)
+void Node::MovePivot(eAxis axis, float d)
 {
 	switch (axis) {
-	case eX:	m_Pivot.set_data(3,4, m_Pivot.get_data(3,4) - (double)d / 20);	break;
-	case eY:	m_Pivot.set_data(2,4, m_Pivot.get_data(2,4) - (double)d / 20);	break;
-	case eZ:	m_Pivot.set_data(1,4, m_Pivot.get_data(1,4) - (double)d / 20);	break;
+	case eX:	m_Pivot.set_data(3,4, m_Pivot.get_data(3,4) - (float)d / 20);	break;
+	case eY:	m_Pivot.set_data(2,4, m_Pivot.get_data(2,4) - (float)d / 20);	break;
+	case eZ:	m_Pivot.set_data(1,4, m_Pivot.get_data(1,4) - (float)d / 20);	break;
 	}
 }
 
@@ -278,11 +290,11 @@ bool Node::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& Ma
 			eAxis tbl[] = {eX, eZ, eY};
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 50; j++) {
-					double th = (i == 2) ? (6.28 * (double)j / 50) : (3.14 * (double)i / 2);
-					double ph = (i == 2) ? (3.14 / 2) : (6.28 * (double)j / 50);
+					float th = (i == 2) ? (6.28 * (float)j / 50) : (3.14 * (float)i / 2);
+					float ph = (i == 2) ? (3.14 / 2) : (6.28 * (float)j / 50);
 					sp p = m * sp(2 * cos(th)*sin(ph), 2 * cos(ph), 2 * sin(th)*sin(ph));
-					double dx = (P0.x + (r - 10) * (p - p0).e().x) - point.x;
-					double dy = (P0.y + (r - 10) * (p - p0).e().y) - point.y;
+					float dx = (P0.x + (r - 10) * (p - p0).e().x) - point.x;
+					float dy = (P0.y + (r - 10) * (p - p0).e().y) - point.y;
 					if (dx*dx+dy*dy < 20) {
 						rtv.m_Manipulator.Axis = tbl[i];
 						return true;
@@ -378,11 +390,11 @@ void Node::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 		if (!InitVertexBuffer(pd3dDevice, pVB, pVertices, 150))
 			return;
 		{
-			double th, ph;
+			float th, ph;
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 50; j++) {
-					th = (i == 2) ? (6.28 * (double)j / 50) : (3.14 * (double)i / 2);
-					ph = (i == 2) ? (3.14 / 2) : (6.28 * (double)j / 50);
+					th = (i == 2) ? (6.28 * (float)j / 50) : (3.14 * (float)i / 2);
+					ph = (i == 2) ? (3.14 / 2) : (6.28 * (float)j / 50);
 					sp p = m * sp(2 * cos(th)*sin(ph), 2 * cos(ph), 2 * sin(th)*sin(ph));
 					pVertices[50*i+j].position = pVertices[50*i+j].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 				}
@@ -462,14 +474,14 @@ void Node::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) const
 		pDC->SelectObject(&g_pen);
 		
 		int i, j;
-		double th, ph;
+		float th, ph;
 		POINT	P[50];
 
 		for (i = 0; i < 3; i++) {
 			for (j = 0; j < 50; j++) {
-				th = (i == 2) ? (6.28 * (double)j / 50) : (3.14 * (double)i / 2);
-				ph = (i == 2) ? (3.14 / 2) : (6.28 * (double)j / 50);
-				sp p = m * sp(2 * cos(th)*sin(ph), 2 * cos(ph), 2 * sin(th)*sin(ph));
+				th = (i == 2) ? (6.28f * j / 50) : (3.14f * i / 2);
+				ph = (i == 2) ? (3.14f / 2) : (6.28f * j / 50);
+				sp p = m * sp(2 * cosf(th) * sinf(ph), 2 * cosf(ph), 2 * sinf(th) * sinf(ph));
 				P[j].x = (long)(P0.x + (r - 10) * (p - p0).e().x);
 				P[j].y = (long)(P0.y + (r - 10) * (p - p0).e().y);
 			}
@@ -572,7 +584,7 @@ void Node::Serialize(CArchive& ar)
 		ar >> m_Material.Power;
 
 		for (int i = 1; i < 4; i++) {
-			double value;
+			float value;
 			ar >> value;
 			m_Scale.set_data(i,i,value);
 			ar >> value;

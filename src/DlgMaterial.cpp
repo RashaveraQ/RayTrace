@@ -71,9 +71,9 @@ void CDlgMaterial::OnSelchangeMaterial()
 	UpdateData();
 
 	static struct {
-		double reflect;
-		double refractive;
-		double through;
+		float reflect;
+		float refractive;
+		float through;
 	} material[] = { 
 		{ 0, 2.417,	1},	// ダイアモンド
 		{ 0, 1.80,	1},	// ガーネット

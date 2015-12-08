@@ -18,7 +18,7 @@ void Cylinder::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix&
 
 	for (int j = 0; j < 2; j++) {
 		for (int i = 0; i < COUNT; i++) {
-			double th = 6.28 * (double)i / COUNT;
+			float th = 6.28 * (float)i / COUNT;
 			sp	p = m * sp(cos(th), j == 0 ? -1 : 1, sin(th));
 			P[j][i] = p.getPOINT(size);
 		}
@@ -56,7 +56,7 @@ void Cylinder::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeome
 
 		for (j = 0; j < 2; j++) {
 			for (i = 0; i < COUNT; i++) {
-				double th = 6.28 * (double)i / COUNT;
+				float th = 6.28 * (float)i / COUNT;
 				sp	p = m * sp(cos(th), j == 0 ? -1 : 1, sin(th));
 				pVertices[COUNT*j+i].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 				pVertices[COUNT*j+i].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
@@ -108,7 +108,7 @@ bool Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, 
 		if (K.y <= 0)
 			return FALSE;
 
-		double t = -(1 + L.y)/K.y;
+		float t = -(1 + L.y)/K.y;
 
 		sp	p = K*t+L;
 
@@ -128,7 +128,7 @@ bool Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, 
 		if (K.y >= 0)
 			return FALSE;
 
-		double t = (1 - L.y) / K.y;
+		float t = (1 - L.y) / K.y;
 
 		sp	p = K*t+L;
 
@@ -144,7 +144,7 @@ bool Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, 
 		}
 	}
 
-	double	a, b, c, d, t, t1, t2;
+	float	a, b, c, d, t, t1, t2;
 
 	c = K.x * L.z - K.z * L.x;
 	c *= c;

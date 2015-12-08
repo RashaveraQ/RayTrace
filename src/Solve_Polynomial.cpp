@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define ENOUGH_SMALL 0.00001
+#define ENOUGH_SMALL 0.00001f
 
-static double func(int d, double *k, double x)
+static float func(int d, float *k, float x)
 {
 	int		i;
-	double	ans = 0;
+	float	ans = 0;
 
 	for ( i = 0; i <= d; i++ ) ans += k[i] * pow(x,i);
 
@@ -16,24 +16,24 @@ static double func(int d, double *k, double x)
 
 static int compare( const void *arg1, const void *arg2 )
 {
-	double *p1, *p2;
+	float *p1, *p2;
 
-	p1 = (double*)arg1;
-	p2 = (double*)arg2;
+	p1 = (float*)arg1;
+	p2 = (float*)arg2;
 
 	if ( *p1 == *p2 ) return 0;
 	else if ( *p1 > *p2 ) return 1;
 	else return -1;
 }
 
-static double walk(int d, double *k, double min, double max)
+static float walk(int d, float *k, float min, float max)
 {
-	double a, b, f, g, x, y;
+	float a, b, f, g, x, y;
 
 	long l = 0;
 
-	if ( (f = func(d,k,max)) == 0.0 ) return max;
-	if ( (g = func(d,k,min)) == 0.0 ) return min;
+	if ( (f = func(d,k,max)) == 0.0f ) return max;
+	if ( (g = func(d,k,min)) == 0.0f ) return min;
 
 	if ( f * g > 0 ) {
 		//MessageBox ( NULL, "Error!", "Solve_Polynomial", MB_OK );
@@ -72,25 +72,25 @@ static double walk(int d, double *k, double min, double max)
 	return x;
 }
 
-int Solve_Polynomial(int d, double *k, double min, double max, double *r)
+int Solve_Polynomial(int d, float *k, float min, float max, float *r)
 {
 	int		i, j, N, ans;
-	double	D;
-	double	*K, *R, *y;
+	float	D;
+	float	*K, *R, *y;
 
 	switch ( d )
 	{
 	case 1:
-		if ( k[1] == 0.0 )
+		if ( k[1] == 0.0f )
 			return 0;
 
 		r[0] = - k[0] / k[1];
 		return ( min <= r[0] && r[0] <= max ) ? 1 : 0;
 
 	case 2:
-		if ( k[2] == 0.0 )
+		if ( k[2] == 0.0f )
 		{
-			if ( k[1] == 0.0 ) return 0;
+			if ( k[1] == 0.0f ) return 0;
 
 			r[0] = - k[0] / k[1];
 			return ( min <= r[0] && r[0] <= max ) ? 1 : 0;
@@ -98,15 +98,15 @@ int Solve_Polynomial(int d, double *k, double min, double max, double *r)
 
 		D = k[1] * k[1] - 4 * k[2] * k[0];
 		
-		if ( D == 0.0 )
+		if ( D == 0.0f )
 		{
-			r[0] = - k[1] / (2.0 * k[2]);
+			r[0] = - k[1] / (2.0f * k[2]);
 			return ( min <= r[0] && r[0] <= max ) ? 1 : 0;
 		}
 		else if ( D > 0 )
 		{
-			r[0] = ( -k[1] + sqrt(D) ) / ( 2.0 * k[2] );
-			r[1] = ( -k[1] - sqrt(D) ) / ( 2.0 * k[2] );
+			r[0] = ( -k[1] + sqrt(D) ) / ( 2.0f * k[2] );
+			r[1] = ( -k[1] - sqrt(D) ) / ( 2.0f * k[2] );
 			if ( r[0] > r[1] )
 				D = r[0], r[0] = r[1], r[1] = D;
 			i = (( min <= r[0] && r[0] <= max ) ? 1 : 0 ) + (( min <= r[1] && r[1] <= max ) ? 1 : 0 );
@@ -115,9 +115,9 @@ int Solve_Polynomial(int d, double *k, double min, double max, double *r)
 		return 0;
 	}
 
-	K = new double [2*d];
-	R = new double [2*d+4];
-	y = new double [2*d+4];
+	K = new float[2 * d];
+	R = new float[2 * d + 4];
+	y = new float[2 * d + 4];
 	
 	for ( i = 1; i <= d; i++ )
 		K[i-1] = i * k[i] / k[d] / d;
@@ -137,7 +137,7 @@ int Solve_Polynomial(int d, double *k, double min, double max, double *r)
 		r[ans++] = walk(d,k,R[i],R[i+1]);
 	}
 
-	qsort((void*)r, (size_t)ans, sizeof( double ), compare );
+	qsort((void*)r, (size_t)ans, sizeof(float), compare);
 
 	for ( i = 0; i < ans - 1; i++ )
 	{

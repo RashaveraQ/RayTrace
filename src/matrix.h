@@ -13,7 +13,7 @@ private:
 public:
 	matrix(int=4,int=4);
 	matrix(const matrix&);
-	matrix(const sp&, double d = 1.0);
+	matrix(const sp&, float d = 1.0f);
 	virtual ~matrix();
 	int	get_width() const { return m_Width; }
 	int	get_height() const { return m_Height; }
@@ -21,14 +21,14 @@ public:
 	matrix	operator+(const matrix&) const;
 	matrix	operator-(const matrix&) const;
 	matrix	operator*(const matrix&) const;
-	matrix	operator*(double) const;
-	matrix	operator/(double) const;
-	double	d() const;			// 行列式
-	double	M(int,int) const;	// 小行列式
+	matrix	operator*(float) const;
+	matrix	operator/(float) const;
+	float	d() const;			// 行列式
+	float	M(int,int) const;	// 小行列式
 	matrix	Inv();				// 逆行列
 	void	print() const;
-	double get_data(int gyo, int retu) const { return m_data[gyo - 1][retu - 1]; }
-	void set_data(int gyo, int retu, double value);
+	float get_data(int gyo, int retu) const { return m_data[gyo - 1][retu - 1]; }
+	void set_data(int gyo, int retu, float value);
 };
 
 #endif

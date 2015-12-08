@@ -1,11 +1,11 @@
 #include "stdafx.h"
 
-rotate_z::rotate_z( double angle ) : matrix( 4, 4 )
+rotate_z::rotate_z( float angle ) : matrix( 4, 4 )
 {
-	double	th = angle / 180.0 * M_PI;
+	float	th = angle / 180.0f * M_PI;
 
-	double costh = cos(th);
-	double sinth = sin(th);
+	float costh = cosf(th);
+	float sinth = sinf(th);
 
 	set_data(1, 1, costh);
 	set_data(2, 1, sinth);

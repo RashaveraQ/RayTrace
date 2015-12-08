@@ -15,7 +15,7 @@ bool Plane::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return FALSE;
 
-	double	t = ( K.z ) ? -L.z / K.z : (( L.z > 0 ) ? DBL_MAX : -DBL_MAX);
+	float	t = ( K.z ) ? -L.z / K.z : (( L.z > 0 ) ? DBL_MAX : -DBL_MAX);
 
 	if ( t <= 0 )
 		return FALSE;

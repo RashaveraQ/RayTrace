@@ -20,18 +20,18 @@ struct	matrix;
 
 struct fsize
 {
-	double	top;
-	double	left;
-	double	bottom;
-	double	right;
+	float	top;
+	float	left;
+	float	bottom;
+	float	right;
 };
 #define PERSPECTIVE_RATIO 0.1
 
 // 境界
 struct Boundary {
-	double	Radius;	// 半径
+	float	Radius;	// 半径
 	sp		Center;	// 中心
-	Boundary(double r = 0, const sp& c = sp(0,0,0)) : Radius(r), Center(c) {}
+	Boundary(float r = 0, const sp& c = sp(0,0,0)) : Radius(r), Center(c) {}
 };
 
 class	Node : public CObject
@@ -49,9 +49,9 @@ protected:
 	matrix		m_Pivot;	// マニュピレータの中心点
 	matrix		m_Matrix;
 
-	double		m_Reflect ;		// 反射率
-	double		m_Through ;  	// 透過率
-	double		m_Refractive ;	// 屈折率
+	float		m_Reflect ;		// 反射率
+	float		m_Through;  	// 透過率
+	float		m_Refractive;	// 屈折率
 
 	struct Boundary m_Boundary;	// 境界
 
@@ -71,16 +71,9 @@ private:
 	virtual Boundary getBoundary() = 0;
 	void OnUpdateBoundary(); 
 public:
-	class DevNode* m_devNode;
+	class DevNode** m_devNode;
 
-	Node(Node* const root, node_type NodeType, const char* const Name, const sp Color = sp(-1,-1,-1))
-	: m_Root(root), m_pParent(0), m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1)
-	, m_TextureFileName("")
-	{
-		Set_Name( Name );
-		MakeMemoryDCfromTextureFileName();
-		m_Material = Color.getMaterial();
-	}
+	Node(Node* const root, node_type NodeType, const char* const Name, const sp Color = sp(-1, -1, -1));
 	Node(const Node &other);
 
 	virtual	~Node();
@@ -91,7 +84,7 @@ public:
 
 			sp GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fromOutSide);
 			bool GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide);
-			sp GetPixel(double x, double y) const;
+			sp GetPixel(float x, float y) const;
 	virtual	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const = 0;
 private:
 	virtual	bool IsInside(const sp& L) const = 0;
@@ -100,12 +93,12 @@ public:
 
 	virtual	BOOL AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target) { return FALSE; }
 	virtual void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
-			void Move(eAxis axis, double d);
+			void Move(eAxis axis, float d);
 			void Move(POINT d);
-			void Rotate(eAxis axis, double d);
+			void Rotate(eAxis axis, float d);
 			void Rotate(POINT d);
-			void Scale(eAxis axis, double d);
-			void MovePivot(eAxis axis, double d);
+			void Scale(eAxis axis, float d);
+			void MovePivot(eAxis axis, float d);
 	virtual bool SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& m) const;
 
 	virtual void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;

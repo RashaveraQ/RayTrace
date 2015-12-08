@@ -1,6 +1,8 @@
+#pragma once
+
 #include "cuda_runtime.h"
 #ifndef M_PI
-#define M_PI (4.0*atan(1.0))
+#define M_PI (4.0f*atanf(1.0f))
 #endif
 
 #include <d3d9.h>

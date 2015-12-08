@@ -7,11 +7,11 @@ class	Node;
 class	Camera	: Node
 {
 	sp	m_Angle;	// 方向
-	double	m_sWidth;	// スコープ幅
-	double	m_sHeight;	// スコープ高さ
+	float	m_sWidth;	// スコープ幅
+	float	m_sHeight;	// スコープ高さ
 	matrix	m_Trans;	// アフィン補正
 public:
-	Camera( const sp& angle, double swidth, double sheight );
+	Camera(const sp& angle, float swidth, float sheight);
 	
 
 #endif

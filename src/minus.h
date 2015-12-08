@@ -15,10 +15,10 @@ public:
 	BOOL AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target);
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
 	bool IsInside(const sp& L) const;
-	int cmp_distance(double,double) const;
+	int cmp_distance(float,float) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	const Node*	MakeCopy() const { return new Minus(*this); }
-	BOOL GetBoundary(sp *pCenter, double *pRadius) const;
+	BOOL GetBoundary(sp *pCenter, float *pRadius) const;
 };
 
 #endif

@@ -9,7 +9,7 @@ bool Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return false;
 
-	double t[6];
+	float t[6];
 	sp	   v[6];
 	int i = 0;
 	

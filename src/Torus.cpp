@@ -10,7 +10,7 @@ IMPLEMENT_SERIAL(Torus, CObject, 1)
 Boundary Torus::sBoundary = Boundary(1);
 
 Torus::Torus(Node* const root, const char* const Name, const sp Color)
-	: Node(root, TORUS, Name, Color), m_R(0.7), m_r(0.3)
+	: Node(root, TORUS, Name, Color), m_R(0.7f), m_r(0.3f)
 {
 
 }
@@ -26,13 +26,13 @@ void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Ma
 	POINT	P[B];
 
 	int i, j;
-	double th, ph;
+	float th, ph;
 
 	for (i = 0; i < A; i++) {
 		for (j = 0; j < B; j++) {
-			th = 6.28 * (double)i / A;
-			ph = 6.28 * (double)j / B;
-			sp p = m * sp((m_R+m_r*cos(ph))*cos(th), (m_R+m_r*cos(ph))*sin(th), m_r*sin(ph));
+			th = 6.28f * i / A;
+			ph = 6.28f * j / B;
+			sp p = m * sp((m_R + m_r * cosf(ph)) * cosf(th), (m_R + m_r * cosf(ph)) * sinf(th), m_r * sinf(ph));
 			P[j] = p.getPOINT(size);
 		}
 		pDC->Polygon(P, B);
@@ -40,9 +40,9 @@ void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Ma
 	
 	for (i = 0; i < A; i++) {
 		for (j = 0; j < B; j++) {
-			ph = 6.28 * (double)i / A;
-			th = 6.28 * (double)j / B;
-			sp p = m * sp((m_R+m_r*cos(ph))*cos(th), (m_R+m_r*cos(ph))*sin(th), m_r*sin(ph));
+			ph = 6.28f * i / A;
+			th = 6.28f * j / B;
+			sp p = m * sp((m_R + m_r * cosf(ph)) * cosf(th), (m_R + m_r * cosf(ph)) * sinf(th), m_r * sinf(ph));
 			P[j] = p.getPOINT(size);
 		}
 		pDC->Polygon(P, B);
@@ -65,25 +65,25 @@ void Torus::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry
 
 
 		int i, j;
-		double th, ph;
+		float th, ph;
 
 		for (i = 0; i < A; i++) {
 			for (j = 0; j < B; j++) {
-				th = 6.28 * (double)i / A;
-				ph = 6.28 * (double)j / B;
-				sp p = m * sp((m_R+m_r*cos(ph))*cos(th), (m_R+m_r*cos(ph))*sin(th), m_r*sin(ph));
-				pVertices[B*i+j].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
-				pVertices[B*i+j].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
+				th = 6.28f * i / A;
+				ph = 6.28f * j / B;
+				sp p = m * sp((m_R + m_r * cosf(ph)) * cosf(th), (m_R + m_r * cosf(ph)) * sinf(th), m_r * sinf(ph));
+				pVertices[B*i+j].position = D3DXVECTOR3(p.x, p.y, p.z);
+				pVertices[B*i+j].normal = D3DXVECTOR3(p.x, p.y, p.z);
 			}
 		}
 		
 		for (i = 0; i < A; i++) {
 			for (j = 0; j < B; j++) {
-				ph = 6.28 * (double)i / A;
-				th = 6.28 * (double)j / B;
-				sp p = m * sp((m_R+m_r*cos(ph))*cos(th), (m_R+m_r*cos(ph))*sin(th), m_r*sin(ph));
-				pVertices[A*B+B*i+j].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
-				pVertices[A*B+B*i+j].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
+				ph = 6.28f * i / A;
+				th = 6.28f * j / B;
+				sp p = m * sp((m_R + m_r * cosf(ph)) * cosf(th), (m_R + m_r * cosf(ph)) * sinf(th), m_r * sinf(ph));
+				pVertices[A*B+B*i+j].position = D3DXVECTOR3(p.x, p.y, p.z);
+				pVertices[A*B+B*i+j].normal = D3DXVECTOR3(p.x, p.y, p.z);
 			}
 		}
 		pVB->Unlock();
@@ -108,7 +108,7 @@ void Torus::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry
 
 bool Torus::IsInside(const sp& L) const
 {
-	double	d;
+	float	d;
 
 	d = m_R - sqrt(L.x * L.x + L.y * L.y);
 	d *= d;
@@ -118,14 +118,14 @@ bool Torus::IsInside(const sp& L) const
 
 bool Torus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
-	int Solve_Polynomial(int d, double *k, double min, double max, double *r);
+	int Solve_Polynomial(int d, float *k, float min, float max, float *r);
 
-	double	R2 = m_R * m_R;
-	double	a = K * K;
-	double	b = 2 * (K * L);
-	double	c = L * L + R2 - m_r * m_r;
+	float	R2 = m_R * m_R;
+	float	a = K * K;
+	float	b = 2 * (K * L);
+	float	c = L * L + R2 - m_r * m_r;
 
-	double	k[20], r[50];
+	float	k[20], r[50];
 	int		n;
 
 	k[4] = a * a;
@@ -151,7 +151,7 @@ bool Torus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	}
 
 	sp		p;
-	double	th;
+	float	th;
 
 	info.isEnter = IsInside(L) == TRUE ? 1 : 0;
 	info.Cross = p = K * r[0] + L;
@@ -165,14 +165,14 @@ bool Torus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 
 	info.Distance = r[0] * sqrt(K * K);
 
-	double x,y,z, phy;
+	float x,y,z, phy;
 
 	x = info.Vertical.x;
 	y = info.Vertical.y;
 	z = info.Vertical.z;
 
-	th = acos(y) / (2 * M_PI); if (x < 0) th = 1 - th;
-	phy = acos(z / sqrt(x * x + z * z)) / (2 * M_PI);
+	th = acosf(y) / (2 * M_PI); if (x < 0) th = 1 - th;
+	phy = acosf(z / sqrtf(x * x + z * z)) / (2 * M_PI);
 	if (x < 0)
 		phy = 1 - phy;
 

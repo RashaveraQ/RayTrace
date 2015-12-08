@@ -84,7 +84,7 @@ Sp	operator*(float k, const Sp& a)
 __device__
 Sp	Sp::e() const
 {
-	double	r = sqrt( x*x+y*y+z*z );
+	float	r = sqrt(x*x + y*y + z*z);
 
 	return Sp( x/r, y/r, z/r );
 }
