@@ -45,7 +45,7 @@ bool Polygon2::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, 
 {
 	float	a = K * K;
 	float	b = K * L;
-	float	c = L * L - 1.0; 
+	float	c = L * L - 1.0f;
 
 	float	bb_ac = b*b - a*c;
 

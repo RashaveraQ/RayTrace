@@ -37,7 +37,7 @@ void Viewport::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix&
 	matrix m = Matrix * m_Matrix;
 
 	for (int i = 0; i < 2; i++) {
-		for (int x = -12; x <= 12; x++) {
+		for (float x = -12; x <= 12; x++) {
 
 			POINT	P1 = sp(m * (i ? sp(x,0,-12) : sp(-12,0,x))).getPOINT(size),
 					P2 = sp(m * (i ? sp(x,0,12) : sp(12,0,x))).getPOINT(size);
@@ -69,7 +69,7 @@ void Viewport::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeome
 
 	int j = 0;
 	for (int i = 0; i < 2; i++) {
-		for (int x = -12; x <= 12; x++) {
+		for (float x = -12; x <= 12; x++) {
 			sp p1 = m * (i ? sp(x,0,-12) : sp(-12,0,x));
 			sp p2 = m * (i ? sp(x,0,12) : sp(12,0,x));
 			pVertices[j].position = D3DXVECTOR3((float)p1.x, (float)p1.y, (float)p1.z);

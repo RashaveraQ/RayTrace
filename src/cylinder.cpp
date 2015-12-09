@@ -2,7 +2,7 @@
 
 IMPLEMENT_SERIAL(Cylinder, CObject, 1)
 
-Boundary Cylinder::sBoundary = Boundary(sqrt(2.0));
+Boundary Cylinder::sBoundary = Boundary(sqrt(2.0f));
 
 void Cylinder::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
 {
@@ -18,8 +18,8 @@ void Cylinder::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix&
 
 	for (int j = 0; j < 2; j++) {
 		for (int i = 0; i < COUNT; i++) {
-			float th = 6.28 * (float)i / COUNT;
-			sp	p = m * sp(cos(th), j == 0 ? -1 : 1, sin(th));
+			float th = 6.28f * i / COUNT;
+			sp	p = m * sp(cos(th), j == 0 ? -1.0f : 1.0f, sin(th));
 			P[j][i] = p.getPOINT(size);
 		}
 		pDC->Polygon(P[j], COUNT);
@@ -56,8 +56,8 @@ void Cylinder::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeome
 
 		for (j = 0; j < 2; j++) {
 			for (i = 0; i < COUNT; i++) {
-				float th = 6.28 * (float)i / COUNT;
-				sp	p = m * sp(cos(th), j == 0 ? -1 : 1, sin(th));
+				float th = 6.28f * (float)i / COUNT;
+				sp	p = m * sp(cos(th), j == 0 ? -1.0f : 1.0f, sin(th));
 				pVertices[COUNT*j+i].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 				pVertices[COUNT*j+i].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 			}
@@ -117,7 +117,7 @@ bool Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, 
 			info.Vertical = sp(0,-1,0);
 			info.Distance = t * sqrt(K*K);
 			info.isEnter = 1;
-			info.Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
+			info.Material = GetPixel(.5f*(p.x+1),.5f*(p.z+1)).getMaterial();
 			info.pNode = this;
 			return TRUE;
 		}
@@ -137,7 +137,7 @@ bool Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, 
 			info.Vertical = sp(0,1,0);
 			info.Distance = t * sqrt(K*K);
 			info.isEnter = 1;
-			info.Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
+			info.Material = GetPixel(.5f*(p.x+1),.5f*(p.z+1)).getMaterial();
 			info.pNode = this;
 
 			return TRUE;

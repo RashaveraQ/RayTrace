@@ -2,7 +2,7 @@
 
 IMPLEMENT_SERIAL(Cube, CObject, 1)
 
-Boundary Cube::sBoundary = Boundary(sqrt(3.0));
+Boundary Cube::sBoundary = Boundary(sqrt(3.0f));
 
 bool Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {

@@ -3,7 +3,7 @@
 
 IMPLEMENT_SERIAL(Plane, CObject, 1)
 
-Boundary Plane::sBoundary = Boundary(1e+40); // 
+Boundary Plane::sBoundary = Boundary(FLT_MAX); // 
 
 bool Plane::IsInside(const sp& L) const
 {
@@ -15,7 +15,7 @@ bool Plane::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return FALSE;
 
-	float	t = ( K.z ) ? -L.z / K.z : (( L.z > 0 ) ? DBL_MAX : -DBL_MAX);
+	float	t = ( K.z ) ? -L.z / K.z : (( L.z > 0 ) ? FLT_MAX : -FLT_MAX);
 
 	if ( t <= 0 )
 		return FALSE;

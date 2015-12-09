@@ -6,7 +6,7 @@ void GetVectorFromPoint(sp& k, sp& l, int px, int py, const fsize* pView, int cx
 	float rx = (pView->right - pView->left) * px / cx + pView->left;
 	float ry = (pView->bottom - pView->top) * py / cx + pView->top;
 
-	k = sp(0.01 * rx / (pView->right - pView->left), 0.01 * ry / (pView->bottom - pView->top), 0.01);
+	k = sp(0.01f * rx / (pView->right - pView->left), 0.01f * ry / (pView->bottom - pView->top), 0.01f);
 	l = sp(rx, ry, -20);
 
 	matrix& m = *pMatrix;

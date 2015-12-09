@@ -105,7 +105,7 @@ sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fr
 	sp Light = sp(1, 1, 1);
 	// ŒõŒ¹‚æ‚èF‚ð•â³B
 	float	x = -Light.e() * info.Vertical.e();
-	x = (x > 0.0) ? x : 0.0;
+	x = (x > 0.0f) ? x : 0.0f;
 	float t = 64 + 191 * sin(M_PI / 2 * x);
 	float b = 191 * (1 - cos(M_PI / 2 * x));
 
@@ -149,7 +149,7 @@ bool Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	info.Vertical = m * (info.Vertical + info.Cross) - m * info.Cross;
 	info.Cross = m * info.Cross;
 	info.Distance = (info.Cross - L).abs();
-	info.Refractive = info.pNode->m_Refractive / ((pHint) ? pHint->Refractive : 1.0);
+	info.Refractive = info.pNode->m_Refractive / ((pHint) ? pHint->Refractive : 1.0f);
 	if (!info.isEnter)
 		info.Refractive = 1 / info.Refractive;
 
@@ -218,7 +218,7 @@ void Node::Rotate(eAxis axis, float d)
 
 void Node::Rotate(POINT d)
 {
-	rotate	r(-d.y, -d.x, 0, sqrt((float)d.x*d.x+d.y*d.y) / 2);
+	rotate	r((float)-d.y, (float)-d.x, 0, sqrt((float)(d.x * d.x + d.y * d.y)) / 2);
 	m_Rotate = r * m_Rotate;
 	updateMatrix();
 }
@@ -290,8 +290,8 @@ bool Node::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& Ma
 			eAxis tbl[] = {eX, eZ, eY};
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 50; j++) {
-					float th = (i == 2) ? (6.28 * (float)j / 50) : (3.14 * (float)i / 2);
-					float ph = (i == 2) ? (3.14 / 2) : (6.28 * (float)j / 50);
+					float th = (i == 2) ? (6.28f * j / 50) : (3.14f * i / 2);
+					float ph = (i == 2) ? (3.14f / 2) : (6.28f * j / 50);
 					sp p = m * sp(2 * cos(th)*sin(ph), 2 * cos(ph), 2 * sin(th)*sin(ph));
 					float dx = (P0.x + (r - 10) * (p - p0).e().x) - point.x;
 					float dy = (P0.y + (r - 10) * (p - p0).e().y) - point.y;
@@ -352,7 +352,7 @@ void Node::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 	sp	p0 = m * m_Pivot * sp(0, 0, 0);
 	sp	px, py, pz;
 
-	int r = 100;
+	float r = 100;
 	switch (rtv.m_Manipulator.Type) {
 	case ePIVOT_MOVE:
 		r = 50;
@@ -393,8 +393,8 @@ void Node::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 			float th, ph;
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 50; j++) {
-					th = (i == 2) ? (6.28 * (float)j / 50) : (3.14 * (float)i / 2);
-					ph = (i == 2) ? (3.14 / 2) : (6.28 * (float)j / 50);
+					th = (i == 2) ? (6.28f * j / 50) : (3.14f * i / 2);
+					ph = (i == 2) ? (3.14f / 2) : (6.28f * j / 50);
 					sp p = m * sp(2 * cos(th)*sin(ph), 2 * cos(ph), 2 * sin(th)*sin(ph));
 					pVertices[50*i+j].position = pVertices[50*i+j].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 				}
