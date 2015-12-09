@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 struct	Sp;
 
@@ -23,9 +23,9 @@ public:
 	__device__ __host__ Matrix	operator*(const Matrix&) const;
 	__device__ __host__ Matrix	operator*(float) const;
 	__device__ __host__ Matrix	operator/(float) const;
-	__device__ __host__ float	d() const;			// s—ñ®
-	__device__ __host__ float	M(int, int) const;	// ¬s—ñ®
-	__device__ __host__ Matrix	Inv(void);				// ‹ts—ñ
+	__device__ __host__ float	d() const;			// è¡Œåˆ—å¼
+	__device__ __host__ float	M(int, int) const;	// å°è¡Œåˆ—å¼
+	__device__ __host__ Matrix	Inv(void);				// é€†è¡Œåˆ—
 	//void	print() const;
 	__device__ __host__ float get_data(int gyo, int retu) const { return m_data[gyo - 1][retu - 1]; }
 	__device__ __host__ void set_data(int gyo, int retu, float value);

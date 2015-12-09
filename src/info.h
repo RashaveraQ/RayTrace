@@ -1,4 +1,4 @@
-#ifndef __INFO_H
+ï»¿#ifndef __INFO_H
 #define __INFO_H
 
 struct	sp;
@@ -7,12 +7,12 @@ class	Node;
 struct Info
 {
 	D3DMATERIAL9	Material;
-	bool			isEnter;	// “ü‚è‚Ş
-	float			Distance;	// Œğ“_‚Ü‚Å‚Ì‹——£
-	sp				Cross;		// Œğ“_À•W
-	sp				Vertical;	// –@üƒxƒNƒgƒ‹
+	bool			isEnter;	// å…¥ã‚Šè¾¼ã‚€
+	float			Distance;	// äº¤ç‚¹ã¾ã§ã®è·é›¢
+	sp				Cross;		// äº¤ç‚¹åº§æ¨™
+	sp				Vertical;	// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 	const Node *	pNode;		// 
-	float	Refractive;			// ‹üÜ—¦
+	float	Refractive;			// å±ˆæŠ˜ç‡
 	Info()
 	{
 		pNode = NULL;

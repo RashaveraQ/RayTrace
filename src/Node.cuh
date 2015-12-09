@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "cuda_runtime.h"
 #ifndef M_PI
@@ -22,16 +22,16 @@ protected:
 	node_type	m_NodeType;
 	D3DMATERIAL9 m_Material;
 
-	Matrix		m_Scale;	// ƒXƒP[ƒ‹•ÏŠ·
-	Matrix		m_Rotate;	// ‰ñ“]
-	Matrix		m_Move;		// •½sˆÚ“®
-	Matrix		m_Pivot;	// ƒ}ƒjƒ…ƒsƒŒ[ƒ^‚Ì’†S“_
+	Matrix		m_Scale;	// ã‚¹ã‚±ãƒ¼ãƒ«å¤‰æ›
+	Matrix		m_Rotate;	// å›è»¢
+	Matrix		m_Move;		// å¹³è¡Œç§»å‹•
+	Matrix		m_Pivot;	// ãƒãƒ‹ãƒ¥ãƒ”ãƒ¬ãƒ¼ã‚¿ã®ä¸­å¿ƒç‚¹
 	Matrix		m_Matrix;
 
-	float		m_Reflect;		// ”½Ë—¦
-	float		m_Through;  	// “§‰ß—¦
-	float		m_Refractive;	// ‹üÜ—¦
-	
+	float		m_Reflect;		// åå°„ç‡
+	float		m_Through;  	// é€éç‡
+	float		m_Refractive;	// å±ˆæŠ˜ç‡
+
 	DevNode* m_Root;
 
 public:

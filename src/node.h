@@ -1,7 +1,7 @@
-#ifndef __NODE_H
+ï»¿#ifndef __NODE_H
 #define __NODE_H
 
-enum node_type 
+enum node_type
 {
 	SPHERE = 1, PLANE, PLUS, MINUS, MULTIPLE, CONE, CYLINDER, TORUS, POLYGON, CUBE, TEAPOT
 };
@@ -27,39 +27,39 @@ struct fsize
 };
 #define PERSPECTIVE_RATIO 0.1
 
-// ‹«ŠE
+// å¢ƒç•Œ
 struct Boundary {
-	float	Radius;	// ”¼Œa
-	sp		Center;	// ’†S
-	Boundary(float r = 0, const sp& c = sp(0,0,0)) : Radius(r), Center(c) {}
+	float	Radius;	// åŠå¾„
+	sp		Center;	// ä¸­å¿ƒ
+	Boundary(float r = 0, const sp& c = sp(0, 0, 0)) : Radius(r), Center(c) {}
 };
 
 class	Node : public CObject
 {
 protected:
 	Node*		m_pParent;
-	// ƒAƒgƒŠƒrƒ…[ƒg
+	// ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆ
 	node_type	m_NodeType;
-	char		m_Name[99];	// –¼‘O
+	char		m_Name[99];	// åå‰
 	D3DMATERIAL9 m_Material;
 
-	matrix		m_Scale;	// ƒXƒP[ƒ‹•ÏŠ·
-	matrix		m_Rotate;	// ‰ñ“]
-	matrix		m_Move;		// •½sˆÚ“®
-	matrix		m_Pivot;	// ƒ}ƒjƒ…ƒsƒŒ[ƒ^‚Ì’†S“_
+	matrix		m_Scale;	// ã‚¹ã‚±ãƒ¼ãƒ«å¤‰æ›
+	matrix		m_Rotate;	// å›è»¢
+	matrix		m_Move;		// å¹³è¡Œç§»å‹•
+	matrix		m_Pivot;	// ãƒãƒ‹ãƒ¥ãƒ”ãƒ¬ãƒ¼ã‚¿ã®ä¸­å¿ƒç‚¹
 	matrix		m_Matrix;
 
-	float		m_Reflect ;		// ”½Ë—¦
-	float		m_Through;  	// “§‰ß—¦
-	float		m_Refractive;	// ‹üÜ—¦
+	float		m_Reflect;		// åå°„ç‡
+	float		m_Through;  	// é€éç‡
+	float		m_Refractive;	// å±ˆæŠ˜ç‡
 
-	struct Boundary m_Boundary;	// ‹«ŠE
+	struct Boundary m_Boundary;	// å¢ƒç•Œ
 
 	CString		m_TextureFileName;
-	CDC			m_TextureDC;		// ƒeƒNƒXƒ`ƒƒƒCƒ[ƒWŠi”[—p
+	CDC			m_TextureDC;		// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¤ãƒ¡ãƒ¼ã‚¸æ ¼ç´ç”¨
 	CSize		m_TextureSize;
 
-//	const CRayTraceDoc* m_pDoc;
+	//	const CRayTraceDoc* m_pDoc;
 	Node* m_Root;
 
 
@@ -69,7 +69,7 @@ protected:
 	}
 private:
 	virtual Boundary getBoundary() = 0;
-	void OnUpdateBoundary(); 
+	void OnUpdateBoundary();
 public:
 	class DevNode** m_devNode;
 
@@ -78,43 +78,43 @@ public:
 
 	virtual	~Node();
 
-	// ƒIƒyƒŒ[ƒVƒ‡ƒ“
-			void Set_Name(const char* const str) { strncpy_s(m_Name, sizeof(m_Name), str, 99); }  
+	// ã‚ªãƒšãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³
+	void Set_Name(const char* const str) { strncpy_s(m_Name, sizeof(m_Name), str, 99); }
 	virtual void SetRoot(Node* const root) { m_Root = root; }
 
-			sp GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fromOutSide);
-			bool GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide);
-			sp GetPixel(float x, float y) const;
+	sp GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fromOutSide);
+	bool GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide);
+	sp GetPixel(float x, float y) const;
 	virtual	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const = 0;
 private:
 	virtual	bool IsInside(const sp& L) const = 0;
 public:
-			bool IsInside2(const sp& L);
+	bool IsInside2(const sp& L);
 
 	virtual	BOOL AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target) { return FALSE; }
 	virtual void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
-			void Move(eAxis axis, float d);
-			void Move(POINT d);
-			void Rotate(eAxis axis, float d);
-			void Rotate(POINT d);
-			void Scale(eAxis axis, float d);
-			void MovePivot(eAxis axis, float d);
+	void Move(eAxis axis, float d);
+	void Move(POINT d);
+	void Rotate(eAxis axis, float d);
+	void Rotate(POINT d);
+	void Scale(eAxis axis, float d);
+	void MovePivot(eAxis axis, float d);
 	virtual bool SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& m) const;
 
 	virtual void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;
 	virtual void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST) = 0;
 	virtual BOOL Edit();
-			BOOL EditAfin();
-			BOOL EditColor();
-			BOOL EditMaterial();
-			BOOL EditTexture();
+	BOOL EditAfin();
+	BOOL EditColor();
+	BOOL EditMaterial();
+	BOOL EditTexture();
 
-	// ƒCƒ“ƒvƒŠƒƒ“ƒe[ƒVƒ‡ƒ“
+	// ã‚¤ãƒ³ãƒ—ãƒªãƒ¡ãƒ³ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³
 	friend CDlgMatrix;
 	friend CDlgMaterial;
 	friend Geometry;
 
-			bool MakeMemoryDCfromTextureFileName();
+	bool MakeMemoryDCfromTextureFileName();
 
 	virtual const Node*		MakeCopy() const = 0;
 	virtual	bool Delete(Node*) { return false; }
@@ -132,14 +132,14 @@ public:
 #endif
 
 /*
-	bool	GetInfo(const sp& K, const sp& L, Info& info) const;
+bool	GetInfo(const sp& K, const sp& L, Info& info) const;
 
-	ˆø”
-		const sp& K,	•ûŒüƒxƒNƒgƒ‹
-		const sp& L,	‹“_‚ÌˆÊ’u
-		Info& info		î•ñƒZƒbƒg‚ÌƒAƒhƒŒƒX
-	–ß‚è’l
-		bool	true : Œğ“_‚ ‚è
-				false: Œğ“_‚È‚µ
+å¼•æ•°
+const sp& K,	æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
+const sp& L,	è¦–ç‚¹ã®ä½ç½®
+Info& info		æƒ…å ±ã‚»ãƒƒãƒˆã®ã‚¢ãƒ‰ãƒ¬ã‚¹
+æˆ»ã‚Šå€¤
+bool	true : äº¤ç‚¹ã‚ã‚Š
+false: äº¤ç‚¹ãªã—
 */
 

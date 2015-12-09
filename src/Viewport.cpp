@@ -1,4 +1,4 @@
-// Viewport.cpp: Viewport ƒNƒ‰ƒX‚ÌƒCƒ“ƒvƒŠƒƒ“ƒe[ƒVƒ‡ƒ“
+ï»¿// Viewport.cpp: Viewport ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ãƒ—ãƒªãƒ¡ãƒ³ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -8,12 +8,12 @@
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
 #endif
 
 //////////////////////////////////////////////////////////////////////
-// \’z/Á–Å
+// æ§‹ç¯‰/æ¶ˆæ»…
 //////////////////////////////////////////////////////////////////////
 
 Viewport::Viewport()
@@ -30,7 +30,7 @@ void Viewport::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix&
 	const CSize& size = raytraceview.m_ClientSize;
 	const Node* pNode = raytraceview.m_SelectedNode;
 
-	static CPen	gray_pen(PS_SOLID,1,RGB(100,100,100));
+	static CPen	gray_pen(PS_SOLID, 1, RGB(100, 100, 100));
 
 	CPen *old_pen = pDC->SelectObject(&gray_pen);
 
@@ -39,8 +39,8 @@ void Viewport::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix&
 	for (int i = 0; i < 2; i++) {
 		for (float x = -12; x <= 12; x++) {
 
-			POINT	P1 = sp(m * (i ? sp(x,0,-12) : sp(-12,0,x))).getPOINT(size),
-					P2 = sp(m * (i ? sp(x,0,12) : sp(12,0,x))).getPOINT(size);
+			POINT	P1 = sp(m * (i ? sp(x, 0, -12) : sp(-12, 0, x))).getPOINT(size),
+				P2 = sp(m * (i ? sp(x, 0, 12) : sp(12, 0, x))).getPOINT(size);
 
 			if (x == 0)
 				pDC->SelectStockObject(BLACK_PEN);
@@ -52,7 +52,7 @@ void Viewport::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix&
 				pDC->SelectObject((class CPen*)&gray_pen);
 		}
 	}
-	
+
 	Plus::Draw_Outline(pDC, raytraceview, Matrix);
 
 	pDC->SelectObject(old_pen);
@@ -70,16 +70,16 @@ void Viewport::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeome
 	int j = 0;
 	for (int i = 0; i < 2; i++) {
 		for (float x = -12; x <= 12; x++) {
-			sp p1 = m * (i ? sp(x,0,-12) : sp(-12,0,x));
-			sp p2 = m * (i ? sp(x,0,12) : sp(12,0,x));
+			sp p1 = m * (i ? sp(x, 0, -12) : sp(-12, 0, x));
+			sp p2 = m * (i ? sp(x, 0, 12) : sp(12, 0, x));
 			pVertices[j].position = D3DXVECTOR3((float)p1.x, (float)p1.y, (float)p1.z);
-			pVertices[j].normal = D3DXVECTOR3(0,1,0);
+			pVertices[j].normal = D3DXVECTOR3(0, 1, 0);
 			pVertices[++j].position = D3DXVECTOR3((float)p2.x, (float)p2.y, (float)p2.z);
-			pVertices[j++].normal = D3DXVECTOR3(0,1,0);
+			pVertices[j++].normal = D3DXVECTOR3(0, 1, 0);
 		}
 	}
 	pVB->Unlock();
-	lstGeometry.AddTail(Geometry(this, pVB,D3DPT_LINELIST, 50));
+	lstGeometry.AddTail(Geometry(this, pVB, D3DPT_LINELIST, 50));
 
 	Plus::AddGeometry(pd3dDevice, lstGeometry, rtv, Matrix);
 }

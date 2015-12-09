@@ -1,4 +1,4 @@
-#ifndef __PLUS_H
+ï»¿#ifndef __PLUS_H
 #define __PLUS_H
 
 class	Plus : public Gathering
@@ -7,8 +7,8 @@ class	Plus : public Gathering
 protected:
 	DECLARE_SERIAL(Plus)
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	Plus(Node* const root = 0, const char* const Name = "‰Á–@") : Gathering(root, PLUS, Name) {}
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	Plus(Node* const root = 0, const char* const Name = "Plus") : Gathering(root, PLUS, Name) {}
 	Plus(const Plus& other) : Gathering(other) {}
 
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;

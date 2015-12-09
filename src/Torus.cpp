@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "RayTrace.h"
 #include "DlgTorus.h"
 
@@ -37,7 +37,7 @@ void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Ma
 		}
 		pDC->Polygon(P, B);
 	}
-	
+
 	for (i = 0; i < A; i++) {
 		for (j = 0; j < B; j++) {
 			ph = 6.28f * i / A;
@@ -52,7 +52,7 @@ void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Ma
 
 void Torus::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const
 {
-	// D3DXCreateTorus ‚ÌŽg—p‚ðŒŸ“¢‚·‚é‚±‚Æ
+	// D3DXCreateTorus ã®ä½¿ç”¨ã‚’æ¤œè¨Žã™ã‚‹ã“ã¨
 	LPDIRECT3DVERTEXBUFFER9 pVB;
 	CUSTOMVERTEX*	pVertices;
 
@@ -60,7 +60,7 @@ void Torus::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry
 
 	switch (rtv.m_ViewMode) {
 	case CRayTraceView::eD3DWireFrame:
-		if (!InitVertexBuffer(pd3dDevice, pVB, pVertices, 2*A*B))
+		if (!InitVertexBuffer(pd3dDevice, pVB, pVertices, 2 * A*B))
 			return;
 
 
@@ -72,23 +72,23 @@ void Torus::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry
 				th = 6.28f * i / A;
 				ph = 6.28f * j / B;
 				sp p = m * sp((m_R + m_r * cosf(ph)) * cosf(th), (m_R + m_r * cosf(ph)) * sinf(th), m_r * sinf(ph));
-				pVertices[B*i+j].position = D3DXVECTOR3(p.x, p.y, p.z);
-				pVertices[B*i+j].normal = D3DXVECTOR3(p.x, p.y, p.z);
+				pVertices[B*i + j].position = D3DXVECTOR3(p.x, p.y, p.z);
+				pVertices[B*i + j].normal = D3DXVECTOR3(p.x, p.y, p.z);
 			}
 		}
-		
+
 		for (i = 0; i < A; i++) {
 			for (j = 0; j < B; j++) {
 				ph = 6.28f * i / A;
 				th = 6.28f * j / B;
 				sp p = m * sp((m_R + m_r * cosf(ph)) * cosf(th), (m_R + m_r * cosf(ph)) * sinf(th), m_r * sinf(ph));
-				pVertices[A*B+B*i+j].position = D3DXVECTOR3(p.x, p.y, p.z);
-				pVertices[A*B+B*i+j].normal = D3DXVECTOR3(p.x, p.y, p.z);
+				pVertices[A*B + B*i + j].position = D3DXVECTOR3(p.x, p.y, p.z);
+				pVertices[A*B + B*i + j].normal = D3DXVECTOR3(p.x, p.y, p.z);
 			}
 		}
 		pVB->Unlock();
 
-		lstGeometry.AddTail(Geometry(this, pVB, D3DPT_LINESTRIP, 2*A*B-1));
+		lstGeometry.AddTail(Geometry(this, pVB, D3DPT_LINESTRIP, 2 * A*B - 1));
 		break;
 
 	case CRayTraceView::eD3DFlatShading:
@@ -98,11 +98,11 @@ void Torus::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry
 
 		if (FAILED(D3DXCreateTorus(pd3dDevice, (float)m_r, (float)m_R, 50, 50, &pMesh, NULL)))
 			return;
-		
+
 		lstGeometry.AddTail(Geometry(this, pMesh, m));
 		break;
 	}
-	
+
 	Node::AddGeometry(pd3dDevice, lstGeometry, rtv, m);
 }
 
@@ -155,17 +155,18 @@ bool Torus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 
 	info.isEnter = IsInside(L) == TRUE ? 1 : 0;
 	info.Cross = p = K * r[0] + L;
-	
+
 	if (p.x == 0.0) {
 		info.Vertical = sp(0, p.y - ((p.y > 0) ? 1 : -1) * m_R, p.z);
-	} else {
-		th = atan2( p.y , p.x );
+	}
+	else {
+		th = atan2(p.y, p.x);
 		info.Vertical = sp(p.x - m_R * cos(th), p.y - m_R * sin(th), p.z);
 	}
 
 	info.Distance = r[0] * sqrt(K * K);
 
-	float x,y,z, phy;
+	float x, y, z, phy;
 
 	x = info.Vertical.x;
 	y = info.Vertical.y;
@@ -178,7 +179,7 @@ bool Torus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 
 	info.Material = GetPixel(phy, th).getMaterial();
 	info.pNode = this;
-	
+
 	return TRUE;
 }
 
@@ -191,10 +192,11 @@ void Torus::Serialize(CArchive& ar)
 {
 	Node::Serialize(ar);
 
-	if ( ar.IsStoring()) {
+	if (ar.IsStoring()) {
 		ar << m_r;
 		ar << m_R;
-	} else {
+	}
+	else {
 		ar >> m_r;
 		ar >> m_R;
 	}

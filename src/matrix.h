@@ -1,4 +1,4 @@
-#ifndef __MATRIX_H
+ï»¿#ifndef __MATRIX_H
 #define __MATRIX_H
 
 struct	sp;
@@ -11,7 +11,7 @@ private:
 	float	m_data[4][4];
 	matrix* m_pInvMatrix;
 public:
-	matrix(int=4,int=4);
+	matrix(int = 4, int = 4);
 	matrix(const matrix&);
 	matrix(const sp&, float d = 1.0f);
 	virtual ~matrix();
@@ -23,9 +23,9 @@ public:
 	matrix	operator*(const matrix&) const;
 	matrix	operator*(float) const;
 	matrix	operator/(float) const;
-	float	d() const;			// s—ñ®
-	float	M(int,int) const;	// ¬s—ñ®
-	matrix	Inv();				// ‹ts—ñ
+	float	d() const;			// è¡Œåˆ—å¼
+	float	M(int, int) const;	// å°è¡Œåˆ—å¼
+	matrix	Inv();				// é€†è¡Œåˆ—
 	void	print() const;
 	float get_data(int gyo, int retu) const { return m_data[gyo - 1][retu - 1]; }
 	void set_data(int gyo, int retu, float value);

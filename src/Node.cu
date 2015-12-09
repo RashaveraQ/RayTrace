@@ -1,4 +1,4 @@
-#include <math.h>
+ï»¿#include <math.h>
 #include "Node.cuh"
 #include "Info.cuh"
 
@@ -7,7 +7,7 @@ Sp DevNode::GetColor(const Sp& K, const Sp& L, int nest, const DevInfo* pHint, b
 {
 	DevInfo	info;
 
-	// Ä‹A”‚ª‚P‚O‚ğ‰z‚¦‚é–”‚ÍAŒğ“_‚ª‘¶İ‚µ‚È‚¢ê‡A
+	// å†å¸°æ•°ãŒï¼‘ï¼ã‚’è¶Šãˆã‚‹åˆã¯ã€äº¤ç‚¹ãŒå­˜åœ¨ã—ãªã„å ´åˆã€
 	if (nest > 10 || !GetInfo2(K, L, info, pHint, fromOutSide))
 		return Sp(127, 127, 127);
 
@@ -18,33 +18,33 @@ Sp DevNode::GetColor(const Sp& K, const Sp& L, int nest, const DevInfo* pHint, b
 	Sp l2 = info.Cross;
 
 
-	// ”½Ë—¦‚ª‚ ‚éê‡A
+	// åå°„ç‡ãŒã‚ã‚‹å ´åˆã€
 	if (info.pNode->m_Reflect > 0) {
-		// ”½Ë‚µ‚½‹üƒxƒNƒgƒ‹‚©‚çF‚ğæ“¾B
+		// åå°„ã—ãŸè¦–ç·šãƒ™ã‚¯ãƒˆãƒ«ã‹ã‚‰è‰²ã‚’å–å¾—ã€‚
 		Sp c = m_Root->GetColor(k2, l2, nest + 1, &info, true);
-		// ”½Ë—¦‚ÅF‚ğ¬‚º‚éB
+		// åå°„ç‡ã§è‰²ã‚’æ··ãœã‚‹ã€‚
 		info.Material = (info.pNode->m_Reflect * c + (1 - info.pNode->m_Reflect) * Sp(info.Material)).getMaterial();
 	}
 
 
-	// “§‰ß—¦‚ª‚ ‚éê‡A
+	// é€éç‡ãŒã‚ã‚‹å ´åˆã€
 	if (info.pNode->m_Through > 0) {
 		float r = info.Refractive;
 		float i = k * v;
-		// ‘S”½Ë‚Å‚È‚¢ê‡A
+		// å…¨åå°„ã§ãªã„å ´åˆã€
 		if (r > 1.0 || asin(r) > acos(-i)) {
 			k2 = r * (k + v) - v;
 			l2 = info.Cross;
 			fromOutSide = !fromOutSide;
 		}
-		// ‹üÜ‚µ‚½‹üƒxƒNƒgƒ‹‚©‚çF‚ğæ“¾B
+		// å±ˆæŠ˜ã—ãŸè¦–ç·šãƒ™ã‚¯ãƒˆãƒ«ã‹ã‚‰è‰²ã‚’å–å¾—ã€‚
 		Sp c = m_Root->GetColor(k2, l2, nest + 1, &info, fromOutSide);
-		// “§‰ß—¦‚ÅF‚ğ¬‚º‚éB
+		// é€éç‡ã§è‰²ã‚’æ··ãœã‚‹ã€‚
 		info.Material = (info.pNode->m_Through * c + (1 - info.pNode->m_Through) * Sp(info.Material)).getMaterial();
 	}
 
 	Sp Light = Sp(1, 1, 1);
-	// ŒõŒ¹‚æ‚èF‚ğ•â³B
+	// å…‰æºã‚ˆã‚Šè‰²ã‚’è£œæ­£ã€‚
 	float	x = -Light.e() * info.Vertical.e();
 	x = (x > 0.0) ? x : 0.0;
 	float t = 64 + 191 * sin(M_PI / 2 * x);
@@ -53,8 +53,8 @@ Sp DevNode::GetColor(const Sp& K, const Sp& L, int nest, const DevInfo* pHint, b
 	return (t - b) * Sp(info.Material) / 255 + Sp(b, b, b);
 }
 
-// ‹üƒxƒNƒgƒ‹(Kt+L)‚ÆŒğ·‚·‚é•¨‘Ì‚Ìî•ñinfo‚ğ•Ô‚·B
-// –ß‚è’l:true Œğ·‚ ‚è,false Œğ·‚È‚µ
+// è¦–ç·šãƒ™ã‚¯ãƒˆãƒ«(Kt+L)ã¨äº¤å·®ã™ã‚‹ç‰©ä½“ã®æƒ…å ±infoã‚’è¿”ã™ã€‚
+// æˆ»ã‚Šå€¤:true äº¤å·®ã‚ã‚Š,false äº¤å·®ãªã—
 __device__
 bool DevNode::GetInfo2(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide)
 {
@@ -77,7 +77,7 @@ bool DevNode::GetInfo2(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* p
 	return FALSE;
 	// End Boundary
 	*/
-	
+
 	Matrix m = m_Matrix;
 	Matrix Inv_m = m.Inv();
 

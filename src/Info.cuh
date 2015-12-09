@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "cuda_runtime.h"
 #include <d3d9.h>
 #include "sp.cuh"
@@ -8,12 +8,12 @@ class DevNode;
 struct DevInfo
 {
 	D3DMATERIAL9	Material;
-	bool			isEnter;	// “ü‚è‚Ş
-	float			Distance;	// Œğ“_‚Ü‚Å‚Ì‹——£
-	Sp				Cross;		// Œğ“_À•W
-	Sp				Vertical;	// –@üƒxƒNƒgƒ‹
+	bool			isEnter;	// å…¥ã‚Šè¾¼ã‚€
+	float			Distance;	// äº¤ç‚¹ã¾ã§ã®è·é›¢
+	Sp				Cross;		// äº¤ç‚¹åº§æ¨™
+	Sp				Vertical;	// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 	const DevNode *	pNode;		// 
-	float	Refractive;			// ‹üÜ—¦
+	float	Refractive;			// å±ˆæŠ˜ç‡
 	__device__ DevInfo()
 	{
 		pNode = 0;
