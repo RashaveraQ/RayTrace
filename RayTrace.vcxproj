@@ -211,6 +211,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="src\Node.cuh" />
     <ClInclude Include="src\node.h" />
     <ClInclude Include="src\NodeTreeCtrl.h" />
+    <ClInclude Include="src\node_type.h" />
     <ClInclude Include="src\plane.h" />
     <ClInclude Include="src\plus.h" />
     <ClInclude Include="src\Polygon2.h" />

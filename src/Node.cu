@@ -1,6 +1,28 @@
 ﻿#include <math.h>
 #include "Node.cuh"
 #include "Info.cuh"
+#include "DoCuda.h"
+
+__device__
+DevNode::DevNode(DevNode* const root, node_type NodeType, const char* const Name, const Sp Color)
+	: m_Root(root), m_pParent(0), m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1)
+{
+	m_Material = Color.getMaterial();
+}
+
+__device__
+DevNode::DevNode(const DevNode& other) : m_Root(other.m_Root), m_Scale(4, 4), m_Rotate(4, 4), m_Move(4, 4), m_Matrix(4, 4)
+{
+	m_NodeType = other.m_NodeType;
+	m_Material = other.m_Material;
+	m_Scale = other.m_Scale;
+	m_Rotate = other.m_Rotate;
+	m_Move = other.m_Move;
+	m_Matrix = other.m_Matrix;
+	m_Reflect = other.m_Reflect;
+	m_Through = other.m_Through;
+	m_Refractive = other.m_Refractive;
+}
 
 __device__
 Sp DevNode::GetColor(const Sp& K, const Sp& L, int nest, const DevInfo* pHint, bool fromOutSide)
@@ -102,7 +124,7 @@ bool DevNode::GetInfo2(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* p
 __device__
 Sp DevNode::GetPixel(float x, float y) const
 {
-	COLORREF	c;
+//	COLORREF	c;
 
 //	if (m_TextureFileName.IsEmpty())
 		return Sp(256 * m_Material.Diffuse.r, 256 * m_Material.Diffuse.g, 256 * m_Material.Diffuse.b);

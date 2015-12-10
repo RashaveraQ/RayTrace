@@ -5,7 +5,7 @@
 #include "RayTraceDoc.h"
 #include "RayTraceView.h"
 #include "DoCuda.h"
-#include "cuda_runtime.h"
+#include "node.cuh"
 
 //IMPLEMENT_DYNAMIC( Node, CObject ) 
 Node::Node(Node* const root, node_type NodeType, const char* const Name, const sp Color)
@@ -15,7 +15,7 @@ Node::Node(Node* const root, node_type NodeType, const char* const Name, const s
 	Set_Name(Name);
 	MakeMemoryDCfromTextureFileName();
 	m_Material = Color.getMaterial();
-	if (cudaSuccess != cudaMalloc((void**)&m_devNode, sizeof(void*))) {
+	if (!newDeviceNode(m_devNode)) {
 		exit(1);
 	}
 }
@@ -35,7 +35,7 @@ Node::Node(const Node& other) : m_Root(other.m_Root), m_Scale(4, 4), m_Rotate(4,
 	m_Refractive = other.m_Refractive;
 	m_TextureFileName = other.m_TextureFileName;
 	MakeMemoryDCfromTextureFileName();
-	if (!newDeviceNode(&m_devNode)) {
+	if (!newDeviceNode(m_devNode)) {
 		exit(2);
 	}
 }

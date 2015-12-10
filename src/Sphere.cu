@@ -81,19 +81,13 @@ void newSphere(DevNode** out)
 
 bool newDevSphere(DevNode** out)
 {
-	if (!DoCuda_Init())
+	if (!mallocDev(out))
 		return false;
 
-	cudaError_t cudaStatus;
-
-	cudaStatus = cudaMalloc((void**)&out, sizeof(void*));
-	if (cudaStatus != cudaSuccess)
-		return false;
-
-	newSphere<<<1, 1 >>>(out);
+	newSphere<<<1, 1>>>(out);
 
 	// Check for any errors launching the kernel
-	cudaStatus = cudaGetLastError();
+	cudaError_t cudaStatus = cudaGetLastError();
 	if (cudaStatus != cudaSuccess) {
 		return false;
 	}

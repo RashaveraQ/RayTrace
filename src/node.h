@@ -1,10 +1,7 @@
 ﻿#ifndef __NODE_H
 #define __NODE_H
 
-enum node_type
-{
-	SPHERE = 1, PLANE, PLUS, MINUS, MULTIPLE, CONE, CYLINDER, TORUS, POLYGON, CUBE, TEAPOT
-};
+#include "node_type.h"
 
 enum eType { eSELECT, eMOVE, eROTATE, eSCALE, ePIVOT_MOVE };
 enum eAxis { eNONE, eX, eY, eZ };
@@ -74,7 +71,7 @@ protected:
 
 	virtual bool newDeviceNode(DevNode**) = 0;
 public:
-	DevNode* m_devNode;
+	DevNode** m_devNode;
 
 	Node(Node* const root, node_type NodeType, const char* const Name, const sp Color = sp(-1, -1, -1));
 	Node(const Node &other);
