@@ -12,6 +12,7 @@ class Cone : public Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Cone)
+	bool newDeviceNode(DevNode**);
 public:
 	// コンストラクタ
 	Cone(Node* const root = 0, const char* const Name = "Cone", const sp Color = sp(255,255,255))

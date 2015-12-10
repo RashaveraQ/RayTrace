@@ -34,6 +34,8 @@ protected:
 
 	DevNode* m_Root;
 
+	__device__ Sp GetPixel(float x, float y) const;
+
 public:
 	__device__ DevNode(DevNode* const root, node_type NodeType, const char* const Name, const Sp Color = Sp(-1, -1, -1))
 		: m_Root(root), m_pParent(0), m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1)

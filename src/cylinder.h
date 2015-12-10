@@ -12,6 +12,7 @@ class	Cylinder : public Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Cylinder)
+	bool newDeviceNode(DevNode**);
 public:
 	// コンストラクタ
 	Cylinder(Node* const root = 0, const char* const Name = "Cylinder", const sp Color = sp(255,255,255))

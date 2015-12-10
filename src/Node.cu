@@ -98,3 +98,19 @@ bool DevNode::GetInfo2(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* p
 
 	return true;
 }
+
+__device__
+Sp DevNode::GetPixel(float x, float y) const
+{
+	COLORREF	c;
+
+//	if (m_TextureFileName.IsEmpty())
+		return Sp(256 * m_Material.Diffuse.r, 256 * m_Material.Diffuse.g, 256 * m_Material.Diffuse.b);
+
+	//c = m_TextureDC.GetPixel((int)(x * m_TextureSize.cx), (int)(y * m_TextureSize.cy));
+
+	//if (c == -1)
+	//	return Sp(256 * m_Material.Diffuse.r, 256 * m_Material.Diffuse.g, 256 * m_Material.Diffuse.b);
+
+	//return Sp(GetRValue(c), GetGValue(c), GetBValue(c));
+}

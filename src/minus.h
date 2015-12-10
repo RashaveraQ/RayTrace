@@ -6,7 +6,7 @@ class	Minus : public Gathering
 	Boundary getBoundary();
 protected:
 	DECLARE_SERIAL(Minus)
-
+	bool newDeviceNode(DevNode**);
 public:
 	// コンストラクタ
 	Minus(Node* const root = 0, const char* const Name = "Minus") : Gathering(root, MINUS, Name) {}

@@ -186,7 +186,7 @@ bool DoCuda_OnSize(void** dst, const int imageW, const int imageH)
 }
 
 __global__
-void RayTrace(unsigned long* dst, const int imageW, const int imageH, DevNode** root, const int gridWidth, const int numBlocks, const fsize* pView, const Matrix* pMatrix)
+void RayTrace(unsigned long* dst, const int imageW, const int imageH, DevNode* root, const int gridWidth, const int numBlocks, const fsize* pView, const Matrix* pMatrix)
 {
 	// loop until all blocks completed
 	for (unsigned int blockIndex = blockIdx.x; blockIndex < numBlocks; blockIndex += gridDim.x)
@@ -204,7 +204,7 @@ void RayTrace(unsigned long* dst, const int imageW, const int imageH, DevNode** 
 			int pixel = imageW * iy + ix;
 			Sp k, l;
 			GetVectorFromPoint(k, l, ix, iy, pView, imageW, imageH, pMatrix);
-			Sp c = (*root)->GetColor(k, l, 0, NULL, true);
+			Sp c = root->GetColor(k, l, 0, NULL, true);
 			dst[pixel] = RGB(c.x, c.y, c.z);
 		}
 	}
@@ -221,7 +221,7 @@ inline int iDivUp(int a, int b)
 	return ((a % b) != 0) ? (a / b + 1) : (a / b);
 } // iDivUp
 
-bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class DevNode** root, const int imageW, const int imageH, const fsize* pView, const matrix* pMatrix)
+bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class DevNode* root, const int imageW, const int imageH, const fsize* pView, const matrix* pMatrix)
 {
 	dim3 threads(BLOCKDIM_X, BLOCKDIM_Y);
 	dim3 grid(iDivUp(imageW, BLOCKDIM_X), iDivUp(imageH, BLOCKDIM_Y));

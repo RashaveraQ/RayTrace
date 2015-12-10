@@ -6,6 +6,7 @@ class	Multiple : public Gathering
 	Boundary getBoundary();
 protected:
 	DECLARE_SERIAL(Multiple)
+	bool newDeviceNode(DevNode**);
 public:
 	// コンストラクタ
 	Multiple(Node* const root = 0, const char* const Name = "舟ultiple") : Gathering(root, MULTIPLE, Name) {}

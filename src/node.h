@@ -17,6 +17,7 @@ class	CRayTraceDoc;
 class	CRayTraceView;
 class   Viewport;
 struct	matrix;
+class   DevNode;
 
 struct fsize
 {
@@ -36,6 +37,9 @@ struct Boundary {
 
 class	Node : public CObject
 {
+	virtual Boundary getBoundary() = 0;
+	void OnUpdateBoundary();
+	virtual	bool IsInside(const sp& L) const = 0;
 protected:
 	Node*		m_pParent;
 	// アトリビュート
@@ -67,11 +71,10 @@ protected:
 		m_Matrix = m_Move * m_Rotate * m_Scale;
 		OnUpdateBoundary();
 	}
-private:
-	virtual Boundary getBoundary() = 0;
-	void OnUpdateBoundary();
+
+	virtual bool newDeviceNode(DevNode**) = 0;
 public:
-	class DevNode** m_devNode;
+	DevNode* m_devNode;
 
 	Node(Node* const root, node_type NodeType, const char* const Name, const sp Color = sp(-1, -1, -1));
 	Node(const Node &other);
@@ -86,9 +89,7 @@ public:
 	bool GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide);
 	sp GetPixel(float x, float y) const;
 	virtual	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const = 0;
-private:
-	virtual	bool IsInside(const sp& L) const = 0;
-public:
+
 	bool IsInside2(const sp& L);
 
 	virtual	BOOL AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target) { return FALSE; }

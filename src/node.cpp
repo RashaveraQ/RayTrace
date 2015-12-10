@@ -35,7 +35,9 @@ Node::Node(const Node& other) : m_Root(other.m_Root), m_Scale(4, 4), m_Rotate(4,
 	m_Refractive = other.m_Refractive;
 	m_TextureFileName = other.m_TextureFileName;
 	MakeMemoryDCfromTextureFileName();
-	//m_devNode = mallocDevicePointer();
+	if (!newDeviceNode(&m_devNode)) {
+		exit(2);
+	}
 }
 
 Node::~Node()

@@ -11,6 +11,7 @@ class	Teapot : public	Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Teapot)
+	bool newDeviceNode(DevNode**);
 public:
 	// コンストラクタ
 	Teapot(Node* const root = 0, const char* const Name = "Teapot", const sp Color = sp(255, 255, 255));

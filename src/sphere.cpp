@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "RayTraceView.h"
 
 IMPLEMENT_SERIAL(Sphere, CObject, 1)
@@ -9,6 +9,12 @@ Sphere::Sphere(Node* const root, const char* const Name, const sp Color)
 	: Node(root, SPHERE, Name, Color)
 {
 
+}
+
+bool Sphere::newDeviceNode(DevNode** ppDevNode)
+{
+	bool newDevSphere(DevNode**);
+	return newDevSphere(ppDevNode);
 }
 
 void Sphere::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
@@ -25,10 +31,10 @@ void Sphere::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& M
 	int i, j;
 	float th, ph;
 
-	sp p0 = m * sp(0,0,0);
+	sp p0 = m * sp(0, 0, 0);
 
-	for (i = 0; i < 5; i++ ) {
-		for (j = 0; j < 50; j++ ) {
+	for (i = 0; i < 5; i++) {
+		for (j = 0; j < 50; j++) {
 			th = 3.14f * i / 5;
 			ph = 6.28f * j / 50;
 			sp p = m * sp(cosf(th) * sinf(ph), cosf(ph), sinf(th) * sinf(ph));
@@ -36,9 +42,9 @@ void Sphere::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& M
 		}
 		pDC->Polygon(P, 50);
 	}
-	
-	for (i = 0; i < 5; i++ ) {
-		for (j = 0; j < 50; j++ ) {
+
+	for (i = 0; i < 5; i++) {
+		for (j = 0; j < 50; j++) {
 			ph = 3.14f * i / 5;
 			th = 6.28f * j / 50;
 			sp p = m * sp(cosf(th) * sinf(ph), cosf(ph), sinf(th) * sinf(ph));
@@ -51,10 +57,10 @@ void Sphere::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& M
 
 void Sphere::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const
 {
-	// D3DXCreateSphere ‚ÌŽg—p‚ðŒŸ“¢‚·‚é‚±‚Æ
+	// D3DXCreateSphere ã®ä½¿ç”¨ã‚’æ¤œè¨Žã™ã‚‹ã“ã¨
 	LPDIRECT3DVERTEXBUFFER9 pVB;
 	CUSTOMVERTEX*	pVertices;
-	
+
 	matrix m = Matrix * m_Matrix;
 
 	switch (rtv.m_ViewMode) {
@@ -68,21 +74,21 @@ void Sphere::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometr
 				float th = 3.14f * i / 5;
 				float ph = 6.28f * j / 50;
 				sp p = m * sp(cosf(th)*sinf(ph), cosf(ph), sinf(th) * sinf(ph));
-				pVertices[50*i+j].position = pVertices[50*i+j].normal = D3DXVECTOR3(p.x, p.y, p.z);
+				pVertices[50 * i + j].position = pVertices[50 * i + j].normal = D3DXVECTOR3(p.x, p.y, p.z);
 			}
 		}
-		
+
 		for (i = 0; i < 5; i++) {
 			for (int j = 0; j < 50; j++) {
 				float ph = 3.14f * i / 5;
 				float th = 6.28f * j / 50;
 				sp p = m * sp(cosf(th) * sinf(ph), cosf(ph), sinf(th) * sinf(ph));
-				pVertices[250+50*i+j].position = pVertices[250+50*i+j].normal = D3DXVECTOR3(p.x, p.y, p.z);
+				pVertices[250 + 50 * i + j].position = pVertices[250 + 50 * i + j].normal = D3DXVECTOR3(p.x, p.y, p.z);
 			}
 		}
 		pVB->Unlock();
 
-		lstGeometry.AddTail(Geometry(this, pVB, D3DPT_LINESTRIP, 500-1));
+		lstGeometry.AddTail(Geometry(this, pVB, D3DPT_LINESTRIP, 500 - 1));
 		break;
 	case CRayTraceView::eD3DFlatShading:
 	case CRayTraceView::eD3DGouraudShading:
@@ -96,16 +102,16 @@ void Sphere::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometr
 		/*
 
 		if (FAILED(pMesh->GetVertexBuffer(&pVB)))
-			return;
+		return;
 
 		if (FAILED(pVB->Lock(0, 0, (void**)&pVertices, 0)))
-			return;
+		return;
 		for (i = 0; i < 20 * 20; i++) {
-			sp p = m * sp(pVertices[i].position.x, pVertices[i].position.y, pVertices[i].position.z);
-			pVertices[i].position = pVertices[i].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
+		sp p = m * sp(pVertices[i].position.x, pVertices[i].position.y, pVertices[i].position.z);
+		pVertices[i].position = pVertices[i].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 		}
 		pVB->Unlock();
-*/
+		*/
 
 		lstGeometry.AddTail(Geometry(this, pMesh, m));
 
@@ -128,7 +134,7 @@ bool Sphere::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bo
 	float	a = K * K;
 	float	b = K * L;
 	float	c = L * L - 1.0f;
-	
+
 	float	bb_ac = b*b - a*c;
 
 	if (bb_ac < 0)
@@ -143,17 +149,21 @@ bool Sphere::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bo
 		if (t2 > 0) {
 			if (pHint && pHint->pNode == this && !fromOutSide) {
 				t = (t1 < t2) ? t2 : t1;
-			} else {
+			}
+			else {
 				t = (t1 < t2) ? t1 : t2;
 				info.isEnter = 1;
 			}
-		} else {
+		}
+		else {
 			t = t1;
 		}
-	} else {
+	}
+	else {
 		if (t2 > 0) {
 			t = t2;
-		} else
+		}
+		else
 			return FALSE;
 	}
 
@@ -167,7 +177,7 @@ bool Sphere::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bo
 	y = info.Vertical.y;
 	z = info.Vertical.z;
 
-	th = atan2f(y, sqrtf(x*x+z*z)) / M_PI + .5f;
+	th = atan2f(y, sqrtf(x*x + z*z)) / M_PI + .5f;
 	phy = atan2f(x, -z) / (2 * M_PI) + .5f;
 
 	info.Material = GetPixel(phy, th).getMaterial();

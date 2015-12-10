@@ -226,6 +226,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="src\ScnTreeView.h" />
     <ClInclude Include="src\Sp.cuh" />
     <ClInclude Include="src\sp.h" />
+    <ClInclude Include="src\Sphere.cuh" />
     <ClInclude Include="src\sphere.h" />
     <ClInclude Include="src\StdAfx.h" />
     <ClInclude Include="src\teapot.h" />
@@ -259,6 +260,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="src\Node.cu" />
     <CudaCompile Include="src\DoCuda.cu" />
     <CudaCompile Include="src\Sp.cu" />
+    <CudaCompile Include="src\Sphere.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

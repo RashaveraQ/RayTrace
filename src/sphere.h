@@ -1,4 +1,4 @@
-#ifndef __SPHERE_H
+ï»¿#ifndef __SPHERE_H
 #define __SPHERE_H
 
 class	Node;
@@ -11,8 +11,9 @@ class Sphere : public Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Sphere)
+	bool newDeviceNode(DevNode**);
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Sphere(Node* const root = 0, const char* const Name = "Sphere", const sp Color = sp(255, 255, 255));
 	Sphere(const Sphere& other) : Node(other) {}
 
