@@ -136,3 +136,8 @@ Sp DevNode::GetPixel(float x, float y) const
 
 	//return Sp(GetRValue(c), GetGValue(c), GetBValue(c));
 }
+
+__device__
+bool DevNode::IsInside2(const Sp& L) {
+	return IsInside(m_Matrix.Inv() * L);
+}

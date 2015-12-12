@@ -401,5 +401,11 @@
     <CudaCompile Include="src\Plane.cu">
       <Filter>CUDA Source Files</Filter>
     </CudaCompile>
+    <CudaCompile Include="src\Plus.cu">
+      <Filter>CUDA Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="src\Gathering.cu">
+      <Filter>CUDA Source Files</Filter>
+    </CudaCompile>
   </ItemGroup>
 </Project>
