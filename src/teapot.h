@@ -1,4 +1,4 @@
-#ifndef __TEAPOT_H
+ï»¿#ifndef __TEAPOT_H
 #define __TEAPOT_H
 
 class	Node;
@@ -13,7 +13,7 @@ protected:
 	DECLARE_SERIAL(Teapot)
 	bool newDeviceNode(DevNode**);
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Teapot(Node* const root = 0, const char* const Name = "Teapot", const sp Color = sp(255, 255, 255));
 	Teapot(const Teapot& other) : Node(other) {}
 

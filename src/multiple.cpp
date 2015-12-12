@@ -1,7 +1,13 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include <float.h>
 
 IMPLEMENT_SERIAL(Multiple, CObject, 1)
+
+bool Multiple::newDeviceNode(DevNode** ppDevNode)
+{
+	bool newDevMultiple(DevNode**);
+	return newDevMultiple(ppDevNode);
+}
 
 Boundary Multiple::getBoundary()
 {
@@ -9,11 +15,13 @@ Boundary Multiple::getBoundary()
 	for (int i = 0; i < m_Member; i++) {
 		if (i == 0) {
 			c1 = m_Node[0]->getBoundary2();
-		} else {
+		}
+		else {
 			Boundary c2 = m_Node[i]->getBoundary2();
 			if (c1.Center == c2.Center) {
 				c1.Radius = min(c1.Radius, c2.Radius);
-			} else {
+			}
+			else {
 				float l = (c1.Center - c2.Center).abs();
 				if (l > c1.Radius + c2.Radius) {
 					return Boundary();
@@ -46,10 +54,10 @@ bool Multiple::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, 
 	if (!m_Member)
 		return FALSE;
 
-	// ‚·‚×‚Ä‚Ì—v‘f‚É‚Â‚¢‚ÄA
+	// ã™ã¹ã¦ã®è¦ç´ ã«ã¤ã„ã¦ã€
 	int	i;
 	for (i = 0; i < m_Member; i++) {
-		// ‹“_‚Ìæ‚ÉAŒğ“_‚ª‚È‚¢ê‡B
+		// è¦–ç‚¹ã®å…ˆã«ã€äº¤ç‚¹ãŒãªã„å ´åˆã€‚
 		if (!m_Node[i]->GetInfo2(K, L, info, pHint, fromOutSide))
 			return FALSE;
 
@@ -84,10 +92,10 @@ void Multiple::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfte
 /*
 Node*	Multiple::MakeCopy()
 {
-	Multiple*	obj = new Multiple( m_pDoc, m_Name );
+Multiple*	obj = new Multiple( m_pDoc, m_Name );
 
-	Gathering::MakeCopy( obj, this );
+Gathering::MakeCopy( obj, this );
 
-	return obj;
+return obj;
 }
 */

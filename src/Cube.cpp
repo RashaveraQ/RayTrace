@@ -4,6 +4,12 @@ IMPLEMENT_SERIAL(Cube, CObject, 1)
 
 Boundary Cube::sBoundary = Boundary(sqrt(3.0f));
 
+bool Cube::newDeviceNode(DevNode** ppDevNode)
+{
+	bool newDevCube(DevNode**);
+	return newDevCube(ppDevNode);
+}
+
 bool Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)

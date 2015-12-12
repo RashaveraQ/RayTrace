@@ -4,6 +4,12 @@ IMPLEMENT_SERIAL(Cone, CObject, 1)
 
 Boundary Cone::sBoundary = Boundary(1, sp(0,-1,0));
 
+bool Cone::newDeviceNode(DevNode** ppDevNode)
+{
+	bool newDevCone(DevNode**);
+	return newDevCone(ppDevNode);
+}
+
 void Cone::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
 {
 	const CSize& size = raytraceview.m_ClientSize;

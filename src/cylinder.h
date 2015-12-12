@@ -1,4 +1,4 @@
-#ifndef __CYLINDER_H
+ï»¿#ifndef __CYLINDER_H
 #define __CYLINDER_H
 
 class	Node;
@@ -14,8 +14,8 @@ protected:
 	DECLARE_SERIAL(Cylinder)
 	bool newDeviceNode(DevNode**);
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	Cylinder(Node* const root = 0, const char* const Name = "Cylinder", const sp Color = sp(255,255,255))
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	Cylinder(Node* const root = 0, const char* const Name = "Cylinder", const sp Color = sp(255, 255, 255))
 		: Node(root, CYLINDER, Name, Color) {}
 	Cylinder(const Cylinder& other) : Node(other) {}
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;

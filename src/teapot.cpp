@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "RayTraceView.h"
 
 IMPLEMENT_SERIAL(Teapot, CObject, 1)
@@ -9,6 +9,12 @@ Teapot::Teapot(Node* const root, const char* const Name, const sp Color)
 	: Node(root, TEAPOT, Name, Color)
 {
 
+}
+
+bool Teapot::newDeviceNode(DevNode** ppDevNode)
+{
+	bool newDevTeapot(DevNode**);
+	return newDevTeapot(ppDevNode);
 }
 
 void Teapot::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
@@ -25,10 +31,10 @@ void Teapot::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& M
 	int i, j;
 	float th, ph;
 
-	sp p0 = m * sp(0,0,0);
+	sp p0 = m * sp(0, 0, 0);
 
-	for (i = 0; i < 5; i++ ) {
-		for (j = 0; j < 50; j++ ) {
+	for (i = 0; i < 5; i++) {
+		for (j = 0; j < 50; j++) {
 			th = 3.14f * (float)i / 5;
 			ph = 6.28f * (float)j / 50;
 			sp p = m * sp(cosf(th)*sinf(ph), cosf(ph), sinf(th)*sinf(ph));
@@ -36,9 +42,9 @@ void Teapot::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& M
 		}
 		pDC->Polygon(P, 50);
 	}
-	
-	for (i = 0; i < 5; i++ ) {
-		for (j = 0; j < 50; j++ ) {
+
+	for (i = 0; i < 5; i++) {
+		for (j = 0; j < 50; j++) {
 			ph = 3.14f * (float)i / 5;
 			th = 6.28f * (float)j / 50;
 			sp p = m * sp(cosf(th)*sinf(ph), cosf(ph), sinf(th)*sinf(ph));
@@ -51,10 +57,10 @@ void Teapot::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& M
 
 void Teapot::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const
 {
-	// D3DXCreateTeapot ‚ÌŽg—p‚ðŒŸ“¢‚·‚é‚±‚Æ
+	// D3DXCreateTeapot ã®ä½¿ç”¨ã‚’æ¤œè¨Žã™ã‚‹ã“ã¨
 	LPDIRECT3DVERTEXBUFFER9 pVB;
 	CUSTOMVERTEX*	pVertices;
-	
+
 	matrix m = Matrix * m_Matrix;
 
 	switch (rtv.m_ViewMode) {
@@ -68,21 +74,21 @@ void Teapot::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometr
 				float th = 3.14f * i / 5;
 				float ph = 6.28f * j / 50;
 				sp p = m * sp(cos(th)*sin(ph), cos(ph), sin(th)*sin(ph));
-				pVertices[50*i+j].position = pVertices[50*i+j].normal = D3DXVECTOR3(p.x, p.y, p.z);
+				pVertices[50 * i + j].position = pVertices[50 * i + j].normal = D3DXVECTOR3(p.x, p.y, p.z);
 			}
 		}
-		
+
 		for (i = 0; i < 5; i++) {
 			for (int j = 0; j < 50; j++) {
 				float ph = 3.14f * i / 5;
 				float th = 6.28f * j / 50;
 				sp p = m * sp(cos(th)*sin(ph), cos(ph), sin(th)*sin(ph));
-				pVertices[250+50*i+j].position = pVertices[250+50*i+j].normal = D3DXVECTOR3(p.x, p.y, p.z);
+				pVertices[250 + 50 * i + j].position = pVertices[250 + 50 * i + j].normal = D3DXVECTOR3(p.x, p.y, p.z);
 			}
 		}
 		pVB->Unlock();
 
-		lstGeometry.AddTail(Geometry(this, pVB, D3DPT_LINESTRIP, 500-1));
+		lstGeometry.AddTail(Geometry(this, pVB, D3DPT_LINESTRIP, 500 - 1));
 		break;
 	case CRayTraceView::eD3DFlatShading:
 	case CRayTraceView::eD3DGouraudShading:
@@ -125,9 +131,11 @@ bool Teapot::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bo
 		if (t2 > 0) {
 			t = (t1 < t2) ? t1 : t2;
 			info.isEnter = 1;
-		} else
+		}
+		else
 			t = t1;
-	} else {
+	}
+	else {
 		if (t2 > 0)
 			t = t2;
 		else
@@ -143,7 +151,7 @@ bool Teapot::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bo
 	y = info.Vertical.y;
 	z = info.Vertical.z;
 
-	th = atan2f(y, sqrtf(x*x+z*z)) / M_PI + .5f;
+	th = atan2f(y, sqrtf(x*x + z*z)) / M_PI + .5f;
 	phy = atan2f(x, -z) / (2 * M_PI) + .5f;
 
 	info.Material = GetPixel(phy, th).getMaterial();

@@ -1,6 +1,12 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 
 IMPLEMENT_SERIAL(Minus, CObject, 1)
+
+bool Minus::newDeviceNode(DevNode** ppDevNode)
+{
+	bool newDevMinus(DevNode**);
+	return newDevMinus(ppDevNode);
+}
 
 Boundary Minus::getBoundary()
 {
@@ -20,7 +26,7 @@ BOOL Minus::AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target)
 
 bool Minus::IsInside(const sp& L) const
 {
-	return ((m_Member >= 1 && m_Node[0]->IsInside2(L)) && !( m_Member >= 2 && m_Node[1]->IsInside2(L)));
+	return ((m_Member >= 1 && m_Node[0]->IsInside2(L)) && !(m_Member >= 2 && m_Node[1]->IsInside2(L)));
 }
 
 bool Minus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
@@ -33,25 +39,26 @@ bool Minus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	if (!(m_Member >= 1 && m_Node[0]->GetInfo2(K, l, l_info, pHint, fromOutSide)))
 		return FALSE;
 	do {
-		left  = (m_Member >= 1) ? m_Node[0]->GetInfo2(K, l, l_info, pHint, fromOutSide) : 0;
+		left = (m_Member >= 1) ? m_Node[0]->GetInfo2(K, l, l_info, pHint, fromOutSide) : 0;
 		right = (m_Member >= 2) ? m_Node[1]->GetInfo2(K, l, r_info, pHint, fromOutSide) : 0;
-		
+
 		if (left == 0 && right == 0)
 			return FALSE;
 
-		// ¶‚ªA‰E‚æ‚è‹ß‚¢ê‡B
+		// å·¦ãŒã€å³ã‚ˆã‚Šè¿‘ã„å ´åˆã€‚
 		if (cmp_distance(l_info.Distance, r_info.Distance) < 0) {
 			l = l_info.Cross;
 			info.Material = l_info.Material;
-		} else {
+		}
+		else {
 			l = r_info.Cross;
 			info.Material = r_info.Material;
 		}
-	
+
 	} while (!IsInside(m_Matrix * l));
 
 	info.isEnter = 1;
-	info.Distance = sqrt((L-l)*(L-l));
+	info.Distance = sqrt((L - l)*(L - l));
 	info.Cross = l;
 
 	if (info.Material.Diffuse.r < 0)
@@ -67,7 +74,8 @@ int	Minus::cmp_distance(float a, float b) const
 			return (a < b) ? -1 : 1;
 		else
 			return -1;
-	} else {
+	}
+	else {
 		if (b >= 0)
 			return 1;
 		else
@@ -85,10 +93,10 @@ void Minus::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 /*
 Node*	Minus::MakeCopy()
 {
-	Minus*	obj = new Minus( m_pDoc, m_Name );
+Minus*	obj = new Minus( m_pDoc, m_Name );
 
-	Gathering::MakeCopy( obj, this );
+Gathering::MakeCopy( obj, this );
 
-	return obj;
+return obj;
 }
 */

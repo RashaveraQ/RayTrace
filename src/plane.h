@@ -1,4 +1,4 @@
-#ifndef __PLANE_H
+ï»¿#ifndef __PLANE_H
 #define __PLANE_H
 
 class	Node;
@@ -13,7 +13,7 @@ protected:
 	bool newDeviceNode(DevNode**);
 public:
 
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Plane(Node* const root = 0, const char* const Name = "Plane", const sp Color = sp(255, 255, 255))
 		: Node(root, PLANE, Name, Color) {}
 	Plane(const Plane& other) : Node(other) {}

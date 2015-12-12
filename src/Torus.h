@@ -1,4 +1,4 @@
-#ifndef __TORUS_H
+ï»¿#ifndef __TORUS_H
 #define __TORUS_H
 
 class	Node;
@@ -15,9 +15,9 @@ private:
 	float	m_R;
 	float	m_r;
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Torus(Node* const root = 0, const char* const Name = "Torus", const sp Color = sp(255, 255, 255));
-	Torus(const Torus& other) : Node(other) ,m_R(other.m_R), m_r(other.m_r) {} 
+	Torus(const Torus& other) : Node(other), m_R(other.m_R), m_r(other.m_r) {}
 
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;

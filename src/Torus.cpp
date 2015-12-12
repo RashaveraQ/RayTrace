@@ -15,6 +15,12 @@ Torus::Torus(Node* const root, const char* const Name, const sp Color)
 
 }
 
+bool Torus::newDeviceNode(DevNode** ppDevNode)
+{
+	bool newDevTorus(DevNode**);
+	return newDevTorus(ppDevNode);
+}
+
 void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
 {
 	const CSize& size = raytraceview.m_ClientSize;

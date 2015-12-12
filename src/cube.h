@@ -1,4 +1,4 @@
-#ifndef __CUBE_H
+ï»¿#ifndef __CUBE_H
 #define __CUBE_H
 
 class	Node;
@@ -12,7 +12,7 @@ protected:
 	DECLARE_SERIAL(Cube)
 	bool newDeviceNode(DevNode**);
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Cube(Node* const root = 0, const char* const Name = "Cube", const sp Color = sp(255, 255, 255))
 		: Node(root, CUBE, Name, Color) {}
 	Cube(const Cube& other) : Node(other) {}
@@ -21,7 +21,7 @@ public:
 	bool IsInside(const sp& L) const;
 	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
-	const Node* MakeCopy() const {return new Cube(*this);}
+	const Node* MakeCopy() const { return new Cube(*this); }
 };
 
 #endif

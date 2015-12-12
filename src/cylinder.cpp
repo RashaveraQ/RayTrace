@@ -4,6 +4,12 @@ IMPLEMENT_SERIAL(Cylinder, CObject, 1)
 
 Boundary Cylinder::sBoundary = Boundary(sqrt(2.0f));
 
+bool Cylinder::newDeviceNode(DevNode** ppDevNode)
+{
+	bool newDevCylinder(DevNode**);
+	return newDevCylinder(ppDevNode);
+}
+
 void Cylinder::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
 {
 	const CSize& size = raytraceview.m_ClientSize;

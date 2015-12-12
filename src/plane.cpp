@@ -5,6 +5,12 @@ IMPLEMENT_SERIAL(Plane, CObject, 1)
 
 Boundary Plane::sBoundary = Boundary(FLT_MAX); // 
 
+bool Plane::newDeviceNode(DevNode** ppDevNode)
+{
+	bool newDevPlane(DevNode**);
+	return newDevPlane(ppDevNode);
+}
+
 bool Plane::IsInside(const sp& L) const
 {
 	return ( L.z >= 0.0 );

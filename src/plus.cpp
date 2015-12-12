@@ -4,6 +4,12 @@
 
 IMPLEMENT_SERIAL(Plus, CObject, 1)
 
+bool Plus::newDeviceNode(DevNode** ppDevNode)
+{
+	bool newDevPlus(DevNode**);
+	return newDevPlus(ppDevNode);
+}
+
 Boundary Plus::getBoundary()
 {
 	Boundary c1;

@@ -1,4 +1,4 @@
-#ifndef __MULTIPLE_H
+Ôªø#ifndef __MULTIPLE_H
 #define __MULTIPLE_H
 
 class	Multiple : public Gathering
@@ -8,8 +8,8 @@ protected:
 	DECLARE_SERIAL(Multiple)
 	bool newDeviceNode(DevNode**);
 public:
-	// ÉRÉìÉXÉgÉâÉNÉ^
-	Multiple(Node* const root = 0, const char* const Name = "èMultiple") : Gathering(root, MULTIPLE, Name) {}
+	// „Ç≥„É≥„Çπ„Éà„É©„ÇØ„Çø
+	Multiple(Node* const root = 0, const char* const Name = "Multiple") : Gathering(root, MULTIPLE, Name) {}
 	Multiple(const Multiple& other) : Gathering(other) {}
 
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
