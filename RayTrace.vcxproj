@@ -278,6 +278,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="src\DoCuda.cu" />
     <CudaCompile Include="src\Plane.cu" />
     <CudaCompile Include="src\Plus.cu" />
+    <CudaCompile Include="src\Polygon2.cu" />
     <CudaCompile Include="src\Sp.cu" />
     <CudaCompile Include="src\Sphere.cu" />
   </ItemGroup>
