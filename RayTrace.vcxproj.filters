@@ -116,9 +116,6 @@
     <ClCompile Include="src\ScnTreeView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Solve_Polynomial_forMFC.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\sp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -331,6 +328,9 @@
     <ClInclude Include="src\Torus.cuh">
       <Filter>CUDA Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Solve_Polynomial.cuh">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\bitmap_n.bmp">
@@ -417,6 +417,12 @@
       <Filter>CUDA Source Files</Filter>
     </CudaCompile>
     <CudaCompile Include="src\Teapot.cu">
+      <Filter>CUDA Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="src\Torus.cu">
+      <Filter>CUDA Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="src\Solve_Polynomial.cu">
       <Filter>CUDA Source Files</Filter>
     </CudaCompile>
   </ItemGroup>

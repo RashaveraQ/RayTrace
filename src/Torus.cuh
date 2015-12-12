@@ -3,6 +3,8 @@
 
 class DevTorus : public DevNode
 {
+	float	m_R;
+	float	m_r;
 public:
 	// コンストラクタ
 	__device__ DevTorus(DevNode* const root = 0, const char* const Name = "Torus", const Sp Color = Sp(255, 255, 255));
