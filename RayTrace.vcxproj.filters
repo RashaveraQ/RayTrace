@@ -416,5 +416,8 @@
     <CudaCompile Include="src\Polygon2.cu">
       <Filter>CUDA Source Files</Filter>
     </CudaCompile>
+    <CudaCompile Include="src\Teapot.cu">
+      <Filter>CUDA Source Files</Filter>
+    </CudaCompile>
   </ItemGroup>
 </Project>

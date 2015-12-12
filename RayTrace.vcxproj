@@ -281,6 +281,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="src\Polygon2.cu" />
     <CudaCompile Include="src\Sp.cu" />
     <CudaCompile Include="src\Sphere.cu" />
+    <CudaCompile Include="src\Teapot.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
