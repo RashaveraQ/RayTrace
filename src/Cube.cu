@@ -99,18 +99,18 @@ bool DevCube::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pH
 }
 
 __global__
-void newCube(DevNode** out)
+void newCube(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevCube();
+		*out = new DevCube(*root, Name, Sp(Material));
 }
 
-bool newDevCube(DevNode** out)
+bool newDevCube(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
 {
 	if (!mallocDev(out))
 		return false;
 
-	newCube<<<1, 1>>>(out);
+	newCube<<<1, 1>>>(out, root, Name, Material);
 
 	// Check for any errors launching the kernel
 	cudaError_t cudaStatus = cudaGetLastError();

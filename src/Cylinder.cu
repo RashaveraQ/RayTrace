@@ -112,18 +112,18 @@ bool DevCylinder::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo
 }
 
 __global__
-void newCylinder(DevNode** out)
+void newCylinder(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevCylinder();
+		*out = new DevCylinder(*root, Name, Sp(Material));
 }
 
-bool newDevCylinder(DevNode** out)
+bool newDevCylinder(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
 {
 	if (!mallocDev(out))
 		return false;
 
-	newCylinder<<<1, 1>>>(out);
+	newCylinder<<<1, 1>>>(out, root, Name, Material);
 
 	// Check for any errors launching the kernel
 	cudaError_t cudaStatus = cudaGetLastError();

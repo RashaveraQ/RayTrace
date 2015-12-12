@@ -68,18 +68,18 @@ bool DevTeapot::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* 
 }
 
 __global__
-void newTeapot(DevNode** out)
+void newTeapot(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevTeapot();
+		*out = new DevTeapot(*root, Name, Sp(Material));
 }
 
-bool newDevTeapot(DevNode** out)
+bool newDevTeapot(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
 {
 	if (!mallocDev(out))
 		return false;
 
-	newTeapot<<<1, 1>>>(out);
+	newTeapot<<<1, 1>>>(out, root, Name, Material);
 
 	// Check for any errors launching the kernel
 	cudaError_t cudaStatus = cudaGetLastError();

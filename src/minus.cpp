@@ -4,8 +4,8 @@ IMPLEMENT_SERIAL(Minus, CObject, 1)
 
 bool Minus::newDeviceNode()
 {
-	bool newDevMinus(DevNode**);
-	return newDevMinus(m_devNode);
+	bool newDevMinus(DevNode** out, DevNode** const root, const char* const Name);
+	return newDevMinus(m_devNode, m_Root->m_devNode, m_Name);
 }
 
 Minus::Minus(Node* const root, const char* const Name)

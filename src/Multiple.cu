@@ -52,18 +52,18 @@ bool DevMultiple::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo
 }
 
 __global__
-void newMultiple(DevNode** out)
+void newMultiple(DevNode** out, DevNode** const root, const char* const Name)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevMultiple();
+		*out = new DevMultiple(*root, Name);
 }
 
-bool newDevMultiple(DevNode** out)
+bool newDevMultiple(DevNode** out, DevNode** const root, const char* const Name)
 {
 	if (!mallocDev(out))
 		return false;
 
-	newMultiple<<<1, 1>>>(out);
+	newMultiple<<<1, 1>>>(out, root, Name);
 
 	// Check for any errors launching the kernel
 	cudaError_t cudaStatus = cudaGetLastError();

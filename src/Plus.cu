@@ -42,18 +42,18 @@ bool DevPlus::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pH
 }
 
 __global__
-void newPlus(DevNode** out)
+void newPlus(DevNode** out, DevNode** const root, const char* const Name)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevPlus();
+		*out = new DevPlus(*root, Name);
 }
 
-bool newDevPlus(DevNode** out)
+bool newDevPlus(DevNode** out, DevNode** const root, const char* const Name)
 {
 	if (!mallocDev(out))
 		return false;
 
-	newPlus<<<1, 1>>>(out);
+	newPlus<<<1, 1>>>(out, root, Name);
 
 	// Check for any errors launching the kernel
 	cudaError_t cudaStatus = cudaGetLastError();

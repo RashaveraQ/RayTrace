@@ -25,8 +25,8 @@ Torus::Torus(const Torus& other)
 
 bool Torus::newDeviceNode()
 {
-	bool newDevTorus(DevNode**);
-	return newDevTorus(m_devNode);
+	bool newDevTorus(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material);
+	return newDevTorus(m_devNode, m_Root->m_devNode, m_Name, m_Material);
 }
 
 void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const

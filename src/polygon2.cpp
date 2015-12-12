@@ -8,8 +8,8 @@ Boundary Polygon2::sBoundary = Boundary(1);	// 暫定
 
 bool Polygon2::newDeviceNode()
 {
-	bool newDevPolygon2(DevNode**);
-	return newDevPolygon2(m_devNode);
+	bool newDevPolygon2(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material);
+	return newDevPolygon2(m_devNode, m_Root->m_devNode, m_Name, m_Material);
 }
 
 Polygon2::Polygon2(Node* const root, const char* const Name, const sp Color)
