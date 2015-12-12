@@ -1,4 +1,4 @@
-// RayTraceView.h : CRayTraceView ƒNƒ‰ƒX‚ÌéŒ¾‚¨‚æ‚ÑƒCƒ“ƒ^[ƒtƒFƒCƒX‚Ì’è‹`‚ğ‚µ‚Ü‚·B
+ï»¿// RayTraceView.h : CRayTraceView ã‚¯ãƒ©ã‚¹ã®å®£è¨€ãŠã‚ˆã³ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã®å®šç¾©ã‚’ã—ã¾ã™ã€‚
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -18,15 +18,15 @@ class CRayTraceView : public CView
 	D3DXVECTOR3 m_vLookatPt;
 	void UpdateDevice();
 
-protected: // ƒVƒŠƒAƒ‰ƒCƒY‹@”\‚Ì‚İ‚©‚çì¬‚µ‚Ü‚·B
+protected: // ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºæ©Ÿèƒ½ã®ã¿ã‹ã‚‰ä½œæˆã—ã¾ã™ã€‚
 	CRayTraceView();
 	DECLARE_DYNCREATE(CRayTraceView)
 
-// ƒAƒgƒŠƒrƒ…[ƒg
+	// ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆ
 public:
 	class CRayTraceDoc* GetDocument();
 	fsize		m_View;
-	Viewport	m_Viewport;		//	‹“_ŠJnƒIƒuƒWƒFƒNƒg‚Ìƒ|ƒCƒ“ƒ^
+	Viewport	m_Viewport;		//	è¦–ç‚¹é–‹å§‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒã‚¤ãƒ³ã‚¿
 	Node*		m_SelectedNode;
 	CSize		m_ClientSize;
 	COLORREF*	m_ColorRefs;
@@ -58,24 +58,24 @@ private:
 	BOOL		m_Alt;
 	POINT		m_AltStart;
 	void GetVectorFromPoint(sp& k, sp& l, int px, int py);
-// ƒIƒyƒŒ[ƒVƒ‡ƒ“
+	// ã‚ªãƒšãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³
 public:
 
-// ƒI[ƒo[ƒ‰ƒCƒh
-	// ClassWizard ‚Í‰¼‘zŠÖ”‚ÌƒI[ƒo[ƒ‰ƒCƒh‚ğ¶¬‚µ‚Ü‚·B
+	// ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰
+	// ClassWizard ã¯ä»®æƒ³é–¢æ•°ã®ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
 	//{{AFX_VIRTUAL(CRayTraceView)
-	public:
-	virtual void OnDraw(CDC* pDC);  // ‚±‚Ìƒrƒ…[‚ğ•`‰æ‚·‚éÛ‚ÉƒI[ƒo[ƒ‰ƒCƒh‚³‚ê‚Ü‚·B
+public:
+	virtual void OnDraw(CDC* pDC);  // ã“ã®ãƒ“ãƒ¥ãƒ¼ã‚’æç”»ã™ã‚‹éš›ã«ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã•ã‚Œã¾ã™ã€‚
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual BOOL DestroyWindow();
-	protected:
+protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint);
 	//}}AFX_VIRTUAL
 
-// ƒCƒ“ƒvƒŠƒƒ“ƒe[ƒVƒ‡ƒ“
+	// ã‚¤ãƒ³ãƒ—ãƒªãƒ¡ãƒ³ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³
 public:
 	virtual ~CRayTraceView();
 #ifdef _DEBUG
@@ -85,7 +85,7 @@ public:
 
 protected:
 
-// ¶¬‚³‚ê‚½ƒƒbƒZ[ƒW ƒ}ƒbƒvŠÖ”
+	// ç”Ÿæˆã•ã‚ŒãŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ ãƒãƒƒãƒ—é–¢æ•°
 protected:
 	//{{AFX_MSG(CRayTraceView)
 	afx_msg void OnTimer(UINT nIDEvent);
@@ -113,22 +113,24 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-friend Node;
-friend class CScnTreeView;
+	friend Node;
+	friend class CScnTreeView;
 public:
 	afx_msg void OnViewWireframeWithRaytrace();
 	afx_msg void OnViewCudaRaytrace();
 	afx_msg void OnUpdateViewCudaRaytrace(CCmdUI *pCmdUI);
 };
 
-#ifndef _DEBUG  // RayTraceView.cpp ƒtƒ@ƒCƒ‹‚ªƒfƒoƒbƒOŠÂ‹«‚Ìg—p‚³‚ê‚Ü‚·B
+#ifndef _DEBUG  // RayTraceView.cpp ãƒ•ã‚¡ã‚¤ãƒ«ãŒãƒ‡ãƒãƒƒã‚°ç’°å¢ƒã®æ™‚ä½¿ç”¨ã•ã‚Œã¾ã™ã€‚
 inline CRayTraceDoc* CRayTraceView::GetDocument()
-   { return (CRayTraceDoc*)m_pDocument; }
+{
+	return (CRayTraceDoc*)m_pDocument;
+}
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_INSERT_LOCATION}}
-// Microsoft Developer Studio ‚Í‘Os‚Ì’¼‘O‚É’Ç‰Á‚ÌéŒ¾‚ğ‘}“ü‚µ‚Ü‚·B
+// Microsoft Developer Studio ã¯å‰è¡Œã®ç›´å‰ã«è¿½åŠ ã®å®£è¨€ã‚’æŒ¿å…¥ã—ã¾ã™ã€‚
 
 #endif // !defined(AFX_RAYTRACEVIEW_H__B4EED83F_53CC_11D3_9AB7_000000000000__INCLUDED_)
