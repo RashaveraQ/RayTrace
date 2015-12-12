@@ -7,8 +7,8 @@ Boundary Sphere::sBoundary = Boundary(1);
 
 bool Sphere::newDeviceNode(DevNode** ppDevNode)
 {
-	bool newDevSphere(DevNode**);
-	return newDevSphere(ppDevNode);
+	bool newDevSphere(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material);
+	return newDevSphere(m_devNode, m_Root->m_devNode, m_Name, m_Material);
 }
 
 Sphere::Sphere(Node* const root, const char* const Name, const sp Color)
