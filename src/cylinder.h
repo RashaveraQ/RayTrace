@@ -12,12 +12,11 @@ class	Cylinder : public Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Cylinder)
-	bool newDeviceNode(DevNode**);
+	virtual bool newDeviceNode(DevNode**);
 public:
 	// コンストラクタ
-	Cylinder(Node* const root = 0, const char* const Name = "Cylinder", const sp Color = sp(255, 255, 255))
-		: Node(root, CYLINDER, Name, Color) {}
-	Cylinder(const Cylinder& other) : Node(other) {}
+	Cylinder(Node* const root = 0, const char* const Name = "Cylinder", const sp Color = sp(255, 255, 255));
+	Cylinder(const Cylinder& other);
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
 	bool IsInside(const sp& L) const;
 	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;

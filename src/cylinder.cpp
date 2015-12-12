@@ -10,6 +10,20 @@ bool Cylinder::newDeviceNode(DevNode** ppDevNode)
 	return newDevCylinder(ppDevNode);
 }
 
+Cylinder::Cylinder(Node* const root, const char* const Name, const sp Color)
+	: Node(root, CYLINDER, Name, Color)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
+
+Cylinder::Cylinder(const Cylinder& other)
+	: Node(other)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
+
 void Cylinder::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
 {
 	const CSize& size = raytraceview.m_ClientSize;

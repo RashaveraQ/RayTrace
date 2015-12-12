@@ -10,6 +10,19 @@ bool Plus::newDeviceNode(DevNode** ppDevNode)
 	return newDevPlus(ppDevNode);
 }
 
+Plus::Plus(Node* const root, const char* const Name)
+	: Gathering(root, PLUS, Name)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
+
+Plus::Plus(const Plus& other) : Gathering(other)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
+
 Boundary Plus::getBoundary()
 {
 	Boundary c1;

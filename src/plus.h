@@ -6,11 +6,11 @@ class	Plus : public Gathering
 	Boundary getBoundary();
 protected:
 	DECLARE_SERIAL(Plus)
-	bool newDeviceNode(DevNode**);
+	virtual bool newDeviceNode(DevNode**);
 public:
 	// コンストラクタ
-	Plus(Node* const root = 0, const char* const Name = "Plus") : Gathering(root, PLUS, Name) {}
-	Plus(const Plus& other) : Gathering(other) {}
+	Plus(Node* const root = 0, const char* const Name = "Plus");
+	Plus(const Plus& other);
 
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
 	bool IsInside(const sp& L) const;

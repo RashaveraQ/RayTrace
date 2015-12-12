@@ -8,7 +8,14 @@ Boundary Teapot::sBoundary = Boundary(1);
 Teapot::Teapot(Node* const root, const char* const Name, const sp Color)
 	: Node(root, TEAPOT, Name, Color)
 {
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
 
+Teapot::Teapot(const Teapot& other) : Node(other)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
 }
 
 bool Teapot::newDeviceNode(DevNode** ppDevNode)

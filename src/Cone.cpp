@@ -10,6 +10,20 @@ bool Cone::newDeviceNode(DevNode** ppDevNode)
 	return newDevCone(ppDevNode);
 }
 
+Cone::Cone(Node* const root, const char* const Name, const sp Color)
+	: Node(root, CONE, Name, Color)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
+
+Cone::Cone(const Cone& other)
+	: Node(other)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
+
 void Cone::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
 {
 	const CSize& size = raytraceview.m_ClientSize;

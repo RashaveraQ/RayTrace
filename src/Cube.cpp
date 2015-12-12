@@ -10,6 +10,20 @@ bool Cube::newDeviceNode(DevNode** ppDevNode)
 	return newDevCube(ppDevNode);
 }
 
+Cube::Cube(Node* const root, const char* const Name, const sp Color)
+	: Node(root, CUBE, Name, Color)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
+
+Cube::Cube(const Cube& other)
+	: Node(other)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
+
 bool Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)

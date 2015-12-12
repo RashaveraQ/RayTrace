@@ -6,6 +6,19 @@ IMPLEMENT_SERIAL(Polygon2, CObject, 1)
 
 Boundary Polygon2::sBoundary = Boundary(1);	// 暫定
 
+bool Polygon2::newDeviceNode(DevNode** ppDevNode)
+{
+	bool newDevPolygon2(DevNode**);
+	return newDevPolygon2(ppDevNode);
+}
+
+Polygon2::Polygon2(Node* const root, const char* const Name, const sp Color)
+	: Node(root, POLYGON, Name, Color), m_N(0), m_P(0)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
+
 Polygon2::Polygon2(const Polygon2& other) : Node(other)
 {
 	int	i;
@@ -14,12 +27,9 @@ Polygon2::Polygon2(const Polygon2& other) : Node(other)
 	m_P = new sp[m_N];
 	for (i = 0; i < m_N; i++)
 		m_P[i] = other.m_P[i];
-}
 
-bool Polygon2::newDeviceNode(DevNode** ppDevNode)
-{
-	bool newDevPolygon2(DevNode**);
-	return newDevPolygon2(ppDevNode);
+	if (!newDeviceNode(m_devNode))
+		exit(1);
 }
 
 bool Polygon2::IsInside(const sp& L) const

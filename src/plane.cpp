@@ -11,6 +11,20 @@ bool Plane::newDeviceNode(DevNode** ppDevNode)
 	return newDevPlane(ppDevNode);
 }
 
+Plane::Plane(Node* const root, const char* const Name, const sp Color)
+	: Node(root, PLANE, Name, Color)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
+
+Plane::Plane(const Plane& other) 
+	: Node(other)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
+
 bool Plane::IsInside(const sp& L) const
 {
 	return ( L.z >= 0.0 );

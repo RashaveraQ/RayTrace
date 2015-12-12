@@ -9,6 +9,20 @@ bool Multiple::newDeviceNode(DevNode** ppDevNode)
 	return newDevMultiple(ppDevNode);
 }
 
+Multiple::Multiple(Node* const root, const char* const Name)
+	: Gathering(root, MULTIPLE, Name)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
+
+Multiple::Multiple(const Multiple& other)
+	: Gathering(other)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
+
 Boundary Multiple::getBoundary()
 {
 	Boundary c1;

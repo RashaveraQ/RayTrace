@@ -11,11 +11,11 @@ class	Teapot : public	Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Teapot)
-	bool newDeviceNode(DevNode**);
+	virtual bool newDeviceNode(DevNode**);
 public:
 	// コンストラクタ
 	Teapot(Node* const root = 0, const char* const Name = "Teapot", const sp Color = sp(255, 255, 255));
-	Teapot(const Teapot& other) : Node(other) {}
+	Teapot(const Teapot& other);
 
 	bool GetInfo(const struct sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
 	bool IsInside(const sp& L) const;

@@ -10,12 +10,11 @@ class Cube : public Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Cube)
-	bool newDeviceNode(DevNode**);
+	virtual bool newDeviceNode(DevNode**);
 public:
 	// コンストラクタ
-	Cube(Node* const root = 0, const char* const Name = "Cube", const sp Color = sp(255, 255, 255))
-		: Node(root, CUBE, Name, Color) {}
-	Cube(const Cube& other) : Node(other) {}
+	Cube(Node* const root = 0, const char* const Name = "Cube", const sp Color = sp(255, 255, 255));
+	Cube(const Cube& other);
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
 	bool IsInside(const sp& L) const;

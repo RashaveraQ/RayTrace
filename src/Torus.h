@@ -10,14 +10,14 @@ class	Torus : public	Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Torus)
-	bool newDeviceNode(DevNode**);
+	virtual bool newDeviceNode(DevNode**);
 private:
 	float	m_R;
 	float	m_r;
 public:
 	// コンストラクタ
 	Torus(Node* const root = 0, const char* const Name = "Torus", const sp Color = sp(255, 255, 255));
-	Torus(const Torus& other) : Node(other), m_R(other.m_R), m_r(other.m_r) {}
+	Torus(const Torus& other);
 
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;

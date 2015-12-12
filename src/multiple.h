@@ -6,11 +6,11 @@ class	Multiple : public Gathering
 	Boundary getBoundary();
 protected:
 	DECLARE_SERIAL(Multiple)
-	bool newDeviceNode(DevNode**);
+	virtual bool newDeviceNode(DevNode**);
 public:
 	// コンストラクタ
-	Multiple(Node* const root = 0, const char* const Name = "Multiple") : Gathering(root, MULTIPLE, Name) {}
-	Multiple(const Multiple& other) : Gathering(other) {}
+	Multiple(Node* const root = 0, const char* const Name = "Multiple");
+	Multiple(const Multiple& other);
 
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
 	bool IsInside(const sp& L) const;

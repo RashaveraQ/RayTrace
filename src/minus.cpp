@@ -8,6 +8,20 @@ bool Minus::newDeviceNode(DevNode** ppDevNode)
 	return newDevMinus(ppDevNode);
 }
 
+Minus::Minus(Node* const root, const char* const Name)
+	: Gathering(root, MINUS, Name)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
+
+Minus::Minus(const Minus& other)
+	: Gathering(other)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
+
 Boundary Minus::getBoundary()
 {
 	Boundary c1;

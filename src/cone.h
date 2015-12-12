@@ -12,12 +12,11 @@ class Cone : public Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Cone)
-	bool newDeviceNode(DevNode**);
+	virtual bool newDeviceNode(DevNode**);
 public:
 	// コンストラクタ
-	Cone(Node* const root = 0, const char* const Name = "Cone", const sp Color = sp(255, 255, 255))
-		: Node(root, CONE, Name, Color) {}
-	Cone(const Cone& other) : Node(other) {}
+	Cone(Node* const root = 0, const char* const Name = "Cone", const sp Color = sp(255, 255, 255));
+	Cone(const Cone& other);
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
 	bool IsInside(const sp& L) const;
 	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;

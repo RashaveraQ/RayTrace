@@ -5,16 +5,24 @@ IMPLEMENT_SERIAL(Sphere, CObject, 1)
 
 Boundary Sphere::sBoundary = Boundary(1);
 
-Sphere::Sphere(Node* const root, const char* const Name, const sp Color)
-	: Node(root, SPHERE, Name, Color)
-{
-
-}
-
 bool Sphere::newDeviceNode(DevNode** ppDevNode)
 {
 	bool newDevSphere(DevNode**);
 	return newDevSphere(ppDevNode);
+}
+
+Sphere::Sphere(Node* const root, const char* const Name, const sp Color)
+	: Node(root, SPHERE, Name, Color)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
+}
+
+Sphere::Sphere(const Sphere& other)
+	: Node(other)
+{
+	if (!newDeviceNode(m_devNode))
+		exit(1);
 }
 
 void Sphere::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const

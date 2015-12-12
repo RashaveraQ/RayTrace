@@ -6,11 +6,11 @@ class	Minus : public Gathering
 	Boundary getBoundary();
 protected:
 	DECLARE_SERIAL(Minus)
-	bool newDeviceNode(DevNode**);
+	virtual bool newDeviceNode(DevNode**);
 public:
 	// コンストラクタ
-	Minus(Node* const root = 0, const char* const Name = "Minus") : Gathering(root, MINUS, Name) {}
-	Minus(const Minus& other) : Gathering(other) {}
+	Minus(Node* const root = 0, const char* const Name = "Minus");
+	Minus(const Minus& other);
 
 	BOOL AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target);
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;

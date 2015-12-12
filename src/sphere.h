@@ -11,11 +11,11 @@ class Sphere : public Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Sphere)
-	bool newDeviceNode(DevNode**);
+	virtual bool newDeviceNode(DevNode**);
 public:
 	// コンストラクタ
 	Sphere(Node* const root = 0, const char* const Name = "Sphere", const sp Color = sp(255, 255, 255));
-	Sphere(const Sphere& other) : Node(other) {}
+	Sphere(const Sphere& other);
 
 	bool GetInfo(const struct sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
 	bool IsInside(const sp& L) const;
