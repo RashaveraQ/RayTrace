@@ -407,5 +407,8 @@
     <CudaCompile Include="src\Gathering.cu">
       <Filter>CUDA Source Files</Filter>
     </CudaCompile>
+    <CudaCompile Include="src\Minus.cu">
+      <Filter>CUDA Source Files</Filter>
+    </CudaCompile>
   </ItemGroup>
 </Project>

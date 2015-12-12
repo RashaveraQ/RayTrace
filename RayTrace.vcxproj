@@ -272,6 +272,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="src\Gathering.cu" />
     <CudaCompile Include="src\GetVectorFromPoint.cu" />
     <CudaCompile Include="src\Matrix.cu" />
+    <CudaCompile Include="src\Minus.cu" />
     <CudaCompile Include="src\Node.cu" />
     <CudaCompile Include="src\DoCuda.cu" />
     <CudaCompile Include="src\Plane.cu" />
