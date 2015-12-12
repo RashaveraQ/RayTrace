@@ -26,8 +26,6 @@ bool DevTorus::IsInside(const Sp& L) const
 __device__
 bool DevTorus::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
 {
-//	int Solve_Polynomial(int d, float *k, float min, float max, float *r);
-
 	float	R2 = m_R * m_R;
 	float	a = K * K;
 	float	b = 2 * (K * L);

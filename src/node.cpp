@@ -15,9 +15,9 @@ Node::Node(Node* const root, node_type NodeType, const char* const Name, const s
 	Set_Name(Name);
 	MakeMemoryDCfromTextureFileName();
 	m_Material = Color.getMaterial();
-	if (!newDeviceNode(m_devNode)) {
-		exit(1);
-	}
+//	if (!newDeviceNode(m_devNode)) {
+//		exit(1);
+//	}
 }
 
 Node::Node(const Node& other) : m_Root(other.m_Root), m_Scale(4, 4), m_Rotate(4, 4), m_Move(4, 4), m_Matrix(4, 4)
@@ -35,9 +35,9 @@ Node::Node(const Node& other) : m_Root(other.m_Root), m_Scale(4, 4), m_Rotate(4,
 	m_Refractive = other.m_Refractive;
 	m_TextureFileName = other.m_TextureFileName;
 	MakeMemoryDCfromTextureFileName();
-	if (!newDeviceNode(m_devNode)) {
-		exit(2);
-	}
+//	if (!newDeviceNode(m_devNode)) {
+//		exit(2);
+//	}
 }
 
 Node::~Node()
