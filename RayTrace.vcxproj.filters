@@ -304,6 +304,33 @@
     <ClInclude Include="src\Cone.cuh">
       <Filter>CUDA Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Cube.cuh">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Cylinder.cuh">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Minus.cuh">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Multiple.cuh">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Plane.cuh">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Plus.cuh">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Polygon2.cuh">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Teapot.cuh">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Torus.cuh">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\bitmap_n.bmp">
@@ -363,6 +390,15 @@
       <Filter>CUDA Source Files</Filter>
     </CudaCompile>
     <CudaCompile Include="src\Cone.cu">
+      <Filter>CUDA Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="src\Cube.cu">
+      <Filter>CUDA Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="src\Cylinder.cu">
+      <Filter>CUDA Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="src\Plane.cu">
       <Filter>CUDA Source Files</Filter>
     </CudaCompile>
   </ItemGroup>
