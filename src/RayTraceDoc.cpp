@@ -1,4 +1,4 @@
-// RayTraceDoc.cpp : CRayTraceDoc ƒNƒ‰ƒX‚Ì“®ì‚Ì’è‹`‚ğs‚¢‚Ü‚·B
+ï»¿// RayTraceDoc.cpp : CRayTraceDoc ã‚¯ãƒ©ã‚¹ã®å‹•ä½œã®å®šç¾©ã‚’è¡Œã„ã¾ã™ã€‚
 //
 
 #include "stdafx.h"
@@ -19,17 +19,17 @@ IMPLEMENT_DYNCREATE(CRayTraceDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CRayTraceDoc, CDocument)
 	//{{AFX_MSG_MAP(CRayTraceDoc)
-		// ƒƒ‚ - ClassWizard ‚Í‚±‚ÌˆÊ’u‚Éƒ}ƒbƒsƒ“ƒO—p‚Ìƒ}ƒNƒ‚ğ’Ç‰Á‚Ü‚½‚Ííœ‚µ‚Ü‚·B
-		//        ‚±‚ÌˆÊ’u‚É¶¬‚³‚ê‚éƒR[ƒh‚ğ•ÒW‚µ‚È‚¢‚Å‚­‚¾‚³‚¢B
+	// ãƒ¡ãƒ¢ - ClassWizard ã¯ã“ã®ä½ç½®ã«ãƒãƒƒãƒ”ãƒ³ã‚°ç”¨ã®ãƒã‚¯ãƒ­ã‚’è¿½åŠ ã¾ãŸã¯å‰Šé™¤ã—ã¾ã™ã€‚
+	//        ã“ã®ä½ç½®ã«ç”Ÿæˆã•ã‚Œã‚‹ã‚³ãƒ¼ãƒ‰ã‚’ç·¨é›†ã—ãªã„ã§ãã ã•ã„ã€‚
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CRayTraceDoc ƒNƒ‰ƒX‚Ì\’z/Á–Å
+// CRayTraceDoc ã‚¯ãƒ©ã‚¹ã®æ§‹ç¯‰/æ¶ˆæ»…
 
 CRayTraceDoc::CRayTraceDoc()
 {
-	// TODO: ‚±‚ÌˆÊ’u‚É‚P“x‚¾‚¯ŒÄ‚Î‚ê‚é\’z—p‚ÌƒR[ƒh‚ğ’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢B
+	// TODO: ã“ã®ä½ç½®ã«ï¼‘åº¦ã ã‘å‘¼ã°ã‚Œã‚‹æ§‹ç¯‰ç”¨ã®ã‚³ãƒ¼ãƒ‰ã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚
 }
 
 CRayTraceDoc::~CRayTraceDoc()
@@ -41,8 +41,8 @@ BOOL CRayTraceDoc::OnNewDocument()
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
-	// TODO: ‚±‚ÌˆÊ’u‚ÉÄ‰Šú‰»ˆ—‚ğ’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢B
-	// (SDI ƒhƒLƒ…ƒƒ“ƒg‚Í‚±‚ÌƒhƒLƒ…ƒƒ“ƒg‚ğÄ—˜—p‚µ‚Ü‚·B)
+	// TODO: ã“ã®ä½ç½®ã«å†åˆæœŸåŒ–å‡¦ç†ã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚
+	// (SDI ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã¯ã“ã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã‚’å†åˆ©ç”¨ã—ã¾ã™ã€‚)
 	InitDocument();
 
 	return TRUE;
@@ -50,12 +50,12 @@ BOOL CRayTraceDoc::OnNewDocument()
 
 void CRayTraceDoc::InitDocument()
 {
-	m_Root.SetRoot( &m_Root );
-	m_Light = sp( 1,1,1 );
+	m_Root.SetRoot(&m_Root);
+	m_Light = sp(1, 1, 1);
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CRayTraceDoc ƒVƒŠƒAƒ‰ƒCƒ[[ƒVƒ‡ƒ“
+// CRayTraceDoc ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚¼ãƒ¼ã‚·ãƒ§ãƒ³
 
 void CRayTraceDoc::Serialize(CArchive& ar)
 {
@@ -63,18 +63,18 @@ void CRayTraceDoc::Serialize(CArchive& ar)
 
 	if (ar.IsStoring())
 	{
-		// TODO: ‚±‚ÌˆÊ’u‚É•Û‘¶—p‚ÌƒR[ƒh‚ğ’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢B
+		// TODO: ã“ã®ä½ç½®ã«ä¿å­˜ç”¨ã®ã‚³ãƒ¼ãƒ‰ã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚
 	}
 	else
 	{
-		// TODO: ‚±‚ÌˆÊ’u‚É“Ç‚İ‚İ—p‚ÌƒR[ƒh‚ğ’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢B
+		// TODO: ã“ã®ä½ç½®ã«èª­ã¿è¾¼ã¿ç”¨ã®ã‚³ãƒ¼ãƒ‰ã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚
 		ar >> id;
 	}
 	m_Root.Serialize(ar);
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CRayTraceDoc ƒNƒ‰ƒX‚Ìf’f
+// CRayTraceDoc ã‚¯ãƒ©ã‚¹ã®è¨ºæ–­
 
 #ifdef _DEBUG
 void CRayTraceDoc::AssertValid() const
@@ -89,15 +89,15 @@ void CRayTraceDoc::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
-// CRayTraceDoc ƒRƒ}ƒ“ƒh
+// CRayTraceDoc ã‚³ãƒãƒ³ãƒ‰
 
-BOOL CRayTraceDoc::OnOpenDocument(LPCTSTR lpszPathName) 
+BOOL CRayTraceDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
 	if (!CDocument::OnOpenDocument(lpszPathName))
 		return FALSE;
-	
-	// TODO: ‚±‚ÌˆÊ’u‚ÉŒÅ—L‚Ìì¬—pƒR[ƒh‚ğ’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢
+
+	// TODO: ã“ã®ä½ç½®ã«å›ºæœ‰ã®ä½œæˆç”¨ã‚³ãƒ¼ãƒ‰ã‚’è¿½åŠ ã—ã¦ãã ã•ã„
 	InitDocument();
-	
+
 	return TRUE;
 }
