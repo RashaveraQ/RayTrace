@@ -13,6 +13,7 @@
 
 class DevNode
 {
+	__device__ virtual	bool IsInside(const Sp& L) const = 0;
 protected:
 	DevNode* m_pParent;
 	node_type	m_NodeType;

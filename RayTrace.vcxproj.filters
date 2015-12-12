@@ -301,6 +301,9 @@
     <ClInclude Include="src\node_type.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Cone.cuh">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\bitmap_n.bmp">
@@ -357,6 +360,9 @@
       <Filter>CUDA Source Files</Filter>
     </CudaCompile>
     <CudaCompile Include="src\Sphere.cu">
+      <Filter>CUDA Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="src\Cone.cu">
       <Filter>CUDA Source Files</Filter>
     </CudaCompile>
   </ItemGroup>

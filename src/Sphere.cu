@@ -12,6 +12,12 @@ DevSphere::DevSphere(DevNode* const root, const char* const Name, const Sp Color
 }
 
 __device__
+bool DevSphere::IsInside(const Sp& L) const
+{
+	return (sqrt(L * L) <= 1.0);
+}
+
+__device__
 bool DevSphere::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)

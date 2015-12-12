@@ -184,6 +184,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="resource.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\ChildFrm.h" />
+    <ClInclude Include="src\Cone.cuh" />
     <ClInclude Include="src\cone.h" />
     <ClInclude Include="src\cube.h" />
     <ClInclude Include="src\cylinder.h" />
@@ -256,6 +257,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <Text Include="ToDo.txt" />
   </ItemGroup>
   <ItemGroup>
+    <CudaCompile Include="src\Cone.cu" />
     <CudaCompile Include="src\GetVectorFromPoint.cu" />
     <CudaCompile Include="src\Matrix.cu" />
     <CudaCompile Include="src\Node.cu" />
