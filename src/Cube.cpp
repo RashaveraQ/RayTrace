@@ -4,23 +4,23 @@ IMPLEMENT_SERIAL(Cube, CObject, 1)
 
 Boundary Cube::sBoundary = Boundary(sqrt(3.0f));
 
-bool Cube::newDeviceNode(DevNode** ppDevNode)
+bool Cube::newDeviceNode()
 {
 	bool newDevCube(DevNode**);
-	return newDevCube(ppDevNode);
+	return newDevCube(m_devNode);
 }
 
 Cube::Cube(Node* const root, const char* const Name, const sp Color)
 	: Node(root, CUBE, Name, Color)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 
 Cube::Cube(const Cube& other)
 	: Node(other)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 

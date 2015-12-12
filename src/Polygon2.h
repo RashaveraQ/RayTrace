@@ -12,7 +12,7 @@ class Polygon2 : public Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Polygon2)
-	virtual bool newDeviceNode(DevNode**);
+	virtual bool newDeviceNode();
 public:
 	Polygon2(Node* const root = 0, const char* const Name = "Polygon", const sp Color = sp(255, 255, 255));
 	Polygon2(const Polygon2& other);

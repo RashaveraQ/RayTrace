@@ -12,21 +12,21 @@ Boundary Torus::sBoundary = Boundary(1);
 Torus::Torus(Node* const root, const char* const Name, const sp Color)
 	: Node(root, TORUS, Name, Color), m_R(0.7f), m_r(0.3f)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 
 Torus::Torus(const Torus& other)
 	: Node(other), m_R(other.m_R), m_r(other.m_r)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 
-bool Torus::newDeviceNode(DevNode** ppDevNode)
+bool Torus::newDeviceNode()
 {
 	bool newDevTorus(DevNode**);
-	return newDevTorus(ppDevNode);
+	return newDevTorus(m_devNode);
 }
 
 void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const

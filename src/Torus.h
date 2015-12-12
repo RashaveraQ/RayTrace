@@ -10,7 +10,7 @@ class	Torus : public	Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Torus)
-	virtual bool newDeviceNode(DevNode**);
+	virtual bool newDeviceNode();
 private:
 	float	m_R;
 	float	m_r;

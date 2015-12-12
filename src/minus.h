@@ -6,7 +6,7 @@ class	Minus : public Gathering
 	Boundary getBoundary();
 protected:
 	DECLARE_SERIAL(Minus)
-	virtual bool newDeviceNode(DevNode**);
+	virtual bool newDeviceNode();
 public:
 	// コンストラクタ
 	Minus(Node* const root = 0, const char* const Name = "Minus");

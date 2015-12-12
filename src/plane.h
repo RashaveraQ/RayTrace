@@ -10,7 +10,7 @@ class	Plane : public	Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Plane)
-	virtual bool newDeviceNode(DevNode**);
+	virtual bool newDeviceNode();
 public:
 
 	// コンストラクタ

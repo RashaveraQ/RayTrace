@@ -11,7 +11,7 @@ class Sphere : public Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Sphere)
-	virtual bool newDeviceNode(DevNode**);
+	virtual bool newDeviceNode();
 public:
 	// コンストラクタ
 	Sphere(Node* const root = 0, const char* const Name = "Sphere", const sp Color = sp(255, 255, 255));

@@ -6,16 +6,16 @@ IMPLEMENT_SERIAL(Polygon2, CObject, 1)
 
 Boundary Polygon2::sBoundary = Boundary(1);	// 暫定
 
-bool Polygon2::newDeviceNode(DevNode** ppDevNode)
+bool Polygon2::newDeviceNode()
 {
 	bool newDevPolygon2(DevNode**);
-	return newDevPolygon2(ppDevNode);
+	return newDevPolygon2(m_devNode);
 }
 
 Polygon2::Polygon2(Node* const root, const char* const Name, const sp Color)
 	: Node(root, POLYGON, Name, Color), m_N(0), m_P(0)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 
@@ -28,7 +28,7 @@ Polygon2::Polygon2(const Polygon2& other) : Node(other)
 	for (i = 0; i < m_N; i++)
 		m_P[i] = other.m_P[i];
 
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 

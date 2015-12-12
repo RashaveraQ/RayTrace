@@ -4,22 +4,22 @@
 
 IMPLEMENT_SERIAL(Plus, CObject, 1)
 
-bool Plus::newDeviceNode(DevNode** ppDevNode)
+bool Plus::newDeviceNode()
 {
 	bool newDevPlus(DevNode**);
-	return newDevPlus(ppDevNode);
+	return newDevPlus(m_devNode);
 }
 
 Plus::Plus(Node* const root, const char* const Name)
 	: Gathering(root, PLUS, Name)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 
 Plus::Plus(const Plus& other) : Gathering(other)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 

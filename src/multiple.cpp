@@ -3,23 +3,23 @@
 
 IMPLEMENT_SERIAL(Multiple, CObject, 1)
 
-bool Multiple::newDeviceNode(DevNode** ppDevNode)
+bool Multiple::newDeviceNode()
 {
 	bool newDevMultiple(DevNode**);
-	return newDevMultiple(ppDevNode);
+	return newDevMultiple(m_devNode);
 }
 
 Multiple::Multiple(Node* const root, const char* const Name)
 	: Gathering(root, MULTIPLE, Name)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 
 Multiple::Multiple(const Multiple& other)
 	: Gathering(other)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 

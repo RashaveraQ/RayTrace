@@ -4,7 +4,7 @@ IMPLEMENT_SERIAL(Cone, CObject, 1)
 
 Boundary Cone::sBoundary = Boundary(1, sp(0,-1,0));
 
-bool Cone::newDeviceNode(DevNode** ppDevNode)
+bool Cone::newDeviceNode()
 {
 	bool newDevCone(DevNode**, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material);
 	return newDevCone(m_devNode, m_Root->m_devNode, m_Name, m_Material);
@@ -13,14 +13,14 @@ bool Cone::newDeviceNode(DevNode** ppDevNode)
 Cone::Cone(Node* const root, const char* const Name, const sp Color)
 	: Node(root, CONE, Name, Color)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 
 Cone::Cone(const Cone& other)
 	: Node(other)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 

@@ -4,23 +4,23 @@ IMPLEMENT_SERIAL(Cylinder, CObject, 1)
 
 Boundary Cylinder::sBoundary = Boundary(sqrt(2.0f));
 
-bool Cylinder::newDeviceNode(DevNode** ppDevNode)
+bool Cylinder::newDeviceNode()
 {
 	bool newDevCylinder(DevNode**);
-	return newDevCylinder(ppDevNode);
+	return newDevCylinder(m_devNode);
 }
 
 Cylinder::Cylinder(Node* const root, const char* const Name, const sp Color)
 	: Node(root, CYLINDER, Name, Color)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 
 Cylinder::Cylinder(const Cylinder& other)
 	: Node(other)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 

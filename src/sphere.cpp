@@ -5,7 +5,7 @@ IMPLEMENT_SERIAL(Sphere, CObject, 1)
 
 Boundary Sphere::sBoundary = Boundary(1);
 
-bool Sphere::newDeviceNode(DevNode** ppDevNode)
+bool Sphere::newDeviceNode()
 {
 	bool newDevSphere(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material);
 	return newDevSphere(m_devNode, m_Root->m_devNode, m_Name, m_Material);
@@ -14,14 +14,14 @@ bool Sphere::newDeviceNode(DevNode** ppDevNode)
 Sphere::Sphere(Node* const root, const char* const Name, const sp Color)
 	: Node(root, SPHERE, Name, Color)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 
 Sphere::Sphere(const Sphere& other)
 	: Node(other)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 

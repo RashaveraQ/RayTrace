@@ -69,7 +69,7 @@ protected:
 		OnUpdateBoundary();
 	}
 
-	virtual bool newDeviceNode(DevNode**) = 0;
+	virtual bool newDeviceNode() = 0;
 public:
 	DevNode** m_devNode;
 

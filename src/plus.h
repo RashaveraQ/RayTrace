@@ -6,7 +6,7 @@ class	Plus : public Gathering
 	Boundary getBoundary();
 protected:
 	DECLARE_SERIAL(Plus)
-	virtual bool newDeviceNode(DevNode**);
+	virtual bool newDeviceNode();
 public:
 	// コンストラクタ
 	Plus(Node* const root = 0, const char* const Name = "Plus");

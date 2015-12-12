@@ -2,23 +2,23 @@
 
 IMPLEMENT_SERIAL(Minus, CObject, 1)
 
-bool Minus::newDeviceNode(DevNode** ppDevNode)
+bool Minus::newDeviceNode()
 {
 	bool newDevMinus(DevNode**);
-	return newDevMinus(ppDevNode);
+	return newDevMinus(m_devNode);
 }
 
 Minus::Minus(Node* const root, const char* const Name)
 	: Gathering(root, MINUS, Name)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 
 Minus::Minus(const Minus& other)
 	: Gathering(other)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 

@@ -5,23 +5,23 @@ IMPLEMENT_SERIAL(Plane, CObject, 1)
 
 Boundary Plane::sBoundary = Boundary(FLT_MAX); // 
 
-bool Plane::newDeviceNode(DevNode** ppDevNode)
+bool Plane::newDeviceNode()
 {
 	bool newDevPlane(DevNode**);
-	return newDevPlane(ppDevNode);
+	return newDevPlane(m_devNode);
 }
 
 Plane::Plane(Node* const root, const char* const Name, const sp Color)
 	: Node(root, PLANE, Name, Color)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 
 Plane::Plane(const Plane& other) 
 	: Node(other)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 

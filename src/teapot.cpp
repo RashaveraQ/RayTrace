@@ -8,20 +8,20 @@ Boundary Teapot::sBoundary = Boundary(1);
 Teapot::Teapot(Node* const root, const char* const Name, const sp Color)
 	: Node(root, TEAPOT, Name, Color)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 
 Teapot::Teapot(const Teapot& other) : Node(other)
 {
-	if (!newDeviceNode(m_devNode))
+	if (!newDeviceNode())
 		exit(1);
 }
 
-bool Teapot::newDeviceNode(DevNode** ppDevNode)
+bool Teapot::newDeviceNode()
 {
 	bool newDevTeapot(DevNode**);
-	return newDevTeapot(ppDevNode);
+	return newDevTeapot(m_devNode);
 }
 
 void Teapot::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
