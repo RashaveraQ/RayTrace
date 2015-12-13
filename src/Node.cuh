@@ -23,7 +23,6 @@ protected:
 	Matrix		m_Rotate;	// 回転
 	Matrix		m_Move;		// 平行移動
 	Matrix		m_Pivot;	// マニュピレータの中心点
-	Matrix		m_Matrix;
 
 	float		m_Reflect;		// 反射率
 	float		m_Through;  	// 透過率
@@ -49,5 +48,7 @@ public:
 	__device__ void SetParent(DevNode** pParent) {
 		m_pParent = pParent;
 	}
+
+	Matrix		m_Matrix;
 };
 

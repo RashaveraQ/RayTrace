@@ -152,3 +152,27 @@ bool DoCuda_Free(void* dst)
 	return true;
 }
 
+__global__
+void updateMatrix(DevNode** out, const Matrix* pMatrix)
+{
+	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
+		(*out)->m_Matrix = *pMatrix;
+}
+
+bool DoCuda_updateMatrix(DevNode** devNode, const struct matrix* pMatrix)
+{
+	Matrix m(pMatrix->get_width(), pMatrix->get_height());
+	for (int w = 1; w <= m.get_width(); w++)
+		for (int h = 1; h <= m.get_height(); h++)
+			m.set_data(w, h, pMatrix->get_data(w, h));
+
+	updateMatrix<<<1, 1>>>(devNode, &m);
+
+	// Check for any errors launching the kernel
+	cudaError_t cudaStatus = cudaGetLastError();
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+
+	return true;
+}

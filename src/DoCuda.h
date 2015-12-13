@@ -6,3 +6,4 @@ bool DoCuda_OnDraw(unsigned long* out, void* d_dst, DevNode** root, const int im
 bool DoCuda_Free(void* dst);
 bool mallocDev(DevNode*** out);
 bool freeDevicePointer(DevNode** devNode);
+bool DoCuda_updateMatrix(DevNode** devNode, const struct matrix* pMatrix);

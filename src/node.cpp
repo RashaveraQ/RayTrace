@@ -44,6 +44,13 @@ Node::~Node()
 	}
 }
 
+void Node::updateMatrix()
+{
+	m_Matrix = m_Move * m_Rotate * m_Scale;
+	DoCuda_updateMatrix(m_devNode, &m_Matrix);
+	OnUpdateBoundary();
+}
+
 sp Node::GetPixel(float x, float y) const
 {
 	COLORREF	c;

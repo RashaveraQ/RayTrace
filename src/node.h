@@ -63,11 +63,7 @@ protected:
 	//	const CRayTraceDoc* m_pDoc;
 	Node* m_Root;
 
-
-	void updateMatrix() {
-		m_Matrix = m_Move * m_Rotate * m_Scale;
-		OnUpdateBoundary();
-	}
+	void updateMatrix();
 
 	virtual bool newDeviceNode() = 0;
 public:
