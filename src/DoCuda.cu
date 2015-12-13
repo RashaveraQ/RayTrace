@@ -124,10 +124,24 @@ bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class DevNode** root, const 
 		for (int h = 1; h <= m.get_height(); h++)
 			m.set_data(w, h, pMatrix->get_data(w, h));
 
-	RayTrace<<<numWorkerBlocks, threads>>>((unsigned long*)d_dst, imageW, imageH, root, grid.x, grid.x * grid.y, pView, &m);
+	Matrix* dev_Matrix = 0;
+	cudaError_t cudaStatus;
+	size_t szMatrix = sizeof(Matrix);
+
+	cudaStatus = cudaMalloc((void**)&dev_Matrix, szMatrix);
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+
+	cudaStatus = cudaMemcpy(dev_Matrix, &m, szMatrix, cudaMemcpyHostToDevice);
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+
+	RayTrace<<<numWorkerBlocks, threads>>>((unsigned long*)d_dst, imageW, imageH, root, grid.x, grid.x * grid.y, pView, dev_Matrix);
 
 	// Check for any errors launching the kernel
-	cudaError_t cudaStatus = cudaGetLastError();
+	cudaStatus = cudaGetLastError();
 	if (cudaStatus != cudaSuccess) {
 		return false;
 	}
@@ -161,15 +175,37 @@ void updateMatrix(DevNode** out, const Matrix* pMatrix)
 
 bool DoCuda_updateMatrix(DevNode** devNode, const struct matrix* pMatrix)
 {
+	if (!DoCuda_Init())
+		return false;
+
 	Matrix m(pMatrix->get_width(), pMatrix->get_height());
 	for (int w = 1; w <= m.get_width(); w++)
 		for (int h = 1; h <= m.get_height(); h++)
 			m.set_data(w, h, pMatrix->get_data(w, h));
 
-	updateMatrix<<<1, 1>>>(devNode, &m);
+	Matrix* dev_Matrix = 0;
+	cudaError_t cudaStatus;
+	size_t szMatrix = sizeof(Matrix);
+
+	cudaStatus = cudaMalloc((void**)&dev_Matrix, szMatrix);
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+
+	cudaStatus = cudaMemcpy(dev_Matrix, &m, szMatrix, cudaMemcpyHostToDevice);
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+
+	updateMatrix<<<1, 1>>>(devNode, dev_Matrix);
 
 	// Check for any errors launching the kernel
-	cudaError_t cudaStatus = cudaGetLastError();
+	cudaStatus = cudaGetLastError();
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+
+	cudaStatus = cudaFree(dev_Matrix);
 	if (cudaStatus != cudaSuccess) {
 		return false;
 	}
