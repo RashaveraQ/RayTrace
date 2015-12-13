@@ -153,7 +153,7 @@ Matrix	Matrix::operator*(const Matrix& mat) const
 }
 
 __device__
-Matrix	Matrix::Inv(void)
+Matrix	Matrix::Inv()
 {
 	if (!m_pInvMatrix) {
 		m_pInvMatrix = new Matrix(m_Width, m_Height);

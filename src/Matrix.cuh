@@ -25,7 +25,7 @@ public:
 	__device__ __host__ Matrix	operator/(float) const;
 	__device__ __host__ float	d() const;			// 行列式
 	__device__ __host__ float	M(int, int) const;	// 小行列式
-	__device__ __host__ Matrix	Inv(void);				// 逆行列
+	__device__ __host__ Matrix	Inv();				// 逆行列
 	//void	print() const;
 	__device__ __host__ float get_data(int gyo, int retu) const { return m_data[gyo - 1][retu - 1]; }
 	__device__ __host__ void set_data(int gyo, int retu, float value);
