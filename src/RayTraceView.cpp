@@ -89,6 +89,7 @@ CRayTraceView::~CRayTraceView()
 
 	if (m_ColorRefs) {
 		free(m_ColorRefs);
+		m_ColorRefs = NULL;
 		if (!DoCuda_Free(m_deviceAllocateMemory))
 			MessageBox("Failed to DoCuda_Free");
 	}
@@ -337,11 +338,14 @@ void CRayTraceView::OnSize(UINT nType, int cx, int cy)
 	m_ClientSize.cy = cy;
 	if (m_ColorRefs) {
 		free(m_ColorRefs);
+		m_ColorRefs = NULL;
 		if (!DoCuda_Free(m_deviceAllocateMemory))
 			MessageBox("Failed to DoCuda_Free.");
 	}
 	m_ColorRefs = (COLORREF*)malloc(cx * cy * sizeof(COLORREF));
-	DoCuda_OnSize(&m_deviceAllocateMemory, cx, cy);
+	if (!DoCuda_OnSize(&m_deviceAllocateMemory, cx, cy)) {
+		MessageBox("Failed to DoCuda_OnSize.");
+	}
 
 	if (!m_Iconized && nType != SIZE_MINIMIZED)	{
 		m_MemoryDC.DeleteDC();

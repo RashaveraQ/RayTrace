@@ -130,10 +130,10 @@ Error:
 int numSMs = -1;
 
 __global__
-void deletePoint(DevNode* out)
+void deletePoint(DevNode** out)
 {
-	if (threadIdx.x == 0)
-		delete out;
+	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
+		delete *out;
 }
 
 bool mallocDev(DevNode** out)
@@ -152,7 +152,7 @@ DevNode* mallocDevicePointer()
 {
 	if (!DoCuda_Init())
 		return 0;
-
+	
 	cudaError_t cudaStatus;
 
 	DevNode* devPtr;
@@ -168,10 +168,20 @@ Error:
 	return 0;
 }
 
-bool freeDevicePointer(DevNode* pNode)
+bool freeDevicePointer(DevNode** pNode)
 {
-	deletePoint<<<1, 1 >>>(pNode);
-	cudaFree(pNode);
+	deletePoint<<<1, 1>>>(pNode);
+
+	// Check for any errors launching the kernel
+	cudaError_t cudaStatus = cudaGetLastError();
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+
+	cudaStatus = cudaFree(pNode);
+	if (cudaStatus != cudaSuccess)
+		return false;
+
 	return true;
 }
 
@@ -194,7 +204,13 @@ bool DoCuda_Init()
 
 bool DoCuda_OnSize(void** dst, const int imageW, const int imageH)
 {
-	return cudaSuccess == cudaMalloc(dst, imageW * imageH * sizeof(unsigned long));
+	if (!DoCuda_Init())
+		return false;
+
+	if (cudaSuccess != cudaMalloc(dst, imageW * imageH * sizeof(unsigned long)))
+		return false;
+
+	return true;
 }
 
 __global__
@@ -247,12 +263,29 @@ bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class DevNode** root, const 
 
 	RayTrace<<<numWorkerBlocks, threads>>>((unsigned long*)d_dst, imageW, imageH, root, grid.x, grid.x * grid.y, pView, &m);
 
+	// Check for any errors launching the kernel
+	cudaError_t cudaStatus = cudaGetLastError();
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+
 	// Copy output vector from GPU buffer to host memory.
 	return cudaSuccess == cudaMemcpy(out, d_dst, imageW * imageH * sizeof(unsigned long), cudaMemcpyDeviceToHost);
 }
 
 bool DoCuda_Free(void* dst)
 {
-	return (dst) ? cudaSuccess == cudaFree(dst) : false;
+	/*
+	if (!DoCuda_Init())
+		return false;
+
+	if (!dst)
+		false;
+	*/
+
+	if (cudaSuccess != cudaFree(dst))
+		return false;
+
+	return true;
 }
 

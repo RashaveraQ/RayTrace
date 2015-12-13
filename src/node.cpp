@@ -36,12 +36,12 @@ Node::Node(const Node& other) : m_Root(other.m_Root), m_Scale(4, 4), m_Rotate(4,
 
 Node::~Node()
 {
-	/*
 	if (m_devNode) {
-	freeDevicePointer(m_devNode);
-	m_devNode = 0;
+		if (!freeDevicePointer(m_devNode)) {
+			MessageBox(0, "Failed to freeDevicePointer.", "Error", MB_OK);
+		}
+		m_devNode = 0;
 	}
-	*/
 }
 
 sp Node::GetPixel(float x, float y) const

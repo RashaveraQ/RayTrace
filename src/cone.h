@@ -3,8 +3,6 @@
 
 class	Node;
 struct	matrix;
-struct	sp;
-struct	Info;
 
 class Cone : public Node
 {

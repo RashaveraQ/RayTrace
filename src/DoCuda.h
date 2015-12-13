@@ -7,4 +7,4 @@ bool DoCuda_OnDraw(unsigned long* out, void* d_dst, DevNode** root, const int im
 bool DoCuda_Free(void* dst);
 bool mallocDev(DevNode** out);
 DevNode* mallocDevicePointer();
-bool freeDevicePointer(DevNode* devNode);
+bool freeDevicePointer(DevNode** devNode);
