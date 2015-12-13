@@ -1,4 +1,4 @@
-// ScnTreeView.cpp : ƒCƒ“ƒvƒŠƒƒ“ƒe[ƒVƒ‡ƒ“ ƒtƒ@ƒCƒ‹
+ï»¿// ScnTreeView.cpp : ã‚¤ãƒ³ãƒ—ãƒªãƒ¡ãƒ³ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ ãƒ•ã‚¡ã‚¤ãƒ«
 //
 
 #include "stdafx.h"
@@ -56,7 +56,7 @@ BEGIN_MESSAGE_MAP(CScnTreeView, CTreeView)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CScnTreeView f’f
+// CScnTreeView è¨ºæ–­
 
 #ifdef _DEBUG
 void CScnTreeView::AssertValid() const
@@ -71,34 +71,34 @@ void CScnTreeView::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
-// CScnTreeView ƒƒbƒZ[ƒW ƒnƒ“ƒhƒ‰
+// CScnTreeView ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ ãƒãƒ³ãƒ‰ãƒ©
 
-void CScnTreeView::OnInitialUpdate() 
+void CScnTreeView::OnInitialUpdate()
 {
 	CTreeView::OnInitialUpdate();
 	CTreeCtrl&	c = GetTreeCtrl();
-	// TODO: ‚±‚ÌˆÊ’u‚ÉŒÅ—L‚Ìˆ—‚ð’Ç‰Á‚·‚é‚©A‚Ü‚½‚ÍŠî–{ƒNƒ‰ƒX‚ðŒÄ‚Ño‚µ‚Ä‚­‚¾‚³‚¢
+	// TODO: ã“ã®ä½ç½®ã«å›ºæœ‰ã®å‡¦ç†ã‚’è¿½åŠ ã™ã‚‹ã‹ã€ã¾ãŸã¯åŸºæœ¬ã‚¯ãƒ©ã‚¹ã‚’å‘¼ã³å‡ºã—ã¦ãã ã•ã„
 
-	m_normal_IL.Create( IDB_BITMAP_NORMAL, 17, 0, RGB(127,0,255) );
-	m_state_IL.Create( IDB_BITMAP_STATE,  17, 0, RGB(255,127,0) );
+	m_normal_IL.Create(IDB_BITMAP_NORMAL, 17, 0, RGB(127, 0, 255));
+	m_state_IL.Create(IDB_BITMAP_STATE, 17, 0, RGB(255, 127, 0));
 
-	c.SetImageList( &m_normal_IL, TVSIL_NORMAL );  
-	c.SetImageList( &m_state_IL, TVSIL_STATE );  
+	c.SetImageList(&m_normal_IL, TVSIL_NORMAL);
+	c.SetImageList(&m_state_IL, TVSIL_STATE);
 
-	SetWindowLong( c, GWL_STYLE, GetWindowLong( c, GWL_STYLE )
-		| TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS |  TVS_EDITLABELS );
+	SetWindowLong(c, GWL_STYLE, GetWindowLong(c, GWL_STYLE)
+		| TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS | TVS_EDITLABELS);
 
 }
 
-void CScnTreeView::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult) 
+void CScnTreeView::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	TV_DISPINFO* pTVDispInfo = (TV_DISPINFO*)pNMHDR;
-	// TODO: ‚±‚ÌˆÊ’u‚ÉƒRƒ“ƒgƒ[ƒ‹’Ê’mƒnƒ“ƒhƒ‰—p‚ÌƒR[ƒh‚ð’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢
+	// TODO: ã“ã®ä½ç½®ã«ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«é€šçŸ¥ãƒãƒ³ãƒ‰ãƒ©ç”¨ã®ã‚³ãƒ¼ãƒ‰ã‚’è¿½åŠ ã—ã¦ãã ã•ã„
 
 	if (pTVDispInfo->item.pszText && pTVDispInfo->item.pszText[0])
 	{
 		HTREEITEM	hItem = pTVDispInfo->item.hItem;
-		char*		str   = pTVDispInfo->item.pszText;
+		char*		str = pTVDispInfo->item.pszText;
 		GetTreeCtrl().SetItemText(hItem, str);
 		CRayTraceDoc*	pDoc = (CRayTraceDoc*)GetDocument();
 		Node*			pTarget;
@@ -116,13 +116,13 @@ BOOL CScnTreeView::AddNode(Node* pNode)
 	CRayTraceDoc*	pDoc = (CRayTraceDoc*)GetDocument();
 	Node*			pTarget;
 
-	while(1)
+	while (1)
 	{
-		// ‘I‘ð‚³‚ê‚Ä‚¢‚éƒAƒCƒeƒ€‚ð“¾‚éB
+		// é¸æŠžã•ã‚Œã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’å¾—ã‚‹ã€‚
 		if (!(hItem = c.GetSelectedItem()))
 			break;
 
-		// ‘I‘ð‚³‚ê‚Ä‚¢‚éƒm[ƒh‚ð“¾‚éB
+		// é¸æŠžã•ã‚Œã¦ã„ã‚‹ãƒŽãƒ¼ãƒ‰ã‚’å¾—ã‚‹ã€‚
 		if (!(pTarget = (Node*)c.GetItemData(hItem)))
 			break;
 
@@ -134,22 +134,22 @@ BOOL CScnTreeView::AddNode(Node* pNode)
 		c.Expand(hItem, TVE_EXPAND);
 
 		pDoc->UpdateAllViews(this);
-	
+
 		return TRUE;
 	}
 	return FALSE;
 }
 
 
-void CScnTreeView::OnBegindrag(NMHDR* pNMHDR, LRESULT* pResult) 
+void CScnTreeView::OnBegindrag(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
-	// TODO: ‚±‚ÌˆÊ’u‚ÉƒRƒ“ƒgƒ[ƒ‹’Ê’mƒnƒ“ƒhƒ‰—p‚ÌƒR[ƒh‚ð’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢
-	
+	// TODO: ã“ã®ä½ç½®ã«ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«é€šçŸ¥ãƒãƒ³ãƒ‰ãƒ©ç”¨ã®ã‚³ãƒ¼ãƒ‰ã‚’è¿½åŠ ã—ã¦ãã ã•ã„
+
 	*pResult = 0;
 }
 
-void CScnTreeView::OnEditCut() 
+void CScnTreeView::OnEditCut()
 {
 	CTreeCtrl&		c = GetTreeCtrl();
 	HTREEITEM		hItem = c.GetSelectedItem();
@@ -158,16 +158,16 @@ void CScnTreeView::OnEditCut()
 
 	if (!hItem || !(pTarget = (Node*)c.GetItemData(hItem)))
 		return;
-	
+
 	delete m_pEditNode;
-	
+
 	m_pEditNode = (class Node*)pTarget->MakeCopy();
 	pDoc->m_Root.Delete(pTarget);
 	c.DeleteItem(hItem);
 	pDoc->UpdateAllViews(this);
 }
 
-void CScnTreeView::OnEditCopy() 
+void CScnTreeView::OnEditCopy()
 {
 	CTreeCtrl&		c = GetTreeCtrl();
 	HTREEITEM		hItem = c.GetSelectedItem();
@@ -181,7 +181,7 @@ void CScnTreeView::OnEditCopy()
 	m_pEditNode = (class Node*)pTarget->MakeCopy();
 }
 
-void CScnTreeView::OnEditPaste() 
+void CScnTreeView::OnEditPaste()
 {
 	if (m_pEditNode) {
 		CRayTraceDoc*	pDoc = (CRayTraceDoc*)GetDocument();
@@ -191,7 +191,7 @@ void CScnTreeView::OnEditPaste()
 	}
 }
 
-void CScnTreeView::OnProperty() 
+void CScnTreeView::OnProperty()
 {
 	CTreeCtrl&		c = GetTreeCtrl();
 	HTREEITEM		hItem = c.GetSelectedItem();
@@ -204,7 +204,7 @@ void CScnTreeView::OnProperty()
 	pDoc->UpdateAllViews(this);
 }
 
-void CScnTreeView::OnEditAfin() 
+void CScnTreeView::OnEditAfin()
 {
 	CTreeCtrl&		c = GetTreeCtrl();
 	HTREEITEM		hItem = c.GetSelectedItem();
@@ -217,7 +217,7 @@ void CScnTreeView::OnEditAfin()
 	pDoc->UpdateAllViews(this);
 }
 
-void CScnTreeView::OnEditColor() 
+void CScnTreeView::OnEditColor()
 {
 	CTreeCtrl&		c = GetTreeCtrl();
 	HTREEITEM		hItem = c.GetSelectedItem();
@@ -230,7 +230,7 @@ void CScnTreeView::OnEditColor()
 	pDoc->UpdateAllViews(this);
 }
 
-void CScnTreeView::OnEditMaterial() 
+void CScnTreeView::OnEditMaterial()
 {
 	CTreeCtrl&		c = GetTreeCtrl();
 	HTREEITEM		hItem = c.GetSelectedItem();
@@ -256,50 +256,50 @@ void CScnTreeView::OnEditTexture()
 	pDoc->UpdateAllViews(this);
 }
 
-void CScnTreeView::OnAddSphere()	{ Node* obj = new Sphere	(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddPlane()		{ Node*	obj = new Plane		(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddCone()		{ Node*	obj = new Cone		(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddCylinder()	{ Node*	obj = new Cylinder	(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddTorus()		{ Node*	obj = new Torus		(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddPolygon()	{ Node*	obj = new Polygon2	(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddTeapot()	{ Node* obj = new Teapot	(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddPlus()		{ Node*	obj = new Plus		(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddMinus()		{ Node*	obj = new Minus		(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddMultiple()	{ Node*	obj = new Multiple	(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddCube()		{ Node*	obj = new Cube		(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddSphere()	{ Node* obj = new Sphere(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddPlane()		{ Node*	obj = new Plane(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddCone()		{ Node*	obj = new Cone(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddCylinder()	{ Node*	obj = new Cylinder(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddTorus()		{ Node*	obj = new Torus(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddPolygon()	{ Node*	obj = new Polygon2(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddTeapot()	{ Node* obj = new Teapot(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddPlus()		{ Node*	obj = new Plus(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddMinus()		{ Node*	obj = new Minus(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddMultiple()	{ Node*	obj = new Multiple(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddCube()		{ Node*	obj = new Cube(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
 
-void CScnTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult) 
+void CScnTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
 	// TODO: Add your control notification handler code here
 	CTreeCtrl&		c = GetTreeCtrl();
 	CRayTraceDoc*	pDoc = (CRayTraceDoc*)GetDocument();
-	CRayTraceView*  pRayTraceView = (CRayTraceView*)((CSplitterWnd*)GetParent())->GetPane(0,1);
+	CRayTraceView*  pRayTraceView = (CRayTraceView*)((CSplitterWnd*)GetParent())->GetPane(0, 1);
 
 	pRayTraceView->m_SelectedNode = (Node*)c.GetItemData(c.GetSelectedItem());
-	
+
 	if (pRayTraceView->m_ViewMode == CRayTraceView::eWireFrame)
 		pRayTraceView->Invalidate();
 
 	*pResult = 0;
-/*
+	/*
 	// for debug
 	static done = false;
 	if (!done) {
-		done = true;
-		OnAddSphere();
+	done = true;
+	OnAddSphere();
 	}
-*/
+	*/
 }
 
-void CScnTreeView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint) 
+void CScnTreeView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 {
-	// TODO: ‚±‚ÌˆÊ’u‚ÉŒÅ—L‚Ìˆ—‚ð’Ç‰Á‚·‚é‚©A‚Ü‚½‚ÍŠî–{ƒNƒ‰ƒX‚ðŒÄ‚Ño‚µ‚Ä‚­‚¾‚³‚¢
+	// TODO: ã“ã®ä½ç½®ã«å›ºæœ‰ã®å‡¦ç†ã‚’è¿½åŠ ã™ã‚‹ã‹ã€ã¾ãŸã¯åŸºæœ¬ã‚¯ãƒ©ã‚¹ã‚’å‘¼ã³å‡ºã—ã¦ãã ã•ã„
 	CTreeCtrl&	c = GetTreeCtrl();
 	HTREEITEM		hItem = c.GetSelectedItem();
-	
+
 	c.DeleteAllItems();
-	
+
 	CRayTraceDoc*	pDoc = (CRayTraceDoc*)GetDocument();
 
 	pDoc->m_Root.InsertItem(c);

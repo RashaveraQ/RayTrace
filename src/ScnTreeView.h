@@ -1,38 +1,38 @@
-// ScnTreeView.h : ƒwƒbƒ_[ ƒtƒ@ƒCƒ‹
+ï»¿// ScnTreeView.h : ãƒ˜ãƒƒãƒ€ãƒ¼ ãƒ•ã‚¡ã‚¤ãƒ«
 //
 
 /////////////////////////////////////////////////////////////////////////////
-// CScnTreeView ƒrƒ…[
+// CScnTreeView ãƒ“ãƒ¥ãƒ¼
 
 
 class CScnTreeView : public CTreeView
 {
 protected:
-	CScnTreeView();           // “®“I¶¬‚Ég—p‚³‚ê‚éƒvƒƒeƒNƒg ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	CScnTreeView();           // å‹•çš„ç”Ÿæˆã«ä½¿ç”¨ã•ã‚Œã‚‹ãƒ—ãƒ­ãƒ†ã‚¯ãƒˆ ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	DECLARE_DYNCREATE(CScnTreeView)
 
 private:
 	CImageList	m_normal_IL,
-				m_state_IL;
+		m_state_IL;
 
-	BOOL		AddNode( Node* );
+	BOOL		AddNode(Node*);
 
-// ƒAƒgƒŠƒrƒ…[ƒg
+	// ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆ
 public:
 
-// ƒIƒyƒŒ[ƒVƒ‡ƒ“
+	// ã‚ªãƒšãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³
 public:
 
-// ƒI[ƒo[ƒ‰ƒCƒh
-	// ClassWizard ‚Í‰¼‘zŠÖ”‚ğ¶¬‚µƒI[ƒo[ƒ‰ƒCƒh‚µ‚Ü‚·B
+	// ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰
+	// ClassWizard ã¯ä»®æƒ³é–¢æ•°ã‚’ç”Ÿæˆã—ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã—ã¾ã™ã€‚
 	//{{AFX_VIRTUAL(CScnTreeView)
-	public:
+public:
 	virtual void OnInitialUpdate();
-	protected:
+protected:
 	virtual void OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint);
 	//}}AFX_VIRTUAL
 
-// ƒCƒ“ƒvƒŠƒƒ“ƒe[ƒVƒ‡ƒ“
+	// ã‚¤ãƒ³ãƒ—ãƒªãƒ¡ãƒ³ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³
 protected:
 	virtual ~CScnTreeView();
 #ifdef _DEBUG
@@ -40,7 +40,7 @@ protected:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-	// ¶¬‚³‚ê‚½ƒƒbƒZ[ƒW ƒ}ƒbƒvŠÖ”
+	// ç”Ÿæˆã•ã‚ŒãŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ ãƒãƒƒãƒ—é–¢æ•°
 protected:
 	//{{AFX_MSG(CScnTreeView)
 	afx_msg void OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult);
