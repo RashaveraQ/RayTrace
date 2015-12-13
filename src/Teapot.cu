@@ -5,7 +5,7 @@
 #include "Teapot.cuh"
 
 __device__
-DevTeapot::DevTeapot(DevNode* const root, const char* const Name, const Sp Color)
+DevTeapot::DevTeapot(DevNode** const root, const char* const Name, const Sp Color)
 	: DevNode(root, TEAPOT, Name, Color)
 {
 
@@ -71,15 +71,15 @@ __global__
 void newTeapot(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevTeapot(*root, Name, Sp(Material));
+		*out = new DevTeapot(root, Name, Sp(Material));
 }
 
-bool newDevTeapot(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
+bool newDevTeapot(DevNode*** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
 {
 	if (!mallocDev(out))
 		return false;
 
-	newTeapot<<<1, 1>>>(out, root, Name, Material);
+	newTeapot<<<1, 1>>>(*out, root, Name, Material);
 
 	// Check for any errors launching the kernel
 	cudaError_t cudaStatus = cudaGetLastError();

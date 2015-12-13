@@ -6,8 +6,8 @@ IMPLEMENT_SERIAL(Plus, CObject, 1)
 
 bool Plus::newDeviceNode()
 {
-	bool newDevPlus(DevNode** out, DevNode** const root, const char* const Name);
-	return newDevPlus(m_devNode, m_Root ? m_Root->m_devNode : 0, m_Name);
+	bool newDevPlus(DevNode*** out, DevNode** const root, const char* const Name);
+	return newDevPlus(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Name);
 }
 
 Plus::Plus(Node* const root, const char* const Name)

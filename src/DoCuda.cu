@@ -19,12 +19,12 @@ void deletePoint(DevNode** out)
 		delete *out;
 }
 
-bool mallocDev(DevNode** out)
+bool mallocDev(DevNode*** out)
 {
 	if (!DoCuda_Init())
 		return false;
 
-	cudaError_t cudaStatus = cudaMalloc((void**)&out, sizeof(void*));
+	cudaError_t cudaStatus = cudaMalloc(out, sizeof(void*));
 	if (cudaStatus != cudaSuccess)
 		return false;
 
@@ -138,15 +138,15 @@ bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class DevNode** root, const 
 
 bool DoCuda_Free(void* dst)
 {
-	/*
 	if (!DoCuda_Init())
 		return false;
 
 	if (!dst)
-		false;
-	*/
+		return false;
 
-	if (cudaSuccess != cudaFree(dst))
+	cudaError_t cudaStatus = cudaFree(dst);
+
+	if (cudaSuccess != cudaStatus)
 		return false;
 
 	return true;

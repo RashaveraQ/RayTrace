@@ -6,8 +6,8 @@ Boundary Cone::sBoundary = Boundary(1, sp(0,-1,0));
 
 bool Cone::newDeviceNode()
 {
-	bool newDevCone(DevNode**, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material);
-	return newDevCone(m_devNode, m_Root->m_devNode, m_Name, m_Material);
+	bool newDevCone(DevNode***, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material);
+	return newDevCone(&m_devNode, m_Root->m_devNode, m_Name, m_Material);
 }
 
 Cone::Cone(Node* const root, const char* const Name, const sp Color)

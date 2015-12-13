@@ -6,7 +6,7 @@
 #include "Solve_Polynomial.cuh"
 
 __device__
-DevTorus::DevTorus(DevNode* const root, const char* const Name, const Sp Color)
+DevTorus::DevTorus(DevNode** const root, const char* const Name, const Sp Color)
 	: DevNode(root, TORUS, Name, Color), m_R(0.7f), m_r(0.3f)
 {
 
@@ -93,15 +93,15 @@ __global__
 void newTorus(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevTorus(*root, Name, Sp(Material));
+		*out = new DevTorus(root, Name, Sp(Material));
 }
 
-bool newDevTorus(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
+bool newDevTorus(DevNode*** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
 {
 	if (!mallocDev(out))
 		return false;
 
-	newTorus<<<1, 1>>>(out, root, Name, Material);
+	newTorus<<<1, 1>>>(*out, root, Name, Material);
 
 	// Check for any errors launching the kernel
 	cudaError_t cudaStatus = cudaGetLastError();

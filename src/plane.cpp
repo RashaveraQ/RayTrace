@@ -7,8 +7,8 @@ Boundary Plane::sBoundary = Boundary(FLT_MAX); //
 
 bool Plane::newDeviceNode()
 {
-	bool newDevPlane(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material);
-	return newDevPlane(m_devNode, m_Root->m_devNode, m_Name, m_Material);
+	bool newDevPlane(DevNode*** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material);
+	return newDevPlane(&m_devNode, m_Root->m_devNode, m_Name, m_Material);
 }
 
 Plane::Plane(Node* const root, const char* const Name, const sp Color)

@@ -6,8 +6,8 @@ Boundary Cube::sBoundary = Boundary(sqrt(3.0f));
 
 bool Cube::newDeviceNode()
 {
-	bool newDevCube(DevNode**, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material);
-	return newDevCube(m_devNode, m_Root->m_devNode, m_Name, m_Material);
+	bool newDevCube(DevNode***, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material);
+	return newDevCube(&m_devNode, m_Root->m_devNode, m_Name, m_Material);
 }
 
 Cube::Cube(Node* const root, const char* const Name, const sp Color)

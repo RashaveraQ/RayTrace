@@ -5,7 +5,7 @@
 #include "Cylinder.cuh"
 
 __device__
-DevCylinder::DevCylinder(DevNode* const root, const char* const Name, const Sp Color)
+DevCylinder::DevCylinder(DevNode** const root, const char* const Name, const Sp Color)
 	: DevNode(root, CYLINDER, Name, Color)
 {
 
@@ -115,15 +115,15 @@ __global__
 void newCylinder(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevCylinder(*root, Name, Sp(Material));
+		*out = new DevCylinder(root, Name, Sp(Material));
 }
 
-bool newDevCylinder(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
+bool newDevCylinder(DevNode*** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
 {
 	if (!mallocDev(out))
 		return false;
 
-	newCylinder<<<1, 1>>>(out, root, Name, Material);
+	newCylinder<<<1, 1>>>(*out, root, Name, Material);
 
 	// Check for any errors launching the kernel
 	cudaError_t cudaStatus = cudaGetLastError();

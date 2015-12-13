@@ -5,8 +5,8 @@ IMPLEMENT_SERIAL(Multiple, CObject, 1)
 
 bool Multiple::newDeviceNode()
 {
-	bool newDevMultiple(DevNode** out, DevNode** const root, const char* const Name);
-	return newDevMultiple(m_devNode, m_Root->m_devNode, m_Name);
+	bool newDevMultiple(DevNode*** out, DevNode** const root, const char* const Name);
+	return newDevMultiple(&m_devNode, m_Root->m_devNode, m_Name);
 }
 
 Multiple::Multiple(Node* const root, const char* const Name)

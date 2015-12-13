@@ -57,7 +57,7 @@ BOOL DevGathering::AddNode(CTreeCtrl& c, HTREEITEM hitem, DevNode* pNode)
 */
 
 __device__
-void DevGathering::SetRoot(DevNode* const root)
+void DevGathering::SetRoot(DevNode** const root)
 {
 	m_Root = root;
 

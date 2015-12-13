@@ -4,7 +4,7 @@
 #include "DoCuda.h"
 
 __device__
-DevNode::DevNode(DevNode* const root, node_type NodeType, const char* const Name, const Sp Color)
+DevNode::DevNode(DevNode** const root, node_type NodeType, const char* const Name, const Sp Color)
 	: m_Root(root), m_pParent(0), m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1)
 {
 	m_Material = Color.getMaterial();
@@ -43,7 +43,7 @@ Sp DevNode::GetColor(const Sp& K, const Sp& L, int nest, const DevInfo* pHint, b
 	// 反射率がある場合、
 	if (info.pNode->m_Reflect > 0) {
 		// 反射した視線ベクトルから色を取得。
-		Sp c = m_Root->GetColor(k2, l2, nest + 1, &info, true);
+		Sp c = (*m_Root)->GetColor(k2, l2, nest + 1, &info, true);
 		// 反射率で色を混ぜる。
 		info.Material = (info.pNode->m_Reflect * c + (1 - info.pNode->m_Reflect) * Sp(info.Material)).getMaterial();
 	}
@@ -60,7 +60,7 @@ Sp DevNode::GetColor(const Sp& K, const Sp& L, int nest, const DevInfo* pHint, b
 			fromOutSide = !fromOutSide;
 		}
 		// 屈折した視線ベクトルから色を取得。
-		Sp c = m_Root->GetColor(k2, l2, nest + 1, &info, fromOutSide);
+		Sp c = (*m_Root)->GetColor(k2, l2, nest + 1, &info, fromOutSide);
 		// 透過率で色を混ぜる。
 		info.Material = (info.pNode->m_Through * c + (1 - info.pNode->m_Through) * Sp(info.Material)).getMaterial();
 	}

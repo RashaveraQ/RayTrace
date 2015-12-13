@@ -70,15 +70,15 @@ __global__
 void newMinus(DevNode** out, DevNode** const root, const char* const Name)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevMinus(*root, Name);
+		*out = new DevMinus(root, Name);
 }
 
-bool newDevMinus(DevNode** out, DevNode** const root, const char* const Name)
+bool newDevMinus(DevNode*** out, DevNode** const root, const char* const Name)
 {
 	if (!mallocDev(out))
 		return false;
 
-	newMinus<<<1, 1>>>(out, root, Name);
+	newMinus<<<1, 1>>>(*out, root, Name);
 
 	// Check for any errors launching the kernel
 	cudaError_t cudaStatus = cudaGetLastError();

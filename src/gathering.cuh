@@ -8,14 +8,14 @@ protected:
 	DevNode*	m_Node[1000];
 public:
 	// コンストラクタ
-	__device__ DevGathering(DevNode* const root, node_type NodeType, const char* const Name)
+	__device__ DevGathering(DevNode** const root, node_type NodeType, const char* const Name)
 		: DevNode(root, NodeType, Name), m_Member(0) {}
 	__device__ DevGathering(const DevGathering& other);
 
 	// デストラクタ
 	__device__  ~DevGathering();
 
-	__device__ void SetRoot(DevNode* const root);
+	__device__ void SetRoot(DevNode** const root);
 	//void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
 	//bool SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& m) const;
 	//bool AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target);

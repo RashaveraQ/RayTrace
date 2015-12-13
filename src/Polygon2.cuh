@@ -7,7 +7,7 @@ class DevPolygon2 : public DevNode
 	Sp	*m_P;
 public:
 	// コンストラクタ
-	__device__ DevPolygon2(DevNode* const root = 0, const char* const Name = "Polygon", const Sp Color = Sp(255, 255, 255))
+	__device__ DevPolygon2(DevNode** const root = 0, const char* const Name = "Polygon", const Sp Color = Sp(255, 255, 255))
 		: DevNode(root, POLYGON, Name, Color), m_N(0), m_P(0) {}
 
 	__device__ DevPolygon2(const DevPolygon2& other);
