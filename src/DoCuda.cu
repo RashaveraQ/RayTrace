@@ -158,6 +158,13 @@ bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class DevNode** root, const 
 		return false;
 	}
 
+	// cudaDeviceSynchronize waits for the kernel to finish, and returns
+	// any errors encountered during the launch.
+	cudaStatus = cudaDeviceSynchronize();
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+
 	// Copy output vector from GPU buffer to host memory.
 	cudaStatus = cudaMemcpy(out, d_dst, imageW * imageH * sizeof(unsigned long), cudaMemcpyDeviceToHost);
 	if (cudaStatus != cudaSuccess) {
