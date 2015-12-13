@@ -138,7 +138,19 @@ bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class DevNode** root, const 
 		return false;
 	}
 
-	RayTrace<<<numWorkerBlocks, threads>>>((unsigned long*)d_dst, imageW, imageH, root, grid.x, grid.x * grid.y, pView, dev_Matrix);
+	fsize* dev_view = 0;
+	size_t szFsize = sizeof(fsize);
+
+	cudaStatus = cudaMalloc((void**)&dev_view, szFsize);
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+	cudaStatus = cudaMemcpy(dev_view, pView, szFsize, cudaMemcpyHostToDevice);
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+
+	RayTrace<<<numWorkerBlocks, threads>>>((unsigned long*)d_dst, imageW, imageH, root, grid.x, grid.x * grid.y, dev_view, dev_Matrix);
 
 	// Check for any errors launching the kernel
 	cudaStatus = cudaGetLastError();
@@ -147,7 +159,22 @@ bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class DevNode** root, const 
 	}
 
 	// Copy output vector from GPU buffer to host memory.
-	return cudaSuccess == cudaMemcpy(out, d_dst, imageW * imageH * sizeof(unsigned long), cudaMemcpyDeviceToHost);
+	cudaStatus = cudaMemcpy(out, d_dst, imageW * imageH * sizeof(unsigned long), cudaMemcpyDeviceToHost);
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+
+	cudaStatus = cudaFree(dev_Matrix);
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+
+	cudaStatus = cudaFree(dev_view);
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+
+	return true;
 }
 
 bool DoCuda_Free(void* dst)
