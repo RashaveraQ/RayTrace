@@ -1,4 +1,4 @@
-// MainFrm.h : CMainFrame �N���X�̐錾����уC���^�[�t�F�C�X�̒�`�����܂��B
+﻿// MainFrm.h : CMainFrame クラスの宣言およびインターフェイスの定義をします。
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -15,19 +15,19 @@ class CMainFrame : public CMDIFrameWnd
 public:
 	CMainFrame();
 
-// �A�g���r���[�g
+	// アトリビュート
 public:
 
-// �I�y���[�V����
+	// オペレーション
 public:
 
-// �I�[�o�[���C�h
-	// ClassWizard �͉��z�֐��̃I�[�o�[���C�h�𐶐����܂��B
+	// オーバーライド
+	// ClassWizard は仮想関数のオーバーライドを生成します。
 	//{{AFX_VIRTUAL(CMainFrame)
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
 
-// �C���v�������e�[�V����
+	// インプリメンテーション
 public:
 	virtual ~CMainFrame();
 #ifdef _DEBUG
@@ -35,16 +35,16 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:  // �R���g���[�� �o�[�p�����o
+protected:  // コントロール バー用メンバ
 	CStatusBar  m_wndStatusBar;
 	CToolBar    m_wndToolBar;
 
-// �������ꂽ���b�Z�[�W �}�b�v�֐�
+	// 生成されたメッセージ マップ関数
 protected:
 	//{{AFX_MSG(CMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-		// ���� - ClassWizard �͂��̈ʒu�Ƀ����o�֐���ǉ��܂��͍폜���܂��B
-		//        ���̈ʒu�ɐ��������R�[�h��ҏW���Ȃ��ł��������B
+	// メモ - ClassWizard はこの位置にメンバ関数を追加または削除します。
+	//        この位置に生成されるコードを編集しないでください。
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
@@ -52,6 +52,6 @@ protected:
 /////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_INSERT_LOCATION}}
-// Microsoft Developer Studio �͑O�s�̒��O�ɒǉ��̐錾��}�����܂��B
+// Microsoft Developer Studio は前行の直前に追加の宣言を挿入します。
 
 #endif // !defined(AFX_MAINFRM_H__B4EED839_53CC_11D3_9AB7_000000000000__INCLUDED_)
