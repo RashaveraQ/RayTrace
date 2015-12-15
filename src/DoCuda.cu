@@ -1,4 +1,3 @@
-
 #include "cuda.h"
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
@@ -70,29 +69,12 @@ bool DoCuda_Init()
 	// Get handle for device 0
 	cuResult = cuDeviceGet(&cuDevice, 0);
 	cuResult = cuDevicePrimaryCtxRetain(&context, cuDevice);
-	size_t value;
-	cuResult = cuCtxGetLimit(&value, CU_LIMIT_STACK_SIZE);
-	value *= 16;
+	size_t value = 1024 * 16;
 	cuResult = cuCtxSetLimit(CU_LIMIT_STACK_SIZE, value);
 
 	return true;
 }
-/*
-size_t checkStackSize()
-{
-	CUresult cuResult;
-	CUcontext context;
-	CUdevice cuDevice;
 
-	cuResult = cuDeviceGet(&cuDevice, 0);
-	cuResult = cuDevicePrimaryCtxRetain(&context, cuDevice);
-
-	size_t value;
-	cuResult = cuCtxGetLimit(&value, CU_LIMIT_STACK_SIZE);
-
-	return value;
-}
-*/
 bool DoCuda_OnSize(void** dst, const int imageW, const int imageH)
 {
 	if (!DoCuda_Init())
