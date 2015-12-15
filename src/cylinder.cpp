@@ -7,7 +7,7 @@ Boundary Cylinder::sBoundary = Boundary(sqrt(2.0f));
 bool Cylinder::newDeviceNode()
 {
 	bool newDevCylinder(DevNode***, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material);
-	return newDevCylinder(&m_devNode, m_Root->m_devNode, m_Name, m_Material);
+	return newDevCylinder(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Name, m_Material);
 }
 
 Cylinder::Cylinder(Node* const root, const char* const Name, const sp Color)
