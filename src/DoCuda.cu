@@ -1,4 +1,5 @@
 
+#include "cuda.h"
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #include "DoCuda.h"
@@ -53,6 +54,10 @@ bool DoCuda_Init()
 	if (numSMs > 0)
 		return true;
 
+	CUresult cuResult;
+	CUcontext context;
+	CUdevice cuDevice;
+
 	cudaDeviceProp deviceProp;
 	if (cudaSuccess != cudaSetDevice(0))
 		return false;
@@ -62,9 +67,32 @@ bool DoCuda_Init()
 
 	numSMs = deviceProp.multiProcessorCount;
 
+	// Get handle for device 0
+	cuResult = cuDeviceGet(&cuDevice, 0);
+	cuResult = cuDevicePrimaryCtxRetain(&context, cuDevice);
+	size_t value;
+	cuResult = cuCtxGetLimit(&value, CU_LIMIT_STACK_SIZE);
+	value *= 16;
+	cuResult = cuCtxSetLimit(CU_LIMIT_STACK_SIZE, value);
+
 	return true;
 }
+/*
+size_t checkStackSize()
+{
+	CUresult cuResult;
+	CUcontext context;
+	CUdevice cuDevice;
 
+	cuResult = cuDeviceGet(&cuDevice, 0);
+	cuResult = cuDevicePrimaryCtxRetain(&context, cuDevice);
+
+	size_t value;
+	cuResult = cuCtxGetLimit(&value, CU_LIMIT_STACK_SIZE);
+
+	return value;
+}
+*/
 bool DoCuda_OnSize(void** dst, const int imageW, const int imageH)
 {
 	if (!DoCuda_Init())
@@ -149,6 +177,8 @@ bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class DevNode** root, const 
 	if (cudaStatus != cudaSuccess) {
 		return false;
 	}
+
+	//size_t stackSize = checkStackSize();
 
 	RayTrace<<<numWorkerBlocks, threads>>>((unsigned long*)d_dst, imageW, imageH, root, grid.x, grid.x * grid.y, dev_view, dev_Matrix);
 
