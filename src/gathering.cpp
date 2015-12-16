@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "DoCuda.h"
 
 Gathering::Gathering( const Gathering& other ) : Node( other ), m_Member( other.m_Member )
 {
@@ -127,6 +128,9 @@ BOOL Gathering::AddNode(CTreeCtrl& c, HTREEITEM hitem, Node* pNode)
 void Gathering::SetRoot(Node* const root)
 {
 	m_Root = root;
+	if (!DoCuda_SetRoot(m_devNode, root->m_devNode)) {
+		MessageBox(0, "Failed to DoCuda_SetRoot().", "Error", MB_OK);
+	}
 
 	for (int i = 0; i < m_Member; i++)
 		m_Node[i]->SetRoot(root);
