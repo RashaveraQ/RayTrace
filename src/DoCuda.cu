@@ -258,3 +258,26 @@ bool DoCuda_updateMatrix(DevNode** devNode, const struct matrix* pMatrix)
 
 	return true;
 }
+
+__global__
+void SetRoot(DevNode** out, DevNode** root)
+{
+	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
+		(*out)->SetRoot(root);
+}
+
+bool DoCuda_SetRoot(DevNode** devNode, DevNode** devRoot)
+{
+	if (!DoCuda_Init())
+		return false;
+
+	SetRoot << <1, 1 >> >(devNode, devRoot);
+
+	cudaError_t cudaStatus;
+	// Check for any errors launching the kernel
+	cudaStatus = cudaGetLastError();
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+	return true;
+}

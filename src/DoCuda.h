@@ -7,3 +7,4 @@ bool DoCuda_Free(void* dst);
 bool mallocDev(DevNode*** out);
 bool freeDevicePointer(DevNode** devNode);
 bool DoCuda_updateMatrix(DevNode** devNode, const struct matrix* pMatrix);
+bool DoCuda_SetRoot(DevNode** devNode, DevNode** devRoot);

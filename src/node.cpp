@@ -163,6 +163,14 @@ bool Node::IsInside2(const sp& L) {
 	return IsInside(m_Matrix.Inv() * L);
 }
 
+void Node::SetRoot(Node* const root)
+{
+	m_Root = root;
+	if (!DoCuda_SetRoot(m_devNode, root->m_devNode)) {
+		MessageBox(0, "Failed to DoCuda_SetRoot().", "Error", MB_OK );
+	}
+}
+
 bool Node::MakeMemoryDCfromTextureFileName()
 {
 	HBITMAP		h;

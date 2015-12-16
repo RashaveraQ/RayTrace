@@ -76,7 +76,7 @@ public:
 
 	// オペレーション
 	void Set_Name(const char* const str) { strncpy_s(m_Name, sizeof(m_Name), str, 99); }
-	virtual void SetRoot(Node* const root) { m_Root = root; }
+	virtual void SetRoot(Node* const root);
 
 	sp GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fromOutSide);
 	bool GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide);
