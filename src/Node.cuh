@@ -17,7 +17,6 @@ class DevNode
 protected:
 	DevNode*	m_pParent;
 	node_type	m_NodeType;
-	D3DMATERIAL9 m_Material;
 
 	Matrix		m_Scale;	// スケール変換
 	Matrix		m_Rotate;	// 回転
@@ -50,5 +49,6 @@ public:
 	}
 
 	Matrix		m_Matrix;
+	D3DMATERIAL9 m_Material;
 };
 

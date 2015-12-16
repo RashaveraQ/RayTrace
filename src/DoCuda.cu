@@ -8,7 +8,7 @@
 #include "Matrix.cuh"
 #include "Node.cuh"
 #include "Plus.cuh"
-
+#include <d3d9.h>
 #include <stdio.h>
 
 int numSMs = -1;
@@ -253,6 +253,34 @@ bool DoCuda_updateMatrix(DevNode** devNode, const struct matrix* pMatrix)
 	}
 
 	cudaStatus = cudaFree(dev_Matrix);
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+
+	return true;
+}
+
+__global__
+void updateColor(DevNode** out, float r, float g, float b)
+{
+	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0) {
+		(*out)->m_Material.Diffuse.r = (*out)->m_Material.Ambient.r = r;
+		(*out)->m_Material.Diffuse.g = (*out)->m_Material.Ambient.g = g;
+		(*out)->m_Material.Diffuse.b = (*out)->m_Material.Ambient.b = b;
+	}
+}
+
+bool DoCuda_updateColor(DevNode** devNode, float r, float g, float b)
+{
+	if (!DoCuda_Init())
+		return false;
+
+	cudaError_t cudaStatus;
+
+	updateColor<<<1, 1>>>(devNode, r, g, b);
+
+	// Check for any errors launching the kernel
+	cudaStatus = cudaGetLastError();
 	if (cudaStatus != cudaSuccess) {
 		return false;
 	}

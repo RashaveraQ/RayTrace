@@ -10,3 +10,4 @@ bool freeDevicePointer(DevNode** devNode);
 bool DoCuda_updateMatrix(DevNode** devNode, const struct matrix* pMatrix);
 bool DoCuda_SetRoot(DevNode** devNode, DevNode** devRoot);
 bool DoCuda_AddNode(DevGathering** devGathering, DevNode** devNode);
+bool DoCuda_updateColor(DevNode** devNode, float r, float g, float b);

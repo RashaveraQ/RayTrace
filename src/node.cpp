@@ -625,9 +625,18 @@ BOOL Node::EditColor()
 		return FALSE;
 
 	color = color_dlg.GetColor();
-	m_Material.Diffuse.r = m_Material.Ambient.r = (float)(0xff & color) / 256;
-	m_Material.Diffuse.g = m_Material.Ambient.g = (float)(0xff & color >> 8) / 256;
-	m_Material.Diffuse.b = m_Material.Ambient.b = (float)(0xff & color >> 16) / 256;
+
+	float r = (float)(0xff & color) / 256;
+	float g = (float)(0xff & color >> 8) / 256;
+	float b = (float)(0xff & color >> 16) / 256;
+
+	m_Material.Diffuse.r = m_Material.Ambient.r = r;
+	m_Material.Diffuse.g = m_Material.Ambient.g = g;
+	m_Material.Diffuse.b = m_Material.Ambient.b = b;
+
+	if (!DoCuda_updateColor(m_devNode, r, g, b)) {
+		MessageBox(0, "Failed to DoCuda_udpateColor", "Error", MB_OK);
+	}
 
 	return TRUE;
 }
