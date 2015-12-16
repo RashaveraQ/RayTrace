@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "raytrace.h"
 #include "Viewport.h"
+#include "DoCuda.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -87,6 +88,9 @@ void Viewport::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeome
 void Viewport::AttachRoot(const Node* pRoot)
 {
 	m_Node[m_Member++] = (class Node*)pRoot;
+	if (!DoCuda_AttachRoot((DevPlus**)m_devNode, pRoot->m_devNode)) {
+		MessageBox(0, "Failed to DoCuda_AttachRoot", "Error", MB_OK);
+	}
 }
 
 void Viewport::DetachRoot()

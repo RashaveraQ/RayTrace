@@ -7,6 +7,7 @@
 #include "matrix.h"
 #include "Matrix.cuh"
 #include "Node.cuh"
+#include "Plus.cuh"
 
 #include <stdio.h>
 
@@ -272,6 +273,29 @@ bool DoCuda_SetRoot(DevNode** devNode, DevNode** devRoot)
 		return false;
 
 	SetRoot << <1, 1 >> >(devNode, devRoot);
+
+	cudaError_t cudaStatus;
+	// Check for any errors launching the kernel
+	cudaStatus = cudaGetLastError();
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+	return true;
+}
+
+__global__
+void AttachRoot(DevPlus **out, DevNode** root)
+{
+	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
+		(*out)->AttachRoot(root);
+}
+
+bool DoCuda_AttachRoot(DevPlus** devNode, DevNode** devRoot)
+{
+	if (!DoCuda_Init())
+		return false;
+
+	AttachRoot<<<1, 1>>>(devNode, devRoot);
 
 	cudaError_t cudaStatus;
 	// Check for any errors launching the kernel

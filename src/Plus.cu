@@ -63,3 +63,9 @@ bool newDevPlus(DevNode*** out, DevNode** const root, const char* const Name)
 
 	return true;
 }
+
+__device__
+void DevPlus::AttachRoot(DevNode** root)
+{
+	m_Node[m_Member++] = *root;
+}
