@@ -15,7 +15,7 @@ class DevNode
 {
 	__device__ virtual	bool IsInside(const Sp& L) const = 0;
 protected:
-	DevNode**	m_pParent;
+	DevNode*	m_pParent;
 	node_type	m_NodeType;
 	D3DMATERIAL9 m_Material;
 
@@ -45,7 +45,7 @@ public:
 	__device__ virtual const DevNode* MakeCopy() const = 0;
 	__device__ virtual bool Delete(DevNode*) { return false; }
 
-	__device__ void SetParent(DevNode** pParent) {
+	__device__ void SetParent(DevNode* pParent) {
 		m_pParent = pParent;
 	}
 

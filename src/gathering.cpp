@@ -122,6 +122,10 @@ BOOL Gathering::AddNode(CTreeCtrl& c, HTREEITEM hitem, Node* pNode)
 
 	pNode->SetParent(this);
 
+	if (!DoCuda_AddNode((DevGathering**)m_devNode, pNode->m_devNode)) {
+		MessageBox(0, "Failed to DoCuda_AddNode", "Error", MB_OK);
+	}
+
 	return TRUE;
 }
 

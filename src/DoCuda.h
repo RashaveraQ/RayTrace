@@ -1,5 +1,5 @@
 class DevNode;
-class DevPlus;
+class DevGathering;
 
 bool DoCuda_Init();
 bool DoCuda_OnSize(void** dst, const int imageW, const int imageH);
@@ -9,4 +9,4 @@ bool mallocDev(DevNode*** out);
 bool freeDevicePointer(DevNode** devNode);
 bool DoCuda_updateMatrix(DevNode** devNode, const struct matrix* pMatrix);
 bool DoCuda_SetRoot(DevNode** devNode, DevNode** devRoot);
-bool DoCuda_AttachRoot(DevPlus** devNode, DevNode** devRoot);
+bool DoCuda_AddNode(DevGathering** devGathering, DevNode** devNode);

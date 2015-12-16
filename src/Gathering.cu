@@ -55,6 +55,18 @@ BOOL DevGathering::AddNode(CTreeCtrl& c, HTREEITEM hitem, DevNode* pNode)
 	return TRUE;
 }
 */
+__device__
+bool DevGathering::AddNode(DevNode** node)
+{
+	if (m_Member >= 1000)
+		return false;
+
+	m_Node[m_Member++] = *node;
+
+	(*node)->SetParent(this);
+
+	return true;
+}
 
 __device__
 void DevGathering::SetRoot(DevNode** const root)

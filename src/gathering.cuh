@@ -18,7 +18,7 @@ public:
 	__device__ void SetRoot(DevNode** const root);
 	//void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
 	//bool SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& m) const;
-	//bool AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target);
+	__device__ bool AddNode(DevNode** node);
 	//void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;
 	//void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	__device__ bool Delete(DevNode*);

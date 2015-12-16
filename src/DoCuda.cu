@@ -284,18 +284,18 @@ bool DoCuda_SetRoot(DevNode** devNode, DevNode** devRoot)
 }
 
 __global__
-void AttachRoot(DevPlus **out, DevNode** root)
+void AddNode(DevGathering **out, DevNode** node)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		(*out)->AttachRoot(root);
+		(*out)->AddNode(node);
 }
 
-bool DoCuda_AttachRoot(DevPlus** devNode, DevNode** devRoot)
+bool DoCuda_AddNode(DevGathering** devGathering, DevNode** devNode)
 {
 	if (!DoCuda_Init())
 		return false;
 
-	AttachRoot<<<1, 1>>>(devNode, devRoot);
+	AddNode<<<1, 1>>>(devGathering, devNode);
 
 	cudaError_t cudaStatus;
 	// Check for any errors launching the kernel

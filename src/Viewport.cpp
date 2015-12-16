@@ -88,8 +88,8 @@ void Viewport::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeome
 void Viewport::AttachRoot(const Node* pRoot)
 {
 	m_Node[m_Member++] = (class Node*)pRoot;
-	if (!DoCuda_AttachRoot((DevPlus**)m_devNode, pRoot->m_devNode)) {
-		MessageBox(0, "Failed to DoCuda_AttachRoot", "Error", MB_OK);
+	if (!DoCuda_AddNode((DevGathering**)m_devNode, pRoot->m_devNode)) {
+		MessageBox(0, "Failed to DoCuda_AddNode", "Error", MB_OK);
 	}
 }
 
