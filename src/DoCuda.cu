@@ -289,6 +289,34 @@ bool DoCuda_updateColor(DevNode** devNode, float r, float g, float b)
 }
 
 __global__
+void updateMaterial(DevNode** out, float reflect, float refractive, float through)
+{
+	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0) {
+		(*out)->m_Reflect = reflect;
+		(*out)->m_Refractive = refractive;
+		(*out)->m_Through = through;
+	}
+}
+
+bool DoCuda_updateMaterial(DevNode** devNode, float reflect, float refractive, float through)
+{
+	if (!DoCuda_Init())
+		return false;
+
+	cudaError_t cudaStatus;
+
+	updateMaterial<<<1, 1>>>(devNode, reflect, refractive, through);
+
+	// Check for any errors launching the kernel
+	cudaStatus = cudaGetLastError();
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+
+	return true;
+}
+
+__global__
 void SetRoot(DevNode** out, DevNode** root)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)

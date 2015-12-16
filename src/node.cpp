@@ -666,6 +666,10 @@ BOOL Node::EditMaterial()
 
 	dlg_material.Get(*this);
 
+	if (!DoCuda_updateMaterial(m_devNode, m_Reflect, m_Refractive, m_Through)) {
+		MessageBox(0, "Failed to DoCuda_updateMaterial", "Error", MB_OK);
+	}
+
 	return TRUE;
 }
 

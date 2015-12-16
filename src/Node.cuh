@@ -23,10 +23,6 @@ protected:
 	Matrix		m_Move;		// 平行移動
 	Matrix		m_Pivot;	// マニュピレータの中心点
 
-	float		m_Reflect;		// 反射率
-	float		m_Through;  	// 透過率
-	float		m_Refractive;	// 屈折率
-
 	DevNode**	m_Root;
 
 	__device__ Sp GetPixel(float x, float y) const;
@@ -50,5 +46,8 @@ public:
 
 	Matrix		m_Matrix;
 	D3DMATERIAL9 m_Material;
+	float		m_Reflect;		// 反射率
+	float		m_Through;  	// 透過率
+	float		m_Refractive;	// 屈折率
 };
 
