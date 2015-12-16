@@ -485,6 +485,8 @@ void CRayTraceView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 		m_NowSize = START_SQUARE;
 		m_Job = CONTINUED;
 		break;
+	case eCudaRayTrace:
+		Invalidate();
 	}
 }
 
@@ -619,6 +621,7 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 	else {
 		switch (m_ViewMode) {
 		case eRayTrace:
+		case eCudaRayTrace:
 		case eWireFrame:
 		case eWireFrameWithRayTrace:
 			OnUpdate(0, 0, 0);
