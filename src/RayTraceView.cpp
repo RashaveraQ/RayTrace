@@ -8,6 +8,7 @@
 #include "RayTraceView.h"
 #include "DoCuda.h"
 #include "GetVectorFromPoint.h"
+#include "MainFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -109,16 +110,40 @@ BOOL CRayTraceView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CRayTraceView::OnDraw(CDC* pDC)
 {
+	DWORD t1, t2, t3, t4, d1, d2, d3;
+	CString str;
+
 	switch (m_ViewMode) {
 	case eCudaRayTrace:
+
+		t1 = GetTickCount();
+
 		if (!DoCuda_OnDraw(m_ColorRefs, m_deviceAllocateMemory, GetDocument()->m_Root.m_devNode, m_ClientSize.cx, m_ClientSize.cy, &m_View, &m_Viewport.getMatrix().Inv()))
 			MessageBox("Failed to DoCuda_OnDraw.");
+
+		t2 = GetTickCount();
+
 		for (int y = 0; y < m_ClientSize.cy; y++)
 			for (int x = 0; x < m_ClientSize.cx; x++)
 				m_MemoryDC.FillSolidRect(CRect(x, y, x + 1, y + 1), m_ColorRefs[x + y * m_ClientSize.cx]);
+
 	case eRayTrace:
 	case eWireFrameWithRayTrace:
+
+		t3 = GetTickCount();
+
 		pDC->BitBlt(0, 0, m_ClientSize.cx, m_ClientSize.cy, &m_MemoryDC, 0, 0, SRCCOPY);
+
+		t4 = GetTickCount();
+
+		d1 = t2 - t1;
+		d2 = t3 - t2;
+		d3 = t4 - t3;
+
+		extern CRayTraceApp theApp;
+		str.Format("GPU : %d, CPU : %d (= %d + %d)\n", d1, d2 + d3, d2, d3);
+		((CMainFrame*)theApp.m_pMainWnd)->SetStatusText(str);
+
 		if (m_ViewMode == eRayTrace || m_ViewMode == eCudaRayTrace)
 			break;
 	case eWireFrame:

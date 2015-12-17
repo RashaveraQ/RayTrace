@@ -20,7 +20,9 @@ public:
 
 	// オペレーション
 public:
-
+	void SetStatusText(LPCTSTR msg) {
+		m_wndStatusBar.SetPaneText(0, msg);
+	}
 	// オーバーライド
 	// ClassWizard は仮想関数のオーバーライドを生成します。
 	//{{AFX_VIRTUAL(CMainFrame)
