@@ -45,6 +45,10 @@ void	Gathering::Serialize(CArchive& ar)
 			case CUBE:		m_Node[i] = new Cube(m_Root);		break;
 			}
 			m_Node[i]->Serialize(ar);
+
+			if (!DoCuda_AddNode((DevGathering**)m_devNode, m_Node[i]->m_devNode)) {
+				MessageBox(0, "Failed to DoCuda_AddNode", "Error", MB_OK);
+			}
 		}
 	}
 }

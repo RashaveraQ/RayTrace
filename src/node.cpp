@@ -607,6 +607,12 @@ void Node::Serialize(CArchive& ar)
 		}
 		m_Matrix = m_Move * m_Rotate * m_Scale;
 		ar >> m_Reflect;	ar >> m_Through;	ar >> m_Refractive;
+
+		if (!DoCuda_updateMatrix(m_devNode, &m_Matrix) ||
+			!DoCuda_updateMaterial(m_devNode, m_Reflect, m_Refractive, m_Through) ||
+			!DoCuda_updateColor(m_devNode, m_Material.Diffuse.r, m_Material.Diffuse.g, m_Material.Diffuse.b)) {
+			MessageBox(0, "Failed to DoCuda_update*", "Error", MB_OK);
+		}
 	}
 }
 
