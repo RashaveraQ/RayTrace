@@ -23,44 +23,42 @@ bool DevCylinder::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return false;
 
-	if (L.y < -1)
-	{
+	if (L.y < -1) {
 		if (K.y <= 0)
 			return false;
 
 		float t = -(1 + L.y) / K.y;
-
-		Sp	p = K*t + L;
-
-		if (p.x * p.x + p.z * p.z <= 1) {
-			info.Cross = p;
-			info.Vertical = Sp(0, -1, 0);
-			info.Distance = t * sqrt(K*K);
-			info.isEnter = 1;
-			info.Material = GetPixel(.5f*(p.x + 1), .5f*(p.z + 1)).getMaterial();
-			info.pNode = this;
-			return true;
+		if (t > 0) {
+			Sp	p = K * t + L;
+			if (p.x * p.x + p.z * p.z <= 1) {
+				info.Cross = p;
+				info.Vertical = Sp(0, -1, 0);
+				info.Distance = t * sqrt(K * K);
+				info.isEnter = 1;
+				info.Material = GetPixel(.5f*(p.x + 1), .5f*(p.z + 1)).getMaterial();
+				info.pNode = this;
+				return true;
+			}
 		}
 	}
 
-	if (L.y > 1)
-	{
+	if (L.y > 1) {
 		if (K.y >= 0)
 			return false;
 
 		float t = (1 - L.y) / K.y;
+		if (t > 0) {
+			Sp	p = K * t + L;
+			if (p.x * p.x + p.z * p.z <= 1) {
+				info.Cross = p;
+				info.Vertical = Sp(0, 1, 0);
+				info.Distance = t * sqrt(K * K);
+				info.isEnter = 1;
+				info.Material = GetPixel(.5f*(p.x + 1), .5f*(p.z + 1)).getMaterial();
+				info.pNode = this;
 
-		Sp	p = K*t + L;
-
-		if (p.x * p.x + p.z * p.z <= 1) {
-			info.Cross = p;
-			info.Vertical = Sp(0, 1, 0);
-			info.Distance = t * sqrt(K*K);
-			info.isEnter = 1;
-			info.Material = GetPixel(.5f*(p.x + 1), .5f*(p.z + 1)).getMaterial();
-			info.pNode = this;
-
-			return true;
+				return true;
+			}
 		}
 	}
 

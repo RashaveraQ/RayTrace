@@ -123,44 +123,41 @@ bool Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, 
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return FALSE;
 
-	if (L.y < -1)
-	{
+	if (L.y < -1) {
 		if (K.y <= 0)
 			return FALSE;
 
-		float t = -(1 + L.y)/K.y;
-
-		sp	p = K*t+L;
-
-		if (p.x * p.x + p.z * p.z <= 1) {
-			info.Cross = p;
-			info.Vertical = sp(0,-1,0);
-			info.Distance = t * sqrt(K*K);
-			info.isEnter = 1;
-			info.Material = GetPixel(.5f*(p.x+1),.5f*(p.z+1)).getMaterial();
-			info.pNode = this;
-			return TRUE;
+		float t = -(1 + L.y) / K.y;
+		if (t > 0) {
+			sp	p = K * t + L;
+			if (p.x * p.x + p.z * p.z <= 1) {
+				info.Cross = p;
+				info.Vertical = sp(0, -1, 0);
+				info.Distance = t * sqrt(K*K);
+				info.isEnter = 1;
+				info.Material = GetPixel(.5f*(p.x + 1), .5f*(p.z + 1)).getMaterial();
+				info.pNode = this;
+				return TRUE;
+			}
 		}
 	}
 
-	if (L.y > 1)
-	{
+	if (L.y > 1) {
 		if (K.y >= 0)
 			return FALSE;
 
 		float t = (1 - L.y) / K.y;
-
-		sp	p = K*t+L;
-
-		if (p.x * p.x + p.z * p.z <= 1) {
-			info.Cross = p;
-			info.Vertical = sp(0,1,0);
-			info.Distance = t * sqrt(K*K);
-			info.isEnter = 1;
-			info.Material = GetPixel(.5f*(p.x+1),.5f*(p.z+1)).getMaterial();
-			info.pNode = this;
-
-			return TRUE;
+		if (t > 0) {
+			sp	p = K*t + L;
+			if (p.x * p.x + p.z * p.z <= 1) {
+				info.Cross = p;
+				info.Vertical = sp(0, 1, 0);
+				info.Distance = t * sqrt(K*K);
+				info.isEnter = 1;
+				info.Material = GetPixel(.5f*(p.x + 1), .5f*(p.z + 1)).getMaterial();
+				info.pNode = this;
+				return TRUE;
+			}
 		}
 	}
 
