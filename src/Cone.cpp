@@ -125,17 +125,17 @@ bool Cone::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool
 	sp     v[2];
 	int i = 0;
 
-	t[i] = (1 - L.y) / K.y;
-	sp p = K * t[i] + L;
-
-	if (p.x * p.x + p.z * p.z <= 1) {
-		v[i] = sp(0, 1, 0);
-		info.Material = GetPixel(.5f * (p.x + 1), .5f * (p.z + 1)).getMaterial();
-		info.pNode = this;
-		info.Refractive = m_Refractive;
-		i++;
+	t[0] = (1 - L.y) / K.y;
+	if (t[0] > 0) {
+		sp p = K * t[i] + L;
+		if (p.x * p.x + p.z * p.z <= 1) {
+			v[i] = sp(0, 1, 0);
+			info.Material = GetPixel(.5f * (p.x + 1), .5f * (p.z + 1)).getMaterial();
+			info.pNode = this;
+			info.Refractive = m_Refractive;
+			i++;
+		}
 	}
-
 	float	a, b, c, d, t1, t2;
 
 	c = K.x * L.y - K.y * L.x, c *= c, d = c;
@@ -148,7 +148,7 @@ bool Cone::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool
 		b = K.x * K.x + K.z * K.z - K.y * K.y;
 
 		t1 = ( a + d ) / b;
-		p = K * t1 + L;
+		sp p = K * t1 + L;
 		if (p.y < 0 || p.y > 1 || p.x * p.x + p.z * p.z > 1)
 			t1 = -1;
 		

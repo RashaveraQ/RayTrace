@@ -30,15 +30,16 @@ bool DevCone::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pH
 	Sp     v[2];
 	int i = 0;
 
-	t[i] = (1 - L.y) / K.y;
-	Sp p = K * t[i] + L;
-
-	if (p.x * p.x + p.z * p.z <= 1) {
-		v[i] = Sp(0, 1, 0);
-		info.Material = GetPixel(.5f * (p.x + 1), .5f * (p.z + 1)).getMaterial();
-		info.pNode = this;
-		info.Refractive = m_Refractive;
-		i++;
+	t[0] = (1 - L.y) / K.y;
+	if (t[0] > 0) {
+		Sp p = K * t[0] + L;
+		if (p.x * p.x + p.z * p.z <= 1) {
+			v[i] = Sp(0, 1, 0);
+			info.Material = GetPixel(.5f * (p.x + 1), .5f * (p.z + 1)).getMaterial();
+			info.pNode = this;
+			info.Refractive = m_Refractive;
+			i++;
+		}
 	}
 
 	float	a, b, c, d, t1, t2;
@@ -53,7 +54,7 @@ bool DevCone::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pH
 		b = K.x * K.x + K.z * K.z - K.y * K.y;
 
 		t1 = (a + d) / b;
-		p = K * t1 + L;
+		Sp p = K * t1 + L;
 		if (p.y < 0 || p.y > 1 || p.x * p.x + p.z * p.z > 1)
 			t1 = -1;
 
