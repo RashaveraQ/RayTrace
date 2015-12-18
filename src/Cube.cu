@@ -30,45 +30,57 @@ bool DevCube::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pH
 	info.isEnter = (pHint && pHint->pNode == this) ? fromOutSide : !IsInside(L);
 
 	t[i] = (-1 - L.x) / K.x;
-	Sp p = K * t[i] + L;
-	if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
-		v[i] = Sp(-1, 0, 0);
-		i++;
+	if (t[i] > 0) {
+		Sp p = K * t[i] + L;
+		if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
+			v[i] = Sp(-1, 0, 0);
+			i++;
+		}
 	}
 
 	t[i] = (1 - L.x) / K.x;
-	p = K * t[i] + L;
-	if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
-		v[i] = Sp(1, 0, 0);
-		i++;
+	if (t[i] > 0) {
+		Sp p = K * t[i] + L;
+		if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
+			v[i] = Sp(1, 0, 0);
+			i++;
+		}
 	}
 
 	t[i] = (-1 - L.y) / K.y;
-	p = K * t[i] + L;
-	if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
-		v[i] = Sp(0, -1, 0);
-		i++;
+	if (t[i] > 0) {
+		Sp p = K * t[i] + L;
+		if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
+			v[i] = Sp(0, -1, 0);
+			i++;
+		}
 	}
 
 	t[i] = (1 - L.y) / K.y;
-	p = K * t[i] + L;
-	if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
-		v[i] = Sp(0, 1, 0);
-		i++;
+	if (t[i] > 0) {
+		Sp p = K * t[i] + L;
+		if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
+			v[i] = Sp(0, 1, 0);
+			i++;
+		}
 	}
 
 	t[i] = (-1 - L.z) / K.z;
-	p = K * t[i] + L;
-	if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
-		v[i] = Sp(0, 0, -1);
-		i++;
+	if (t[i] > 0) {
+		Sp p = K * t[i] + L;
+		if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
+			v[i] = Sp(0, 0, -1);
+			i++;
+		}
 	}
 
 	t[i] = (1 - L.z) / K.z;
-	p = K * t[i] + L;
-	if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
-		v[i] = Sp(0, 0, 1);
-		i++;
+	if (t[i] > 0) {
+		Sp p = K * t[i] + L;
+		if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
+			v[i] = Sp(0, 0, 1);
+			i++;
+		}
 	}
 
 	switch (i) {

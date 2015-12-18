@@ -36,45 +36,57 @@ bool Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool
 	info.isEnter = (pHint && pHint->pNode == this) ? fromOutSide : !IsInside(L);
 
 	t[i] = (-1 - L.x) / K.x;
-	sp p = K * t[i] + L;
-	if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
-		v[i] = sp(-1,0,0);
-		i++;
+	if (t[i] > 0) {
+		sp p = K * t[i] + L;
+		if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
+			v[i] = sp(-1,0,0);
+			i++;
+		}
 	}
 
 	t[i] = (1 - L.x) / K.x;
-	p = K * t[i] + L;
-	if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
-		v[i] = sp(1,0,0);
-		i++;
+	if (t[i] > 0) {
+		sp p = K * t[i] + L;
+		if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
+			v[i] = sp(1, 0, 0);
+			i++;
+		}
 	}
 
 	t[i] = (-1 - L.y) / K.y;
-	p = K * t[i] + L;
-	if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
-		v[i] = sp(0,-1,0);
-		i++;
+	if (t[i] > 0) {
+		sp p = K * t[i] + L;
+		if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
+			v[i] = sp(0, -1, 0);
+			i++;
+		}
 	}
 
 	t[i] = (1 - L.y) / K.y;
-	p = K * t[i] + L;
-	if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
-		v[i] = sp(0,1,0);
-		i++;
+	if (t[i] > 0) {
+		sp p = K * t[i] + L;
+		if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
+			v[i] = sp(0, 1, 0);
+			i++;
+		}
 	}
 
 	t[i] = (-1 - L.z) / K.z;
-	p = K * t[i] + L;
-	if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
-		v[i] = sp(0,0,-1);
-		i++;
+	if (t[i] > 0) {
+		sp p = K * t[i] + L;
+		if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
+			v[i] = sp(0, 0, -1);
+			i++;
+		}
 	}
 
 	t[i] = (1 - L.z) / K.z;
-	p = K * t[i] + L;
-	if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
-		v[i] = sp(0,0,1);
-		i++;
+	if (t[i] > 0) {
+		sp p = K * t[i] + L;
+		if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
+			v[i] = sp(0, 0, 1);
+			i++;
+		}
 	}
 
 	switch (i) {
