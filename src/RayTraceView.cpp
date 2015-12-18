@@ -511,7 +511,7 @@ void CRayTraceView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 		m_Job = CONTINUED;
 		break;
 	case eCudaRayTrace:
-		Invalidate();
+		Invalidate(FALSE);
 	}
 }
 
