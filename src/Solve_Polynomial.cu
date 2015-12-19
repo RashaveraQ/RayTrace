@@ -35,8 +35,8 @@ void qsort2(float* base, size_t num, size_t width, int(*compare)(const void *, c
 	if (num < 2)
 		return;
 
-	for (int i = 0; i < num - 1; i++) {
-		for (int j = i; j < num - 1; j++) {
+	for (unsigned int i = 0; i < num - 1; i++) {
+		for (unsigned int j = i; j < num - 1; j++) {
 			if (compare(base+ j, base + j + 1) > 0) {
 				float v = base[j];
 				base[j] = base[j+1];
