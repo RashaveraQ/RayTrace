@@ -30,6 +30,23 @@ static int compare(const void *arg1, const void *arg2)
 }
 
 __host__ __device__
+void qsort2(float* base, size_t num, size_t width, int(*compare)(const void *, const void *))
+{
+	if (num < 2)
+		return;
+
+	for (int i = 0; i < num - 1; i++) {
+		for (int j = i; j < num - 1; j++) {
+			if (compare(base+ j, base + j + 1) > 0) {
+				float v = base[j];
+				base[j] = base[j+1];
+				base[j+1] = v;
+			}
+		}
+	}
+}
+
+__host__ __device__
 static float walk(int d, float *k, float min, float max)
 {
 	float a, b, f, g, x, y;
@@ -143,7 +160,7 @@ int Solve_Polynomial(int d, float *k, float min, float max, float *r)
 		r[ans++] = walk(d, k, R[i], R[i + 1]);
 	}
 
-	qsort((void*)r, (size_t)ans, sizeof(float), compare);
+	qsort2(r, (size_t)ans, sizeof(float), compare);
 
 	for (i = 0; i < ans - 1; i++)
 	{
