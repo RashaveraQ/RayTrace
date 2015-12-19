@@ -28,7 +28,7 @@ protected:
 	__device__ Sp GetPixel(float x, float y) const;
 
 public:
-	__device__ DevNode(DevNode** const root, node_type NodeType, const char* const Name, const Sp Color = Sp(-1, -1, -1));
+	__device__ DevNode(DevNode** const root, node_type NodeType, const Sp Color = Sp(-1, -1, -1));
 	__device__ DevNode(const DevNode &other);
 	__device__ virtual void SetRoot(DevNode** const root) { m_Root = root; }
 

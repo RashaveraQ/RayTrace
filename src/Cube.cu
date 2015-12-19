@@ -5,8 +5,8 @@
 #include "Cube.cuh"
 
 __device__
-DevCube::DevCube(DevNode** const root, const char* const Name, const Sp Color)
-	: DevNode(root, CUBE, Name, Color)
+DevCube::DevCube(DevNode** const root, const Sp Color)
+	: DevNode(root, CUBE, Color)
 {
 
 }
@@ -111,18 +111,18 @@ bool DevCube::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pH
 }
 
 __global__
-void newCube(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
+void newCube(DevNode** out, DevNode** const root, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevCube(root, Name, Sp(Material));
+		*out = new DevCube(root, Sp(Material));
 }
 
-bool newDevCube(DevNode*** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
+bool newDevCube(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material)
 {
 	if (!mallocDev(out))
 		return false;
 
-	newCube<<<1, 1>>>(*out, root, Name, Material);
+	newCube<<<1, 1>>>(*out, root, Material);
 
 	// Check for any errors launching the kernel
 	cudaError_t cudaStatus = cudaGetLastError();

@@ -5,8 +5,8 @@
 #include "Sphere.cuh"
 
 __device__
-DevSphere::DevSphere(DevNode** const root, const char* const Name, const Sp Color)
-	: DevNode(root, SPHERE, Name, Color)
+DevSphere::DevSphere(DevNode** const root, const Sp Color)
+	: DevNode(root, SPHERE, Color)
 {
 
 }
@@ -79,18 +79,18 @@ bool DevSphere::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* 
 }
 
 __global__
-void newSphere(DevNode** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
+void newSphere(DevNode** out, DevNode** const root, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevSphere(root, Name, Sp(Material));
+		*out = new DevSphere(root, Sp(Material));
 }
 
-bool newDevSphere(DevNode*** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material)
+bool newDevSphere(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material)
 {
 	if (!mallocDev(out))
 		return false;
 
-	newSphere<<<1, 1>>>(*out, root, Name, Material);
+	newSphere<<<1, 1>>>(*out, root, Material);
 
 	// Check for any errors launching the kernel
 	cudaError_t cudaStatus = cudaGetLastError();

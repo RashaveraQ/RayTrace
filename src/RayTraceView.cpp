@@ -92,7 +92,7 @@ CRayTraceView::~CRayTraceView()
 		free(m_ColorRefs);
 		m_ColorRefs = NULL;
 		if (!DoCuda_Free(m_deviceAllocateMemory))
-			MessageBox("Failed to DoCuda_Free");
+			MessageBox(_T("Failed to DoCuda_Free"));
 	}
 }
 
@@ -119,7 +119,7 @@ void CRayTraceView::OnDraw(CDC* pDC)
 		t1 = GetTickCount();
 
 		if (!DoCuda_OnDraw(m_ColorRefs, m_deviceAllocateMemory, GetDocument()->m_Root.m_devNode, m_ClientSize.cx, m_ClientSize.cy, &m_View, &m_Viewport.getMatrix().Inv()))
-			MessageBox("Failed to DoCuda_OnDraw.");
+			MessageBox(_T("Failed to DoCuda_OnDraw."));
 
 		t2 = GetTickCount();
 
@@ -141,7 +141,7 @@ void CRayTraceView::OnDraw(CDC* pDC)
 		d3 = t4 - t3;
 
 		extern CRayTraceApp theApp;
-		str.Format("GPU : %d, CPU : %d (= %d + %d)\n", d1, d2 + d3, d2, d3);
+		str.Format(_T("GPU : %d, CPU : %d (= %d + %d)\n"), d1, d2 + d3, d2, d3);
 		((CMainFrame*)theApp.m_pMainWnd)->SetStatusText(str);
 
 		if (m_ViewMode == eRayTrace || m_ViewMode == eCudaRayTrace)
@@ -226,7 +226,7 @@ void CRayTraceView::OnDraw(CDC* pDC)
 			while (pos) {
 				Geometry geometry = m_lstGeometry.GetAt(pos);
 				if (!geometry.Draw(m_pd3dDevice))
-					MessageBox("Error");
+					MessageBox(_T("Error"));
 				m_lstGeometry.GetNext(pos);
 			}
 
@@ -290,7 +290,7 @@ int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	if (!(m_TimerID = SetTimer(0, 1, NULL)))
-		MessageBox("SetTimer is returned to 0!");
+		MessageBox(_T("SetTimer is returned to 0!"));
 
 	CRayTraceDoc	*pDoc = GetDocument();
 
@@ -299,7 +299,7 @@ int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_deviceAllocateMemory = 0;
 	if (!DoCuda_Init())
-		MessageBox("Failed to DoCuda_Init!");
+		MessageBox(_T("Failed to DoCuda_Init!"));
 
 	return 0;
 }
@@ -365,11 +365,11 @@ void CRayTraceView::OnSize(UINT nType, int cx, int cy)
 		free(m_ColorRefs);
 		m_ColorRefs = NULL;
 		if (!DoCuda_Free(m_deviceAllocateMemory))
-			MessageBox("Failed to DoCuda_Free.");
+			MessageBox(_T("Failed to DoCuda_Free."));
 	}
 	m_ColorRefs = (COLORREF*)malloc(cx * cy * sizeof(COLORREF));
 	if (!DoCuda_OnSize(&m_deviceAllocateMemory, cx, cy)) {
-		MessageBox("Failed to DoCuda_OnSize.");
+		MessageBox(_T("Failed to DoCuda_OnSize."));
 	}
 
 	if (!m_Iconized && nType != SIZE_MINIMIZED)	{
@@ -475,7 +475,7 @@ void CRayTraceView::UpdateDevice()
 	if (FAILED(g_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, GetSafeHwnd(),
 		D3DCREATE_HARDWARE_VERTEXPROCESSING,
 		&d3dpp, &m_pd3dDevice))) {
-		AfxMessageBox("Failed to CreateDevice");
+		AfxMessageBox(_T("Failed to CreateDevice"));
 		return;
 	}
 

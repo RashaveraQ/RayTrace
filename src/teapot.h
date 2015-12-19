@@ -14,7 +14,7 @@ protected:
 	virtual bool newDeviceNode();
 public:
 	// コンストラクタ
-	Teapot(Node* const root = 0, const char* const Name = "Teapot", const sp Color = sp(255, 255, 255));
+	Teapot(Node* const root = 0, const TCHAR* const Name = _T("Teapot"), const sp Color = sp(255, 255, 255));
 	Teapot(const Teapot& other);
 
 	bool GetInfo(const struct sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;

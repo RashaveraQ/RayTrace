@@ -8,8 +8,8 @@ protected:
 	DevNode*	m_Node[1000];
 public:
 	// コンストラクタ
-	__device__ DevGathering(DevNode** const root, node_type NodeType, const char* const Name)
-		: DevNode(root, NodeType, Name), m_Member(0) {}
+	__device__ DevGathering(DevNode** const root, node_type NodeType)
+		: DevNode(root, NodeType), m_Member(0) {}
 	__device__ DevGathering(const DevGathering& other);
 
 	// デストラクタ

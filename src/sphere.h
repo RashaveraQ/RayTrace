@@ -14,7 +14,7 @@ protected:
 	virtual bool newDeviceNode();
 public:
 	// コンストラクタ
-	Sphere(Node* const root = 0, const char* const Name = "Sphere", const sp Color = sp(255, 255, 255));
+	Sphere(Node* const root = 0, const TCHAR* const Name = _T("Sphere"), const sp Color = sp(255, 255, 255));
 	Sphere(const Sphere& other);
 
 	bool GetInfo(const struct sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;

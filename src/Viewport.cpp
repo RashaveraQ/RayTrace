@@ -89,7 +89,7 @@ void Viewport::AttachRoot(const Node* pRoot)
 {
 	m_Node[m_Member++] = (class Node*)pRoot;
 	if (!DoCuda_AddNode((DevGathering**)m_devNode, pRoot->m_devNode)) {
-		MessageBox(0, "Failed to DoCuda_AddNode", "Error", MB_OK);
+		MessageBox(0, _T("Failed to DoCuda_AddNode"), _T("Error"), MB_OK);
 	}
 }
 

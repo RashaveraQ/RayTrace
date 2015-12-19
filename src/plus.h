@@ -9,7 +9,7 @@ protected:
 	virtual bool newDeviceNode();
 public:
 	// コンストラクタ
-	Plus(Node* const root = 0, const char* const Name = "Plus");
+	Plus(Node* const root = 0, const TCHAR* const Name = _T("Plus"));
 	Plus(const Plus& other);
 
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;

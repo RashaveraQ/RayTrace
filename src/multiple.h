@@ -9,7 +9,7 @@ protected:
 	virtual bool newDeviceNode();
 public:
 	// コンストラクタ
-	Multiple(Node* const root = 0, const char* const Name = "Multiple");
+	Multiple(Node* const root = 0, const TCHAR* const Name = _T("Multiple"));
 	Multiple(const Multiple& other);
 
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;

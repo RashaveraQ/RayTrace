@@ -67,18 +67,18 @@ int	DevMinus::cmp_distance(float a, float b) const
 }
 
 __global__
-void newMinus(DevNode** out, DevNode** const root, const char* const Name)
+void newMinus(DevNode** out, DevNode** const root)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevMinus(root, Name);
+		*out = new DevMinus(root);
 }
 
-bool newDevMinus(DevNode*** out, DevNode** const root, const char* const Name)
+bool newDevMinus(DevNode*** out, DevNode** const root)
 {
 	if (!mallocDev(out))
 		return false;
 
-	newMinus<<<1, 1>>>(*out, root, Name);
+	newMinus<<<1, 1>>>(*out, root);
 
 	// Check for any errors launching the kernel
 	cudaError_t cudaStatus = cudaGetLastError();

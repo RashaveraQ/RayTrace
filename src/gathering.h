@@ -11,7 +11,7 @@ protected:
 public:
 
 	// コンストラクタ
-	Gathering(Node* const root, node_type NodeType, const char* const Name)
+	Gathering(Node* const root, node_type NodeType, const TCHAR* const Name)
 		: Node(root, NodeType, Name), m_Member(0) {}
 	Gathering(const Gathering& other);
 

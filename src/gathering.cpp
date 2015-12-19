@@ -47,7 +47,7 @@ void	Gathering::Serialize(CArchive& ar)
 			m_Node[i]->Serialize(ar);
 
 			if (!DoCuda_AddNode((DevGathering**)m_devNode, m_Node[i]->m_devNode)) {
-				MessageBox(0, "Failed to DoCuda_AddNode", "Error", MB_OK);
+				MessageBox(0, _T("Failed to DoCuda_AddNode"), _T("Error"), MB_OK);
 			}
 		}
 	}
@@ -127,7 +127,7 @@ BOOL Gathering::AddNode(CTreeCtrl& c, HTREEITEM hitem, Node* pNode)
 	pNode->SetParent(this);
 
 	if (!DoCuda_AddNode((DevGathering**)m_devNode, pNode->m_devNode)) {
-		MessageBox(0, "Failed to DoCuda_AddNode", "Error", MB_OK);
+		MessageBox(0, _T("Failed to DoCuda_AddNode"), _T("Error"), MB_OK);
 	}
 
 	return TRUE;
@@ -137,7 +137,7 @@ void Gathering::SetRoot(Node* const root)
 {
 	m_Root = root;
 	if (!DoCuda_SetRoot(m_devNode, root->m_devNode)) {
-		MessageBox(0, "Failed to DoCuda_SetRoot().", "Error", MB_OK);
+		MessageBox(0, _T("Failed to DoCuda_SetRoot()."), _T("Error"), MB_OK);
 	}
 
 	for (int i = 0; i < m_Member; i++)

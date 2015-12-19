@@ -8,7 +8,7 @@
 #include "node.cuh"
 
 //IMPLEMENT_DYNAMIC( Node, CObject ) 
-Node::Node(Node* const root, node_type NodeType, const char* const Name, const sp Color)
+Node::Node(Node* const root, node_type NodeType, const TCHAR* const Name, const sp Color)
 	: m_Root(root), m_pParent(0), m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1)
 	, m_TextureFileName("")
 {
@@ -20,7 +20,7 @@ Node::Node(Node* const root, node_type NodeType, const char* const Name, const s
 Node::Node(const Node& other) : m_Root(other.m_Root), m_Scale(4, 4), m_Rotate(4, 4), m_Move(4, 4), m_Matrix(4, 4)
 {
 	m_NodeType = other.m_NodeType;
-	strcpy_s(m_Name, sizeof(m_Name), other.m_Name);
+	_tcscpy_s(m_Name, sizeof(m_Name), other.m_Name);
 	m_Material = other.m_Material;
 	m_Scale = other.m_Scale;
 	m_Rotate = other.m_Rotate;
@@ -38,7 +38,7 @@ Node::~Node()
 {
 	if (m_devNode) {
 		if (!freeDevicePointer(m_devNode)) {
-			MessageBox(0, "Failed to freeDevicePointer.", "Error", MB_OK);
+			MessageBox(0, _T("Failed to freeDevicePointer."), _T("Error"), MB_OK);
 		}
 		m_devNode = 0;
 	}
@@ -167,7 +167,7 @@ void Node::SetRoot(Node* const root)
 {
 	m_Root = root;
 	if (!DoCuda_SetRoot(m_devNode, root->m_devNode)) {
-		MessageBox(0, "Failed to DoCuda_SetRoot().", "Error", MB_OK );
+		MessageBox(0, _T("Failed to DoCuda_SetRoot()."), _T("Error"), MB_OK );
 	}
 }
 
@@ -342,12 +342,12 @@ bool InitVertexBuffer(LPDIRECT3DDEVICE9 pd3dDevice, LPDIRECT3DVERTEXBUFFER9& pVB
 		count * sizeof(CUSTOMVERTEX), 0,
 		D3DFVF_CUSTOMVERTEX, D3DPOOL_DEFAULT,
 		&pVB, NULL))) {
-		AfxMessageBox("Failed to CreateVertexBuffer");
+		AfxMessageBox(_T("Failed to CreateVertexBuffer"));
 		return false;
 	}
 
 	if (FAILED(pVB->Lock(0, 0, (void**)&pVertices, 0))) {
-		AfxMessageBox("Failed to Lock");
+		AfxMessageBox(_T("Failed to Lock"));
 		return false;
 	}
 
@@ -611,7 +611,7 @@ void Node::Serialize(CArchive& ar)
 		if (!DoCuda_updateMatrix(m_devNode, &m_Matrix) ||
 			!DoCuda_updateMaterial(m_devNode, m_Reflect, m_Refractive, m_Through) ||
 			!DoCuda_updateColor(m_devNode, m_Material.Diffuse.r, m_Material.Diffuse.g, m_Material.Diffuse.b)) {
-			MessageBox(0, "Failed to DoCuda_update*", "Error", MB_OK);
+			MessageBox(0, _T("Failed to DoCuda_update*"), _T("Error"), MB_OK);
 		}
 	}
 }
@@ -641,7 +641,7 @@ BOOL Node::EditColor()
 	m_Material.Diffuse.b = m_Material.Ambient.b = b;
 
 	if (!DoCuda_updateColor(m_devNode, r, g, b)) {
-		MessageBox(0, "Failed to DoCuda_udpateColor", "Error", MB_OK);
+		MessageBox(0, _T("Failed to DoCuda_udpateColor"), _T("Error"), MB_OK);
 	}
 
 	return TRUE;
@@ -673,7 +673,7 @@ BOOL Node::EditMaterial()
 	dlg_material.Get(*this);
 
 	if (!DoCuda_updateMaterial(m_devNode, m_Reflect, m_Refractive, m_Through)) {
-		MessageBox(0, "Failed to DoCuda_updateMaterial", "Error", MB_OK);
+		MessageBox(0, _T("Failed to DoCuda_updateMaterial"), _T("Error"), MB_OK);
 	}
 
 	return TRUE;
@@ -693,7 +693,7 @@ BOOL Node::EditTexture()
 		if (MakeMemoryDCfromTextureFileName())
 			return TRUE;
 
-		if (MessageBox(NULL, "Failed to read a bitmap file.", "Texture Selection Error", MB_RETRYCANCEL | MB_ICONERROR) != IDRETRY)
+		if (MessageBox(NULL, _T("Failed to read a bitmap file."), _T("Texture Selection Error"), MB_RETRYCANCEL | MB_ICONERROR) != IDRETRY)
 			return FALSE;
 	} while (1);
 

@@ -9,7 +9,7 @@ protected:
 	virtual bool newDeviceNode();
 public:
 	// コンストラクタ
-	Minus(Node* const root = 0, const char* const Name = "Minus");
+	Minus(Node* const root = 0, const TCHAR* const Name = _T("Minus"));
 	Minus(const Minus& other);
 
 	BOOL AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target);

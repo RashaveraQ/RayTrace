@@ -14,7 +14,7 @@ protected:
 	DECLARE_SERIAL(Polygon2)
 	virtual bool newDeviceNode();
 public:
-	Polygon2(Node* const root = 0, const char* const Name = "Polygon", const sp Color = sp(255, 255, 255));
+	Polygon2(Node* const root = 0, const TCHAR* const Name = _T("Polygon"), const sp Color = sp(255, 255, 255));
 	Polygon2(const Polygon2& other);
 	~Polygon2() { delete m_P; }
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const {}

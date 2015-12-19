@@ -9,7 +9,7 @@ IMPLEMENT_SERIAL(Torus, CObject, 1)
 
 Boundary Torus::sBoundary = Boundary(1);
 
-Torus::Torus(Node* const root, const char* const Name, const sp Color)
+Torus::Torus(Node* const root, const TCHAR* const Name, const sp Color)
 	: Node(root, TORUS, Name, Color), m_R(0.7f), m_r(0.3f)
 {
 	if (!newDeviceNode())
@@ -25,8 +25,8 @@ Torus::Torus(const Torus& other)
 
 bool Torus::newDeviceNode()
 {
-	bool newDevTorus(DevNode*** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material);
-	return newDevTorus(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Name, m_Material);
+	bool newDevTorus(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material);
+	return newDevTorus(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Material);
 }
 
 void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const

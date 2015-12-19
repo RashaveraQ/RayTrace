@@ -7,11 +7,11 @@ Boundary Sphere::sBoundary = Boundary(1);
 
 bool Sphere::newDeviceNode()
 {
-	bool newDevSphere(DevNode*** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material);
-	return newDevSphere(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Name, m_Material);
+	bool newDevSphere(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material);
+	return newDevSphere(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Material);
 }
 
-Sphere::Sphere(Node* const root, const char* const Name, const sp Color)
+Sphere::Sphere(Node* const root, const TCHAR* const Name, const sp Color)
 	: Node(root, SPHERE, Name, Color)
 {
 	if (!newDeviceNode())

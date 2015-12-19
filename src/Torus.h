@@ -16,7 +16,7 @@ private:
 	float	m_r;
 public:
 	// コンストラクタ
-	Torus(Node* const root = 0, const char* const Name = "Torus", const sp Color = sp(255, 255, 255));
+	Torus(Node* const root = 0, const TCHAR* const Name = _T("Torus"), const sp Color = sp(255, 255, 255));
 	Torus(const Torus& other);
 
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;

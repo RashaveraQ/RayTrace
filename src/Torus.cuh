@@ -7,7 +7,7 @@ class DevTorus : public DevNode
 	float	m_r;
 public:
 	// コンストラクタ
-	__device__ DevTorus(DevNode** const root = 0, const char* const Name = "Torus", const Sp Color = Sp(255, 255, 255));
+	__device__ DevTorus(DevNode** const root = 0, const Sp Color = Sp(255, 255, 255));
 	__device__ DevTorus(const DevTorus& other) : DevNode(other) {}
 
 	__device__ virtual	bool GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const;

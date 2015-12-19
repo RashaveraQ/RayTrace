@@ -5,7 +5,7 @@ class DevTeapot : public DevNode
 {
 public:
 	// コンストラクタ
-	__device__ DevTeapot(DevNode** const root = 0, const char* const Name = "Teapot", const Sp Color = Sp(255, 255, 255));
+	__device__ DevTeapot(DevNode** const root = 0, const Sp Color = Sp(255, 255, 255));
 	__device__ DevTeapot(const DevTeapot& other) : DevNode(other) {}
 
 	__device__ virtual	bool GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const;

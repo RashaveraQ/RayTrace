@@ -5,7 +5,7 @@ IMPLEMENT_SERIAL(Teapot, CObject, 1)
 
 Boundary Teapot::sBoundary = Boundary(1);
 
-Teapot::Teapot(Node* const root, const char* const Name, const sp Color)
+Teapot::Teapot(Node* const root, const TCHAR* const Name, const sp Color)
 	: Node(root, TEAPOT, Name, Color)
 {
 	if (!newDeviceNode())
@@ -20,8 +20,8 @@ Teapot::Teapot(const Teapot& other) : Node(other)
 
 bool Teapot::newDeviceNode()
 {
-	bool newDevTeapot(DevNode*** out, DevNode** const root, const char* const Name, const D3DMATERIAL9 Material);
-	return newDevTeapot(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Name, m_Material);
+	bool newDevTeapot(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material);
+	return newDevTeapot(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Material);
 }
 
 void Teapot::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const

@@ -4,11 +4,11 @@ IMPLEMENT_SERIAL(Minus, CObject, 1)
 
 bool Minus::newDeviceNode()
 {
-	bool newDevMinus(DevNode*** out, DevNode** const root, const char* const Name);
-	return newDevMinus(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Name);
+	bool newDevMinus(DevNode*** out, DevNode** const root);
+	return newDevMinus(&m_devNode, m_Root ? m_Root->m_devNode : 0);
 }
 
-Minus::Minus(Node* const root, const char* const Name)
+Minus::Minus(Node* const root, const TCHAR* const Name)
 	: Gathering(root, MINUS, Name)
 {
 	if (!newDeviceNode())

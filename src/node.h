@@ -41,7 +41,7 @@ protected:
 	Node*		m_pParent;
 	// アトリビュート
 	node_type	m_NodeType;
-	char		m_Name[99];	// 名前
+	TCHAR		m_Name[99];	// 名前
 	D3DMATERIAL9 m_Material;
 
 	matrix		m_Scale;	// スケール変換
@@ -69,13 +69,13 @@ protected:
 public:
 	DevNode** m_devNode;
 
-	Node(Node* const root, node_type NodeType, const char* const Name, const sp Color = sp(-1, -1, -1));
+	Node(Node* const root, node_type NodeType, const TCHAR* const Name, const sp Color = sp(-1, -1, -1));
 	Node(const Node &other);
 
 	virtual	~Node();
 
 	// オペレーション
-	void Set_Name(const char* const str) { strncpy_s(m_Name, sizeof(m_Name), str, 99); }
+	void Set_Name(const TCHAR* const str) {	_tcsncpy_s(m_Name, sizeof(m_Name) / sizeof(TCHAR), str, 99); }
 	virtual void SetRoot(Node* const root);
 
 	sp GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fromOutSide);

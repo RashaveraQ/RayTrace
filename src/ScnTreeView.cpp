@@ -98,7 +98,7 @@ void CScnTreeView::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
 	if (pTVDispInfo->item.pszText && pTVDispInfo->item.pszText[0])
 	{
 		HTREEITEM	hItem = pTVDispInfo->item.hItem;
-		char*		str = pTVDispInfo->item.pszText;
+		TCHAR*		str = pTVDispInfo->item.pszText;
 		GetTreeCtrl().SetItemText(hItem, str);
 		CRayTraceDoc*	pDoc = (CRayTraceDoc*)GetDocument();
 		Node*			pTarget;
