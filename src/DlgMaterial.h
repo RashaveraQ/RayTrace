@@ -1,44 +1,44 @@
-#if !defined(AFX_DLGMATERIAL_H__60E64592_D3DA_11D4_BE9E_00104B17BB23__INCLUDED_)
+ï»¿#if !defined(AFX_DLGMATERIAL_H__60E64592_D3DA_11D4_BE9E_00104B17BB23__INCLUDED_)
 #define AFX_DLGMATERIAL_H__60E64592_D3DA_11D4_BE9E_00104B17BB23__INCLUDED_
 
 #if _MSC_VER >= 1000
 #pragma once
 #endif // _MSC_VER >= 1000
-// DlgMaterial.h : ƒwƒbƒ_[ ƒtƒ@ƒCƒ‹
+// DlgMaterial.h : ãƒ˜ãƒƒãƒ€ãƒ¼ ãƒ•ã‚¡ã‚¤ãƒ«
 //
 
 /////////////////////////////////////////////////////////////////////////////
-// CDlgMaterial ƒ_ƒCƒAƒƒO
+// CDlgMaterial ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 
 class CDlgMaterial : public CDialog
 {
-// ƒRƒ“ƒXƒgƒ‰ƒNƒVƒ‡ƒ“
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³
 public:
-	CDlgMaterial(CWnd* pParent = NULL);   // •W€‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	void Set( Node& );
-	void Get( Node& );
-	
-// ƒ_ƒCƒAƒƒO ƒf[ƒ^
+	CDlgMaterial(CWnd* pParent = NULL);   // æ¨™æº–ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	void Set(Node&);
+	void Get(Node&);
+
+	// ãƒ€ã‚¤ã‚¢ãƒ­ã‚° ãƒ‡ãƒ¼ã‚¿
 	//{{AFX_DATA(CDlgMaterial)
 	enum { IDD = IDD_MATERIAL };
-	double	m_Reflect;
-	double	m_Through;
-	double	m_Refractive;
+	float	m_Reflect;
+	float	m_Through;
+	float	m_Refractive;
 	int		m_Material;
 	//}}AFX_DATA
 
-// ƒI[ƒo[ƒ‰ƒCƒh
-	// ClassWizard ‚Í‰¼‘zŠÖ”‚ÌƒI[ƒo[ƒ‰ƒCƒh‚ğ¶¬‚µ‚Ü‚·B
+	// ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰
+	// ClassWizard ã¯ä»®æƒ³é–¢æ•°ã®ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
 
 	//{{AFX_VIRTUAL(CDlgMaterial)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV ƒTƒ|[ƒg
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV ã‚µãƒãƒ¼ãƒˆ
 	//}}AFX_VIRTUAL
 
-// ƒCƒ“ƒvƒŠƒƒ“ƒe[ƒVƒ‡ƒ“
+	// ã‚¤ãƒ³ãƒ—ãƒªãƒ¡ãƒ³ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³
 protected:
 
-	// ¶¬‚³‚ê‚½ƒƒbƒZ[ƒW ƒ}ƒbƒvŠÖ”
+	// ç”Ÿæˆã•ã‚ŒãŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ ãƒãƒƒãƒ—é–¢æ•°
 	//{{AFX_MSG(CDlgMaterial)
 	afx_msg void OnSelchangeMaterial();
 	//}}AFX_MSG
@@ -46,6 +46,6 @@ protected:
 };
 
 //{{AFX_INSERT_LOCATION}}
-// Microsoft Developer Studio ‚Í‘Os‚Ì’¼‘O‚É’Ç‰Á‚ÌéŒ¾‚ğ‘}“ü‚µ‚Ü‚·B
+// Microsoft Developer Studio ã¯å‰è¡Œã®ç›´å‰ã«è¿½åŠ ã®å®£è¨€ã‚’æŒ¿å…¥ã—ã¾ã™ã€‚
 
 #endif // !defined(AFX_DLGMATERIAL_H__60E64592_D3DA_11D4_BE9E_00104B17BB23__INCLUDED_)

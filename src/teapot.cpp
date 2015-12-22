@@ -1,14 +1,27 @@
-#include "stdafx.h"
+Ôªø#include "stdafx.h"
 #include "RayTraceView.h"
 
 IMPLEMENT_SERIAL(Teapot, CObject, 1)
 
 Boundary Teapot::sBoundary = Boundary(1);
 
-Teapot::Teapot(const CRayTraceDoc* const pDoc, const char* const Name, const sp Color)
-	: Node(pDoc, TEAPOT, Name, Color)
+Teapot::Teapot(Node* const root, const TCHAR* const Name, const sp Color)
+	: Node(root, TEAPOT, Name, Color)
 {
+	if (!newDeviceNode())
+		exit(1);
+}
 
+Teapot::Teapot(const Teapot& other) : Node(other)
+{
+	if (!newDeviceNode())
+		exit(1);
+}
+
+bool Teapot::newDeviceNode()
+{
+	bool newDevTeapot(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material);
+	return newDevTeapot(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Material);
 }
 
 void Teapot::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
@@ -23,25 +36,25 @@ void Teapot::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& M
 	POINT	P[50];
 
 	int i, j;
-	double th, ph;
+	float th, ph;
 
-	sp p0 = m * sp(0,0,0);
+	sp p0 = m * sp(0, 0, 0);
 
-	for (i = 0; i < 5; i++ ) {
-		for (j = 0; j < 50; j++ ) {
-			th = 3.14 * (double)i / 5;
-			ph = 6.28 * (double)j / 50;
-			sp p = m * sp(cos(th)*sin(ph), cos(ph), sin(th)*sin(ph));
+	for (i = 0; i < 5; i++) {
+		for (j = 0; j < 50; j++) {
+			th = 3.14f * (float)i / 5;
+			ph = 6.28f * (float)j / 50;
+			sp p = m * sp(cosf(th)*sinf(ph), cosf(ph), sinf(th)*sinf(ph));
 			P[j] = p.getPOINT(size);
 		}
 		pDC->Polygon(P, 50);
 	}
-	
-	for (i = 0; i < 5; i++ ) {
-		for (j = 0; j < 50; j++ ) {
-			ph = 3.14 * (double)i / 5;
-			th = 6.28 * (double)j / 50;
-			sp p = m * sp(cos(th)*sin(ph), cos(ph), sin(th)*sin(ph));
+
+	for (i = 0; i < 5; i++) {
+		for (j = 0; j < 50; j++) {
+			ph = 3.14f * (float)i / 5;
+			th = 6.28f * (float)j / 50;
+			sp p = m * sp(cosf(th)*sinf(ph), cosf(ph), sinf(th)*sinf(ph));
 			P[j] = p.getPOINT(size);
 		}
 		pDC->Polygon(P, 50);
@@ -51,10 +64,10 @@ void Teapot::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& M
 
 void Teapot::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const
 {
-	// D3DXCreateTeapot ÇÃégópÇåüì¢Ç∑ÇÈÇ±Ç∆
+	// D3DXCreateTeapot „ÅÆ‰ΩøÁî®„ÇíÊ§úË®é„Åô„Çã„Åì„Å®
 	LPDIRECT3DVERTEXBUFFER9 pVB;
 	CUSTOMVERTEX*	pVertices;
-	
+
 	matrix m = Matrix * m_Matrix;
 
 	switch (rtv.m_ViewMode) {
@@ -65,24 +78,24 @@ void Teapot::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometr
 		int i;
 		for (i = 0; i < 5; i++) {
 			for (int j = 0; j < 50; j++) {
-				double th = 3.14 * (double)i / 5;
-				double ph = 6.28 * (double)j / 50;
+				float th = 3.14f * i / 5;
+				float ph = 6.28f * j / 50;
 				sp p = m * sp(cos(th)*sin(ph), cos(ph), sin(th)*sin(ph));
-				pVertices[50*i+j].position = pVertices[50*i+j].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
+				pVertices[50 * i + j].position = pVertices[50 * i + j].normal = D3DXVECTOR3(p.x, p.y, p.z);
 			}
 		}
-		
+
 		for (i = 0; i < 5; i++) {
 			for (int j = 0; j < 50; j++) {
-				double ph = 3.14 * (double)i / 5;
-				double th = 6.28 * (double)j / 50;
+				float ph = 3.14f * i / 5;
+				float th = 6.28f * j / 50;
 				sp p = m * sp(cos(th)*sin(ph), cos(ph), sin(th)*sin(ph));
-				pVertices[250+50*i+j].position = pVertices[250+50*i+j].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
+				pVertices[250 + 50 * i + j].position = pVertices[250 + 50 * i + j].normal = D3DXVECTOR3(p.x, p.y, p.z);
 			}
 		}
 		pVB->Unlock();
 
-		lstGeometry.AddTail(Geometry(this, pVB, D3DPT_LINESTRIP, 500-1));
+		lstGeometry.AddTail(Geometry(this, pVB, D3DPT_LINESTRIP, 500 - 1));
 		break;
 	case CRayTraceView::eD3DFlatShading:
 	case CRayTraceView::eD3DGouraudShading:
@@ -100,34 +113,36 @@ void Teapot::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometr
 	Node::AddGeometry(pd3dDevice, lstGeometry, rtv, m);
 }
 
-BOOL Teapot::IsInside(const sp& L) const
+bool Teapot::IsInside(const sp& L) const
 {
 	return (sqrt(L * L) <= 1.0);
 }
 
-BOOL Teapot::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Teapot::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
-	double	a = K * K;
-	double	b = K * L;
-	double	c = L * L - 1.0; 
+	float	a = K * K;
+	float	b = K * L;
+	float	c = L * L - 1.0f;
 
-	double	bb_ac = b*b - a*c;
+	float	bb_ac = b*b - a*c;
 
 	if (bb_ac < 0)
 		return FALSE;
 
-	double	t;
-	double	t1 = (-b + sqrt(bb_ac)) / a;
-	double	t2 = (-b - sqrt(bb_ac)) / a;
+	float	t;
+	float	t1 = (-b + sqrt(bb_ac)) / a;
+	float	t2 = (-b - sqrt(bb_ac)) / a;
 
 	info.isEnter = 0;
 	if (t1 > 0) {
 		if (t2 > 0) {
 			t = (t1 < t2) ? t1 : t2;
 			info.isEnter = 1;
-		} else
+		}
+		else
 			t = t1;
-	} else {
+	}
+	else {
 		if (t2 > 0)
 			t = t2;
 		else
@@ -137,14 +152,14 @@ BOOL Teapot::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bo
 	info.Cross = info.Vertical = K * t + L;
 	info.Distance = t * sqrt(K * K);
 
-	double x,y,z, th, phy;
+	float x, y, z, th, phy;
 
 	x = info.Vertical.x;
 	y = info.Vertical.y;
 	z = info.Vertical.z;
 
-	th = atan2(y, sqrt(x*x+z*z)) / M_PI + .5;
-	phy = atan2(x, -z) / (2 * M_PI) + .5;
+	th = atan2f(y, sqrtf(x*x + z*z)) / M_PI + .5f;
+	phy = atan2f(x, -z) / (2 * M_PI) + .5f;
 
 	info.Material = GetPixel(phy, th).getMaterial();
 	info.pNode = this;

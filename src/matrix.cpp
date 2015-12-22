@@ -21,6 +21,7 @@ matrix::matrix(int gyo,int retu)
 	m_data[3][0] = 0.0;
 	m_data[3][1] = 0.0;
 	m_data[3][2] = 0.0;
+	m_pInvMatrix = 0;
 }
 
 matrix::matrix(const matrix& Matrix)
@@ -31,9 +32,10 @@ matrix::matrix(const matrix& Matrix)
 	for ( int i = 0; i < m_Height; i++ )
 		for ( int j = 0; j < m_Width; j++ )
 			m_data[i][j] = Matrix.m_data[i][j];
+	m_pInvMatrix = 0;
 }
 
-matrix::matrix(const sp& Sp, double d)
+matrix::matrix(const sp& Sp, float d)
 {
 	m_Width = 1;
 	m_Height = 4;
@@ -42,13 +44,27 @@ matrix::matrix(const sp& Sp, double d)
 	m_data[1][0] = Sp.y;
 	m_data[2][0] = Sp.z;
 	m_data[3][0] = d;
+
+	m_pInvMatrix = 0;
+}
+
+matrix::~matrix()
+{
+	if (m_pInvMatrix)
+		delete m_pInvMatrix;
 }
 
 matrix	matrix::operator=(const matrix& Matrix)
 {
+	if (m_pInvMatrix) {
+		delete m_pInvMatrix;
+		m_pInvMatrix = 0;
+	}
+
 	for ( int i = 0; i < m_Height; i++ )
 		for ( int j = 0; j < m_Width; j++ )
 			m_data[i][j] = Matrix.m_data[i][j];
+
 	return *this;
 }
 
@@ -74,7 +90,7 @@ matrix	matrix::operator+(const matrix& Matrix) const
 	return ans;
 }
 
-matrix	matrix::operator*(double k) const
+matrix	matrix::operator*(float k) const
 {
 	matrix	ans( m_Height, m_Width );
 
@@ -85,7 +101,7 @@ matrix	matrix::operator*(double k) const
 	return ans;
 }
 
-matrix	matrix::operator/(double k) const
+matrix	matrix::operator/(float k) const
 {
 	matrix	ans( m_Height, m_Width );
 
@@ -102,7 +118,7 @@ matrix	matrix::operator*(const matrix& Matrix) const
 
 	for (int i = 0; i < ans.m_Height; i++) {
 		for (int j = 0; j < ans.m_Width; j++) {
-			double data = 0.0;
+			float data = 0.0;
 			for ( int k = 0; k < m_Width; k++ )
 				data += m_data[i][k] * Matrix.m_data[k][j];
 			ans.m_data[i][j] = data;
@@ -112,31 +128,33 @@ matrix	matrix::operator*(const matrix& Matrix) const
 	return ans;
 }
 
-matrix	matrix::Inv() const
+matrix	matrix::Inv()
 {
-	matrix	mat( m_Width, m_Height );
+	if (!m_pInvMatrix) {
+		m_pInvMatrix = new matrix(m_Width, m_Height);
 
-	double	A = d();
-	double	m;
+		float	A = d();
+		float	m;
 
-	int	gyo, retu;
+		int	gyo, retu;
 
-	for ( gyo = 1; gyo <= m_Height; gyo++ )
-	{
-		for ( retu = 1; retu <= m_Width; retu++ )
+		for (gyo = 1; gyo <= m_Height; gyo++)
 		{
-			m = M(retu, gyo);
-			m = ( ( gyo + retu ) % 2 ) ? -m : m;
-			mat.m_data[gyo-1][retu-1] = m / A; // set_data( gyo, retu, m / A );
+			for (retu = 1; retu <= m_Width; retu++)
+			{
+				m = M(retu, gyo);
+				m = ((gyo + retu) % 2) ? -m : m;
+				m_pInvMatrix->m_data[gyo - 1][retu - 1] = m / A; // set_data( gyo, retu, m / A );
+			}
 		}
 	}
 
-	return mat;
+	return *m_pInvMatrix;
 }
 
-double	matrix::M( int gyo, int retu ) const
+float	matrix::M(int gyo, int retu) const
 {
-	double ans = 0;
+	float ans = 0;
 
 	switch ( retu )
 	{
@@ -240,9 +258,9 @@ double	matrix::M( int gyo, int retu ) const
 	return ans;
 }
 
-double	matrix::d() const
+float	matrix::d() const
 {
-	double	ans = 0;
+	float	ans = 0;
 
 	switch ( m_Height )
 	{
@@ -297,6 +315,16 @@ void	matrix::print() const
 		for ( j = 0; j < m_Width; j++ )
 			printf( " %f", m_data[i][j] );
 		printf( "\n" );
+	}
+}
+
+void matrix::set_data(int gyo, int retu, float value)
+{
+	m_data[gyo - 1][retu - 1] = value;
+
+	if (m_pInvMatrix) {
+		delete m_pInvMatrix;
+		m_pInvMatrix = 0;
 	}
 }
 

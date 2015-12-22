@@ -4,6 +4,25 @@
 
 IMPLEMENT_SERIAL(Plus, CObject, 1)
 
+bool Plus::newDeviceNode()
+{
+	bool newDevPlus(DevNode*** out, DevNode** const root);
+	return newDevPlus(&m_devNode, m_Root ? m_Root->m_devNode : 0);
+}
+
+Plus::Plus(Node* const root, const TCHAR* const Name)
+	: Gathering(root, PLUS, Name)
+{
+	if (!newDeviceNode())
+		exit(1);
+}
+
+Plus::Plus(const Plus& other) : Gathering(other)
+{
+	if (!newDeviceNode())
+		exit(1);
+}
+
 Boundary Plus::getBoundary()
 {
 	Boundary c1;
@@ -26,7 +45,7 @@ Boundary Plus::getBoundary()
 	return c1;
 }
 
-BOOL Plus::IsInside( const sp& L ) const
+bool Plus::IsInside(const sp& L) const
 {
 	for (int i = 0; i < m_Member; i++) {
 		if (m_Node[i]->IsInside2(L))
@@ -36,11 +55,11 @@ BOOL Plus::IsInside( const sp& L ) const
 	return FALSE;
 }
 
-BOOL Plus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Plus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	Info	tmp;
 	int		n;
-	double	l = -1;
+	float	l = -1;
 
 	for (int i = 0; i < m_Member; i++) {
 		if (m_Node[i]->GetInfo2(K, L, tmp, pHint, fromOutSide)) {

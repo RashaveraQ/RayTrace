@@ -1,4 +1,4 @@
-#ifndef __TORUS_H
+ï»¿#ifndef __TORUS_H
 #define __TORUS_H
 
 class	Node;
@@ -10,17 +10,18 @@ class	Torus : public	Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Torus)
+	virtual bool newDeviceNode();
 private:
-	double	m_R;
-	double	m_r;
+	float	m_R;
+	float	m_r;
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	Torus(const CRayTraceDoc* const pDoc = 0, const char* const Name = "Torus", const sp Color = sp(255,255,255));
-	Torus(const Torus& other) : Node(other) ,m_R(other.m_R), m_r(other.m_r) {} 
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	Torus(Node* const root = 0, const TCHAR* const Name = _T("Torus"), const sp Color = sp(255, 255, 255));
+	Torus(const Torus& other);
 
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;
-	BOOL GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
-	BOOL IsInside(const sp& L) const;
+	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
+	bool IsInside(const sp& L) const;
 	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	const Node*	MakeCopy() const { return new Torus(*this); }

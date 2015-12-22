@@ -1,4 +1,4 @@
-#ifndef __TEAPOT_H
+ï»¿#ifndef __TEAPOT_H
 #define __TEAPOT_H
 
 class	Node;
@@ -11,13 +11,14 @@ class	Teapot : public	Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Teapot)
+	virtual bool newDeviceNode();
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	Teapot(const CRayTraceDoc* const pDoc = 0, const char* const Name = "Teapot", const sp Color = sp(255,255,255));
-	Teapot(const Teapot& other) : Node(other) {}
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	Teapot(Node* const root = 0, const TCHAR* const Name = _T("Teapot"), const sp Color = sp(255, 255, 255));
+	Teapot(const Teapot& other);
 
-	BOOL GetInfo(const struct sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
-	BOOL IsInside(const sp& L) const;
+	bool GetInfo(const struct sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
+	bool IsInside(const sp& L) const;
 	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);

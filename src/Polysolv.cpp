@@ -76,8 +76,8 @@
 
 /* Constants. */
 
-#define TWO_M_PI_3  2.0943951023931954923084
-#define FOUR_M_PI_3 4.1887902047863909846168
+#define TWO_M_PI_3  2.0943951023931954923084f
+#define FOUR_M_PI_3 4.1887902047863909846168f
 
 /* Max number of iterations. */
 
@@ -818,19 +818,19 @@ static int solve_quadratic(DBL *x, DBL  *y)
     return(1);
   }
 
-  d = b * b - 4.0 * a * c;
+  d = b * b - 4.0f * a * c;
 
   /* Treat values of d around 0 as 0. */
 
   if ((d > -SMALL_ENOUGH) && (d < SMALL_ENOUGH))
   {
-    y[0] = 0.5 * b / a;
+    y[0] = 0.5f * b / a;
 
     return(1);
   }
   else
   {
-    if (d < 0.0)
+    if (d < 0.0f)
     {
       return(0);
     }
@@ -838,7 +838,7 @@ static int solve_quadratic(DBL *x, DBL  *y)
 
   d = sqrt(d);
 
-  t = 2.0 * a;
+  t = 2.0f * a;
 
   y[0] = (b + d) / t;
   y[1] = (b - d) / t;
@@ -915,12 +915,12 @@ static int solve_cubic(DBL *x, DBL  *y)
 
   A2 = a1 * a1;
 
-  Q = (A2 - 3.0 * a2) / 9.0;
+  Q = (A2 - 3.0f * a2) / 9.0f;
 
   /* Modified to save some multiplications and to avoid a floating point
      exception that occured with DJGPP and full optimization. [DB 8/94] */
 
-  R = (a1 * (A2 - 4.5 * a2) + 13.5 * a3) / 27.0;
+  R = (a1 * (A2 - 4.5f * a2) + 13.5f * a3) / 27.0f;
 
   Q3 = Q * Q * Q;
 
@@ -928,27 +928,27 @@ static int solve_cubic(DBL *x, DBL  *y)
 
   d = Q3 - R2;
 
-  an = a1 / 3.0;
+  an = a1 / 3.0f;
 
-  if (d >= 0.0)
+  if (d >= 0.0f)
   {
     /* Three real roots. */
 
-    d = R / sqrt(Q3);
+    d = R / sqrtf(Q3);
 
-    theta = acos(d) / 3.0;
+    theta = acosf(d) / 3.0f;
 
-    sQ = -2.0 * sqrt(Q);
+    sQ = -2.0f * sqrtf(Q);
 
-    y[0] = sQ * cos(theta) - an;
-    y[1] = sQ * cos(theta + TWO_M_PI_3) - an;
-    y[2] = sQ * cos(theta + FOUR_M_PI_3) - an;
+    y[0] = sQ * cosf(theta) - an;
+    y[1] = sQ * cosf(theta + TWO_M_PI_3) - an;
+    y[2] = sQ * cosf(theta + FOUR_M_PI_3) - an;
 
     return(3);
   }
   else
   {
-    sQ = pow(sqrt(R2 - Q3) + fabs(R), 1.0 / 3.0);
+    sQ = pow(sqrtf(R2 - Q3) + fabsf(R), 1.0f / 3.0f);
 
     if (R < 0)
     {
@@ -1320,7 +1320,7 @@ static int solve_quartic(DBL *x, DBL *results)
 
   c0 = x[0];
 
-  if (c0 != 1.0)
+  if (c0 != 1.0f)
 {
     c1 = x[1] / c0;
     c2 = x[2] / c0;
@@ -1338,14 +1338,14 @@ static int solve_quartic(DBL *x, DBL *results)
   /* Compute the cubic resolvant */
 
   c12 = c1 * c1;
-  p = -0.375 * c12 + c2;
-  q = 0.125 * c12 * c1 - 0.5 * c1 * c2 + c3;
-  r = -0.01171875 * c12 * c12 + 0.0625 * c12 * c2 - 0.25 * c1 * c3 + c4;
+  p = -0.375f * c12 + c2;
+  q = 0.125f * c12 * c1 - 0.5f * c1 * c2 + c3;
+  r = -0.01171875f * c12 * c12 + 0.0625f * c12 * c2 - 0.25f * c1 * c3 + c4;
 
-  cubic[0] = 1.0;
-  cubic[1] = -0.5 * p;
+  cubic[0] = 1.0f;
+  cubic[1] = -0.5f * p;
   cubic[2] = -r;
-  cubic[3] = 0.5 * r * p - 0.125 * q * q;
+  cubic[3] = 0.5f * r * p - 0.125f * q * q;
 
   i = solve_cubic(cubic, roots);
 
@@ -1358,13 +1358,13 @@ static int solve_quartic(DBL *x, DBL *results)
     return(0);
   }
 
-  d1 = 2.0 * z - p;
+  d1 = 2.0f * z - p;
 
-  if (d1 < 0.0)
+  if (d1 < 0.0f)
 {
     if (d1 > -SMALL_ENOUGH)
     {
-      d1 = 0.0;
+      d1 = 0.0f;
     }
     else
     {
@@ -1376,7 +1376,7 @@ static int solve_quartic(DBL *x, DBL *results)
 {
     d2 = z * z - r;
 
-    if (d2 < 0.0)
+    if (d2 < 0.0f)
     {
       return(0);
     }
@@ -1386,49 +1386,49 @@ static int solve_quartic(DBL *x, DBL *results)
   else
   {
     d1 = sqrt(d1);
-    d2 = 0.5 * q / d1;
+    d2 = 0.5f * q / d1;
   }
 
   /* Set up useful values for the quadratic factors */
 
   q1 = d1 * d1;
-  q2 = -0.25 * c1;
+  q2 = -0.25f * c1;
 
   i = 0;
 
   /* Solve the first quadratic */
 
-  p = q1 - 4.0 * (z - d2);
+  p = q1 - 4.0f * (z - d2);
 
   if (p == 0)
 {
-    results[i++] = -0.5 * d1 - q2;
+    results[i++] = -0.5f * d1 - q2;
   }
   else
   {
     if (p > 0)
     {
       p = sqrt(p);
-      results[i++] = -0.5 * (d1 + p) + q2;
-      results[i++] = -0.5 * (d1 - p) + q2;
+      results[i++] = -0.5f * (d1 + p) + q2;
+      results[i++] = -0.5f * (d1 - p) + q2;
     }
   }
 
   /* Solve the second quadratic */
 
-  p = q1 - 4.0 * (z + d2);
+  p = q1 - 4.0f * (z + d2);
 
   if (p == 0)
 {
-    results[i++] = 0.5 * d1 - q2;
+    results[i++] = 0.5f * d1 - q2;
   }
   else
   {
     if (p > 0)
     {
       p = sqrt(p);
-      results[i++] = 0.5 * (d1 + p) + q2;
-      results[i++] = 0.5 * (d1 - p) + q2;
+      results[i++] = 0.5f * (d1 + p) + q2;
+      results[i++] = 0.5f * (d1 - p) + q2;
     }
   }
 

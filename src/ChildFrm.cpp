@@ -1,4 +1,4 @@
-// ChildFrm.cpp : CChildFrame ƒNƒ‰ƒX‚Ì“®ì‚Ì’è‹`‚ğs‚¢‚Ü‚·B
+ï»¿// ChildFrm.cpp : CChildFrame ã‚¯ãƒ©ã‚¹ã®å‹•ä½œã®å®šç¾©ã‚’è¡Œã„ã¾ã™ã€‚
 //
 
 #include "stdafx.h"
@@ -22,18 +22,18 @@ IMPLEMENT_DYNCREATE(CChildFrame, CMDIChildWnd)
 
 BEGIN_MESSAGE_MAP(CChildFrame, CMDIChildWnd)
 	//{{AFX_MSG_MAP(CChildFrame)
-		// ƒƒ‚ - ClassWizard ‚Í‚±‚ÌˆÊ’u‚Éƒ}ƒbƒsƒ“ƒO—p‚Ìƒ}ƒNƒ‚ğ’Ç‰Á‚Ü‚½‚Ííœ‚µ‚Ü‚·B
-		//        ‚±‚ÌˆÊ’u‚É¶¬‚³‚ê‚éƒR[ƒh‚ğ•ÒW‚µ‚È‚¢‚Å‚­‚¾‚³‚¢B
+	// ãƒ¡ãƒ¢ - ClassWizard ã¯ã“ã®ä½ç½®ã«ãƒãƒƒãƒ”ãƒ³ã‚°ç”¨ã®ãƒã‚¯ãƒ­ã‚’è¿½åŠ ã¾ãŸã¯å‰Šé™¤ã—ã¾ã™ã€‚
+	//        ã“ã®ä½ç½®ã«ç”Ÿæˆã•ã‚Œã‚‹ã‚³ãƒ¼ãƒ‰ã‚’ç·¨é›†ã—ãªã„ã§ãã ã•ã„ã€‚
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CChildFrame ƒNƒ‰ƒX‚Ì\’z/Á–Å
+// CChildFrame ã‚¯ãƒ©ã‚¹ã®æ§‹ç¯‰/æ¶ˆæ»…
 
 CChildFrame::CChildFrame()
 {
-	// TODO: ƒƒ“ƒo‰Šú‰»ƒR[ƒh‚ğ‚±‚ÌˆÊ’u‚É’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢B
-	
+	// TODO: ãƒ¡ãƒ³ãƒåˆæœŸåŒ–ã‚³ãƒ¼ãƒ‰ã‚’ã“ã®ä½ç½®ã«è¿½åŠ ã—ã¦ãã ã•ã„ã€‚
+
 }
 
 CChildFrame::~CChildFrame()
@@ -42,14 +42,14 @@ CChildFrame::~CChildFrame()
 
 BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	// TODO: ‚±‚ÌˆÊ’u‚Å CREATESTRUCT cs ‚Ìİ’è‚ğs‚Á‚ÄAWindow ƒNƒ‰ƒX‚Ü‚½‚Í
-	//       ƒXƒ^ƒCƒ‹‚ğ•ÏX‚µ‚Ä‚­‚¾‚³‚¢B
+	// TODO: ã“ã®ä½ç½®ã§ CREATESTRUCT cs ã®è¨­å®šã‚’è¡Œã£ã¦ã€Window ã‚¯ãƒ©ã‚¹ã¾ãŸã¯
+	//       ã‚¹ã‚¿ã‚¤ãƒ«ã‚’å¤‰æ›´ã—ã¦ãã ã•ã„ã€‚
 
 	return CMDIChildWnd::PreCreateWindow(cs);
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CChildFrame ƒNƒ‰ƒX‚Ìf’f
+// CChildFrame ã‚¯ãƒ©ã‚¹ã®è¨ºæ–­
 
 #ifdef _DEBUG
 void CChildFrame::AssertValid() const
@@ -65,12 +65,12 @@ void CChildFrame::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
-// CChildFrame ƒNƒ‰ƒX‚ÌƒƒbƒZ[ƒWƒnƒ“ƒhƒ‰
+// CChildFrame ã‚¯ãƒ©ã‚¹ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒãƒ³ãƒ‰ãƒ©
 
-BOOL CChildFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext) 
+BOOL CChildFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 {
-	// TODO: ‚±‚ÌˆÊ’u‚ÉŒÅ—L‚Ìˆ—‚ğ’Ç‰Á‚·‚é‚©A‚Ü‚½‚ÍŠî–{ƒNƒ‰ƒX‚ğŒÄ‚Ño‚µ‚Ä‚­‚¾‚³‚¢
+	// TODO: ã“ã®ä½ç½®ã«å›ºæœ‰ã®å‡¦ç†ã‚’è¿½åŠ ã™ã‚‹ã‹ã€ã¾ãŸã¯åŸºæœ¬ã‚¯ãƒ©ã‚¹ã‚’å‘¼ã³å‡ºã—ã¦ãã ã•ã„
 	return	m_SplitterWnd.CreateStatic(this, 1, 2, WS_CHILD | WS_VISIBLE)
-		&&	m_SplitterWnd.CreateView(0, 0, RUNTIME_CLASS(CScnTreeView), CSize(200,100), pContext)
-		&&	m_SplitterWnd.CreateView(0, 1, RUNTIME_CLASS(CRayTraceView), CSize(300,100), pContext);
+		&& m_SplitterWnd.CreateView(0, 0, RUNTIME_CLASS(CScnTreeView), CSize(200, 100), pContext)
+		&& m_SplitterWnd.CreateView(0, 1, RUNTIME_CLASS(CRayTraceView), CSize(300, 100), pContext);
 }

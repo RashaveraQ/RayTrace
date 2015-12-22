@@ -2,59 +2,91 @@
 
 IMPLEMENT_SERIAL(Cube, CObject, 1)
 
-Boundary Cube::sBoundary = Boundary(sqrt(3.0));
+Boundary Cube::sBoundary = Boundary(sqrt(3.0f));
 
-BOOL Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Cube::newDeviceNode()
+{
+	bool newDevCube(DevNode***, DevNode** const root, const D3DMATERIAL9 Material);
+	return newDevCube(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Material);
+}
+
+Cube::Cube(Node* const root, const TCHAR* const Name, const sp Color)
+	: Node(root, CUBE, Name, Color)
+{
+	if (!newDeviceNode())
+		exit(1);
+}
+
+Cube::Cube(const Cube& other)
+	: Node(other)
+{
+	if (!newDeviceNode())
+		exit(1);
+}
+
+bool Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)
-		return FALSE;
+		return false;
 
-	double t[6];
+	float t[6];
 	sp	   v[6];
 	int i = 0;
 	
 	info.isEnter = (pHint && pHint->pNode == this) ? fromOutSide : !IsInside(L);
 
 	t[i] = (-1 - L.x) / K.x;
-	sp p = K * t[i] + L;
-	if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
-		v[i] = sp(-1,0,0);
-		i++;
+	if (t[i] > 0) {
+		sp p = K * t[i] + L;
+		if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
+			v[i] = sp(-1,0,0);
+			i++;
+		}
 	}
 
 	t[i] = (1 - L.x) / K.x;
-	p = K * t[i] + L;
-	if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
-		v[i] = sp(1,0,0);
-		i++;
+	if (t[i] > 0) {
+		sp p = K * t[i] + L;
+		if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
+			v[i] = sp(1, 0, 0);
+			i++;
+		}
 	}
 
 	t[i] = (-1 - L.y) / K.y;
-	p = K * t[i] + L;
-	if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
-		v[i] = sp(0,-1,0);
-		i++;
+	if (t[i] > 0) {
+		sp p = K * t[i] + L;
+		if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
+			v[i] = sp(0, -1, 0);
+			i++;
+		}
 	}
 
 	t[i] = (1 - L.y) / K.y;
-	p = K * t[i] + L;
-	if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
-		v[i] = sp(0,1,0);
-		i++;
+	if (t[i] > 0) {
+		sp p = K * t[i] + L;
+		if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
+			v[i] = sp(0, 1, 0);
+			i++;
+		}
 	}
 
 	t[i] = (-1 - L.z) / K.z;
-	p = K * t[i] + L;
-	if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
-		v[i] = sp(0,0,-1);
-		i++;
+	if (t[i] > 0) {
+		sp p = K * t[i] + L;
+		if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
+			v[i] = sp(0, 0, -1);
+			i++;
+		}
 	}
 
 	t[i] = (1 - L.z) / K.z;
-	p = K * t[i] + L;
-	if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
-		v[i] = sp(0,0,1);
-		i++;
+	if (t[i] > 0) {
+		sp p = K * t[i] + L;
+		if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
+			v[i] = sp(0, 0, 1);
+			i++;
+		}
 	}
 
 	switch (i) {
@@ -160,7 +192,7 @@ void Cube::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 	Node::AddGeometry(pd3dDevice, lstGeometry, rtv, m);
 }
 
-BOOL Cube::IsInside(const sp& L) const
+bool Cube::IsInside(const sp& L) const
 {
 	return (-1.0 <= L.x && L.x <= 1.0 && -1.0 <= L.y && L.y <= 1.0 && -1.0 <= L.z && L.z <= 1.0);
 }

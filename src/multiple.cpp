@@ -1,7 +1,27 @@
-#include "stdafx.h"
+Ôªø#include "stdafx.h"
 #include <float.h>
 
 IMPLEMENT_SERIAL(Multiple, CObject, 1)
+
+bool Multiple::newDeviceNode()
+{
+	bool newDevMultiple(DevNode*** out, DevNode** const root);
+	return newDevMultiple(&m_devNode, m_Root ? m_Root->m_devNode : 0);
+}
+
+Multiple::Multiple(Node* const root, const TCHAR* const Name)
+	: Gathering(root, MULTIPLE, Name)
+{
+	if (!newDeviceNode())
+		exit(1);
+}
+
+Multiple::Multiple(const Multiple& other)
+	: Gathering(other)
+{
+	if (!newDeviceNode())
+		exit(1);
+}
 
 Boundary Multiple::getBoundary()
 {
@@ -9,18 +29,20 @@ Boundary Multiple::getBoundary()
 	for (int i = 0; i < m_Member; i++) {
 		if (i == 0) {
 			c1 = m_Node[0]->getBoundary2();
-		} else {
+		}
+		else {
 			Boundary c2 = m_Node[i]->getBoundary2();
 			if (c1.Center == c2.Center) {
 				c1.Radius = min(c1.Radius, c2.Radius);
-			} else {
-				double l = (c1.Center - c2.Center).abs();
+			}
+			else {
+				float l = (c1.Center - c2.Center).abs();
 				if (l > c1.Radius + c2.Radius) {
 					return Boundary();
 				}
-				double x = (l*l + c2.Radius * c2.Radius - c1.Radius * c1.Radius) / (2 * l);
+				float x = (l*l + c2.Radius * c2.Radius - c1.Radius * c1.Radius) / (2 * l);
 				sp c = c2.Center + x / l * (c1.Center - c2.Center);
-				double r = sqrt(c2.Radius * c2.Radius - x * x);
+				float r = sqrt(c2.Radius * c2.Radius - x * x);
 				c1.Center = c;
 				c1.Radius = r;
 			}
@@ -29,7 +51,7 @@ Boundary Multiple::getBoundary()
 	return c1;
 }
 
-BOOL Multiple::IsInside(const sp& L) const
+bool Multiple::IsInside(const sp& L) const
 {
 	if (!m_Member)
 		return FALSE;
@@ -41,15 +63,15 @@ BOOL Multiple::IsInside(const sp& L) const
 	return TRUE;
 }
 
-BOOL Multiple::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Multiple::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	if (!m_Member)
 		return FALSE;
 
-	// Ç∑Ç◊ÇƒÇÃóvëfÇ…Ç¬Ç¢ÇƒÅA
+	// „Åô„Åπ„Å¶„ÅÆË¶ÅÁ¥†„Å´„Å§„ÅÑ„Å¶„ÄÅ
 	int	i;
 	for (i = 0; i < m_Member; i++) {
-		// éãì_ÇÃêÊÇ…ÅAåì_Ç™Ç»Ç¢èÍçáÅB
+		// Ë¶ñÁÇπ„ÅÆÂÖà„Å´„ÄÅ‰∫§ÁÇπ„Åå„Å™„ÅÑÂ†¥Âêà„ÄÇ
 		if (!m_Node[i]->GetInfo2(K, L, info, pHint, fromOutSide))
 			return FALSE;
 
@@ -84,10 +106,10 @@ void Multiple::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfte
 /*
 Node*	Multiple::MakeCopy()
 {
-	Multiple*	obj = new Multiple( m_pDoc, m_Name );
+Multiple*	obj = new Multiple( m_pDoc, m_Name );
 
-	Gathering::MakeCopy( obj, this );
+Gathering::MakeCopy( obj, this );
 
-	return obj;
+return obj;
 }
 */

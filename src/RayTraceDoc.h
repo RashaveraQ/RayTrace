@@ -1,4 +1,4 @@
-// RayTraceDoc.h : CRayTraceDoc �N���X�̐錾����уC���^�[�t�F�C�X�̒�`�����܂��B
+﻿// RayTraceDoc.h : CRayTraceDoc クラスの宣言およびインターフェイスの定義をします。
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -11,29 +11,29 @@
 
 class CRayTraceDoc : public CDocument
 {
-protected: // �V���A���C�Y�@�\�݂̂���쐬���܂��B
+protected: // シリアライズ機能のみから作成します。
 	CRayTraceDoc();
 	DECLARE_DYNCREATE(CRayTraceDoc)
 	void            InitDocument();
 
-// �A�g���r���[�g
+	// アトリビュート
 public:
-	sp			m_Light;		//	�����̕����x�N�g��
+	sp			m_Light;		//	光源の方向ベクトル
 	Plus		m_Root;
 
-// �I�y���[�V����
+	// オペレーション
 public:
 
-//�I�[�o�[���C�h
-	// ClassWizard �͉��z�֐��̃I�[�o�[���C�h�𐶐����܂��B
+	//オーバーライド
+	// ClassWizard は仮想関数のオーバーライドを生成します。
 	//{{AFX_VIRTUAL(CRayTraceDoc)
-	public:
+public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
 	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
 	//}}AFX_VIRTUAL
 
-// �C���v�������e�[�V����
+	// インプリメンテーション
 public:
 	virtual ~CRayTraceDoc();
 #ifdef _DEBUG
@@ -43,11 +43,11 @@ public:
 
 protected:
 
-// �������ꂽ���b�Z�[�W �}�b�v�֐�
+	// 生成されたメッセージ マップ関数
 protected:
 	//{{AFX_MSG(CRayTraceDoc)
-		// ���� - ClassWizard �͂��̈ʒu�Ƀ����o�֐���ǉ��܂��͍폜���܂��B
-		//        ���̈ʒu�ɐ��������R�[�h��ҏW���Ȃ��ł��������B
+	// メモ - ClassWizard はこの位置にメンバ関数を追加または削除します。
+	//        この位置に生成されるコードを編集しないでください。
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
@@ -55,6 +55,6 @@ protected:
 /////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_INSERT_LOCATION}}
-// Microsoft Developer Studio �͑O�s�̒��O�ɒǉ��̐錾��}�����܂��B
+// Microsoft Developer Studio は前行の直前に追加の宣言を挿入します。
 
 #endif // !defined(AFX_RAYTRACEDOC_H__B4EED83D_53CC_11D3_9AB7_000000000000__INCLUDED_)

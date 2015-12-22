@@ -116,35 +116,35 @@ void CDlgMatrix::Calc()
 	matrix	M(4,4), S(4,4);
 	rotate	R( m_rotate_axis_x, m_rotate_axis_y, m_rotate_axis_z, m_rotate_angle );
 
-	S.m_data[0][0] = m_scale_x;
-	S.m_data[1][1] = m_scale_y;
-	S.m_data[2][2] = m_scale_z;
+	S.set_data(1,1, m_scale_x);
+	S.set_data(2,2, m_scale_y);
+	S.set_data(3,3, m_scale_z);
 
-	M.m_data[0][3] = m_move_x;
-	M.m_data[1][3] = m_move_y;
-	M.m_data[2][3] = m_move_z;
+	M.set_data(1,4, m_move_x);
+	M.set_data(2,4, m_move_y);
+	M.set_data(3,4, m_move_z);
 
 	m_Matrix = M * R * S;
 
-	m_1_1 = m_Matrix[0][0];
-	m_1_2 = m_Matrix[0][1];
-	m_1_3 = m_Matrix[0][2];
-	m_1_4 = m_Matrix[0][3];
+	m_1_1 = m_Matrix.get_data(1,1);
+	m_1_2 = m_Matrix.get_data(1,2);
+	m_1_3 = m_Matrix.get_data(1,3);
+	m_1_4 = m_Matrix.get_data(1,4);
 
-	m_2_1 = m_Matrix[1][0];
-	m_2_2 = m_Matrix[1][1];
-	m_2_3 = m_Matrix[1][2];
-	m_2_4 = m_Matrix[1][3];
+	m_2_1 = m_Matrix.get_data(2,1);
+	m_2_2 = m_Matrix.get_data(2,2);
+	m_2_3 = m_Matrix.get_data(2,3);
+	m_2_4 = m_Matrix.get_data(2,4);
 
-	m_3_1 = m_Matrix[2][0];
-	m_3_2 = m_Matrix[2][1];
-	m_3_3 = m_Matrix[2][2];
-	m_3_4 = m_Matrix[2][3];
+	m_3_1 = m_Matrix.get_data(3,1);
+	m_3_2 = m_Matrix.get_data(3,2);
+	m_3_3 = m_Matrix.get_data(3,3);
+	m_3_4 = m_Matrix.get_data(3,4);
 
-	m_4_1 = m_Matrix[3][0];
-	m_4_2 = m_Matrix[3][1];
-	m_4_3 = m_Matrix[3][2];
-	m_4_4 = m_Matrix[3][3];
+	m_4_1 = m_Matrix.get_data(4,1);
+	m_4_2 = m_Matrix.get_data(4,2);
+	m_4_3 = m_Matrix.get_data(4,3);
+	m_4_4 = m_Matrix.get_data(4,4);
 }
 
 	

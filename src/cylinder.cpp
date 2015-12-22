@@ -2,7 +2,27 @@
 
 IMPLEMENT_SERIAL(Cylinder, CObject, 1)
 
-Boundary Cylinder::sBoundary = Boundary(sqrt(2.0));
+Boundary Cylinder::sBoundary = Boundary(sqrt(2.0f));
+
+bool Cylinder::newDeviceNode()
+{
+	bool newDevCylinder(DevNode***, DevNode** const root, const D3DMATERIAL9 Material);
+	return newDevCylinder(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Material);
+}
+
+Cylinder::Cylinder(Node* const root, const TCHAR* const Name, const sp Color)
+	: Node(root, CYLINDER, Name, Color)
+{
+	if (!newDeviceNode())
+		exit(1);
+}
+
+Cylinder::Cylinder(const Cylinder& other)
+	: Node(other)
+{
+	if (!newDeviceNode())
+		exit(1);
+}
 
 void Cylinder::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
 {
@@ -18,8 +38,8 @@ void Cylinder::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix&
 
 	for (int j = 0; j < 2; j++) {
 		for (int i = 0; i < COUNT; i++) {
-			double th = 6.28 * (double)i / COUNT;
-			sp	p = m * sp(cos(th), j == 0 ? -1 : 1, sin(th));
+			float th = 6.28f * i / COUNT;
+			sp	p = m * sp(cos(th), j == 0 ? -1.0f : 1.0f, sin(th));
 			P[j][i] = p.getPOINT(size);
 		}
 		pDC->Polygon(P[j], COUNT);
@@ -56,8 +76,8 @@ void Cylinder::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeome
 
 		for (j = 0; j < 2; j++) {
 			for (i = 0; i < COUNT; i++) {
-				double th = 6.28 * (double)i / COUNT;
-				sp	p = m * sp(cos(th), j == 0 ? -1 : 1, sin(th));
+				float th = 6.28f * (float)i / COUNT;
+				sp	p = m * sp(cos(th), j == 0 ? -1.0f : 1.0f, sin(th));
 				pVertices[COUNT*j+i].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 				pVertices[COUNT*j+i].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 			}
@@ -93,58 +113,55 @@ void Cylinder::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeome
 	Node::AddGeometry(pd3dDevice, lstGeometry, rtv, m);
 }
 
-BOOL Cylinder::IsInside(const sp& L) const
+bool Cylinder::IsInside(const sp& L) const
 {
 	return (-1 <= L.y && L.y <= 1 && sqrt(L.x*L.x+L.z*L.z) <= 1.0);
 }
 
-BOOL Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return FALSE;
 
-	if (L.y < -1)
-	{
+	if (L.y < -1) {
 		if (K.y <= 0)
 			return FALSE;
 
-		double t = -(1 + L.y)/K.y;
-
-		sp	p = K*t+L;
-
-		if (p.x * p.x + p.z * p.z <= 1) {
-			info.Cross = p;
-			info.Vertical = sp(0,-1,0);
-			info.Distance = t * sqrt(K*K);
-			info.isEnter = 1;
-			info.Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
-			info.pNode = this;
-			return TRUE;
+		float t = -(1 + L.y) / K.y;
+		if (t > 0) {
+			sp	p = K * t + L;
+			if (p.x * p.x + p.z * p.z <= 1) {
+				info.Cross = p;
+				info.Vertical = sp(0, -1, 0);
+				info.Distance = t * sqrt(K*K);
+				info.isEnter = 1;
+				info.Material = GetPixel(.5f*(p.x + 1), .5f*(p.z + 1)).getMaterial();
+				info.pNode = this;
+				return TRUE;
+			}
 		}
 	}
 
-	if (L.y > 1)
-	{
+	if (L.y > 1) {
 		if (K.y >= 0)
 			return FALSE;
 
-		double t = (1 - L.y) / K.y;
-
-		sp	p = K*t+L;
-
-		if (p.x * p.x + p.z * p.z <= 1) {
-			info.Cross = p;
-			info.Vertical = sp(0,1,0);
-			info.Distance = t * sqrt(K*K);
-			info.isEnter = 1;
-			info.Material = GetPixel(.5*(p.x+1),.5*(p.z+1)).getMaterial();
-			info.pNode = this;
-
-			return TRUE;
+		float t = (1 - L.y) / K.y;
+		if (t > 0) {
+			sp	p = K*t + L;
+			if (p.x * p.x + p.z * p.z <= 1) {
+				info.Cross = p;
+				info.Vertical = sp(0, 1, 0);
+				info.Distance = t * sqrt(K*K);
+				info.isEnter = 1;
+				info.Material = GetPixel(.5f*(p.x + 1), .5f*(p.z + 1)).getMaterial();
+				info.pNode = this;
+				return TRUE;
+			}
 		}
 	}
 
-	double	a, b, c, d, t, t1, t2;
+	float	a, b, c, d, t, t1, t2;
 
 	c = K.x * L.z - K.z * L.x;
 	c *= c;

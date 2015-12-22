@@ -3,19 +3,39 @@
 
 IMPLEMENT_SERIAL(Plane, CObject, 1)
 
-Boundary Plane::sBoundary = Boundary(1e+40); // 
+Boundary Plane::sBoundary = Boundary(FLT_MAX); // 
 
-BOOL Plane::IsInside( const sp& L ) const
+bool Plane::newDeviceNode()
+{
+	bool newDevPlane(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material);
+	return newDevPlane(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Material);
+}
+
+Plane::Plane(Node* const root, const TCHAR* const Name, const sp Color)
+	: Node(root, PLANE, Name, Color)
+{
+	if (!newDeviceNode())
+		exit(1);
+}
+
+Plane::Plane(const Plane& other) 
+	: Node(other)
+{
+	if (!newDeviceNode())
+		exit(1);
+}
+
+bool Plane::IsInside(const sp& L) const
 {
 	return ( L.z >= 0.0 );
 }
 
-BOOL Plane::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Plane::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return FALSE;
 
-	double	t = ( K.z ) ? -L.z / K.z : (( L.z > 0 ) ? DBL_MAX : -DBL_MAX);
+	float	t = ( K.z ) ? -L.z / K.z : (( L.z > 0 ) ? FLT_MAX : -FLT_MAX);
 
 	if ( t <= 0 )
 		return FALSE;

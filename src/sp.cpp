@@ -2,9 +2,9 @@
 
 sp::sp( const matrix& m )
 {
-	x = m.m_data[0][0];
-	y = m.m_data[1][0];
-	z = m.m_data[2][0];
+	x = m.get_data(1,1);
+	y = m.get_data(2,1);
+	z = m.get_data(3,1);
 }
 
 bool sp::operator==( const sp& a ) const
@@ -25,7 +25,7 @@ sp&	sp::operator=( const sp& a )
 	return *this;
 }
 
-double	sp::operator*( const sp& a ) const
+float	sp::operator*(const sp& a) const
 {
 	return x*a.x+y*a.y+z*a.z;
 }
@@ -45,12 +45,12 @@ sp      sp::operator-( void ) const
 	return sp( -x, -y, -z );
 }
 
-sp      sp::operator*( double k ) const
+sp      sp::operator*(float k) const
 {
 	return sp( x*k, y*k, z*k );
 }
 
-sp	sp::operator/( double a ) const
+sp	sp::operator/(float a) const
 {
 	return sp( x/a, y/a, z/a );
 }
@@ -60,14 +60,14 @@ void	sp::print()
 	printf( "(%f,%f,%f)\n", x, y, z );
 }
 
-sp	operator*( double k, const sp& a)
+sp	operator*(float k, const sp& a)
 {
 	return a*k;
 }
 
 sp	sp::e() const
 {
-	double	r = sqrt( x*x+y*y+z*z );
+	float	r = sqrt(x*x + y*y + z*z);
 
 	return sp( x/r, y/r, z/r );
 }

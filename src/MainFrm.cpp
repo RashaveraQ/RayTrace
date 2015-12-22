@@ -1,4 +1,4 @@
-// MainFrm.cpp : CMainFrame ƒNƒ‰ƒX‚Ì“®ì‚Ì’è‹`‚ğs‚¢‚Ü‚·B
+ï»¿// MainFrm.cpp : CMainFrame ã‚¯ãƒ©ã‚¹ã®å‹•ä½œã®å®šç¾©ã‚’è¡Œã„ã¾ã™ã€‚
 //
 
 #include "stdafx.h"
@@ -19,15 +19,15 @@ IMPLEMENT_DYNAMIC(CMainFrame, CMDIFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	//{{AFX_MSG_MAP(CMainFrame)
-		// ƒƒ‚ - ClassWizard ‚Í‚±‚ÌˆÊ’u‚Éƒ}ƒbƒsƒ“ƒO—p‚Ìƒ}ƒNƒ‚ğ’Ç‰Á‚Ü‚½‚Ííœ‚µ‚Ü‚·B
-		//        ‚±‚ÌˆÊ’u‚É¶¬‚³‚ê‚éƒR[ƒh‚ğ•ÒW‚µ‚È‚¢‚Å‚­‚¾‚³‚¢B
+	// ãƒ¡ãƒ¢ - ClassWizard ã¯ã“ã®ä½ç½®ã«ãƒãƒƒãƒ”ãƒ³ã‚°ç”¨ã®ãƒã‚¯ãƒ­ã‚’è¿½åŠ ã¾ãŸã¯å‰Šé™¤ã—ã¾ã™ã€‚
+	//        ã“ã®ä½ç½®ã«ç”Ÿæˆã•ã‚Œã‚‹ã‚³ãƒ¼ãƒ‰ã‚’ç·¨é›†ã—ãªã„ã§ãã ã•ã„ã€‚
 	ON_WM_CREATE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
 {
-	ID_SEPARATOR,           // ƒXƒe[ƒ^ƒX ƒ‰ƒCƒ“ ƒCƒ“ƒWƒP[ƒ^
+	ID_SEPARATOR,           // ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ ãƒ©ã‚¤ãƒ³ ã‚¤ãƒ³ã‚¸ã‚±ãƒ¼ã‚¿
 	ID_INDICATOR_KANA,
 	ID_INDICATOR_CAPS,
 	ID_INDICATOR_NUM,
@@ -35,13 +35,13 @@ static UINT indicators[] =
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// CMainFrame ƒNƒ‰ƒX‚Ì\’z/Á–Å
+// CMainFrame ã‚¯ãƒ©ã‚¹ã®æ§‹ç¯‰/æ¶ˆæ»…
 
 Node*		m_pEditNode;
 
 CMainFrame::CMainFrame()
 {
-	// TODO: ‚±‚ÌˆÊ’u‚Éƒƒ“ƒo‚Ì‰Šú‰»ˆ—ƒR[ƒh‚ğ’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢B
+	// TODO: ã“ã®ä½ç½®ã«ãƒ¡ãƒ³ãƒã®åˆæœŸåŒ–å‡¦ç†ã‚³ãƒ¼ãƒ‰ã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚
 	m_pEditNode = 0;
 }
 
@@ -54,28 +54,28 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CMDIFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
-	
+
 	if (!m_wndToolBar.Create(this) ||
 		!m_wndToolBar.LoadToolBar(IDR_MAINFRAME))
 	{
 		TRACE0("Failed to create toolbar\n");
-		return -1;      // ì¬‚É¸”s
+		return -1;      // ä½œæˆã«å¤±æ•—
 	}
 
 	if (!m_wndStatusBar.Create(this) ||
 		!m_wndStatusBar.SetIndicators(indicators,
-		  sizeof(indicators)/sizeof(UINT)))
+		sizeof(indicators) / sizeof(UINT)))
 	{
 		TRACE0("Failed to create status bar\n");
-		return -1;      // ì¬‚É¸”s
+		return -1;      // ä½œæˆã«å¤±æ•—
 	}
 
-	// TODO: ‚à‚µƒc[ƒ‹ ƒ`ƒbƒvƒX‚ª•K—v‚È‚¢ê‡A‚±‚±‚ğíœ‚µ‚Ä‚­‚¾‚³‚¢B
+	// TODO: ã‚‚ã—ãƒ„ãƒ¼ãƒ« ãƒãƒƒãƒ—ã‚¹ãŒå¿…è¦ãªã„å ´åˆã€ã“ã“ã‚’å‰Šé™¤ã—ã¦ãã ã•ã„ã€‚
 	m_wndToolBar.SetBarStyle(m_wndToolBar.GetBarStyle() |
 		CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
 
-	// TODO: ƒc[ƒ‹ ƒo[‚ğƒhƒbƒLƒ“ƒO‰Â”\‚É‚µ‚È‚¢ê‡‚ÍˆÈ‰º‚Ì‚Rs‚ğíœ
-	//       ‚µ‚Ä‚­‚¾‚³‚¢B
+	// TODO: ãƒ„ãƒ¼ãƒ« ãƒãƒ¼ã‚’ãƒ‰ãƒƒã‚­ãƒ³ã‚°å¯èƒ½ã«ã—ãªã„å ´åˆã¯ä»¥ä¸‹ã®ï¼“è¡Œã‚’å‰Šé™¤
+	//       ã—ã¦ãã ã•ã„ã€‚
 	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockControlBar(&m_wndToolBar);
@@ -85,14 +85,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	// TODO: ‚±‚ÌˆÊ’u‚Å CREATESTRUCT cs ‚ğC³‚µ‚ÄAWindow ƒNƒ‰ƒX‚âƒXƒ^ƒCƒ‹‚ğ
-	//       C³‚µ‚Ä‚­‚¾‚³‚¢B
+	// TODO: ã“ã®ä½ç½®ã§ CREATESTRUCT cs ã‚’ä¿®æ­£ã—ã¦ã€Window ã‚¯ãƒ©ã‚¹ã‚„ã‚¹ã‚¿ã‚¤ãƒ«ã‚’
+	//       ä¿®æ­£ã—ã¦ãã ã•ã„ã€‚
 
 	return CMDIFrameWnd::PreCreateWindow(cs);
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CMainFrame ƒNƒ‰ƒX‚Ìf’f
+// CMainFrame ã‚¯ãƒ©ã‚¹ã®è¨ºæ–­
 
 #ifdef _DEBUG
 void CMainFrame::AssertValid() const
@@ -108,4 +108,4 @@ void CMainFrame::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
-// CMainFrame ƒƒbƒZ[ƒW ƒnƒ“ƒhƒ‰
+// CMainFrame ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ ãƒãƒ³ãƒ‰ãƒ©

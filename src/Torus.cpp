@@ -1,4 +1,4 @@
-#include "stdafx.h"
+Ôªø#include "stdafx.h"
 #include "RayTrace.h"
 #include "DlgTorus.h"
 
@@ -9,10 +9,24 @@ IMPLEMENT_SERIAL(Torus, CObject, 1)
 
 Boundary Torus::sBoundary = Boundary(1);
 
-Torus::Torus(const CRayTraceDoc* const pDoc, const char* const Name, const sp Color)
-	: Node(pDoc, TORUS, Name, Color), m_R(0.7), m_r(0.3)
+Torus::Torus(Node* const root, const TCHAR* const Name, const sp Color)
+	: Node(root, TORUS, Name, Color), m_R(0.7f), m_r(0.3f)
 {
+	if (!newDeviceNode())
+		exit(1);
+}
 
+Torus::Torus(const Torus& other)
+	: Node(other), m_R(other.m_R), m_r(other.m_r)
+{
+	if (!newDeviceNode())
+		exit(1);
+}
+
+bool Torus::newDeviceNode()
+{
+	bool newDevTorus(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material);
+	return newDevTorus(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Material);
 }
 
 void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
@@ -26,23 +40,23 @@ void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Ma
 	POINT	P[B];
 
 	int i, j;
-	double th, ph;
+	float th, ph;
 
 	for (i = 0; i < A; i++) {
 		for (j = 0; j < B; j++) {
-			th = 6.28 * (double)i / A;
-			ph = 6.28 * (double)j / B;
-			sp p = m * sp((m_R+m_r*cos(ph))*cos(th), (m_R+m_r*cos(ph))*sin(th), m_r*sin(ph));
+			th = 6.28f * i / A;
+			ph = 6.28f * j / B;
+			sp p = m * sp((m_R + m_r * cosf(ph)) * cosf(th), (m_R + m_r * cosf(ph)) * sinf(th), m_r * sinf(ph));
 			P[j] = p.getPOINT(size);
 		}
 		pDC->Polygon(P, B);
 	}
-	
+
 	for (i = 0; i < A; i++) {
 		for (j = 0; j < B; j++) {
-			ph = 6.28 * (double)i / A;
-			th = 6.28 * (double)j / B;
-			sp p = m * sp((m_R+m_r*cos(ph))*cos(th), (m_R+m_r*cos(ph))*sin(th), m_r*sin(ph));
+			ph = 6.28f * i / A;
+			th = 6.28f * j / B;
+			sp p = m * sp((m_R + m_r * cosf(ph)) * cosf(th), (m_R + m_r * cosf(ph)) * sinf(th), m_r * sinf(ph));
 			P[j] = p.getPOINT(size);
 		}
 		pDC->Polygon(P, B);
@@ -52,7 +66,7 @@ void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Ma
 
 void Torus::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const
 {
-	// D3DXCreateTorus ÇÃégópÇåüì¢Ç∑ÇÈÇ±Ç∆
+	// D3DXCreateTorus „ÅÆ‰ΩøÁî®„ÇíÊ§úË®é„Åô„Çã„Åì„Å®
 	LPDIRECT3DVERTEXBUFFER9 pVB;
 	CUSTOMVERTEX*	pVertices;
 
@@ -60,35 +74,35 @@ void Torus::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry
 
 	switch (rtv.m_ViewMode) {
 	case CRayTraceView::eD3DWireFrame:
-		if (!InitVertexBuffer(pd3dDevice, pVB, pVertices, 2*A*B))
+		if (!InitVertexBuffer(pd3dDevice, pVB, pVertices, 2 * A*B))
 			return;
 
 
 		int i, j;
-		double th, ph;
+		float th, ph;
 
 		for (i = 0; i < A; i++) {
 			for (j = 0; j < B; j++) {
-				th = 6.28 * (double)i / A;
-				ph = 6.28 * (double)j / B;
-				sp p = m * sp((m_R+m_r*cos(ph))*cos(th), (m_R+m_r*cos(ph))*sin(th), m_r*sin(ph));
-				pVertices[B*i+j].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
-				pVertices[B*i+j].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
+				th = 6.28f * i / A;
+				ph = 6.28f * j / B;
+				sp p = m * sp((m_R + m_r * cosf(ph)) * cosf(th), (m_R + m_r * cosf(ph)) * sinf(th), m_r * sinf(ph));
+				pVertices[B*i + j].position = D3DXVECTOR3(p.x, p.y, p.z);
+				pVertices[B*i + j].normal = D3DXVECTOR3(p.x, p.y, p.z);
 			}
 		}
-		
+
 		for (i = 0; i < A; i++) {
 			for (j = 0; j < B; j++) {
-				ph = 6.28 * (double)i / A;
-				th = 6.28 * (double)j / B;
-				sp p = m * sp((m_R+m_r*cos(ph))*cos(th), (m_R+m_r*cos(ph))*sin(th), m_r*sin(ph));
-				pVertices[A*B+B*i+j].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
-				pVertices[A*B+B*i+j].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
+				ph = 6.28f * i / A;
+				th = 6.28f * j / B;
+				sp p = m * sp((m_R + m_r * cosf(ph)) * cosf(th), (m_R + m_r * cosf(ph)) * sinf(th), m_r * sinf(ph));
+				pVertices[A*B + B*i + j].position = D3DXVECTOR3(p.x, p.y, p.z);
+				pVertices[A*B + B*i + j].normal = D3DXVECTOR3(p.x, p.y, p.z);
 			}
 		}
 		pVB->Unlock();
 
-		lstGeometry.AddTail(Geometry(this, pVB, D3DPT_LINESTRIP, 2*A*B-1));
+		lstGeometry.AddTail(Geometry(this, pVB, D3DPT_LINESTRIP, 2 * A*B - 1));
 		break;
 
 	case CRayTraceView::eD3DFlatShading:
@@ -98,17 +112,17 @@ void Torus::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry
 
 		if (FAILED(D3DXCreateTorus(pd3dDevice, (float)m_r, (float)m_R, 50, 50, &pMesh, NULL)))
 			return;
-		
+
 		lstGeometry.AddTail(Geometry(this, pMesh, m));
 		break;
 	}
-	
+
 	Node::AddGeometry(pd3dDevice, lstGeometry, rtv, m);
 }
 
-BOOL Torus::IsInside(const sp& L) const
+bool Torus::IsInside(const sp& L) const
 {
-	double	d;
+	float	d;
 
 	d = m_R - sqrt(L.x * L.x + L.y * L.y);
 	d *= d;
@@ -116,16 +130,16 @@ BOOL Torus::IsInside(const sp& L) const
 	return (m_r * m_r <= d + L.z * L.z);
 }
 
-BOOL Torus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Torus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
-	int Solve_Polynomial(int d, double *k, double min, double max, double *r);
+	int Solve_Polynomial(int d, float *k, float min, float max, float *r);
 
-	double	R2 = m_R * m_R;
-	double	a = K * K;
-	double	b = 2 * (K * L);
-	double	c = L * L + R2 - m_r * m_r;
+	float	R2 = m_R * m_R;
+	float	a = K * K;
+	float	b = 2 * (K * L);
+	float	c = L * L + R2 - m_r * m_r;
 
-	double	k[20], r[50];
+	float	k[20], r[50];
 	int		n;
 
 	k[4] = a * a;
@@ -151,34 +165,35 @@ BOOL Torus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	}
 
 	sp		p;
-	double	th;
+	float	th;
 
 	info.isEnter = IsInside(L) == TRUE ? 1 : 0;
 	info.Cross = p = K * r[0] + L;
-	
+
 	if (p.x == 0.0) {
 		info.Vertical = sp(0, p.y - ((p.y > 0) ? 1 : -1) * m_R, p.z);
-	} else {
-		th = atan2( p.y , p.x );
+	}
+	else {
+		th = atan2(p.y, p.x);
 		info.Vertical = sp(p.x - m_R * cos(th), p.y - m_R * sin(th), p.z);
 	}
 
 	info.Distance = r[0] * sqrt(K * K);
 
-	double x,y,z, phy;
+	float x, y, z, phy;
 
 	x = info.Vertical.x;
 	y = info.Vertical.y;
 	z = info.Vertical.z;
 
-	th = acos(y) / (2 * M_PI); if (x < 0) th = 1 - th;
-	phy = acos(z / sqrt(x * x + z * z)) / (2 * M_PI);
+	th = acosf(y) / (2 * M_PI); if (x < 0) th = 1 - th;
+	phy = acosf(z / sqrtf(x * x + z * z)) / (2 * M_PI);
 	if (x < 0)
 		phy = 1 - phy;
 
 	info.Material = GetPixel(phy, th).getMaterial();
 	info.pNode = this;
-	
+
 	return TRUE;
 }
 
@@ -191,10 +206,11 @@ void Torus::Serialize(CArchive& ar)
 {
 	Node::Serialize(ar);
 
-	if ( ar.IsStoring()) {
+	if (ar.IsStoring()) {
 		ar << m_r;
 		ar << m_R;
-	} else {
+	}
+	else {
 		ar >> m_r;
 		ar >> m_R;
 	}

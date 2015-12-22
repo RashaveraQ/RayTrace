@@ -1,0 +1,6 @@
+#pragma once
+
+enum node_type
+{
+	SPHERE = 1, PLANE, PLUS, MINUS, MULTIPLE, CONE, CYLINDER, TORUS, POLYGON, CUBE, TEAPOT
+};

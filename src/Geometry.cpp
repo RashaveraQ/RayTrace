@@ -15,7 +15,7 @@ Geometry::Geometry(const Node *pNode, LPD3DXMESH pd3dxmesh, const struct matrix&
 	m_Data.pmatWorld = new D3DXMATRIXA16;
 	for (int i = 0; i < 4; i++)
 		for (int j = 0; j < 4; j++)
-			m_Data.pmatWorld->m[i][j] = (float)world.m_data[j][i];
+			m_Data.pmatWorld->m[i][j] = (float)world.get_data(j + 1, i + 1);
 }
 
 bool Geometry::Draw(LPDIRECT3DDEVICE9 pd3dDevice)

@@ -1,10 +1,8 @@
-#ifndef __CONE_H
+ï»¿#ifndef __CONE_H
 #define __CONE_H
 
 class	Node;
 struct	matrix;
-struct	sp;
-struct	Info;
 
 class Cone : public Node
 {
@@ -12,13 +10,13 @@ class Cone : public Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Cone)
+	virtual bool newDeviceNode();
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	Cone(const CRayTraceDoc* const pDoc = 0, const char* const Name = "Cone", const sp Color = sp(255,255,255))
-		: Node(pDoc, CONE, Name, Color) {}
-	Cone(const Cone& other) : Node(other) {}
-	BOOL GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
-	BOOL IsInside(const sp& L) const;
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	Cone(Node* const root = 0, const TCHAR* const Name = _T("Cone"), const sp Color = sp(255, 255, 255));
+	Cone(const Cone& other);
+	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
+	bool IsInside(const sp& L) const;
 	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);

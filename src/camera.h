@@ -1,17 +1,17 @@
-#ifndef __CAMERA_H
+ï»¿#ifndef __CAMERA_H
 #define __CAMERA_H
 
 struct	sp;
 class	Node;
 
-class	Camera	: Node
+class	Camera : Node
 {
-	sp	m_Angle;	// •ûŒü
-	double	m_sWidth;	// ƒXƒR[ƒv•
-	double	m_sHeight;	// ƒXƒR[ƒv‚‚³
-	matrix	m_Trans;	// ƒAƒtƒBƒ“•â³
+	sp	m_Angle;	// æ–¹å‘
+	float	m_sWidth;	// ã‚¹ã‚³ãƒ¼ãƒ—å¹…
+	float	m_sHeight;	// ã‚¹ã‚³ãƒ¼ãƒ—é«˜ã•
+	matrix	m_Trans;	// ã‚¢ãƒ•ã‚£ãƒ³è£œæ­£
 public:
-	Camera( const sp& angle, double swidth, double sheight );
-	
+	Camera(const sp& angle, float swidth, float sheight);
+
 
 #endif

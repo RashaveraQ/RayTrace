@@ -1,4 +1,4 @@
-// DlgMaterial.cpp : ƒCƒ“ƒvƒŠƒƒ“ƒe[ƒVƒ‡ƒ“ ƒtƒ@ƒCƒ‹
+ï»¿// DlgMaterial.cpp : ã‚¤ãƒ³ãƒ—ãƒªãƒ¡ãƒ³ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ ãƒ•ã‚¡ã‚¤ãƒ«
 //
 
 #include "stdafx.h"
@@ -12,7 +12,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
-// CDlgMaterial ƒ_ƒCƒAƒƒO
+// CDlgMaterial ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 
 
 CDlgMaterial::CDlgMaterial(CWnd* pParent /*=NULL*/)
@@ -49,45 +49,45 @@ BEGIN_MESSAGE_MAP(CDlgMaterial, CDialog)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CDlgMaterial ƒƒbƒZ[ƒW ƒnƒ“ƒhƒ‰
+// CDlgMaterial ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ ãƒãƒ³ãƒ‰ãƒ©
 
-void CDlgMaterial::Set( Node& obj )
+void CDlgMaterial::Set(Node& obj)
 {
-	m_Reflect		= obj.m_Reflect;
-	m_Refractive	= obj.m_Refractive;
-	m_Through		= obj.m_Through;
+	m_Reflect = obj.m_Reflect;
+	m_Refractive = obj.m_Refractive;
+	m_Through = obj.m_Through;
 }
 
-void CDlgMaterial::Get( Node& obj )
+void CDlgMaterial::Get(Node& obj)
 {
-	obj.m_Reflect		= m_Reflect;
-	obj.m_Refractive	= m_Refractive;
-	obj.m_Through		= m_Through;
+	obj.m_Reflect = m_Reflect;
+	obj.m_Refractive = m_Refractive;
+	obj.m_Through = m_Through;
 }
 
 
-void CDlgMaterial::OnSelchangeMaterial() 
+void CDlgMaterial::OnSelchangeMaterial()
 {
 	UpdateData();
 
 	static struct {
-		double reflect;
-		double refractive;
-		double through;
-	} material[] = { 
-		{ 0, 2.417,	1},	// ƒ_ƒCƒAƒ‚ƒ“ƒh
-		{ 0, 1.80,	1},	// ƒK[ƒlƒbƒg
-		{ 0, 1.764,	1},	// ƒ‹ƒr[AƒTƒtƒ@ƒCƒA
-		{ 0, 1.717,	1}, // ƒXƒsƒlƒ‹
-		{ 0, 1.67,	1}, // ƒyƒŠƒhƒbƒg
-		{ 0, 1.66,	1}, // ‚Ğ‚·‚¢
-		{ 0, 1.717,	1}, // ƒgƒp[ƒY
-		{ 0, 1.627,	1}, // ƒgƒ‹ƒ}ƒŠƒ“
-		{ 0, 1.579,	1}, // ƒGƒƒ‰ƒ‹ƒh
-		{ 0, 1.549,	1}, // …»
-		{ 0, 1.445,	1}, // ƒIƒp[ƒ‹
-		{ 0, 1.8,	1}, // ƒKƒ‰ƒX
-		{ 0, 1.33,	1}, // …
+		float reflect;
+		float refractive;
+		float through;
+	} material[] = {
+		{ 0, 2.417f, 1 },	// ãƒ€ã‚¤ã‚¢ãƒ¢ãƒ³ãƒ‰
+		{ 0, 1.80f, 1 },	// ã‚¬ãƒ¼ãƒãƒƒãƒˆ
+		{ 0, 1.764f, 1 },	// ãƒ«ãƒ“ãƒ¼ã€ã‚µãƒ•ã‚¡ã‚¤ã‚¢
+		{ 0, 1.717f, 1 }, // ã‚¹ãƒ”ãƒãƒ«
+		{ 0, 1.67f, 1 }, // ãƒšãƒªãƒ‰ãƒƒãƒˆ
+		{ 0, 1.66f, 1 }, // ã²ã™ã„
+		{ 0, 1.717f, 1 }, // ãƒˆãƒ‘ãƒ¼ã‚º
+		{ 0, 1.627f, 1 }, // ãƒˆãƒ«ãƒãƒªãƒ³
+		{ 0, 1.579f, 1 }, // ã‚¨ãƒ¡ãƒ©ãƒ«ãƒ‰
+		{ 0, 1.549f, 1 }, // æ°´æ™¶
+		{ 0, 1.445f, 1 }, // ã‚ªãƒ‘ãƒ¼ãƒ«
+		{ 0, 1.8f, 1 }, // ã‚¬ãƒ©ã‚¹
+		{ 0, 1.33f, 1 }, // æ°´
 	};
 
 	m_Reflect = material[m_Material].reflect;

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "DoCuda.h"
 
 Gathering::Gathering( const Gathering& other ) : Node( other ), m_Member( other.m_Member )
 {
@@ -32,18 +33,22 @@ void	Gathering::Serialize(CArchive& ar)
 			ar >> id;
 			switch ( id )
 			{
-			case SPHERE:	m_Node[i] = new Sphere(m_pDoc); 	break;
-			case PLANE:		m_Node[i] = new Plane(m_pDoc);		break;
-			case PLUS:		m_Node[i] = new Plus(m_pDoc);		break;
-			case MINUS:		m_Node[i] = new Minus(m_pDoc);		break;
-			case MULTIPLE:	m_Node[i] = new Multiple(m_pDoc);	break;
-			case CONE:		m_Node[i] = new Cone(m_pDoc);		break;
-			case CYLINDER:	m_Node[i] = new Cylinder(m_pDoc);	break;
-			case TORUS:		m_Node[i] = new Torus(m_pDoc);		break;
-			case POLYGON:	m_Node[i] = new Polygon2(m_pDoc);	break;
-			case CUBE:		m_Node[i] = new Cube(m_pDoc);		break;
+			case SPHERE:	m_Node[i] = new Sphere(m_Root); 	break;
+			case PLANE:		m_Node[i] = new Plane(m_Root);		break;
+			case PLUS:		m_Node[i] = new Plus(m_Root);		break;
+			case MINUS:		m_Node[i] = new Minus(m_Root);		break;
+			case MULTIPLE:	m_Node[i] = new Multiple(m_Root);	break;
+			case CONE:		m_Node[i] = new Cone(m_Root);		break;
+			case CYLINDER:	m_Node[i] = new Cylinder(m_Root);	break;
+			case TORUS:		m_Node[i] = new Torus(m_Root);		break;
+			case POLYGON:	m_Node[i] = new Polygon2(m_Root);	break;
+			case CUBE:		m_Node[i] = new Cube(m_Root);		break;
 			}
 			m_Node[i]->Serialize(ar);
+
+			if (!DoCuda_AddNode((DevGathering**)m_devNode, m_Node[i]->m_devNode)) {
+				MessageBox(0, _T("Failed to DoCuda_AddNode"), _T("Error"), MB_OK);
+			}
 		}
 	}
 }
@@ -91,7 +96,7 @@ void Gathering::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAft
 	c.Expand(hParent, TVE_EXPAND);
 }
 
-BOOL Gathering::Delete(Node* pNode)
+bool Gathering::Delete(Node* pNode)
 {
 	short	i, j;
 
@@ -101,11 +106,11 @@ BOOL Gathering::Delete(Node* pNode)
 			m_Member--;
 			for (j = i; j < m_Member; j++)
 				m_Node[j] = m_Node[j+1];
-			return TRUE;
+			return true;
 		} else if (m_Node[i]->Delete(pNode))
-			return TRUE;
+			return true;
 	}
-	return FALSE;
+	return false;
 }
 
 BOOL Gathering::AddNode(CTreeCtrl& c, HTREEITEM hitem, Node* pNode)
@@ -121,13 +126,20 @@ BOOL Gathering::AddNode(CTreeCtrl& c, HTREEITEM hitem, Node* pNode)
 
 	pNode->SetParent(this);
 
+	if (!DoCuda_AddNode((DevGathering**)m_devNode, pNode->m_devNode)) {
+		MessageBox(0, _T("Failed to DoCuda_AddNode"), _T("Error"), MB_OK);
+	}
+
 	return TRUE;
 }
 
-void Gathering::SetDocument(const CRayTraceDoc* const pDoc)
+void Gathering::SetRoot(Node* const root)
 {
-	m_pDoc = (const CRayTraceDoc*)pDoc;
+	m_Root = root;
+	if (!DoCuda_SetRoot(m_devNode, root->m_devNode)) {
+		MessageBox(0, _T("Failed to DoCuda_SetRoot()."), _T("Error"), MB_OK);
+	}
 
 	for (int i = 0; i < m_Member; i++)
-		m_Node[i]->SetDocument(pDoc);
+		m_Node[i]->SetRoot(root);
 }

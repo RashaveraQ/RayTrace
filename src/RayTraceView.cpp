@@ -1,4 +1,4 @@
-// RayTraceView.cpp : CRayTraceView ƒNƒ‰ƒX‚Ì“®ì‚Ì’è‹`‚ðs‚¢‚Ü‚·B
+ï»¿// RayTraceView.cpp : CRayTraceView ã‚¯ãƒ©ã‚¹ã®å‹•ä½œã®å®šç¾©ã‚’è¡Œã„ã¾ã™ã€‚
 //
 
 #include "stdafx.h"
@@ -6,6 +6,9 @@
 
 #include "RayTraceDoc.h"
 #include "RayTraceView.h"
+#include "DoCuda.h"
+#include "GetVectorFromPoint.h"
+#include "MainFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -48,23 +51,25 @@ BEGIN_MESSAGE_MAP(CRayTraceView, CView)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_GOURAUDSHADING, OnUpdateViewGouraudshading)
 	ON_WM_DESTROY()
 	//}}AFX_MSG_MAP
-	// •W€ˆóüƒRƒ}ƒ“ƒh
+	// æ¨™æº–å°åˆ·ã‚³ãƒžãƒ³ãƒ‰
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, CView::OnFilePrintPreview)
 	ON_COMMAND(ID_VIEW_WIREFRAME_WITH_RAYTRACE, &CRayTraceView::OnViewWireframeWithRaytrace)
+	ON_COMMAND(ID_VIEW_CUDA_RAYTRACE, &CRayTraceView::OnViewCudaRaytrace)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_CUDA_RAYTRACE, &CRayTraceView::OnUpdateViewCudaRaytrace)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CRayTraceView ƒNƒ‰ƒX‚Ì\’z/Á–Å
+// CRayTraceView ã‚¯ãƒ©ã‚¹ã®æ§‹ç¯‰/æ¶ˆæ»…
 
 CRayTraceView::CRayTraceView()
 {
 	m_StartX = m_StartY = m_NowX = m_NowY = 0;
 	m_NowSize = START_SQUARE;
-	m_View.left   = -10;
-	m_View.right  = 10;
-	m_View.top    = -10;
+	m_View.left = -10;
+	m_View.right = 10;
+	m_View.top = -10;
 	m_View.bottom = 10;
 	m_ViewMode = eD3DFlatShading; //eWireFrame;
 	m_Alt = FALSE;
@@ -75,37 +80,75 @@ CRayTraceView::CRayTraceView()
 	m_pd3dDevice = NULL;
 	m_vEyePt = D3DXVECTOR3(0.0f, 5.0f, -30.0f);
 	m_vLookatPt = D3DXVECTOR3(0.0f, 10.0f, 0.0f);
+	m_ColorRefs = NULL;
 }
 
 CRayTraceView::~CRayTraceView()
 {
 	m_MemoryDC.DeleteDC();
 	m_Viewport.DetachRoot();
+
+	if (m_ColorRefs) {
+		free(m_ColorRefs);
+		m_ColorRefs = NULL;
+		if (!DoCuda_Free(m_deviceAllocateMemory))
+			MessageBox(_T("Failed to DoCuda_Free"));
+	}
 }
 
 BOOL CRayTraceView::PreCreateWindow(CREATESTRUCT& cs)
 {
-	// TODO: ‚±‚ÌˆÊ’u‚Å CREATESTRUCT cs ‚ðC³‚µ‚Ä Window ƒNƒ‰ƒX‚Ü‚½‚ÍƒXƒ^ƒCƒ‹‚ð
-	//  C³‚µ‚Ä‚­‚¾‚³‚¢B
+	// TODO: ã“ã®ä½ç½®ã§ CREATESTRUCT cs ã‚’ä¿®æ­£ã—ã¦ Window ã‚¯ãƒ©ã‚¹ã¾ãŸã¯ã‚¹ã‚¿ã‚¤ãƒ«ã‚’
+	//  ä¿®æ­£ã—ã¦ãã ã•ã„ã€‚
 	cs.style |= WS_VISIBLE;
 
 	return CView::PreCreateWindow(cs);
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CRayTraceView ƒNƒ‰ƒX‚Ì•`‰æ
+// CRayTraceView ã‚¯ãƒ©ã‚¹ã®æç”»
 
 void CRayTraceView::OnDraw(CDC* pDC)
 {
+	DWORD t1, t2, t3, t4, d1, d2, d3;
+	CString str;
+
 	switch (m_ViewMode) {
+	case eCudaRayTrace:
+
+		t1 = GetTickCount();
+
+		if (!DoCuda_OnDraw(m_ColorRefs, m_deviceAllocateMemory, GetDocument()->m_Root.m_devNode, m_ClientSize.cx, m_ClientSize.cy, &m_View, &m_Viewport.getMatrix().Inv()))
+			MessageBox(_T("Failed to DoCuda_OnDraw."));
+
+		t2 = GetTickCount();
+
+		for (int y = 0; y < m_ClientSize.cy; y++)
+			for (int x = 0; x < m_ClientSize.cx; x++)
+				m_MemoryDC.FillSolidRect(CRect(x, y, x + 1, y + 1), m_ColorRefs[x + y * m_ClientSize.cx]);
+
 	case eRayTrace:
 	case eWireFrameWithRayTrace:
+
+		t3 = GetTickCount();
+
 		pDC->BitBlt(0, 0, m_ClientSize.cx, m_ClientSize.cy, &m_MemoryDC, 0, 0, SRCCOPY);
-		if (m_ViewMode == eRayTrace)
+
+		t4 = GetTickCount();
+
+		d1 = t2 - t1;
+		d2 = t3 - t2;
+		d3 = t4 - t3;
+
+		extern CRayTraceApp theApp;
+		str.Format(_T("GPU : %d, CPU : %d (= %d + %d)\n"), d1, d2 + d3, d2, d3);
+		((CMainFrame*)theApp.m_pMainWnd)->SetStatusText(str);
+
+		if (m_ViewMode == eRayTrace || m_ViewMode == eCudaRayTrace)
 			break;
 	case eWireFrame:
 		pDC->SelectStockObject(NULL_BRUSH);
-		m_Viewport.Draw_Outline(pDC, *this, matrix(4,4));
+		m_Viewport.Draw_Outline(pDC, *this, matrix(4, 4));
 		break;
 	case eD3DWireFrame:
 	case eD3DFlatShading:
@@ -114,12 +157,12 @@ void CRayTraceView::OnDraw(CDC* pDC)
 			UpdateDevice();
 
 		// Clear the backbuffer to a blue color
-		m_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,
-							D3DCOLOR_XRGB(127,127,127), 1.0f, 0);
+		m_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
+			D3DCOLOR_XRGB(127, 127, 127), 1.0f, 0);
 
 		// Begin the scene
 		if (SUCCEEDED(m_pd3dDevice->BeginScene())) {
-			
+
 			// Set up a material. The material here just has the diffuse and ambient
 			// colors set to yellow. Note that only one material can be used at a time.
 			D3DMATERIAL9 mtrl;
@@ -128,7 +171,7 @@ void CRayTraceView::OnDraw(CDC* pDC)
 			mtrl.Diffuse.g = mtrl.Ambient.g = 1.0f;
 			mtrl.Diffuse.b = mtrl.Ambient.b = 0.0f;
 			mtrl.Diffuse.a = mtrl.Ambient.a = 1.0f;
-			m_pd3dDevice->SetMaterial( &mtrl );
+			m_pd3dDevice->SetMaterial(&mtrl);
 
 			// Set up a white, directional light, with an oscillating direction.
 			// Note that many lights may be active at a time (but each one slows down
@@ -137,15 +180,15 @@ void CRayTraceView::OnDraw(CDC* pDC)
 			D3DXVECTOR3 vecDir;
 			D3DLIGHT9 light;
 			ZeroMemory(&light, sizeof(D3DLIGHT9));
-			light.Type       = D3DLIGHT_DIRECTIONAL;
-			light.Diffuse.r  = 1.0f;
-			light.Diffuse.g  = 1.0f;
-			light.Diffuse.b  = 1.0f;
-			vecDir = D3DXVECTOR3(cosf(timeGetTime()/350.0f),
-								 -1.0f,
-								 sinf(timeGetTime()/350.0f));
+			light.Type = D3DLIGHT_DIRECTIONAL;
+			light.Diffuse.r = 1.0f;
+			light.Diffuse.g = 1.0f;
+			light.Diffuse.b = 1.0f;
+			vecDir = D3DXVECTOR3(cosf(timeGetTime() / 350.0f),
+				-1.0f,
+				sinf(timeGetTime() / 350.0f));
 			D3DXVec3Normalize((D3DXVECTOR3*)&light.Direction, &vecDir);
-			light.Range       = 1000.0f;
+			light.Range = 1000.0f;
 			m_pd3dDevice->SetLight(0, &light);
 			m_pd3dDevice->LightEnable(0, TRUE);
 			m_pd3dDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
@@ -169,7 +212,7 @@ void CRayTraceView::OnDraw(CDC* pDC)
 			// the aspect ratio, and the near and far clipping planes (which define at
 			// what distances geometry should be no longer be rendered).
 			D3DXMATRIXA16 matProj;
-			D3DXMatrixPerspectiveFovLH(&matProj, D3DX_PI/4, 1.0f, 1.0f, 100.0f);
+			D3DXMatrixPerspectiveFovLH(&matProj, D3DX_PI / 4, 1.0f, 1.0f, 100.0f);
 			m_pd3dDevice->SetTransform(D3DTS_PROJECTION, &matProj);
 
 			// For our world matrix, we will just leave it as the identity
@@ -183,7 +226,7 @@ void CRayTraceView::OnDraw(CDC* pDC)
 			while (pos) {
 				Geometry geometry = m_lstGeometry.GetAt(pos);
 				if (!geometry.Draw(m_pd3dDevice))
-					MessageBox("Error");
+					MessageBox(_T("Error"));
 				m_lstGeometry.GetNext(pos);
 			}
 
@@ -199,26 +242,26 @@ void CRayTraceView::OnDraw(CDC* pDC)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CRayTraceView ƒNƒ‰ƒX‚Ìˆóü
+// CRayTraceView ã‚¯ãƒ©ã‚¹ã®å°åˆ·
 
 BOOL CRayTraceView::OnPreparePrinting(CPrintInfo* pInfo)
 {
-	// ƒfƒtƒHƒ‹ƒg‚Ìˆóü€”õ
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å°åˆ·æº–å‚™
 	return DoPreparePrinting(pInfo);
 }
 
 void CRayTraceView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
-	// TODO: ˆóü‘O‚Ì“Á•Ê‚È‰Šú‰»ˆ—‚ð’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢B
+	// TODO: å°åˆ·å‰ã®ç‰¹åˆ¥ãªåˆæœŸåŒ–å‡¦ç†ã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚
 }
 
 void CRayTraceView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
-	// TODO: ˆóüŒã‚ÌŒãˆ—‚ð’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢B
+	// TODO: å°åˆ·å¾Œã®å¾Œå‡¦ç†ã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CRayTraceView ƒNƒ‰ƒX‚Ìf’f
+// CRayTraceView ã‚¯ãƒ©ã‚¹ã®è¨ºæ–­
 
 #ifdef _DEBUG
 void CRayTraceView::AssertValid() const
@@ -231,7 +274,7 @@ void CRayTraceView::Dump(CDumpContext& dc) const
 	CView::Dump(dc);
 }
 
-CRayTraceDoc* CRayTraceView::GetDocument() // ”ñƒfƒoƒbƒO ƒo[ƒWƒ‡ƒ“‚ÍƒCƒ“ƒ‰ƒCƒ“‚Å‚·B
+CRayTraceDoc* CRayTraceView::GetDocument() // éžãƒ‡ãƒãƒƒã‚° ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã¯ã‚¤ãƒ³ãƒ©ã‚¤ãƒ³ã§ã™ã€‚
 {
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CRayTraceDoc)));
 	return (CRayTraceDoc*)m_pDocument;
@@ -239,47 +282,43 @@ CRayTraceDoc* CRayTraceView::GetDocument() // ”ñƒfƒoƒbƒO ƒo[ƒWƒ‡ƒ“‚ÍƒCƒ“ƒ‰ƒCƒ“‚
 #endif //_DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
-// CRayTraceView ƒNƒ‰ƒX‚ÌƒƒbƒZ[ƒW ƒnƒ“ƒhƒ‰
+// CRayTraceView ã‚¯ãƒ©ã‚¹ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ ãƒãƒ³ãƒ‰ãƒ©
 
-int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	if (!(m_TimerID = SetTimer(0,1,NULL)))
-		MessageBox("SetTimer is returned to 0!");
+	if (!(m_TimerID = SetTimer(0, 1, NULL)))
+		MessageBox(_T("SetTimer is returned to 0!"));
 
 	CRayTraceDoc	*pDoc = GetDocument();
 
-	m_Viewport.SetDocument(pDoc);
+	m_Viewport.SetRoot(&pDoc->m_Root);
 	m_Viewport.AttachRoot(&(pDoc->m_Root));
+
+	m_deviceAllocateMemory = 0;
+	if (!DoCuda_Init())
+		MessageBox(_T("Failed to DoCuda_Init!"));
 
 	return 0;
 }
-	
+
 void CRayTraceView::GetVectorFromPoint(sp& k, sp& l, int px, int py)
 {
-	double rx = (m_View.right - m_View.left) * px / m_ClientSize.cx + m_View.left;
-	double ry = (m_View.bottom - m_View.top) * py / m_ClientSize.cx + m_View.top;
-
-	k = sp(0.01 * rx / (m_View.right - m_View.left), 0.01 * ry / (m_View.bottom - m_View.top), 0.01);
-	l = sp(rx, ry, -20);
-
-	matrix m = m_Viewport.getMatrix().Inv();
-	k = m * (k + l) - m * l;
-	l = m * l;
+	::GetVectorFromPoint(k, l, px, py, &m_View, m_ClientSize.cx, m_ClientSize.cy, &m_Viewport.getMatrix().Inv());
 }
 
-void CRayTraceView::OnTimer(UINT nIDEvent) 
+void CRayTraceView::OnTimer(UINT nIDEvent)
 {
 	CRayTraceDoc	*pDoc = GetDocument();
 
-	for (int i = 0; i < 1000; i ++) {
+	for (int i = 0; i < 1000; i++) {
 		if (m_Job == CONTINUED) {
 			sp k, l;
 			GetVectorFromPoint(k, l, m_NowX, m_NowY);
-			sp	   c  = pDoc->m_Root.GetColor(k, l, 0, NULL, true);
-			m_MemoryDC.FillSolidRect(CRect(m_NowX, m_NowY, m_NowX+m_NowSize, m_NowY+m_NowSize), RGB(c.x, c.y, c.z));
+			sp	   c = pDoc->m_Root.GetColor(k, l, 0, NULL, true);
+			m_MemoryDC.FillSolidRect(CRect(m_NowX, m_NowY, m_NowX + m_NowSize, m_NowY + m_NowSize), RGB(c.x, c.y, c.z));
 			m_Job = Go_ahead(m_NowX, m_NowY, m_NowSize, m_StartX, m_StartY, m_ClientSize, START_SQUARE);
 		}
 	}
@@ -287,41 +326,52 @@ void CRayTraceView::OnTimer(UINT nIDEvent)
 		Invalidate(FALSE);
 }
 
-int CRayTraceView::Go_ahead(int& X, int& Y, int& S, int& X0, int& Y0, CSize& cs, int MAX )
+int CRayTraceView::Go_ahead(int& X, int& Y, int& S, int& X0, int& Y0, CSize& cs, int MAX)
 {
-	int	flag = 0; 
+	int	flag = 0;
 
 	X += MAX;
 	if (X > cs.cx) {
 		X = X0, Y += MAX;
-		if ( Y > cs.cy )
-			if ((X0 == (MAX-1)) && (Y0 == (MAX-1)))
-   				return FINISHED;
+		if (Y > cs.cy)
+			if ((X0 == (MAX - 1)) && (Y0 == (MAX - 1)))
+				return FINISHED;
 			else {
 				while (flag == 0) {
 					if (X0 % S == 0 && Y0 % S == 0) {
 						flag = 1, X0 += S;
-      					if ( S < MAX && X0 % (2 * S) == 0 && Y0 % (2 * S) == 0 )
+						if (S < MAX && X0 % (2 * S) == 0 && Y0 % (2 * S) == 0)
 							X0 += S;
 						if (X0 > MAX) {
-       						X0 = 0 , Y0 += S ;
-       						if (Y0 > MAX)
-        						S /= 2, X0 = S, Y0 = 0;
+							X0 = 0, Y0 += S;
+							if (Y0 > MAX)
+								S /= 2, X0 = S, Y0 = 0;
 						}
-					} else
+					}
+					else
 						S /= 2;
-    			}
+				}
 				X = X0, Y = Y0;
 			}
 	}
 	return CONTINUED;
 }
 
-void CRayTraceView::OnSize(UINT nType, int cx, int cy) 
+void CRayTraceView::OnSize(UINT nType, int cx, int cy)
 {
 	m_ClientSize.cx = cx;
 	m_ClientSize.cy = cy;
-	
+	if (m_ColorRefs) {
+		free(m_ColorRefs);
+		m_ColorRefs = NULL;
+		if (!DoCuda_Free(m_deviceAllocateMemory))
+			MessageBox(_T("Failed to DoCuda_Free."));
+	}
+	m_ColorRefs = (COLORREF*)malloc(cx * cy * sizeof(COLORREF));
+	if (!DoCuda_OnSize(&m_deviceAllocateMemory, cx, cy)) {
+		MessageBox(_T("Failed to DoCuda_OnSize."));
+	}
+
 	if (!m_Iconized && nType != SIZE_MINIMIZED)	{
 		m_MemoryDC.DeleteDC();
 		m_MemoryDC.CreateCompatibleDC(NULL);
@@ -336,7 +386,8 @@ void CRayTraceView::OnSize(UINT nType, int cx, int cy)
 	if (nType == SIZE_MINIMIZED) {
 		if (!m_Iconized)
 			m_Iconized = TRUE;
-	} else {
+	}
+	else {
 		if (m_Iconized)
 			m_Iconized = FALSE;
 	}
@@ -349,9 +400,9 @@ void CRayTraceView::OnSize(UINT nType, int cx, int cy)
 	}
 }
 
-void CRayTraceView::OnLButtonDown(UINT nFlags, CPoint point) 
+void CRayTraceView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	if (m_SelectedNode && m_Viewport.SetManipulatorAxis(*this, point, matrix(4,4))) {
+	if (m_SelectedNode && m_Viewport.SetManipulatorAxis(*this, point, matrix(4, 4))) {
 		Invalidate();
 		return;
 	}
@@ -363,14 +414,15 @@ void CRayTraceView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	if (pDoc->m_Root.GetInfo2(k, l, info, NULL, true)) {
 		m_SelectedNode = (Node*)info.pNode;
-	} else {
+	}
+	else {
 		m_SelectedNode = NULL;
 	}
 
 	m_AltStart = point;
 }
 
-void CRayTraceView::OnLButtonUp(UINT nFlags, CPoint point) 
+void CRayTraceView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	CRayTraceDoc	*pDoc = GetDocument();
 	Info	info;
@@ -384,46 +436,46 @@ void CRayTraceView::OnLButtonUp(UINT nFlags, CPoint point)
 	Invalidate();
 }
 
-void CRayTraceView::OnRButtonDown(UINT nFlags, CPoint point) 
+void CRayTraceView::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	m_AltStart = point;
 }
 
 void CRayTraceView::UpdateDevice()
 {
-    if (m_pd3dDevice) {
+	if (m_pd3dDevice) {
 		m_pd3dDevice->Release();
 		m_pd3dDevice = NULL;
 	}
 
 	extern LPDIRECT3D9	g_pD3D;
-    // Set up the structure used to create the D3DDevice. Most parameters are
-    // zeroed out. We set Windowed to TRUE, since we want to do D3D in a
-    // window, and then set the SwapEffect to "discard", which is the most
-    // efficient method of presenting the back buffer to the display.  And 
-    // we request a back buffer format that matches the current desktop display 
-    // format.
-    D3DPRESENT_PARAMETERS d3dpp; 
-    ZeroMemory(&d3dpp, sizeof(d3dpp));
-    d3dpp.Windowed = TRUE;
-    d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-    d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
+	// Set up the structure used to create the D3DDevice. Most parameters are
+	// zeroed out. We set Windowed to TRUE, since we want to do D3D in a
+	// window, and then set the SwapEffect to "discard", which is the most
+	// efficient method of presenting the back buffer to the display.  And 
+	// we request a back buffer format that matches the current desktop display 
+	// format.
+	D3DPRESENT_PARAMETERS d3dpp;
+	ZeroMemory(&d3dpp, sizeof(d3dpp));
+	d3dpp.Windowed = TRUE;
+	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+	d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
 	d3dpp.EnableAutoDepthStencil = TRUE;
 	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
 	d3dpp.BackBufferWidth = m_ClientSize.cx;
 	d3dpp.BackBufferHeight = m_ClientSize.cy;
 
-    // Create the Direct3D device. Here we are using the default adapter (most
-    // systems only have one, unless they have multiple graphics hardware cards
-    // installed) and requesting the HAL (which is saying we want the hardware
-    // device rather than a software one). Software vertex processing is 
-    // specified since we know it will work on all cards. On cards that support 
-    // hardware vertex processing, though, we would see a big performance gain 
-    // by specifying hardware vertex processing.
-    if (FAILED(g_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, GetSafeHwnd(),
-									D3DCREATE_HARDWARE_VERTEXPROCESSING,
-									&d3dpp, &m_pd3dDevice))) {
-		AfxMessageBox("Failed to CreateDevice");
+	// Create the Direct3D device. Here we are using the default adapter (most
+	// systems only have one, unless they have multiple graphics hardware cards
+	// installed) and requesting the HAL (which is saying we want the hardware
+	// device rather than a software one). Software vertex processing is 
+	// specified since we know it will work on all cards. On cards that support 
+	// hardware vertex processing, though, we would see a big performance gain 
+	// by specifying hardware vertex processing.
+	if (FAILED(g_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, GetSafeHwnd(),
+		D3DCREATE_HARDWARE_VERTEXPROCESSING,
+		&d3dpp, &m_pd3dDevice))) {
+		AfxMessageBox(_T("Failed to CreateDevice"));
 		return;
 	}
 
@@ -436,11 +488,11 @@ void CRayTraceView::UpdateDevice()
 	while (!m_lstGeometry.IsEmpty())
 		m_lstGeometry.RemoveTail().Clear();
 
-	// DirectX ‚ÌŽ‹“_ˆÚ“®‚Í‚‘¬‰»‚Ì—]’n‚ª‚ ‚èA‚»‚Ìê‡AˆÈ‰º‚Ì m_Viewport ‚ð GetDocument()->m_Root ‚É•ÏX‚·‚é“™...
+	// DirectX ã®è¦–ç‚¹ç§»å‹•ã¯é«˜é€ŸåŒ–ã®ä½™åœ°ãŒã‚ã‚Šã€ãã®å ´åˆã€ä»¥ä¸‹ã® m_Viewport ã‚’ GetDocument()->m_Root ã«å¤‰æ›´ã™ã‚‹ç­‰...
 	m_Viewport.AddGeometry(m_pd3dDevice, m_lstGeometry, *this, matrix());
 }
 
-void CRayTraceView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint) 
+void CRayTraceView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 {
 	switch (m_ViewMode)
 	{
@@ -458,6 +510,8 @@ void CRayTraceView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 		m_NowSize = START_SQUARE;
 		m_Job = CONTINUED;
 		break;
+	case eCudaRayTrace:
+		Invalidate(FALSE);
 	}
 }
 
@@ -500,24 +554,31 @@ void CRayTraceView::OnViewGouraudshading()
 	Invalidate();
 }
 
+void CRayTraceView::OnViewCudaRaytrace()
+{
+	m_ViewMode = eCudaRayTrace;
+	Invalidate();
+}
+
 void CRayTraceView::OnUpdateViewRaytrace(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eRayTrace); }
-void CRayTraceView::OnUpdateViewWireframe(CCmdUI* pCmdUI) {	pCmdUI->SetCheck(m_ViewMode == eWireFrame); }
+void CRayTraceView::OnUpdateViewWireframe(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eWireFrame); }
 void CRayTraceView::OnUpdateViewD3dwireframe(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eD3DWireFrame); }
 void CRayTraceView::OnUpdateViewFlatshading(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eD3DFlatShading); }
 void CRayTraceView::OnUpdateViewGouraudshading(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eD3DGouraudShading); }
+void CRayTraceView::OnUpdateViewCudaRaytrace(CCmdUI *pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eCudaRayTrace); }
 
-BOOL CRayTraceView::OnEraseBkgnd(CDC* pDC) 
+BOOL CRayTraceView::OnEraseBkgnd(CDC* pDC)
 {
-    CBrush * pOldBrush = (CBrush*)pDC->SelectStockObject( GRAY_BRUSH );
-    CRect rect;
-    pDC->GetClipBox( &rect );
-    pDC->PatBlt( rect.left, rect.top, rect.Width(), rect.Height(), PATCOPY);
-    pDC->SelectObject( pOldBrush );
+	CBrush * pOldBrush = (CBrush*)pDC->SelectStockObject(GRAY_BRUSH);
+	CRect rect;
+	pDC->GetClipBox(&rect);
+	pDC->PatBlt(rect.left, rect.top, rect.Width(), rect.Height(), PATCOPY);
+	pDC->SelectObject(pOldBrush);
 
-    return TRUE;
+	return TRUE;
 }
 
-void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point) 
+void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	POINT	d;
 	d.x = m_AltStart.x - point.x;
@@ -527,7 +588,7 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 	Node* p = m_SelectedNode ? m_SelectedNode : &m_Viewport;
 	eAxis axis;
 	eType type;
-		
+
 	if (m_Alt) {
 		p = &m_Viewport;
 		axis = eNONE;
@@ -537,37 +598,39 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 		case MK_RBUTTON: type = eSCALE;	break;
 		default: return;
 		}
-	} else if (m_SelectedNode && (nFlags == MK_LBUTTON || nFlags == MK_MBUTTON)) {
+	}
+	else if (m_SelectedNode && (nFlags == MK_LBUTTON || nFlags == MK_MBUTTON)) {
 		p = m_SelectedNode;
 		axis = m_Manipulator.Axis;
 		type = m_Manipulator.Type;
-	} else {
+	}
+	else {
 		m_AltStart = point;
 		return;
 	}
-	
-	switch(type){
+
+	switch (type){
 	case eMOVE:
 		if (m_SelectedNode)
-			p->Move(axis, d.x);
+			p->Move(axis, (float)d.x);
 		else {
 			p->Move(d);
 		}
 		break;
 	case eROTATE:
 		if (m_SelectedNode)
-			p->Rotate(axis, d.x);
+			p->Rotate(axis, (float)d.x);
 		else {
 			p->Rotate(d);
 		}
 		break;
 	case eSCALE:
-		p->Scale(axis,d.x);
+		p->Scale(axis, (float)d.x);
 		break;
 	case ePIVOT_MOVE:
 		if (!m_SelectedNode)
 			return;
-		p->MovePivot(axis, d.x);
+		p->MovePivot(axis, (float)d.x);
 		break;
 	default:
 		return;
@@ -579,9 +642,11 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 
 	if (m_SelectedNode) {
 		((CRayTraceDoc*)GetDocument())->UpdateAllViews(NULL);
-	} else {
+	}
+	else {
 		switch (m_ViewMode) {
 		case eRayTrace:
+		case eCudaRayTrace:
 		case eWireFrame:
 		case eWireFrameWithRayTrace:
 			OnUpdate(0, 0, 0);
@@ -589,7 +654,7 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 		case eD3DWireFrame:
 		case eD3DFlatShading:
 		case eD3DGouraudShading:
-			// ToDo: UpdateDevice ‚ð•s—v‚Éo—ˆ‚½‚çAˆÈ‰º‚ðíœ‚µ‚Ä‚‘¬‰»‰Â”\B
+			// ToDo: UpdateDevice ã‚’ä¸è¦ã«å‡ºæ¥ãŸã‚‰ã€ä»¥ä¸‹ã‚’å‰Šé™¤ã—ã¦é«˜é€ŸåŒ–å¯èƒ½ã€‚
 			OnUpdate(0, 0, 0);
 			break;
 		}
@@ -598,9 +663,9 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 	CView::OnMouseMove(nFlags, point);
 }
 
-void CRayTraceView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CRayTraceView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	switch(nChar) {
+	switch (nChar) {
 	case 81: m_Manipulator.Type = eSELECT;		break;
 	case 87: m_Manipulator.Type = eMOVE;		break;
 	case 69: m_Manipulator.Type = eROTATE;		break;
@@ -630,23 +695,25 @@ void CRayTraceView::OnSysKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	CView::OnSysKeyUp(nChar, nRepCnt, nFlags);
 }
 
-BOOL CRayTraceView::DestroyWindow() 
+BOOL CRayTraceView::DestroyWindow()
 {
-	// TODO: ‚±‚ÌˆÊ’u‚ÉŒÅ—L‚Ìˆ—‚ð’Ç‰Á‚·‚é‚©A‚Ü‚½‚ÍŠî–{ƒNƒ‰ƒX‚ðŒÄ‚Ño‚µ‚Ä‚­‚¾‚³‚¢
+	// TODO: ã“ã®ä½ç½®ã«å›ºæœ‰ã®å‡¦ç†ã‚’è¿½åŠ ã™ã‚‹ã‹ã€ã¾ãŸã¯åŸºæœ¬ã‚¯ãƒ©ã‚¹ã‚’å‘¼ã³å‡ºã—ã¦ãã ã•ã„
 	return CView::DestroyWindow();
 }
 
-void CRayTraceView::OnDestroy() 
+void CRayTraceView::OnDestroy()
 {
 	CView::OnDestroy();
-	
-	// TODO: ‚±‚ÌˆÊ’u‚ÉƒƒbƒZ[ƒW ƒnƒ“ƒhƒ‰—p‚ÌƒR[ƒh‚ð’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢
+
+	// TODO: ã“ã®ä½ç½®ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ ãƒãƒ³ãƒ‰ãƒ©ç”¨ã®ã‚³ãƒ¼ãƒ‰ã‚’è¿½åŠ ã—ã¦ãã ã•ã„
 	while (!m_lstGeometry.IsEmpty())
 		m_lstGeometry.RemoveTail().Clear();
-	
+
 	if (m_pd3dDevice) {
 		m_pd3dDevice->Release();
 		m_pd3dDevice = NULL;
 	}
 }
+
+
 

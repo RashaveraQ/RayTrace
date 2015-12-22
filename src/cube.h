@@ -1,4 +1,4 @@
-#ifndef __CUBE_H
+ï»¿#ifndef __CUBE_H
 #define __CUBE_H
 
 class	Node;
@@ -10,17 +10,17 @@ class Cube : public Node
 	Boundary getBoundary() { return sBoundary; }
 protected:
 	DECLARE_SERIAL(Cube)
+	virtual bool newDeviceNode();
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	Cube(const CRayTraceDoc* const pDoc = 0, const char* const Name = "Cube", const sp Color = sp(255,255,255))
-		: Node(pDoc, CUBE, Name, Color) {}
-	Cube(const Cube& other) : Node(other) {}
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	Cube(Node* const root = 0, const TCHAR* const Name = _T("Cube"), const sp Color = sp(255, 255, 255));
+	Cube(const Cube& other);
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;
-	BOOL GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
-	BOOL IsInside(const sp& L) const;
+	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
+	bool IsInside(const sp& L) const;
 	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
-	const Node* MakeCopy() const {return new Cube(*this);}
+	const Node* MakeCopy() const { return new Cube(*this); }
 };
 
 #endif

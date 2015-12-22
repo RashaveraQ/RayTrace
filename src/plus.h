@@ -1,4 +1,4 @@
-#ifndef __PLUS_H
+ï»¿#ifndef __PLUS_H
 #define __PLUS_H
 
 class	Plus : public Gathering
@@ -6,13 +6,14 @@ class	Plus : public Gathering
 	Boundary getBoundary();
 protected:
 	DECLARE_SERIAL(Plus)
+	virtual bool newDeviceNode();
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	Plus( const CRayTraceDoc* const pDoc = 0, const char* const Name = "‰Á–@" ) : Gathering( pDoc, PLUS, Name ) {}
-	Plus( const Plus& other ) : Gathering( other ) {}
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	Plus(Node* const root = 0, const TCHAR* const Name = _T("Plus"));
+	Plus(const Plus& other);
 
-	BOOL GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
-	BOOL IsInside(const sp& L) const;
+	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
+	bool IsInside(const sp& L) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	const Node*	MakeCopy() const { return new Plus(*this); }
 };
