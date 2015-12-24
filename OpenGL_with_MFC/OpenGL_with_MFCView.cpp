@@ -140,9 +140,7 @@ GLint DrawBox(GLdouble d, GLdouble w, GLdouble h)
 	glEnd();
 	glPopMatrix();
 
-
 	return(0);
-
 }
 
 void COpenGL_with_MFCView::OnDraw(CDC* /*pDC*/)
@@ -154,7 +152,6 @@ void COpenGL_with_MFCView::OnDraw(CDC* /*pDC*/)
 
 	// TODO: この場所にネイティブ データ用の描画コードを追加します。
 	::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	::glPushMatrix();
 
 	::glColor3f(0.0f, 1.0f, 0.0f);
@@ -165,9 +162,10 @@ void COpenGL_with_MFCView::OnDraw(CDC* /*pDC*/)
 	DrawBox(1, 1, 1);
 
 	::glPopMatrix();
-
 	::glFinish();
-	if (FALSE == ::SwapBuffers(m_pDC->GetSafeHdc())) ShowError(7);
+
+	if (FALSE == ::SwapBuffers(m_pDC->GetSafeHdc()))
+		ShowError(7);
 }
 
 // COpenGL_with_MFCView 診断
@@ -224,22 +222,26 @@ int COpenGL_with_MFCView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		0,
 		0, 0, 0
 	};
+
+	HDC hdc = m_pDC->GetSafeHdc();
+
 	int pixelformat;
-	if (0 == (pixelformat = ::ChoosePixelFormat(m_pDC->GetSafeHdc(), &pfd))){
+	if (0 == (pixelformat = ::ChoosePixelFormat(hdc, &pfd))){
 		ShowError(2);
 		return FALSE;
 	}
-	if (FALSE == ::SetPixelFormat(m_pDC->GetSafeHdc(), pixelformat, &pfd)){
+
+	if (FALSE == ::SetPixelFormat(hdc, pixelformat, &pfd)) {
 		ShowError(3);
 		return FALSE;
 	}
 
-	if (0 == (m_hRC = ::wglCreateContext(m_pDC->GetSafeHdc()))){
+	if (0 == (m_hRC = ::wglCreateContext(hdc))) {
 		ShowError(4);
 		return FALSE;
 	}
 
-	if (FALSE == ::wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC)){
+	if (FALSE == ::wglMakeCurrent(hdc, m_hRC)){
 		ShowError(5);
 		return FALSE;
 	}
@@ -255,9 +257,14 @@ void COpenGL_with_MFCView::OnDestroy()
 {
 	CView::OnDestroy();
 	// TODO: Add your message handler code here
-	if (FALSE == ::wglMakeCurrent(0, 0)) ShowError(2);
-	if (FALSE == ::wglDeleteContext(m_hRC)) ShowError(6);
-	if (m_pDC) delete m_pDC;
+	if (FALSE == ::wglMakeCurrent(0, 0))
+		ShowError(2);
+
+	if (FALSE == ::wglDeleteContext(m_hRC))
+		ShowError(6);
+
+	if (m_pDC)
+		delete m_pDC;
 }
 
 
@@ -275,7 +282,8 @@ void COpenGL_with_MFCView::OnSize(UINT nType, int cx, int cy)
 	CView::OnSize(nType, cx, cy);
 
 	// TODO: Add your message handler code here
-	if (0 >= cx || 0 >= cy) return;
+	if (0 >= cx || 0 >= cy)
+		return;
 
 	::glViewport(0, 0, cx, cy);
 	::glMatrixMode(GL_PROJECTION);
