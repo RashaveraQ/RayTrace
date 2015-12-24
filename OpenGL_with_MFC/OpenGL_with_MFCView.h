@@ -22,11 +22,7 @@ private:
 	CDC* m_pDC;
 
 // 操作
-public:
-	BOOL RenderScene(void);
 private:
-	BOOL SetupPixelFormat(void);
-	BOOL InitializeOpenGL(void);
 	void ShowError(int e);
 
 // オーバーライド

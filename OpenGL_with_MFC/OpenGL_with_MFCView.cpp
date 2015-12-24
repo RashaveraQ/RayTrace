@@ -77,22 +77,17 @@ void COpenGL_with_MFCView::OnDraw(CDC* /*pDC*/)
 	::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	::glPushMatrix();
-	RenderScene();
+
+	::glColor3f(0.0f, 1.0f, 0.0f);
+	::auxWireSphere(0.5f);
+	::glColor3f(1.0f, 0.0f, 0.0f);
+	::auxWireCube(1.0f);
+
 	::glPopMatrix();
 
 	::glFinish();
 	if (FALSE == ::SwapBuffers(m_pDC->GetSafeHdc())) ShowError(7);
 }
-
-BOOL COpenGL_with_MFCView::RenderScene()
-{
-	::glColor3f(0.0f, 1.0f, 0.0f);
-	::auxWireSphere(0.5f);
-	::glColor3f(1.0f, 0.0f, 0.0f);
-	::auxWireCube(1.0f);
-	return TRUE;
-}
-
 
 // COpenGL_with_MFCView 診断
 
@@ -124,11 +119,56 @@ int COpenGL_with_MFCView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	// TODO:  Add your specialized creation code here
-	InitializeOpenGL();
+	m_pDC = new CClientDC(this);
+	if (NULL == m_pDC){
+		ShowError(1);
+		return FALSE;
+	}
+
+	PIXELFORMATDESCRIPTOR pfd = {
+		sizeof(PIXELFORMATDESCRIPTOR),
+		1,
+		PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
+		PFD_TYPE_RGBA,
+		24,
+		0, 0, 0, 0, 0, 0,
+		0,
+		0,
+		0,
+		0, 0, 0, 0,
+		16,
+		0,
+		0,
+		PFD_MAIN_PLANE,
+		0,
+		0, 0, 0
+	};
+	int pixelformat;
+	if (0 == (pixelformat = ::ChoosePixelFormat(m_pDC->GetSafeHdc(), &pfd))){
+		ShowError(2);
+		return FALSE;
+	}
+	if (FALSE == ::SetPixelFormat(m_pDC->GetSafeHdc(), pixelformat, &pfd)){
+		ShowError(3);
+		return FALSE;
+	}
+
+	if (0 == (m_hRC = ::wglCreateContext(m_pDC->GetSafeHdc()))){
+		ShowError(4);
+		return FALSE;
+	}
+
+	if (FALSE == ::wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC)){
+		ShowError(5);
+		return FALSE;
+	}
+
+	::glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	::glClearDepth(1.0f);
+	::glEnable(GL_DEPTH_TEST);
 
 	return 0;
 }
-
 
 void COpenGL_with_MFCView::OnDestroy()
 {
@@ -168,59 +208,5 @@ void COpenGL_with_MFCView::OnSize(UINT nType, int cx, int cy)
 	::glRotatef(20.0f, 1.0f, 0.0f, 0.0f);
 }
 
-BOOL COpenGL_with_MFCView::SetupPixelFormat()
-{
-	PIXELFORMATDESCRIPTOR pfd =
-	{
-		sizeof(PIXELFORMATDESCRIPTOR),
-		1,
-		PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
-		PFD_TYPE_RGBA,
-		24,
-		0, 0, 0, 0, 0, 0,
-		0,
-		0,
-		0,
-		0, 0, 0, 0,
-		16,
-		0,
-		0,
-		PFD_MAIN_PLANE,
-		0,
-		0, 0, 0
-	};
-	int pixelformat;
-	if (0 == (pixelformat = ::ChoosePixelFormat(m_pDC->GetSafeHdc(), &pfd))){
-		ShowError(2);
-		return FALSE;
-	}
-	if (FALSE == ::SetPixelFormat(m_pDC->GetSafeHdc(), pixelformat, &pfd)){
-		ShowError(3);
-		return FALSE;
-	}
-	return TRUE;
-}
 
-BOOL COpenGL_with_MFCView::InitializeOpenGL()
-{
-	m_pDC = new CClientDC(this);
-	if (NULL == m_pDC){
-		ShowError(1);
-		return FALSE;
-	}
-	if (!SetupPixelFormat()) return FALSE;
-	if (0 == (m_hRC = ::wglCreateContext(m_pDC->GetSafeHdc()))){
-		ShowError(4);
-		return FALSE;
-	}
-	if (FALSE == ::wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC)){
-		ShowError(5);
-		return FALSE;
-	}
-	::glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	::glClearDepth(1.0f);
-	::glEnable(GL_DEPTH_TEST);
-
-	return TRUE;
-}
 
