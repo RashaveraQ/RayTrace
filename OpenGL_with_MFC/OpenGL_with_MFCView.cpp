@@ -40,7 +40,6 @@ BEGIN_MESSAGE_MAP(COpenGL_with_MFCView, CView)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
 	ON_WM_ERASEBKGND()
-	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 // COpenGL_with_MFCView コンストラクション/デストラクション
@@ -143,30 +142,6 @@ GLint DrawBox(GLdouble d, GLdouble w, GLdouble h)
 	return(0);
 }
 
-void COpenGL_with_MFCView::OnDraw(CDC* /*pDC*/)
-{
-	COpenGL_with_MFCDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
-	if (!pDoc)
-		return;
-
-	// TODO: この場所にネイティブ データ用の描画コードを追加します。
-	::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	::glPushMatrix();
-
-	::glColor3f(0.0f, 1.0f, 0.0f);
-	//::auxWireSphere(0.5f);
-	DrawPlane(1, 1, 1);
-	::glColor3f(1.0f, 0.0f, 0.0f);
-	//::auxWireCube(1.0f);
-	DrawBox(1, 1, 1);
-
-	::glPopMatrix();
-	::glFinish();
-
-	if (FALSE == ::SwapBuffers(m_pDC->GetSafeHdc()))
-		ShowError(7);
-}
 
 // COpenGL_with_MFCView 診断
 
@@ -191,7 +166,6 @@ COpenGL_with_MFCDoc* COpenGL_with_MFCView::GetDocument() const // デバッグ�
 
 // COpenGL_with_MFCView メッセージ ハンドラー
 
-
 int COpenGL_with_MFCView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CView::OnCreate(lpCreateStruct) == -1)
@@ -203,6 +177,25 @@ int COpenGL_with_MFCView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		ShowError(1);
 		return FALSE;
 	}
+
+
+	return 0;
+}
+
+BOOL COpenGL_with_MFCView::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: Add your message handler code here and/or call default
+
+	//return CView::OnEraseBkgnd(pDC);
+	return TRUE;
+}
+
+void COpenGL_with_MFCView::OnDraw(CDC* /*pDC*/)
+{
+	COpenGL_with_MFCDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
 
 	PIXELFORMATDESCRIPTOR pfd = {
 		sizeof(PIXELFORMATDESCRIPTOR),
@@ -228,73 +221,71 @@ int COpenGL_with_MFCView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	int pixelformat;
 	if (0 == (pixelformat = ::ChoosePixelFormat(hdc, &pfd))){
 		ShowError(2);
-		return FALSE;
+		return;
 	}
 
 	if (FALSE == ::SetPixelFormat(hdc, pixelformat, &pfd)) {
 		ShowError(3);
-		return FALSE;
+		return;
 	}
 
 	if (0 == (m_hRC = ::wglCreateContext(hdc))) {
 		ShowError(4);
-		return FALSE;
+		return;
 	}
 
 	if (FALSE == ::wglMakeCurrent(hdc, m_hRC)){
 		ShowError(5);
-		return FALSE;
+		return;
 	}
 
 	::glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	::glClearDepth(1.0f);
 	::glEnable(GL_DEPTH_TEST);
 
-	return 0;
+	CRect rect;
+	GetClientRect(&rect);
+
+	::glViewport(0, 0, rect.Width(), rect.Height());
+	::glMatrixMode(GL_PROJECTION);
+	::glLoadIdentity();
+	::gluPerspective(40.0f, (GLfloat)rect.Width() / (GLfloat)rect.Height(), 0.1f, 20.0f);
+	::glMatrixMode(GL_MODELVIEW);
+	::glLoadIdentity();
+	// Viewing Transform
+	::glTranslatef(0.0f, 0.0f, -5.0f);
+	::glRotatef(20.0f, 1.0f, 0.0f, 0.0f);
+
+	// TODO: この場所にネイティブ データ用の描画コードを追加します。
+	::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	::glPushMatrix();
+
+	::glColor3f(0.0f, 1.0f, 0.0f);
+	//::auxWireSphere(0.5f);
+	DrawPlane(1, 1, 1);
+	::glColor3f(1.0f, 0.0f, 0.0f);
+	//::auxWireCube(1.0f);
+	DrawBox(1, 1, 1);
+
+	::glPopMatrix();
+	::glFinish();
+
+	if (FALSE == ::SwapBuffers(m_pDC->GetSafeHdc()))
+		ShowError(7);
+
+	if (FALSE == ::wglMakeCurrent(0, 0))
+		ShowError(2);
+
+	if (FALSE == ::wglDeleteContext(m_hRC))
+		ShowError(6);
 }
 
 void COpenGL_with_MFCView::OnDestroy()
 {
 	CView::OnDestroy();
 	// TODO: Add your message handler code here
-	if (FALSE == ::wglMakeCurrent(0, 0))
-		ShowError(2);
-
-	if (FALSE == ::wglDeleteContext(m_hRC))
-		ShowError(6);
 
 	if (m_pDC)
 		delete m_pDC;
 }
-
-
-BOOL COpenGL_with_MFCView::OnEraseBkgnd(CDC* pDC)
-{
-	// TODO: Add your message handler code here and/or call default
-
-	//return CView::OnEraseBkgnd(pDC);
-	return TRUE;
-}
-
-
-void COpenGL_with_MFCView::OnSize(UINT nType, int cx, int cy)
-{
-	CView::OnSize(nType, cx, cy);
-
-	// TODO: Add your message handler code here
-	if (0 >= cx || 0 >= cy)
-		return;
-
-	::glViewport(0, 0, cx, cy);
-	::glMatrixMode(GL_PROJECTION);
-	::glLoadIdentity();
-	::gluPerspective(40.0f, (GLfloat)cx / (GLfloat)cy, 0.1f, 20.0f);
-	::glMatrixMode(GL_MODELVIEW);
-	::glLoadIdentity();
-	// Viewing Transform
-	::glTranslatef(0.0f, 0.0f, -5.0f);
-	::glRotatef(20.0f, 1.0f, 0.0f, 0.0f);
-}
-
-
 
