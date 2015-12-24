@@ -101,7 +101,7 @@ bool DevNode::GetInfo2(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* p
 	*/
 
 	Matrix& m = m_Matrix;
-	Matrix& Inv_m = m.Inv();
+	const Matrix& Inv_m = m.Inv();
 
 	Sp L2 = Inv_m * L;
 	Sp K2 = Inv_m * (K + L) - L2;

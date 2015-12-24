@@ -54,24 +54,23 @@ bool DoCuda_Init()
 	if (numSMs > 0)
 		return true;
 
-	CUresult cuResult;
 	CUcontext context;
 	CUdevice cuDevice;
 
 	cudaDeviceProp deviceProp;
-	if (cudaSuccess != cudaSetDevice(0))
-		return false;
-
-	if (cudaSuccess != cudaGetDeviceProperties(&deviceProp, 0))
+	if (cudaSuccess != cudaSetDevice(0) ||
+	    cudaSuccess != cudaGetDeviceProperties(&deviceProp, 0))
 		return false;
 
 	numSMs = deviceProp.multiProcessorCount;
 
-	// Get handle for device 0
-	cuResult = cuDeviceGet(&cuDevice, 0);
-	cuResult = cuDevicePrimaryCtxRetain(&context, cuDevice);
 	size_t value = 1024 * 16;
-	cuResult = cuCtxSetLimit(CU_LIMIT_STACK_SIZE, value);
+
+	// Get handle for device 0
+	if (cudaSuccess != cuDeviceGet(&cuDevice, 0) ||
+	    cudaSuccess != cuDevicePrimaryCtxRetain(&context, cuDevice) ||
+	    cudaSuccess != cuCtxSetLimit(CU_LIMIT_STACK_SIZE, value))
+		return false;
 
 	return true;
 }
