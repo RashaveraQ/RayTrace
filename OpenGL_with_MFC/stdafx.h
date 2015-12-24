@@ -5,6 +5,11 @@
 
 #pragma once
 
+#define CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN            // Windows ヘッダーから使用されていない部分を除外します。
 #endif
@@ -31,11 +36,6 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 #include <afxcontrolbars.h>     // MFC におけるリボンとコントロール バーのサポート
-
-
-
-
-
 
 
 

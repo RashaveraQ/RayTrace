@@ -65,6 +65,85 @@ BOOL COpenGL_with_MFCView::PreCreateWindow(CREATESTRUCT& cs)
 }
 
 // COpenGL_with_MFCView 描画
+GLint DrawPlane(GLdouble w, GLdouble d, GLdouble h)
+{
+	GLdouble norm[3];
+	glPushMatrix();
+	glBegin(GL_POLYGON);
+	norm[0] = 1; norm[1] = 0; norm[2] = 0;
+	glNormal3dv(norm);
+	glVertex3d(w / 2.0, h, d / 2.0);
+	glVertex3d(w / 2.0, h, -d / 2.0);
+	glVertex3d(-w / 2.0, h, -d / 2.0);
+	glVertex3d(-w / 2.0, h, d / 2.0);
+	glEnd();
+	glPopMatrix();
+
+	return(0);
+}
+
+GLint DrawBox(GLdouble d, GLdouble w, GLdouble h)
+{
+	GLdouble norm[3];
+
+	glPushMatrix();
+	glTranslated(-d / 2.0, -w / 2.0, -h / 2.0);
+	glBegin(GL_POLYGON);
+	norm[0] = 0; norm[1] = -1; norm[2] = 0;
+	glNormal3dv(norm);
+	glVertex3d(0, 0, 0);
+	glVertex3d(d, 0, 0);
+	glVertex3d(d, 0, h);
+	glVertex3d(0, 0, h);
+	glEnd();
+	glBegin(GL_POLYGON);
+	norm[0] = 0; norm[1] = -1; norm[2] = 0;
+	glNormal3dv(norm);
+	glVertex3d(0, w, 0);
+	glVertex3d(d, w, 0);
+	glVertex3d(d, w, h);
+	glVertex3d(0, w, h);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	norm[0] = 0; norm[1] = 0; norm[2] = 1;
+	glNormal3dv(norm);
+	glVertex3d(0, 0, h);
+	glVertex3d(d, 0, h);
+	glVertex3d(d, w, h);
+	glVertex3d(0, w, h);
+	glEnd();
+	glBegin(GL_POLYGON);
+	norm[0] = 0; norm[1] = 0; norm[2] = 1;
+	glNormal3dv(norm);
+	glVertex3d(0, 0, 0);
+	glVertex3d(d, 0, 0);
+	glVertex3d(d, w, 0);
+	glVertex3d(0, w, 0);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	norm[0] = -1; norm[1] = 0; norm[2] = 0;
+	glNormal3dv(norm);
+	glVertex3d(0, 0, 0);
+	glVertex3d(0, 0, h);
+	glVertex3d(0, w, h);
+	glVertex3d(0, w, 0);
+	glEnd();
+	glBegin(GL_POLYGON);
+	norm[0] = -1; norm[1] = 0; norm[2] = 0;
+	glNormal3dv(norm);
+	glVertex3d(d, 0, 0);
+	glVertex3d(d, 0, h);
+	glVertex3d(d, w, h);
+	glVertex3d(d, w, 0);
+	glEnd();
+	glPopMatrix();
+
+
+	return(0);
+
+}
 
 void COpenGL_with_MFCView::OnDraw(CDC* /*pDC*/)
 {
@@ -79,9 +158,11 @@ void COpenGL_with_MFCView::OnDraw(CDC* /*pDC*/)
 	::glPushMatrix();
 
 	::glColor3f(0.0f, 1.0f, 0.0f);
-	::auxWireSphere(0.5f);
+	//::auxWireSphere(0.5f);
+	DrawPlane(1, 1, 1);
 	::glColor3f(1.0f, 0.0f, 0.0f);
-	::auxWireCube(1.0f);
+	//::auxWireCube(1.0f);
+	DrawBox(1, 1, 1);
 
 	::glPopMatrix();
 
@@ -173,7 +254,6 @@ int COpenGL_with_MFCView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void COpenGL_with_MFCView::OnDestroy()
 {
 	CView::OnDestroy();
-
 	// TODO: Add your message handler code here
 	if (FALSE == ::wglMakeCurrent(0, 0)) ShowError(2);
 	if (FALSE == ::wglDeleteContext(m_hRC)) ShowError(6);

@@ -31,6 +31,7 @@ END_MESSAGE_MAP()
 
 COpenGL_with_MFCApp::COpenGL_with_MFCApp()
 {
+	//_crtBreakAlloc = 229;
 	// TODO: 下のアプリケーション ID 文字列を一意の ID 文字列で置換します。推奨される
 	// 文字列の形式は CompanyName.ProductName.SubProduct.VersionInformation です
 	SetAppID(_T("OpenGL_with_MFC.AppID.NoVersion"));
