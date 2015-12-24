@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RayTrace", "RayTrace.vcxproj", "{2676A0F8-536B-4FEC-A565-8620B7E0DC9D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGL_with_MFC", "OpenGL_with_MFC\OpenGL_with_MFC.vcxproj", "{580A3781-0A2E-4B09-A3AE-617A92F240F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,12 @@ Global
 		{2676A0F8-536B-4FEC-A565-8620B7E0DC9D}.Release|Win32.ActiveCfg = Release|Win32
 		{2676A0F8-536B-4FEC-A565-8620B7E0DC9D}.Release|Win32.Build.0 = Release|Win32
 		{2676A0F8-536B-4FEC-A565-8620B7E0DC9D}.Release|x64.ActiveCfg = Release|Win32
+		{580A3781-0A2E-4B09-A3AE-617A92F240F9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{580A3781-0A2E-4B09-A3AE-617A92F240F9}.Debug|Win32.Build.0 = Debug|Win32
+		{580A3781-0A2E-4B09-A3AE-617A92F240F9}.Debug|x64.ActiveCfg = Debug|Win32
+		{580A3781-0A2E-4B09-A3AE-617A92F240F9}.Release|Win32.ActiveCfg = Release|Win32
+		{580A3781-0A2E-4B09-A3AE-617A92F240F9}.Release|Win32.Build.0 = Release|Win32
+		{580A3781-0A2E-4B09-A3AE-617A92F240F9}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
