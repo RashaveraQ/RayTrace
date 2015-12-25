@@ -1,6 +1,6 @@
-// stdafx.h : •W€‚ÌƒVƒXƒeƒ€ ƒCƒ“ƒNƒ‹[ƒh ƒtƒ@ƒCƒ‹A
-//            ‚Ü‚½‚ÍQÆ‰ñ”‚ª‘½‚­A‚©‚Â‚ ‚Ü‚è•ÏX‚³‚ê‚È‚¢
-//            ƒvƒƒWƒFƒNƒgê—p‚ÌƒCƒ“ƒNƒ‹[ƒh ƒtƒ@ƒCƒ‹‚ğ‹Lq‚µ‚Ü‚·B
+ï»¿// stdafx.h : æ¨™æº–ã®ã‚·ã‚¹ãƒ†ãƒ  ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ ãƒ•ã‚¡ã‚¤ãƒ«ã€
+//            ã¾ãŸã¯å‚ç…§å›æ•°ãŒå¤šãã€ã‹ã¤ã‚ã¾ã‚Šå¤‰æ›´ã•ã‚Œãªã„
+//            ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆå°‚ç”¨ã®ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ ãƒ•ã‚¡ã‚¤ãƒ«ã‚’è¨˜è¿°ã—ã¾ã™ã€‚
 //
 
 #pragma once
@@ -36,11 +36,11 @@
 // turns off MFC's hiding of some common and often safely ignored warning messages
 #define _AFX_ALL_WARNINGS
 
-#include <afxwin.h>         // MFC ‚ÌƒRƒA‚¨‚æ‚Ñ•W€ƒRƒ“ƒ|[ƒlƒ“ƒg
-#include <afxext.h>         // MFC ‚ÌŠg’£•”•ª
-#include <afxdisp.h>        // MFC ‚Ì OLE ƒI[ƒgƒ[ƒVƒ‡ƒ“ ƒNƒ‰ƒX
+#include <afxwin.h>         // MFC ã®ã‚³ã‚¢ãŠã‚ˆã³æ¨™æº–ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
+#include <afxext.h>         // MFC ã®æ‹¡å¼µéƒ¨åˆ†
+#include <afxdisp.h>        // MFC ã® OLE ã‚ªãƒ¼ãƒˆãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ ã‚¯ãƒ©ã‚¹
 #ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>			// MFC ‚Ì Windows ƒRƒ‚ƒ“ ƒRƒ“ƒgƒ[ƒ‹ ƒTƒ|[ƒg
+#include <afxcmn.h>			// MFC ã® Windows ã‚³ãƒ¢ãƒ³ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ« ã‚µãƒãƒ¼ãƒˆ
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 #include <afxcview.h>
@@ -51,8 +51,8 @@
 
 struct CUSTOMVERTEX
 {
-    D3DXVECTOR3 position; // The 3D position for the vertex
-    D3DXVECTOR3 normal;   // The surface normal for the vertex
+	D3DXVECTOR3 position; // The 3D position for the vertex
+	D3DXVECTOR3 normal;   // The surface normal for the vertex
 };
 
 // Our custom FVF, which describes our custom vertex structure
@@ -66,7 +66,7 @@ struct CUSTOMVERTEX
 
 #include "geometry.h"
 
-typedef CList<Geometry,Geometry&> CListGeometry;
+typedef CList<Geometry, Geometry&> CListGeometry;
 
 bool InitVertexBuffer(LPDIRECT3DDEVICE9 pd3dDevice, LPDIRECT3DVERTEXBUFFER9& pVB, CUSTOMVERTEX*& pVertices, UINT count);
 
@@ -100,5 +100,5 @@ bool InitVertexBuffer(LPDIRECT3DDEVICE9 pd3dDevice, LPDIRECT3DVERTEXBUFFER9& pVB
 
 
 //{{AFX_INSERT_LOCATION}}
-// Microsoft Developer Studio ‚Í‘Os‚Ì’¼‘O‚É’Ç‰Á‚ÌéŒ¾‚ğ‘}“ü‚µ‚Ü‚·B
+// Microsoft Developer Studio ã¯å‰è¡Œã®ç›´å‰ã«è¿½åŠ ã®å®£è¨€ã‚’æŒ¿å…¥ã—ã¾ã™ã€‚
 
