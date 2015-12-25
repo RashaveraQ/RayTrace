@@ -33,7 +33,6 @@
 #include <helper_functions.h>
 #include <rendercheck_gl.h>
 
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -52,8 +51,8 @@ IMPLEMENT_DYNCREATE(CRayTraceView, CView)
 
 BEGIN_MESSAGE_MAP(CRayTraceView, CView)
 	//{{AFX_MSG_MAP(CRayTraceView)
-	ON_WM_TIMER()
 	ON_WM_SIZE()
+//	ON_WM_TIMER()
 	ON_WM_CREATE()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
@@ -82,6 +81,7 @@ BEGIN_MESSAGE_MAP(CRayTraceView, CView)
 	ON_COMMAND(ID_VIEW_WIREFRAME_WITH_RAYTRACE, &CRayTraceView::OnViewWireframeWithRaytrace)
 	ON_COMMAND(ID_VIEW_CUDA_RAYTRACE, &CRayTraceView::OnViewCudaRaytrace)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_CUDA_RAYTRACE, &CRayTraceView::OnUpdateViewCudaRaytrace)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -105,7 +105,7 @@ CRayTraceView::CRayTraceView()
 	m_vEyePt = D3DXVECTOR3(0.0f, 5.0f, -30.0f);
 	m_vLookatPt = D3DXVECTOR3(0.0f, 10.0f, 0.0f);
 	m_ColorRefs = NULL;
-	m_tex_cudaResult = 0;
+	tex_cudaResult = 0;
 }
 
 CRayTraceView::~CRayTraceView()
@@ -143,22 +143,37 @@ void CRayTraceView::OnDraw(CDC* pDC)
 
 		t1 = GetTickCount();
 
-		if (!DoCuda_OnDraw(m_ColorRefs, m_deviceAllocateMemory, GetDocument()->m_Root.m_devNode, m_ClientSize.cx, m_ClientSize.cy, &m_View, &m_Viewport.getMatrix().Inv()))
-			MessageBox(_T("Failed to DoCuda_OnDraw."));
+		// run the Cuda kernel
+		unsigned int *out_data;
+
+		checkCudaErrors(cudaGraphicsMapResources(1, &cuda_pbo_dest_resource, 0));
+		size_t num_bytes;
+		checkCudaErrors(cudaGraphicsResourceGetMappedPointer((void **)&out_data, &num_bytes, cuda_pbo_dest_resource));
+		//printf("CUDA mapped pointer of pbo_out: May access %ld bytes, expected %d\n", num_bytes, size_tex_data);
 
 		t2 = GetTickCount();
 
-		for (int y = 0; y < m_ClientSize.cy; y++)
-			for (int x = 0; x < m_ClientSize.cx; x++)
-				m_MemoryDC.FillSolidRect(CRect(x, y, x + 1, y + 1), m_ColorRefs[x + y * m_ClientSize.cx]);
-
-	case eRayTrace:
-	case eWireFrameWithRayTrace:
+		if (!DoCuda_OnDraw(out_data, GetDocument()->m_Root.m_devNode, m_ClientSize.cx, m_ClientSize.cy, &m_View, &m_Viewport.getMatrix().Inv()))
+			MessageBox(_T("Failed to DoCuda_OnDraw."));
 
 		t3 = GetTickCount();
 
-		pDC->BitBlt(0, 0, m_ClientSize.cx, m_ClientSize.cy, &m_MemoryDC, 0, 0, SRCCOPY);
+		// CUDA generated data in cuda memory or in a mapped PBO made of BGRA 8 bits
+		// 2 solutions, here :
+		// - use glTexSubImage2D(), there is the potential to loose performance in possible hidden conversion
+		// - map the texture and blit the result thanks to CUDA API
+		checkCudaErrors(cudaGraphicsUnmapResources(1, &cuda_pbo_dest_resource, 0));
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, pbo_dest);
 
+		glBindTexture(GL_TEXTURE_2D, tex_cudaResult);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_ClientSize.cx, m_ClientSize.cy, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		SDK_CHECK_ERROR_GL();
+		glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+
+//		for (int y = 0; y < m_ClientSize.cy; y++)
+//			for (int x = 0; x < m_ClientSize.cx; x++)
+//				m_MemoryDC.FillSolidRect(CRect(x, y, x + 1, y + 1), m_ColorRefs[x + y * m_ClientSize.cx]);
 		t4 = GetTickCount();
 
 		d1 = t2 - t1;
@@ -166,10 +181,14 @@ void CRayTraceView::OnDraw(CDC* pDC)
 		d3 = t4 - t3;
 
 		extern CRayTraceApp theApp;
-		str.Format(_T("GPU : %d, CPU : %d (= %d + %d)\n"), d1, d2 + d3, d2, d3);
+		str.Format(_T("GPU : %d, CPU : %d (= %d + %d)\n"), d2, d1 + d3, d1, d3);
 		((CMainFrame*)theApp.m_pMainWnd)->SetStatusText(str);
+		break;
 
-		if (m_ViewMode == eRayTrace || m_ViewMode == eCudaRayTrace)
+	case eRayTrace:
+	case eWireFrameWithRayTrace:
+		pDC->BitBlt(0, 0, m_ClientSize.cx, m_ClientSize.cy, &m_MemoryDC, 0, 0, SRCCOPY);
+		if (m_ViewMode == eRayTrace)
 			break;
 	case eWireFrame:
 		pDC->SelectStockObject(NULL_BRUSH);
@@ -334,7 +353,7 @@ void CRayTraceView::GetVectorFromPoint(sp& k, sp& l, int px, int py)
 	::GetVectorFromPoint(k, l, px, py, &m_View, m_ClientSize.cx, m_ClientSize.cy, &m_Viewport.getMatrix().Inv());
 }
 
-void CRayTraceView::OnTimer(UINT nIDEvent)
+void CRayTraceView::OnTimer(UINT_PTR nIDEvent)
 {
 	CRayTraceDoc	*pDoc = GetDocument();
 
@@ -389,14 +408,160 @@ static void deleteTexture(GLuint *tex)
 	*tex = 0;
 }
 
+static void createPBO(GLuint *pbo, struct cudaGraphicsResource **pbo_resource, unsigned int image_width, unsigned int image_height)
+{
+	// set up vertex data parameter
+	unsigned int num_texels = image_width * image_height;
+	unsigned int num_values = num_texels * 4;
+	unsigned int size_tex_data = sizeof(GLubyte) * num_values;
+	void *data = malloc(size_tex_data);
+
+	// create buffer object
+	glGenBuffers(1, pbo);
+	glBindBuffer(GL_ARRAY_BUFFER, *pbo);
+	glBufferData(GL_ARRAY_BUFFER, size_tex_data, data, GL_DYNAMIC_DRAW);
+	free(data);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// register this buffer object with CUDA
+	checkCudaErrors(cudaGraphicsGLRegisterBuffer(pbo_resource, *pbo, cudaGraphicsMapFlagsNone));
+
+	SDK_CHECK_ERROR_GL();
+}
+
+static void createTextureDst(GLuint *tex_cudaResult, unsigned int size_x, unsigned int size_y)
+{
+	// create a texture
+	glGenTextures(1, tex_cudaResult);
+	glBindTexture(GL_TEXTURE_2D, *tex_cudaResult);
+
+	// set basic parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size_x, size_y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	SDK_CHECK_ERROR_GL();
+}
+
+static GLuint compileGLSLprogram(const char *vertex_shader_src, const char *fragment_shader_src)
+{
+	GLuint v, f, p = 0;
+
+	p = glCreateProgram();
+
+	if (vertex_shader_src)
+	{
+		v = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(v, 1, &vertex_shader_src, NULL);
+		glCompileShader(v);
+
+		// check if shader compiled
+		GLint compiled = 0;
+		glGetShaderiv(v, GL_COMPILE_STATUS, &compiled);
+
+		if (!compiled)
+		{
+			//#ifdef NV_REPORT_COMPILE_ERRORS
+			char temp[256] = "";
+			glGetShaderInfoLog(v, 256, NULL, temp);
+			printf("Vtx Compile failed:\n%s\n", temp);
+			//#endif
+			glDeleteShader(v);
+			return 0;
+		}
+		else
+		{
+			glAttachShader(p, v);
+		}
+	}
+
+	if (fragment_shader_src)
+	{
+		f = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(f, 1, &fragment_shader_src, NULL);
+		glCompileShader(f);
+
+		// check if shader compiled
+		GLint compiled = 0;
+		glGetShaderiv(f, GL_COMPILE_STATUS, &compiled);
+
+		if (!compiled)
+		{
+			//#ifdef NV_REPORT_COMPILE_ERRORS
+			char temp[256] = "";
+			glGetShaderInfoLog(f, 256, NULL, temp);
+			printf("frag Compile failed:\n%s\n", temp);
+			//#endif
+			glDeleteShader(f);
+			return 0;
+		}
+		else
+		{
+			glAttachShader(p, f);
+		}
+	}
+
+	glLinkProgram(p);
+
+	int infologLength = 0;
+	int charsWritten = 0;
+
+	glGetProgramiv(p, GL_INFO_LOG_LENGTH, (GLint *)&infologLength);
+
+	if (infologLength > 0)
+	{
+		char *infoLog = (char *)malloc(infologLength);
+		glGetProgramInfoLog(p, infologLength, (GLsizei *)&charsWritten, infoLog);
+		printf("Shader compilation error: %s\n", infoLog);
+		free(infoLog);
+	}
+
+	return p;
+}
+
+static const char *glsl_draw_fragshader_src =
+	//WARNING: seems like the gl_FragColor doesn't want to output >1 colors...
+	//you need version 1.3 so you can define a uvec4 output...
+	//but MacOSX complains about not supporting 1.3 !!
+	// for now, the mode where we use RGBA8UI may not work properly for Apple : only RGBA16F works (default)
+#if defined(__APPLE__) || defined(MACOSX)
+	"void main()\n"
+	"{"
+	"  gl_FragColor = vec4(gl_Color * 255.0);\n"
+	"}\n";
+#else
+	"#version 130\n"
+	"out uvec4 FragColor;\n"
+	"void main()\n"
+	"{"
+	"  FragColor = uvec4(gl_Color.xyz * 255.0, 255.0);\n"
+	"}\n";
+#endif
+
 void CRayTraceView::OnSize(UINT nType, int cx, int cy)
 {
 	m_ClientSize.cx = cx;
 	m_ClientSize.cy = cy;
-	if (m_tex_cudaResult) {
-		deleteTexture(&m_tex_cudaResult);
-		m_tex_cudaResult = 0;
+	
+	if (!DoCuda_Init()) {
+		MessageBox(_T("Failed to DoCuda_Init."));
+		return;
 	}
+
+	if (tex_cudaResult) {
+		deleteTexture(&tex_cudaResult);
+		tex_cudaResult = 0;
+	}
+	// create pbo
+	createPBO(&tex_cudaResult, &cuda_pbo_dest_resource, cx, cy);
+	// create texture that will receive the result of CUDA
+	createTextureDst(&tex_cudaResult, cx, cy);
+	// load shader programs
+	GLuint shDraw = compileGLSLprogram(NULL, glsl_draw_fragshader_src);
+	SDK_CHECK_ERROR_GL();
 
 	if (m_ColorRefs) {
 		free(m_ColorRefs);
@@ -751,6 +916,8 @@ void CRayTraceView::OnDestroy()
 		m_pd3dDevice = NULL;
 	}
 }
+
+
 
 
 
