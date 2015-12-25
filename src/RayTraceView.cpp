@@ -10,6 +10,30 @@
 #include "GetVectorFromPoint.h"
 #include "MainFrm.h"
 
+// OpenGL Graphics includes
+#include <GL/glew.h>
+#if defined(__APPLE__) || defined(MACOSX)
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#include <GLUT/glut.h>
+// Sorry for Apple : unsigned int sampler is not available to you, yet...
+// Let's switch to the use of PBO and glTexSubImage
+#define USE_TEXSUBIMAGE2D
+#else
+#include <GL/freeglut.h>
+#endif
+
+// CUDA includes
+#include <cuda_runtime.h>
+#include <cuda_gl_interop.h>
+
+// CUDA utilities and system includes
+#include <helper_cuda.h>
+#include <helper_cuda_gl.h>
+
+#include <helper_functions.h>
+#include <rendercheck_gl.h>
+
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -81,6 +105,7 @@ CRayTraceView::CRayTraceView()
 	m_vEyePt = D3DXVECTOR3(0.0f, 5.0f, -30.0f);
 	m_vLookatPt = D3DXVECTOR3(0.0f, 10.0f, 0.0f);
 	m_ColorRefs = NULL;
+	m_tex_cudaResult = 0;
 }
 
 CRayTraceView::~CRayTraceView()
@@ -357,10 +382,22 @@ int CRayTraceView::Go_ahead(int& X, int& Y, int& S, int& X0, int& Y0, CSize& cs,
 	return CONTINUED;
 }
 
+static void deleteTexture(GLuint *tex)
+{
+	glDeleteTextures(1, tex);
+	SDK_CHECK_ERROR_GL();
+	*tex = 0;
+}
+
 void CRayTraceView::OnSize(UINT nType, int cx, int cy)
 {
 	m_ClientSize.cx = cx;
 	m_ClientSize.cy = cy;
+	if (m_tex_cudaResult) {
+		deleteTexture(&m_tex_cudaResult);
+		m_tex_cudaResult = 0;
+	}
+
 	if (m_ColorRefs) {
 		free(m_ColorRefs);
 		m_ColorRefs = NULL;

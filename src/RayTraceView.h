@@ -9,6 +9,7 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
+#include <GL/glew.h>
 
 class CRayTraceView : public CView
 {
@@ -17,6 +18,7 @@ class CRayTraceView : public CView
 	D3DXVECTOR3 m_vEyePt;
 	D3DXVECTOR3 m_vLookatPt;
 	void UpdateDevice();
+	GLuint m_tex_cudaResult;  // where we will copy the CUDA result
 
 protected: // シリアライズ機能のみから作成します。
 	CRayTraceView();
