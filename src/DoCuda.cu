@@ -86,8 +86,28 @@ bool DoCuda_OnSize(void** dst, const int imageW, const int imageH)
 	return true;
 }
 
+// clamp x to range [a, b]
+__device__ float clamp(float x, float a, float b)
+{
+	return max(a, min(b, x));
+}
+
+__device__ int clamp(int x, int a, int b)
+{
+	return max(a, min(b, x));
+}
+
+// convert floating point rgb color to 8-bit integer
+__device__ int rgbToInt(float r, float g, float b)
+{
+	r = clamp(r, 0.0f, 255.0f);
+	g = clamp(g, 0.0f, 255.0f);
+	b = clamp(b, 0.0f, 255.0f);
+	return (int(b) << 16) | (int(g) << 8) | int(r);
+}
+
 __global__
-void RayTrace(unsigned long* dst, const int imageW, const int imageH, DevNode** root, const int gridWidth, const int numBlocks, const fsize* pView, const Matrix* pMatrix)
+void RayTrace(unsigned int* dst, const int imageW, const int imageH, DevNode** root, const int gridWidth, const int numBlocks, const fsize* pView, const Matrix* pMatrix)
 {
 	// loop until all blocks completed
 	for (unsigned int blockIndex = blockIdx.x; blockIndex < numBlocks; blockIndex += gridDim.x)
@@ -106,7 +126,7 @@ void RayTrace(unsigned long* dst, const int imageW, const int imageH, DevNode** 
 			Sp k, l;
 			GetVectorFromPoint(k, l, ix, iy, pView, imageW, imageH, pMatrix);
 			Sp c = (*root)->GetColor(k, l, 0, NULL, true);
-			dst[pixel] = RGB(c.x, c.y, c.z);
+			dst[pixel] = rgbToInt(c.x, c.y, c.z);
 		}
 	}
 }
@@ -122,7 +142,7 @@ inline int iDivUp(int a, int b)
 	return ((a % b) != 0) ? (a / b + 1) : (a / b);
 } // iDivUp
 
-bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class DevNode** root, const int imageW, const int imageH, const fsize* pView, const matrix* pMatrix)
+bool DoCuda_OnDraw(unsigned int* out, class DevNode** root, const int imageW, const int imageH, const fsize* pView, const matrix* pMatrix)
 {
 	dim3 threads(BLOCKDIM_X, BLOCKDIM_Y);
 	dim3 grid(iDivUp(imageW, BLOCKDIM_X), iDivUp(imageH, BLOCKDIM_Y));
@@ -162,7 +182,7 @@ bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class DevNode** root, const 
 
 	//size_t stackSize = checkStackSize();
 
-	RayTrace<<<numWorkerBlocks, threads>>>((unsigned long*)d_dst, imageW, imageH, root, grid.x, grid.x * grid.y, dev_view, dev_Matrix);
+	RayTrace<<<numWorkerBlocks, threads>>>((unsigned int*)out, imageW, imageH, root, grid.x, grid.x * grid.y, dev_view, dev_Matrix);
 
 	// Check for any errors launching the kernel
 	cudaStatus = cudaGetLastError();
@@ -173,12 +193,6 @@ bool DoCuda_OnDraw(unsigned long* out, void* d_dst, class DevNode** root, const 
 	// cudaDeviceSynchronize waits for the kernel to finish, and returns
 	// any errors encountered during the launch.
 	cudaStatus = cudaDeviceSynchronize();
-	if (cudaStatus != cudaSuccess) {
-		return false;
-	}
-
-	// Copy output vector from GPU buffer to host memory.
-	cudaStatus = cudaMemcpy(out, d_dst, imageW * imageH * sizeof(unsigned long), cudaMemcpyDeviceToHost);
 	if (cudaStatus != cudaSuccess) {
 		return false;
 	}

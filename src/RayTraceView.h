@@ -9,6 +9,7 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
+#include <GL/glew.h>
 
 class CRayTraceView : public CView
 {
@@ -17,6 +18,11 @@ class CRayTraceView : public CView
 	D3DXVECTOR3 m_vEyePt;
 	D3DXVECTOR3 m_vLookatPt;
 	void UpdateDevice();
+
+	// pbo and fbo variables
+	GLuint pbo_dest;
+	struct cudaGraphicsResource *cuda_pbo_dest_resource;
+	GLuint tex_cudaResult;  // where we will copy the CUDA result
 
 protected: // シリアライズ機能のみから作成します。
 	CRayTraceView();
@@ -48,7 +54,7 @@ private:
 	BOOL		m_Job;
 	BOOL		m_Iconized;
 	CDC			m_MemoryDC;
-	int			m_TimerID;
+	UINT_PTR	m_TimerID;
 
 	struct {
 		enum eType Type;
@@ -88,7 +94,6 @@ protected:
 	// 生成されたメッセージ マップ関数
 protected:
 	//{{AFX_MSG(CRayTraceView)
-	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
@@ -119,6 +124,7 @@ public:
 	afx_msg void OnViewWireframeWithRaytrace();
 	afx_msg void OnViewCudaRaytrace();
 	afx_msg void OnUpdateViewCudaRaytrace(CCmdUI *pCmdUI);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
 
 #ifndef _DEBUG  // RayTraceView.cpp ファイルがデバッグ環境の時使用されます。

@@ -86,9 +86,6 @@
     <ClCompile Include="src\polygon2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Polysolv.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\povray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
