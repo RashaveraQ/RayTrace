@@ -136,6 +136,45 @@ BOOL CRayTraceView::PreCreateWindow(CREATESTRUCT& cs)
 /////////////////////////////////////////////////////////////////////////////
 // CRayTraceView クラスの描画
 
+// display image to the screen as textured quad
+static void displayImage(GLuint texture, int window_width, int window_height)
+{
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glEnable(GL_TEXTURE_2D);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_LIGHTING);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	glViewport(0, 0, window_width, window_height);
+
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(-1.0, -1.0, 0.5);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(1.0, -1.0, 0.5);
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(1.0, 1.0, 0.5);
+	glTexCoord2f(0.0, 1.0);
+	glVertex3f(-1.0, 1.0, 0.5);
+	glEnd();
+
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+
+	glDisable(GL_TEXTURE_2D);
+
+	SDK_CHECK_ERROR_GL();
+}
+
 void CRayTraceView::OnDraw(CDC* pDC)
 {
 	DWORD t1, t2, t3, t4, d1, d2, d3;
@@ -173,6 +212,9 @@ void CRayTraceView::OnDraw(CDC* pDC)
 		SDK_CHECK_ERROR_GL();
 		glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+
+		displayImage(tex_cudaResult, m_ClientSize.cx, m_ClientSize.cy);
+		glutSwapBuffers();
 
 //		for (int y = 0; y < m_ClientSize.cy; y++)
 //			for (int x = 0; x < m_ClientSize.cx; x++)
