@@ -105,6 +105,9 @@ CRayTraceView::CRayTraceView()
 	m_vEyePt = D3DXVECTOR3(0.0f, 5.0f, -30.0f);
 	m_vLookatPt = D3DXVECTOR3(0.0f, 10.0f, 0.0f);
 	m_ColorRefs = NULL;
+
+	pbo_dest = 0;
+	cuda_pbo_dest_resource = NULL;
 	tex_cudaResult = 0;
 }
 
@@ -430,6 +433,13 @@ static void createPBO(GLuint *pbo, struct cudaGraphicsResource **pbo_resource, u
 	SDK_CHECK_ERROR_GL();
 }
 
+static void deletePBO(GLuint *pbo)
+{
+	glDeleteBuffers(1, pbo);
+	SDK_CHECK_ERROR_GL();
+	*pbo = 0;
+}
+
 static void createTextureDst(GLuint *tex_cudaResult, unsigned int size_x, unsigned int size_y)
 {
 	// create a texture
@@ -541,14 +551,89 @@ static const char *glsl_draw_fragshader_src =
 	"}\n";
 #endif
 
+static int iGLUTWindowHandle = 0;          // handle to the GLUT window
+
+////////////////////////////////////////////////////////////////////////////////
+//! Initialize GL
+////////////////////////////////////////////////////////////////////////////////
+static bool initGL(int window_width, int window_height)
+{
+	int argc = 0;
+	char *argv[] = { "RayTrace.exe" };
+
+	// Create GL context
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_ALPHA | GLUT_DOUBLE | GLUT_DEPTH);
+	glutInitWindowSize(window_width, window_height);
+	iGLUTWindowHandle = glutCreateWindow("CUDA OpenGL post-processing");
+
+	// initialize necessary OpenGL extensions
+	glewInit();
+
+	if (!glewIsSupported(
+		"GL_VERSION_2_0 "
+		"GL_ARB_pixel_buffer_object "
+		"GL_EXT_framebuffer_object "
+		))
+	{
+		printf("ERROR: Support for necessary OpenGL extensions missing.");
+		fflush(stderr);
+		return false;
+	}
+
+	// default initialization
+#ifndef USE_TEXTURE_RGBA8UI
+	glClearColor(0.5, 0.5, 0.5, 1.0);
+#else
+	glClearColorIuiEXT(128, 128, 128, 255);
+#endif
+	glDisable(GL_DEPTH_TEST);
+
+	// viewport
+	glViewport(0, 0, window_width, window_height);
+
+	// projection
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(60.0, (GLfloat)window_width / (GLfloat)window_height, 0.1f, 10.0f);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	glEnable(GL_LIGHT0);
+	float red[] = { 1.0f, 0.1f, 0.1f, 1.0f };
+	float white[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, red);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white);
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 60.0f);
+
+	SDK_CHECK_ERROR_GL();
+
+	return true;
+}
+
+static bool bInitGL_done = false;
+
 void CRayTraceView::OnSize(UINT nType, int cx, int cy)
 {
 	m_ClientSize.cx = cx;
 	m_ClientSize.cy = cy;
 	
+	if (!bInitGL_done && !initGL(cx, cy)) {
+		MessageBox(_T("Failed to initGL"));
+		return;
+	}
+	bInitGL_done = true;
+
 	if (!DoCuda_Init()) {
 		MessageBox(_T("Failed to DoCuda_Init."));
 		return;
+	}
+
+
+	if (pbo_dest) {
+		checkCudaErrors(cudaGraphicsUnregisterResource(cuda_pbo_dest_resource));
+		deletePBO(&pbo_dest);
+		pbo_dest = 0;
 	}
 
 	if (tex_cudaResult) {
@@ -556,7 +641,7 @@ void CRayTraceView::OnSize(UINT nType, int cx, int cy)
 		tex_cudaResult = 0;
 	}
 	// create pbo
-	createPBO(&tex_cudaResult, &cuda_pbo_dest_resource, cx, cy);
+	createPBO(&pbo_dest, &cuda_pbo_dest_resource, cx, cy);
 	// create texture that will receive the result of CUDA
 	createTextureDst(&tex_cudaResult, cx, cy);
 	// load shader programs
