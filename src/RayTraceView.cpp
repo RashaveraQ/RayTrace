@@ -216,6 +216,10 @@ void CRayTraceView::OnDraw(CDC* pDC)
 		extern CRayTraceApp theApp;
 		str.Format(_T("GPU : %d, CPU : %d (= %d + %d)\n"), d2, d1 + d3, d1, d3);
 		((CMainFrame*)theApp.m_pMainWnd)->SetStatusText(str);
+
+		pDC->SelectStockObject(NULL_BRUSH);
+		m_Viewport.Draw_Outline(pDC, *this, matrix(4, 4));
+
 		break;
 
 	case eRayTrace:
@@ -806,17 +810,16 @@ void CRayTraceView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 	case eD3DGouraudShading:
 		UpdateDevice();
 	case eWireFrame:
+	case eCudaRayTrace:
 	case eWireFrameWithRayTrace:
 		Invalidate();
-		if (m_ViewMode == eWireFrame)
+		if (m_ViewMode == eWireFrame || m_ViewMode == eCudaRayTrace)
 			break;
 	case eRayTrace:
 		m_StartX = m_StartY = m_NowX = m_NowY = 0;
 		m_NowSize = START_SQUARE;
 		m_Job = CONTINUED;
 		break;
-	case eCudaRayTrace:
-		Invalidate(FALSE);
 	}
 }
 
