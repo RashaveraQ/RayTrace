@@ -52,5 +52,5 @@ bool Plane::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 
 void Plane::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
-	c.SetItemData(c.InsertItem(m_Name, 13, 12, hParent, hInsertAfter), (DWORD)this);
+	c.SetItemData(c.InsertItem(m_Name, 13, 12, hParent, hInsertAfter), (DWORD_PTR)this);
 }

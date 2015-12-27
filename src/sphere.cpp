@@ -196,6 +196,6 @@ bool Sphere::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bo
 
 void Sphere::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
-	c.SetItemData(c.InsertItem(m_Name, 11, 10, hParent, hInsertAfter), (DWORD)this);
+	c.SetItemData(c.InsertItem(m_Name, 11, 10, hParent, hInsertAfter), (DWORD_PTR)this);
 }
 

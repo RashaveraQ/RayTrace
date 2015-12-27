@@ -99,7 +99,7 @@ bool Multiple::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, 
 void Multiple::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
 	HTREEITEM hitem = c.InsertItem(m_Name, 5, 4, hParent, hInsertAfter);
-	c.SetItemData(hitem, (DWORD)this);
+	c.SetItemData(hitem, (DWORD_PTR)this);
 	Gathering::InsertItem(c, hitem, hInsertAfter);
 }
 

@@ -199,7 +199,7 @@ bool Torus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 
 void Torus::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
-	c.SetItemData(c.InsertItem(m_Name, 21, 20, hParent, hInsertAfter), (DWORD)this);
+	c.SetItemData(c.InsertItem(m_Name, 21, 20, hParent, hInsertAfter), (DWORD_PTR)this);
 }
 
 void Torus::Serialize(CArchive& ar)

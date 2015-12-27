@@ -213,6 +213,6 @@ bool Cone::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool
 
 void Cone::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
-	c.SetItemData(c.InsertItem(m_Name, 17, 16, hParent, hInsertAfter), (DWORD)this);
+	c.SetItemData(c.InsertItem(m_Name, 17, 16, hParent, hInsertAfter), (DWORD_PTR)this);
 }
 

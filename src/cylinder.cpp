@@ -208,5 +208,5 @@ bool Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, 
 
 void Cylinder::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
-	c.SetItemData(c.InsertItem(m_Name, 19, 18, hParent, hInsertAfter), (DWORD)this);
+	c.SetItemData(c.InsertItem(m_Name, 19, 18, hParent, hInsertAfter), (DWORD_PTR)this);
 }

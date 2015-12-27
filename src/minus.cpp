@@ -100,7 +100,7 @@ int	Minus::cmp_distance(float a, float b) const
 void Minus::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
 	HTREEITEM hitem = c.InsertItem(m_Name, 15, 14, hParent, hInsertAfter);
-	c.SetItemData(hitem, (DWORD)this);
+	c.SetItemData(hitem, (DWORD_PTR)this);
 	Gathering::InsertItem(c, hitem, hInsertAfter);
 }
 

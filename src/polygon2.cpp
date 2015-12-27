@@ -101,7 +101,7 @@ bool Polygon2::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, 
 
 void Polygon2::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
-	c.SetItemData(c.InsertItem(m_Name, 23, 22, hParent, hInsertAfter), (DWORD)this);
+	c.SetItemData(c.InsertItem(m_Name, 23, 22, hParent, hInsertAfter), (DWORD_PTR)this);
 }
 
 void	Polygon2::Serialize(CArchive& ar)

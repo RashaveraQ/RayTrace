@@ -199,5 +199,5 @@ bool Cube::IsInside(const sp& L) const
 
 void Cube::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
-	c.SetItemData(c.InsertItem(m_Name, 8, 9, hParent, hInsertAfter), (DWORD)this);
+	c.SetItemData(c.InsertItem(m_Name, 8, 9, hParent, hInsertAfter), (DWORD_PTR)this);
 }

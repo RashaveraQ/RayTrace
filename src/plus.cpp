@@ -83,7 +83,7 @@ bool Plus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool
 void Plus::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
 	HTREEITEM hitem = c.InsertItem(m_Name, 3, 2, hParent, hInsertAfter);
-	c.SetItemData(hitem, (DWORD)this);
+	c.SetItemData(hitem, (DWORD_PTR)this);
 	Gathering::InsertItem(c, hitem, hInsertAfter);
 }
 

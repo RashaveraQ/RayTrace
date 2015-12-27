@@ -169,6 +169,6 @@ bool Teapot::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bo
 
 void Teapot::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
-	c.SetItemData(c.InsertItem(m_Name, 25, 24, hParent, hInsertAfter), (DWORD)this);
+	c.SetItemData(c.InsertItem(m_Name, 25, 24, hParent, hInsertAfter), (DWORD_PTR)this);
 }
 
