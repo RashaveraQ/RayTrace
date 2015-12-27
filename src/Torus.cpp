@@ -47,7 +47,7 @@ void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Ma
 			th = 6.28f * i / A;
 			ph = 6.28f * j / B;
 			sp p = m * sp((m_R + m_r * cosf(ph)) * cosf(th), (m_R + m_r * cosf(ph)) * sinf(th), m_r * sinf(ph));
-			P[j] = p.getPOINT(size);
+			p.getPOINT(P[j].x, P[j].y, size.cx, size.cy);
 		}
 		pDC->Polygon(P, B);
 	}
@@ -57,7 +57,7 @@ void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Ma
 			ph = 6.28f * i / A;
 			th = 6.28f * j / B;
 			sp p = m * sp((m_R + m_r * cosf(ph)) * cosf(th), (m_R + m_r * cosf(ph)) * sinf(th), m_r * sinf(ph));
-			P[j] = p.getPOINT(size);
+			p.getPOINT(P[j].x, P[j].y, size.cx, size.cy);
 		}
 		pDC->Polygon(P, B);
 	}

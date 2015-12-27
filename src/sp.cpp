@@ -72,17 +72,15 @@ sp	sp::e() const
 	return sp( x/r, y/r, z/r );
 }
 
-POINT sp::getPOINT(const CSize& size) const
+void sp::getPOINT(long& ox, long& oy, long cx, long cy) const
 {
-	POINT ans;
 	if (z > -20) {
-		ans.x = (long)(((x / (PERSPECTIVE_RATIO * (z + 20))) + 10) * size.cx / 20);
-		ans.y = (long)(((y / (PERSPECTIVE_RATIO * (z + 20))) + 10) * size.cx / 20);
+		ox = (long)(((x / (PERSPECTIVE_RATIO * (z + 20))) + 10) * cx / 20);
+		oy = (long)(((y / (PERSPECTIVE_RATIO * (z + 20))) + 10) * cx / 20);
 	} else {
-		ans.x = (long)(((x / 1E-10) + 10) * size.cx / 20);
-		ans.y = (long)(((y / 1E-10) + 10) * size.cx / 20);
+		ox = (long)(((x / 1E-10) + 10) * cx / 20);
+		oy = (long)(((y / 1E-10) + 10) * cx / 20);
 	}
-	return ans;
 }
 
 D3DMATERIAL9 sp::getMaterial() const

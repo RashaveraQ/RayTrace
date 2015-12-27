@@ -45,7 +45,7 @@ void Teapot::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& M
 			th = 3.14f * (float)i / 5;
 			ph = 6.28f * (float)j / 50;
 			sp p = m * sp(cosf(th)*sinf(ph), cosf(ph), sinf(th)*sinf(ph));
-			P[j] = p.getPOINT(size);
+			p.getPOINT(P[j].x, P[j].y, size.cx, size.cy);
 		}
 		pDC->Polygon(P, 50);
 	}
@@ -55,7 +55,7 @@ void Teapot::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& M
 			ph = 3.14f * (float)i / 5;
 			th = 6.28f * (float)j / 50;
 			sp p = m * sp(cosf(th)*sinf(ph), cosf(ph), sinf(th)*sinf(ph));
-			P[j] = p.getPOINT(size);
+			p.getPOINT(P[j].x, P[j].y, size.cx, size.cy);
 		}
 		pDC->Polygon(P, 50);
 	}

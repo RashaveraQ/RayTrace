@@ -25,7 +25,7 @@ struct	sp
 	sp	e() const;
 	float	abs() const { return sqrt(x*x + y*y + z*z); };
 	void	print();
-	POINT getPOINT(const CSize& size) const;
+	void getPOINT(long& ox, long& oy, long cx, long cy) const;
 	friend 	sp	operator*(float, const sp&);
 	D3DMATERIAL9 getMaterial() const;
 };

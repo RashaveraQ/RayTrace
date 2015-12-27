@@ -40,8 +40,10 @@ void Viewport::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix&
 	for (int i = 0; i < 2; i++) {
 		for (float x = -12; x <= 12; x++) {
 
-			POINT	P1 = sp(m * (i ? sp(x, 0, -12) : sp(-12, 0, x))).getPOINT(size),
-				P2 = sp(m * (i ? sp(x, 0, 12) : sp(12, 0, x))).getPOINT(size);
+			POINT P1;
+			sp(m * (i ? sp(x, 0, -12) : sp(-12, 0, x))).getPOINT(P1.x, P1.y, size.cx, size.cy);
+			POINT P2;
+			sp(m * (i ? sp(x, 0, 12) : sp(12, 0, x))).getPOINT(P2.x, P2.y, size.cx, size.cy);
 
 			if (x == 0)
 				pDC->SelectStockObject(BLACK_PEN);

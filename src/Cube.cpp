@@ -127,7 +127,7 @@ void Cube::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Mat
 	POINT	P[8];
 
 	for (int i = 0; i < 8; i++ ) {
-		P[i] = sp(m * p[i]).getPOINT(size);
+		sp(m * p[i]).getPOINT(P[i].x, P[i].y, size.cx, size.cy);
 	}
 
 	pDC->MoveTo(P[7]);

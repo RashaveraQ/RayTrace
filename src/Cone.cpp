@@ -38,13 +38,14 @@ void Cone::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Mat
 
 	for (int i = 0; i < COUNT; i++) {
 		float th = 6.28f * (float)i / COUNT;
-		P[i] = sp(m * sp(cos(th), 1, sin(th))).getPOINT(size);
+		sp(m * sp(cos(th), 1, sin(th))).getPOINT(P[i].x, P[i].y, size.cx, size.cy);
 	}
 	pDC->Polygon(P, COUNT);
 
 #define LINES	8
 
-	POINT	O = sp(m * sp(0,0,0)).getPOINT(size);
+	POINT	O;
+	sp(m * sp(0, 0, 0)).getPOINT(O.x, O.y, size.cx, size.cy);
 	for (int i = 0; i < LINES; i++) {
 		pDC->MoveTo(O);
 		pDC->LineTo(P[i*COUNT/LINES]);

@@ -40,15 +40,16 @@ void Cylinder::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix&
 		for (int i = 0; i < COUNT; i++) {
 			float th = 6.28f * i / COUNT;
 			sp	p = m * sp(cos(th), j == 0 ? -1.0f : 1.0f, sin(th));
-			P[j][i] = p.getPOINT(size);
+			p.getPOINT(P[j][i].x, P[j][i].y, size.cx, size.cy);
 		}
 		pDC->Polygon(P[j], COUNT);
 	}
 
 #define LINES	8
 
-	POINT O1 = sp(m * sp(0,-1,0)).getPOINT(size);
-	POINT O2 = sp(m * sp(0, 1,0)).getPOINT(size);
+	POINT O1, O2;
+	sp(m * sp(0, -1, 0)).getPOINT(O1.x, O1.y, size.cx, size.cy);
+	sp(m * sp(0, 1, 0)).getPOINT(O2.x, O2.y, size.cx, size.cy);
 
 	for (int i = 0; i < LINES; i++) {
 		pDC->MoveTo(O1);
