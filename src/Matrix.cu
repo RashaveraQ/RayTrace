@@ -1,7 +1,6 @@
 #include "matrix.cuh"
 #include "sp.cuh"
 
-__device__ 
 matrix::matrix(int gyo, int retu)
 {
 	m_Height = gyo;
@@ -26,7 +25,6 @@ matrix::matrix(int gyo, int retu)
 	m_pInvMatrix = 0;
 }
 
-__device__
 matrix::matrix(const matrix& mat)
 {
 	m_Width = mat.get_width();
@@ -38,7 +36,6 @@ matrix::matrix(const matrix& mat)
 	m_pInvMatrix = 0;
 }
 
-__device__
 matrix::matrix(const sp& sp, float d)
 {
 	m_Width = 1;
@@ -52,7 +49,6 @@ matrix::matrix(const sp& sp, float d)
 	m_pInvMatrix = 0;
 }
 
-__device__
 matrix::matrix(int w, int h, float data[4][4])
 {
 	m_Width = w;
@@ -64,15 +60,12 @@ matrix::matrix(int w, int h, float data[4][4])
 	m_pInvMatrix = 0;
 }
 
-
-__device__
 matrix::~matrix()
 {
 	if (m_pInvMatrix)
 		delete m_pInvMatrix;
 }
 
-__device__
 matrix	matrix::operator=(const matrix& mat)
 {
 	if (m_pInvMatrix) {
@@ -87,7 +80,6 @@ matrix	matrix::operator=(const matrix& mat)
 	return *this;
 }
 
-__device__
 matrix	matrix::operator-(const matrix& mat) const
 {
 	matrix	ans( m_Height, m_Width );
@@ -99,7 +91,6 @@ matrix	matrix::operator-(const matrix& mat) const
 	return ans;
 }
 
-__device__
 matrix	matrix::operator+(const matrix& mat) const
 {
 	matrix	ans( m_Height, m_Width );
@@ -111,7 +102,6 @@ matrix	matrix::operator+(const matrix& mat) const
 	return ans;
 }
 
-__device__
 matrix	matrix::operator*(float k) const
 {
 	matrix	ans( m_Height, m_Width );
@@ -123,7 +113,6 @@ matrix	matrix::operator*(float k) const
 	return ans;
 }
 
-__device__
 matrix	matrix::operator/(float k) const
 {
 	matrix	ans( m_Height, m_Width );
@@ -135,7 +124,6 @@ matrix	matrix::operator/(float k) const
 	return ans;
 }
 
-__device__
 matrix	matrix::operator*(const matrix& mat) const
 {
 	matrix	ans( m_Height, mat.get_width() );
@@ -152,7 +140,6 @@ matrix	matrix::operator*(const matrix& mat) const
 	return ans;
 }
 
-__device__
 matrix	matrix::Inv()
 {
 	if (!m_pInvMatrix) {
@@ -177,7 +164,6 @@ matrix	matrix::Inv()
 	return *m_pInvMatrix;
 }
 
-__device__
 float	matrix::M(int gyo, int retu) const
 {
 	float ans = 0;
@@ -284,7 +270,6 @@ float	matrix::M(int gyo, int retu) const
 	return ans;
 }
 
-__device__
 float	matrix::d() const
 {
 	float	ans = 0;
@@ -346,7 +331,6 @@ void	matrix::print() const
 }
 */
 
-__device__
 void matrix::set_data(int gyo, int retu, float value)
 {
 	m_data[gyo - 1][retu - 1] = value;

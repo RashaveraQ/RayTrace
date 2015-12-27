@@ -4,7 +4,6 @@
 #include "sp.cuh"
 #include "matrix.cuh"
 
-__device__
 sp::sp(const matrix& m)
 {
 	x = m.get_data(1,1);
@@ -12,19 +11,16 @@ sp::sp(const matrix& m)
 	z = m.get_data(3,1);
 }
 
-__device__
 bool sp::operator==( const sp& a ) const
 {
 	return x == a.x && y == a.y && z == a.z;
 }
 
-__device__ 
 bool sp::operator!=(const sp& a) const
 {
 	return x != a.x || y != a.y || z != a.z;
 }
 
-__device__ 
 sp&	sp::operator=(const sp& a)
 {
 	x = a.x;
@@ -33,37 +29,31 @@ sp&	sp::operator=(const sp& a)
 	return *this;
 }
 
-__device__ 
 float	sp::operator*(const sp& a) const
 {
 	return x*a.x+y*a.y+z*a.z;
 }
 
-__device__ 
 sp sp::operator+(const sp& a) const
 {
 	return sp( x+a.x, y+a.y, z+a.z );
 }
 
-__device__
 sp sp::operator-(const sp& a) const
 {
 	return sp( x-a.x, y-a.y, z-a.z );
 }
 
-__device__
 sp sp::operator-( void ) const
 {
 	return sp( -x, -y, -z );
 }
 
-__device__
 sp sp::operator*(float k) const
 {
 	return sp( x*k, y*k, z*k );
 }
 
-__device__
 sp sp::operator/(float a) const
 {
 	return sp( x/a, y/a, z/a );
@@ -75,13 +65,11 @@ void sp::print()
 }
 */
 
-__device__ 
 sp	operator*(float k, const sp& a)
 {
 	return a*k;
 }
 
-__device__
 sp	sp::e() const
 {
 	float	r = sqrt(x*x + y*y + z*z);
@@ -104,7 +92,6 @@ POINT sp::getPOINT(const CSize& size) const
 }
 */
 
-__device__
 D3DMATERIAL9 sp::getMaterial() const
 {
 	D3DMATERIAL9	mtrl;
@@ -116,7 +103,6 @@ D3DMATERIAL9 sp::getMaterial() const
 	return mtrl;
 }
 
-__device__ 
 sp::sp(const D3DMATERIAL9& mtrl)
 {
 	x = 256 * mtrl.Diffuse.r;
@@ -124,7 +110,6 @@ sp::sp(const D3DMATERIAL9& mtrl)
 	z = 256 * mtrl.Diffuse.b;
 }
 
-__device__
 void sp::getPOINT(long& ox, long& oy, long cx, long cy) const
 {
 	if (z > -20) {
