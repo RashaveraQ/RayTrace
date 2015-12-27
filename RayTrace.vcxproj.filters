@@ -59,9 +59,6 @@
     <ClCompile Include="src\MainFrm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\matrix.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\minus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -111,9 +108,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ScnTreeView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\sphere.cpp">
@@ -184,9 +178,6 @@
     <ClInclude Include="src\MainFrm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\matrix.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\minus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -239,9 +230,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ScnTreeView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\sphere.h">

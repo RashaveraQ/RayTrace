@@ -1,8 +1,8 @@
-#include "Matrix.cuh"
-#include "Sp.cuh"
+#include "matrix.cuh"
+#include "sp.cuh"
 
 __device__ 
-Matrix::Matrix(int gyo, int retu)
+matrix::matrix(int gyo, int retu)
 {
 	m_Height = gyo;
 	m_Width = retu;
@@ -27,7 +27,7 @@ Matrix::Matrix(int gyo, int retu)
 }
 
 __device__
-Matrix::Matrix(const Matrix& mat)
+matrix::matrix(const matrix& mat)
 {
 	m_Width = mat.get_width();
 	m_Height = mat.get_height();
@@ -39,21 +39,21 @@ Matrix::Matrix(const Matrix& mat)
 }
 
 __device__
-Matrix::Matrix(const Sp& Sp, float d)
+matrix::matrix(const sp& sp, float d)
 {
 	m_Width = 1;
 	m_Height = 4;
 
-	m_data[0][0] = Sp.x;
-	m_data[1][0] = Sp.y;
-	m_data[2][0] = Sp.z;
+	m_data[0][0] = sp.x;
+	m_data[1][0] = sp.y;
+	m_data[2][0] = sp.z;
 	m_data[3][0] = d;
 
 	m_pInvMatrix = 0;
 }
 
 __device__
-Matrix::Matrix(int w, int h, float data[4][4])
+matrix::matrix(int w, int h, float data[4][4])
 {
 	m_Width = w;
 	m_Height = h;
@@ -66,14 +66,14 @@ Matrix::Matrix(int w, int h, float data[4][4])
 
 
 __device__
-Matrix::~Matrix()
+matrix::~matrix()
 {
 	if (m_pInvMatrix)
 		delete m_pInvMatrix;
 }
 
 __device__
-Matrix	Matrix::operator=(const Matrix& mat)
+matrix	matrix::operator=(const matrix& mat)
 {
 	if (m_pInvMatrix) {
 		delete m_pInvMatrix;
@@ -88,9 +88,9 @@ Matrix	Matrix::operator=(const Matrix& mat)
 }
 
 __device__
-Matrix	Matrix::operator-(const Matrix& mat) const
+matrix	matrix::operator-(const matrix& mat) const
 {
-	Matrix	ans( m_Height, m_Width );
+	matrix	ans( m_Height, m_Width );
 
 	for ( int i = 0; i < m_Height; i++ )
 		for ( int j = 0; j < m_Width; j++ )
@@ -100,9 +100,9 @@ Matrix	Matrix::operator-(const Matrix& mat) const
 }
 
 __device__
-Matrix	Matrix::operator+(const Matrix& mat) const
+matrix	matrix::operator+(const matrix& mat) const
 {
-	Matrix	ans( m_Height, m_Width );
+	matrix	ans( m_Height, m_Width );
 
 	for ( int i = 0; i < m_Height; i++ )
 		for ( int j = 0; j < m_Width; j++ )
@@ -112,9 +112,9 @@ Matrix	Matrix::operator+(const Matrix& mat) const
 }
 
 __device__
-Matrix	Matrix::operator*(float k) const
+matrix	matrix::operator*(float k) const
 {
-	Matrix	ans( m_Height, m_Width );
+	matrix	ans( m_Height, m_Width );
 
 	for ( int i = 0; i < m_Height; i++ )
 		for ( int j = 0; j < m_Width; j++ )
@@ -124,9 +124,9 @@ Matrix	Matrix::operator*(float k) const
 }
 
 __device__
-Matrix	Matrix::operator/(float k) const
+matrix	matrix::operator/(float k) const
 {
-	Matrix	ans( m_Height, m_Width );
+	matrix	ans( m_Height, m_Width );
 
 	for (int i = 0; i < m_Height; i++)
 		for (int j = 0; j < m_Width; j++)
@@ -136,9 +136,9 @@ Matrix	Matrix::operator/(float k) const
 }
 
 __device__
-Matrix	Matrix::operator*(const Matrix& mat) const
+matrix	matrix::operator*(const matrix& mat) const
 {
-	Matrix	ans( m_Height, mat.get_width() );
+	matrix	ans( m_Height, mat.get_width() );
 
 	for (int i = 0; i < ans.m_Height; i++) {
 		for (int j = 0; j < ans.m_Width; j++) {
@@ -153,10 +153,10 @@ Matrix	Matrix::operator*(const Matrix& mat) const
 }
 
 __device__
-Matrix	Matrix::Inv()
+matrix	matrix::Inv()
 {
 	if (!m_pInvMatrix) {
-		m_pInvMatrix = new Matrix(m_Width, m_Height);
+		m_pInvMatrix = new matrix(m_Width, m_Height);
 
 		float	A = d();
 		float	m;
@@ -178,7 +178,7 @@ Matrix	Matrix::Inv()
 }
 
 __device__
-float	Matrix::M(int gyo, int retu) const
+float	matrix::M(int gyo, int retu) const
 {
 	float ans = 0;
 
@@ -285,7 +285,7 @@ float	Matrix::M(int gyo, int retu) const
 }
 
 __device__
-float	Matrix::d() const
+float	matrix::d() const
 {
 	float	ans = 0;
 
@@ -333,7 +333,7 @@ float	Matrix::d() const
 	return ans;
 }
 /*
-void	Matrix::print() const
+void	matrix::print() const
 {
 	int	i, j;
 
@@ -347,7 +347,7 @@ void	Matrix::print() const
 */
 
 __device__
-void Matrix::set_data(int gyo, int retu, float value)
+void matrix::set_data(int gyo, int retu, float value)
 {
 	m_data[gyo - 1][retu - 1] = value;
 

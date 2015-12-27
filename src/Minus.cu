@@ -5,17 +5,17 @@
 #include "Minus.cuh"
 
 __device__
-bool DevMinus::IsInside(const Sp& L) const
+bool DevMinus::IsInside(const sp& L) const
 {
 	return ((m_Member >= 1 && m_Node[0]->IsInside2(L)) && !(m_Member >= 2 && m_Node[1]->IsInside2(L)));
 }
 
 __device__
-bool DevMinus::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
+bool DevMinus::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
 {
 	DevInfo	l_info;
 	DevInfo	r_info;
-	Sp		l = L;
+	sp		l = L;
 	int		left, right;
 
 	if (!(m_Member >= 1 && m_Node[0]->GetInfo2(K, l, l_info, pHint, fromOutSide)))

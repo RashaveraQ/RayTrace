@@ -5,20 +5,20 @@
 #include "Plane.cuh"
 
 __device__
-DevPlane::DevPlane(DevNode** const root, const Sp Color)
+DevPlane::DevPlane(DevNode** const root, const sp Color)
 	: DevNode(root, PLANE, Color)
 {
 
 }
 
 __device__
-bool DevPlane::IsInside(const Sp& L) const
+bool DevPlane::IsInside(const sp& L) const
 {
 	return (L.z >= 0.0);
 }
 
 __device__
-bool DevPlane::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
+bool DevPlane::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return false;
@@ -29,7 +29,7 @@ bool DevPlane::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* p
 		return false;
 
 	info.Cross = K * t + L;
-	info.Vertical = Sp(0, 0, -1);
+	info.Vertical = sp(0, 0, -1);
 	info.Distance = t * sqrt(K * K);
 	info.isEnter = (L.z < 0);
 	info.Material = GetPixel(info.Cross.x, info.Cross.y).getMaterial();
@@ -42,7 +42,7 @@ __global__
 void newPlane(DevNode** out, DevNode** const root, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevPlane(root, Sp(Material));
+		*out = new DevPlane(root, sp(Material));
 }
 
 bool newDevPlane(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material)

@@ -5,20 +5,20 @@
 #include "Teapot.cuh"
 
 __device__
-DevTeapot::DevTeapot(DevNode** const root, const Sp Color)
+DevTeapot::DevTeapot(DevNode** const root, const sp Color)
 	: DevNode(root, TEAPOT, Color)
 {
 
 }
 
 __device__
-bool DevTeapot::IsInside(const Sp& L) const
+bool DevTeapot::IsInside(const sp& L) const
 {
 	return (sqrt(L * L) <= 1.0);
 }
 
 __device__
-bool DevTeapot::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
+bool DevTeapot::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
 {
 	float	a = K * K;
 	float	b = K * L;
@@ -71,7 +71,7 @@ __global__
 void newTeapot(DevNode** out, DevNode** const root, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevTeapot(root, Sp(Material));
+		*out = new DevTeapot(root, sp(Material));
 }
 
 bool newDevTeapot(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material)

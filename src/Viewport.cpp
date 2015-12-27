@@ -26,7 +26,7 @@ Viewport::~Viewport()
 {
 }
 
-void Viewport::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
+void Viewport::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
 {
 	const CSize& size = raytraceview.m_ClientSize;
 	const Node* pNode = raytraceview.m_SelectedNode;
@@ -35,7 +35,7 @@ void Viewport::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix&
 
 	CPen *old_pen = pDC->SelectObject(&gray_pen);
 
-	matrix m = Matrix * m_Matrix;
+	matrix m = mat * m_Matrix;
 
 	for (int i = 0; i < 2; i++) {
 		for (float x = -12; x <= 12; x++) {
@@ -56,19 +56,19 @@ void Viewport::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix&
 		}
 	}
 
-	Plus::Draw_Outline(pDC, raytraceview, Matrix);
+	Plus::Draw_Outline(pDC, raytraceview, mat);
 
 	pDC->SelectObject(old_pen);
 }
 
-void Viewport::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const
+void Viewport::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& mat) const
 {
 	LPDIRECT3DVERTEXBUFFER9 pVB;
 	CUSTOMVERTEX*	pVertices;
 
 	InitVertexBuffer(pd3dDevice, pVB, pVertices, 100);
 
-	matrix m = Matrix * m_Matrix;
+	matrix m = mat * m_Matrix;
 
 	int j = 0;
 	for (int i = 0; i < 2; i++) {
@@ -84,7 +84,7 @@ void Viewport::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeome
 	pVB->Unlock();
 	lstGeometry.AddTail(Geometry(this, pVB, D3DPT_LINELIST, 50));
 
-	Plus::AddGeometry(pd3dDevice, lstGeometry, rtv, Matrix);
+	Plus::AddGeometry(pd3dDevice, lstGeometry, rtv, mat);
 }
 
 void Viewport::AttachRoot(const Node* pRoot)

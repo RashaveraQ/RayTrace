@@ -19,10 +19,10 @@ public:
 	~Gathering();
 
 	void SetRoot(Node* const root);
-	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
+	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& matrix) const;
 	bool SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& m) const;
 	BOOL AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target);
-	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;
+	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& matrix) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	bool Delete(Node*);
 	void Serialize(CArchive& ar);

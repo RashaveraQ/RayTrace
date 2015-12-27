@@ -115,11 +115,11 @@ bool Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool
 	return TRUE;
 }
 
-void Cube::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
+void Cube::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
 {
 	const CSize& size = raytraceview.m_ClientSize;
 	const Node* pNode = raytraceview.m_SelectedNode;
-	matrix m = Matrix * m_Matrix;
+	matrix m = mat * m_Matrix;
 	pDC->SelectStockObject((pNode == this) ? WHITE_PEN : BLACK_PEN);
 
 	sp p[] = {sp(1,1,1), sp(1,1,-1), sp(1,-1,1), sp(1,-1,-1), sp(-1,1,1), sp(-1,1,-1), sp(-1,-1,1), sp(-1,-1,-1)};
@@ -149,12 +149,12 @@ void Cube::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Mat
 	Node::Draw_Outline(pDC, raytraceview, m);
 }
 
-void Cube::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const
+void Cube::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& mat) const
 {
 	LPDIRECT3DVERTEXBUFFER9 pVB;
 	CUSTOMVERTEX*	pVertices;
 
-	matrix m = Matrix * m_Matrix;
+	matrix m = mat * m_Matrix;
 
 	switch (rtv.m_ViewMode) {
 	case CRayTraceView::eD3DWireFrame:

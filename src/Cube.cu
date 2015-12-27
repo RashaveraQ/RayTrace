@@ -5,80 +5,80 @@
 #include "Cube.cuh"
 
 __device__
-DevCube::DevCube(DevNode** const root, const Sp Color)
+DevCube::DevCube(DevNode** const root, const sp Color)
 	: DevNode(root, CUBE, Color)
 {
 
 }
 
 __device__
-bool DevCube::IsInside(const Sp& L) const
+bool DevCube::IsInside(const sp& L) const
 {
 	return (-1.0 <= L.x && L.x <= 1.0 && -1.0 <= L.y && L.y <= 1.0 && -1.0 <= L.z && L.z <= 1.0);
 }
 
 __device__
-bool DevCube::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
+bool DevCube::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return false;
 
 	float t[6];
-	Sp	   v[6];
+	sp	   v[6];
 	int i = 0;
 
 	info.isEnter = (pHint && pHint->pNode == this) ? fromOutSide : !IsInside(L);
 
 	t[i] = (-1 - L.x) / K.x;
 	if (t[i] > 0) {
-		Sp p = K * t[i] + L;
+		sp p = K * t[i] + L;
 		if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
-			v[i] = Sp(-1, 0, 0);
+			v[i] = sp(-1, 0, 0);
 			i++;
 		}
 	}
 
 	t[i] = (1 - L.x) / K.x;
 	if (t[i] > 0) {
-		Sp p = K * t[i] + L;
+		sp p = K * t[i] + L;
 		if (-1 <= p.y && p.y <= 1 && -1 <= p.z && p.z <= 1) {
-			v[i] = Sp(1, 0, 0);
+			v[i] = sp(1, 0, 0);
 			i++;
 		}
 	}
 
 	t[i] = (-1 - L.y) / K.y;
 	if (t[i] > 0) {
-		Sp p = K * t[i] + L;
+		sp p = K * t[i] + L;
 		if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
-			v[i] = Sp(0, -1, 0);
+			v[i] = sp(0, -1, 0);
 			i++;
 		}
 	}
 
 	t[i] = (1 - L.y) / K.y;
 	if (t[i] > 0) {
-		Sp p = K * t[i] + L;
+		sp p = K * t[i] + L;
 		if (-1 <= p.x && p.x <= 1 && -1 <= p.z && p.z <= 1) {
-			v[i] = Sp(0, 1, 0);
+			v[i] = sp(0, 1, 0);
 			i++;
 		}
 	}
 
 	t[i] = (-1 - L.z) / K.z;
 	if (t[i] > 0) {
-		Sp p = K * t[i] + L;
+		sp p = K * t[i] + L;
 		if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
-			v[i] = Sp(0, 0, -1);
+			v[i] = sp(0, 0, -1);
 			i++;
 		}
 	}
 
 	t[i] = (1 - L.z) / K.z;
 	if (t[i] > 0) {
-		Sp p = K * t[i] + L;
+		sp p = K * t[i] + L;
 		if (-1 <= p.y && p.y <= 1 && -1 <= p.x && p.x <= 1) {
-			v[i] = Sp(0, 0, 1);
+			v[i] = sp(0, 0, 1);
 			i++;
 		}
 	}
@@ -114,7 +114,7 @@ __global__
 void newCube(DevNode** out, DevNode** const root, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevCube(root, Sp(Material));
+		*out = new DevCube(root, sp(Material));
 }
 
 bool newDevCube(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material)

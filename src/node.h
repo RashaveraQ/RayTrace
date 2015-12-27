@@ -23,7 +23,10 @@ struct fsize
 	float	bottom;
 	float	right;
 };
+
+#ifndef PERSPECTIVE_RATIO
 #define PERSPECTIVE_RATIO 0.1
+#endif // PERSPECTIVE_RATIO
 
 // 境界
 struct Boundary {
@@ -86,7 +89,7 @@ public:
 	bool IsInside2(const sp& L);
 
 	virtual	BOOL AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target) { return FALSE; }
-	virtual void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const;
+	virtual void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& matrix) const;
 	void Move(eAxis axis, float d);
 	void Move(POINT d);
 	void Rotate(eAxis axis, float d);
@@ -95,7 +98,7 @@ public:
 	void MovePivot(eAxis axis, float d);
 	virtual bool SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& m) const;
 
-	virtual void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const;
+	virtual void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& matrix) const;
 	virtual void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST) = 0;
 	virtual BOOL Edit();
 	BOOL EditAfin();

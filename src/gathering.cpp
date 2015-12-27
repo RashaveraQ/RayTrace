@@ -53,9 +53,9 @@ void	Gathering::Serialize(CArchive& ar)
 	}
 }
 
-void Gathering::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& Matrix) const
+void Gathering::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& mat) const
 {
-	matrix m = Matrix * m_Matrix;
+	matrix m = mat * m_Matrix;
 	
 	Node *pNodeBackup = rtv.m_SelectedNode;
 	if (pNodeBackup == (Node*)this) {
@@ -71,17 +71,17 @@ void Gathering::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& Matrix)
 	Node::Draw_Outline(pDC, rtv, m);
 }
 
-void Gathering::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const
+void Gathering::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& mat) const
 {
-	matrix m = Matrix * m_Matrix;
+	matrix m = mat * m_Matrix;
 	for (int i = 0; i < m_Member; i++)
 		m_Node[i]->AddGeometry(pd3dDevice, lstGeometry, rtv, m);
 	Node::AddGeometry(pd3dDevice, lstGeometry, rtv, m);
 }
 
-bool Gathering::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& Matrix) const
+bool Gathering::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& mat) const
 {
-	matrix m = m_Matrix * Matrix;
+	matrix m = m_Matrix * mat;
 	for (int i = 0; i < m_Member; i++) {
 		if (m_Node[i]->SetManipulatorAxis(rtv, point, m))
 			return true;

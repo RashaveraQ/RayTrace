@@ -3,9 +3,8 @@
 #include "device_launch_parameters.h"
 #include "DoCuda.h"
 #include "GetVectorFromPoint.cuh"
-#include "Sp.cuh"
-#include "matrix.h"
-#include "Matrix.cuh"
+#include "sp.cuh"
+#include "matrix.cuh"
 #include "Node.cuh"
 #include "Plus.cuh"
 #include <d3d9.h>
@@ -96,7 +95,7 @@ __device__ int rgbToInt(float r, float g, float b)
 }
 
 __global__
-void RayTrace(unsigned int* dst, const int imageW, const int imageH, DevNode** root, const int gridWidth, const int numBlocks, const fsize* pView, const Matrix* pMatrix)
+void RayTrace(unsigned int* dst, const int imageW, const int imageH, DevNode** root, const int gridWidth, const int numBlocks, const fsize* pView, const matrix* pMatrix)
 {
 	// loop until all blocks completed
 	for (unsigned int blockIndex = blockIdx.x; blockIndex < numBlocks; blockIndex += gridDim.x)
@@ -111,9 +110,9 @@ void RayTrace(unsigned int* dst, const int imageW, const int imageH, DevNode** r
 		if ((ix < imageW) && (iy < imageH))
 		{
 			// Output the pixel
-			Sp k, l;
+			sp k, l;
 			GetVectorFromPoint(k, l, ix, iy, pView, imageW, imageH, pMatrix);
-			Sp c = (*root)->GetColor(k, l, 0, NULL, true);
+			sp c = (*root)->GetColor(k, l, 0, NULL, true);
 			int pixel = imageW * (imageH - iy - 1) + ix;
 			dst[pixel] = rgbToInt(c.x, c.y, c.z);
 		}
@@ -138,14 +137,14 @@ bool DoCuda_OnDraw(unsigned int* out, class DevNode** root, const int imageW, co
 
 	int numWorkerBlocks = numSMs;
 
-	Matrix m(pMatrix->get_width(), pMatrix->get_height());
+	matrix m(pMatrix->get_width(), pMatrix->get_height());
 	for (int w = 1; w <= m.get_width(); w++)
 		for (int h = 1; h <= m.get_height(); h++)
 			m.set_data(w, h, pMatrix->get_data(w, h));
 
-	Matrix* dev_Matrix = 0;
+	matrix* dev_Matrix = 0;
 	cudaError_t cudaStatus;
-	size_t szMatrix = sizeof(Matrix);
+	size_t szMatrix = sizeof(matrix);
 
 	cudaStatus = cudaMalloc((void**)&dev_Matrix, szMatrix);
 	if (cudaStatus != cudaSuccess) {
@@ -200,7 +199,7 @@ bool DoCuda_OnDraw(unsigned int* out, class DevNode** root, const int imageW, co
 }
 
 __global__
-void updateMatrix(DevNode** out, const Matrix* pMatrix)
+void updateMatrix(DevNode** out, const matrix* pMatrix)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
 		(*out)->m_Matrix = *pMatrix;
@@ -211,14 +210,14 @@ bool DoCuda_updateMatrix(DevNode** devNode, const struct matrix* pMatrix)
 	if (!DoCuda_Init())
 		return false;
 
-	Matrix m(pMatrix->get_width(), pMatrix->get_height());
+	matrix m(pMatrix->get_width(), pMatrix->get_height());
 	for (int w = 1; w <= m.get_width(); w++)
 		for (int h = 1; h <= m.get_height(); h++)
 			m.set_data(w, h, pMatrix->get_data(w, h));
 
-	Matrix* dev_Matrix = 0;
+	matrix* dev_Matrix = 0;
 	cudaError_t cudaStatus;
-	size_t szMatrix = sizeof(Matrix);
+	size_t szMatrix = sizeof(matrix);
 
 	cudaStatus = cudaMalloc((void**)&dev_Matrix, szMatrix);
 	if (cudaStatus != cudaSuccess) {

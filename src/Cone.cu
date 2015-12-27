@@ -5,20 +5,20 @@
 #include "Cone.cuh"
 
 __device__
-DevCone::DevCone(DevNode** const root, const Sp Color)
+DevCone::DevCone(DevNode** const root, const sp Color)
 	: DevNode(root, CONE, Color)
 {
 
 }
 
 __device__
-bool DevCone::IsInside(const Sp& L) const
+bool DevCone::IsInside(const sp& L) const
 {
 	return (0 <= L.y && L.y <= 1 && sqrt(L.x * L.x + L.z * L.z) <= L.y);
 }
 
 __device__
-bool DevCone::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
+bool DevCone::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return FALSE;
@@ -27,14 +27,14 @@ bool DevCone::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pH
 		return FALSE;
 
 	float t[2];
-	Sp     v[2];
+	sp     v[2];
 	int i = 0;
 
 	t[0] = (1 - L.y) / K.y;
 	if (t[0] > 0) {
-		Sp p = K * t[0] + L;
+		sp p = K * t[0] + L;
 		if (p.x * p.x + p.z * p.z <= 1) {
-			v[i] = Sp(0, 1, 0);
+			v[i] = sp(0, 1, 0);
 			info.Material = GetPixel(.5f * (p.x + 1), .5f * (p.z + 1)).getMaterial();
 			info.pNode = this;
 			info.Refractive = m_Refractive;
@@ -54,7 +54,7 @@ bool DevCone::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pH
 		b = K.x * K.x + K.z * K.z - K.y * K.y;
 
 		t1 = (a + d) / b;
-		Sp p = K * t1 + L;
+		sp p = K * t1 + L;
 		if (p.y < 0 || p.y > 1 || p.x * p.x + p.z * p.z > 1)
 			t1 = -1;
 
@@ -124,7 +124,7 @@ __global__
 void newCone(DevNode** out, DevNode** const root, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevCone(root, Sp(Material));
+		*out = new DevCone(root, sp(Material));
 }
 
 bool newDevCone(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material)

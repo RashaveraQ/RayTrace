@@ -8,9 +8,9 @@ struct fsize
 	float	right;
 };
 
-struct Sp;
-struct Matrix;
+struct sp;
+struct matrix;
 
 __device__
-void GetVectorFromPoint(Sp& k, Sp& l, int px, int py, const fsize* pView, int cx, int cy, const Matrix* pMatrix);
+void GetVectorFromPoint(sp& k, sp& l, int px, int py, const fsize* pView, int cx, int cy, const matrix* pMatrix);
 

@@ -24,12 +24,12 @@ bool Teapot::newDeviceNode()
 	return newDevTeapot(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Material);
 }
 
-void Teapot::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
+void Teapot::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
 {
 	const CSize& size = raytraceview.m_ClientSize;
 	const Node* pNode = raytraceview.m_SelectedNode;
 
-	matrix m = Matrix * m_Matrix;
+	matrix m = mat * m_Matrix;
 
 	pDC->SelectStockObject((pNode == this) ? WHITE_PEN : BLACK_PEN);
 
@@ -62,13 +62,13 @@ void Teapot::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& M
 	Node::Draw_Outline(pDC, raytraceview, m);
 }
 
-void Teapot::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const
+void Teapot::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& mat) const
 {
 	// D3DXCreateTeapot の使用を検討すること
 	LPDIRECT3DVERTEXBUFFER9 pVB;
 	CUSTOMVERTEX*	pVertices;
 
-	matrix m = Matrix * m_Matrix;
+	matrix m = mat * m_Matrix;
 
 	switch (rtv.m_ViewMode) {
 	case CRayTraceView::eD3DWireFrame:
