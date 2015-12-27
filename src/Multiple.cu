@@ -5,7 +5,7 @@
 #include "Multiple.cuh"
 
 __device__
-bool DevMultiple::IsInside(const Sp& L) const
+bool DevMultiple::IsInside(const sp& L) const
 {
 	if (!m_Member)
 		return false;
@@ -18,7 +18,7 @@ bool DevMultiple::IsInside(const Sp& L) const
 }
 
 __device__
-bool DevMultiple::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
+bool DevMultiple::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
 {
 	if (!m_Member)
 		return false;

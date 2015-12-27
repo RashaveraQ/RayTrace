@@ -5,20 +5,20 @@
 #include "Cylinder.cuh"
 
 __device__
-DevCylinder::DevCylinder(DevNode** const root, const Sp Color)
+DevCylinder::DevCylinder(DevNode** const root, const sp Color)
 	: DevNode(root, CYLINDER, Color)
 {
 
 }
 
 __device__
-bool DevCylinder::IsInside(const Sp& L) const
+bool DevCylinder::IsInside(const sp& L) const
 {
 	return (-1 <= L.y && L.y <= 1 && sqrt(L.x*L.x + L.z*L.z) <= 1.0);
 }
 
 __device__
-bool DevCylinder::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
+bool DevCylinder::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return false;
@@ -29,10 +29,10 @@ bool DevCylinder::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo
 
 		float t = -(1 + L.y) / K.y;
 		if (t > 0) {
-			Sp	p = K * t + L;
+			sp	p = K * t + L;
 			if (p.x * p.x + p.z * p.z <= 1) {
 				info.Cross = p;
-				info.Vertical = Sp(0, -1, 0);
+				info.Vertical = sp(0, -1, 0);
 				info.Distance = t * sqrt(K * K);
 				info.isEnter = 1;
 				info.Material = GetPixel(.5f*(p.x + 1), .5f*(p.z + 1)).getMaterial();
@@ -48,10 +48,10 @@ bool DevCylinder::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo
 
 		float t = (1 - L.y) / K.y;
 		if (t > 0) {
-			Sp	p = K * t + L;
+			sp	p = K * t + L;
 			if (p.x * p.x + p.z * p.z <= 1) {
 				info.Cross = p;
-				info.Vertical = Sp(0, 1, 0);
+				info.Vertical = sp(0, 1, 0);
 				info.Distance = t * sqrt(K * K);
 				info.isEnter = 1;
 				info.Material = GetPixel(.5f*(p.x + 1), .5f*(p.z + 1)).getMaterial();
@@ -94,7 +94,7 @@ bool DevCylinder::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo
 			return false;
 	}
 
-	Sp p = K * t + L;
+	sp p = K * t + L;
 
 	if (p.y < -1 || 1 < p.y)
 		return false;
@@ -113,7 +113,7 @@ __global__
 void newCylinder(DevNode** out, DevNode** const root, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevCylinder(root, Sp(Material));
+		*out = new DevCylinder(root, sp(Material));
 }
 
 bool newDevCylinder(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material)

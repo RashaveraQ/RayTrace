@@ -1,7 +1,7 @@
 #ifndef __EXPAND_H
 #define __EXPAND_H
 
-#include "matrix.h"
+#include "matrix.cuh"
 
 struct	expand : public matrix
 {

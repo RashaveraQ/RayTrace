@@ -5,20 +5,20 @@
 #include "Sphere.cuh"
 
 __device__
-DevSphere::DevSphere(DevNode** const root, const Sp Color)
+DevSphere::DevSphere(DevNode** const root, const sp Color)
 	: DevNode(root, SPHERE, Color)
 {
 
 }
 
 __device__
-bool DevSphere::IsInside(const Sp& L) const
+bool DevSphere::IsInside(const sp& L) const
 {
 	return (sqrt(L * L) <= 1.0);
 }
 
 __device__
-bool DevSphere::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
+bool DevSphere::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return FALSE;
@@ -82,7 +82,7 @@ __global__
 void newSphere(DevNode** out, DevNode** const root, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevSphere(root, Sp(Material));
+		*out = new DevSphere(root, sp(Material));
 }
 
 bool newDevSphere(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material)

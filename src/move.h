@@ -1,7 +1,7 @@
 #ifndef	__MOVE_H
 #define	__MOVE_H
 
-#include "matrix.h"
+#include "matrix.cuh"
 
 struct	move : public matrix
 {

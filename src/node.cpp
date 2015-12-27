@@ -254,7 +254,7 @@ void Node::MovePivot(eAxis axis, float d)
 	}
 }
 
-bool Node::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& Matrix) const
+bool Node::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& mat) const
 {
 	if (rtv.m_SelectedNode != this || rtv.m_Manipulator.Type == eSELECT)
 		return false;
@@ -262,7 +262,7 @@ bool Node::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& Ma
 	const CSize& size = rtv.m_ClientSize;
 	const Viewport& viewport = rtv.m_Viewport;
 
-	matrix m = Matrix * m_Matrix;
+	matrix m = mat * m_Matrix;
 
 	sp	p0 = m * m_Pivot * sp(0, 0, 0);
 	sp	px, py, pz;
@@ -284,10 +284,11 @@ bool Node::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& Ma
 		pz = m * m_Pivot * sp(-1 / m_Scale.get_data(1, 1), 0, 0);
 	}
 
-	POINT	P0 = p0.getPOINT(size),
-		PX = px.getPOINT(size),
-		PY = py.getPOINT(size),
-		PZ = pz.getPOINT(size);
+	POINT P0, PX, PY, PZ;
+	p0.getPOINT(P0.x, P0.y, size.cx, size.cy);
+	px.getPOINT(PX.x, PX.y, size.cx, size.cy);
+	py.getPOINT(PY.x, PY.y, size.cx, size.cy);
+	pz.getPOINT(PZ.x, PZ.y, size.cx, size.cy);
 
 	switch (rtv.m_Manipulator.Type)
 	{
@@ -454,10 +455,11 @@ void Node::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) const
 		pz = m * m_Pivot * sp(-1 / m_Scale.get_data(1, 1), 0, 0);
 	}
 
-	POINT	P0 = p0.getPOINT(size),
-		PX = px.getPOINT(size),
-		PY = py.getPOINT(size),
-		PZ = pz.getPOINT(size);
+	POINT P0, PX, PY, PZ;
+	p0.getPOINT(P0.x, P0.y, size.cx, size.cy);
+	px.getPOINT(PX.x, PX.y, size.cx, size.cy);
+	py.getPOINT(PY.x, PY.y, size.cx, size.cy);
+	pz.getPOINT(PZ.x, PZ.y, size.cx, size.cy);
 
 	// X-Axis
 	CPen *old_pen;

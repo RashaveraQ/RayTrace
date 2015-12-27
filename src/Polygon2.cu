@@ -10,13 +10,13 @@ DevPolygon2::DevPolygon2(const DevPolygon2& other) : DevNode(other)
 	int	i;
 
 	m_N = other.m_N;
-	m_P = new Sp[m_N];
+	m_P = new sp[m_N];
 	for (i = 0; i < m_N; i++)
 		m_P[i] = other.m_P[i];
 }
 
 __device__
-bool DevPolygon2::IsInside(const Sp& L) const
+bool DevPolygon2::IsInside(const sp& L) const
 {
 	if (L.z < 0.0)
 		return false;
@@ -42,7 +42,7 @@ bool DevPolygon2::IsInside(const Sp& L) const
 }
 
 __device__
-bool DevPolygon2::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
+bool DevPolygon2::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
 {
 	float	a = K * K;
 	float	b = K * L;
@@ -88,7 +88,7 @@ __global__
 void newPolygon2(DevNode** out, DevNode** const root, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevPolygon2(root, Sp(Material));
+		*out = new DevPolygon2(root, sp(Material));
 }
 
 bool newDevPolygon2(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material)

@@ -24,12 +24,12 @@ Cone::Cone(const Cone& other)
 		exit(1);
 }
 
-void Cone::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
+void Cone::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
 {
 	const CSize& size = raytraceview.m_ClientSize;
 	const Node* pNode = raytraceview.m_SelectedNode;
 
-	matrix m = Matrix * m_Matrix;
+	matrix m = mat * m_Matrix;
 	pDC->SelectStockObject((pNode == this) ? WHITE_PEN : BLACK_PEN);
 
 #define COUNT	100
@@ -38,13 +38,14 @@ void Cone::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Mat
 
 	for (int i = 0; i < COUNT; i++) {
 		float th = 6.28f * (float)i / COUNT;
-		P[i] = sp(m * sp(cos(th), 1, sin(th))).getPOINT(size);
+		sp(m * sp(cos(th), 1, sin(th))).getPOINT(P[i].x, P[i].y, size.cx, size.cy);
 	}
 	pDC->Polygon(P, COUNT);
 
 #define LINES	8
 
-	POINT	O = sp(m * sp(0,0,0)).getPOINT(size);
+	POINT	O;
+	sp(m * sp(0, 0, 0)).getPOINT(O.x, O.y, size.cx, size.cy);
 	for (int i = 0; i < LINES; i++) {
 		pDC->MoveTo(O);
 		pDC->LineTo(P[i*COUNT/LINES]);
@@ -52,9 +53,9 @@ void Cone::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Mat
 	Node::Draw_Outline(pDC, raytraceview, m);
 }
 
-void Cone::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const
+void Cone::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& mat) const
 {
-	matrix m = Matrix * m_Matrix;
+	matrix m = mat * m_Matrix;
 
 	switch (rtv.m_ViewMode) {
 	case CRayTraceView::eD3DWireFrame:

@@ -5,7 +5,7 @@
 #include "Plus.cuh"
 
 __device__
-bool DevPlus::IsInside(const Sp& L) const
+bool DevPlus::IsInside(const sp& L) const
 {
 	for (int i = 0; i < m_Member; i++) {
 		if (m_Node[i]->IsInside2(L))
@@ -16,7 +16,7 @@ bool DevPlus::IsInside(const Sp& L) const
 }
 
 __device__
-bool DevPlus::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
+bool DevPlus::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
 {
 	DevInfo	tmp;
 	//int		n;

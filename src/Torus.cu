@@ -6,14 +6,14 @@
 #include "Solve_Polynomial.cuh"
 
 __device__
-DevTorus::DevTorus(DevNode** const root, const Sp Color)
+DevTorus::DevTorus(DevNode** const root, const sp Color)
 	: DevNode(root, TORUS, Color), m_R(0.7f), m_r(0.3f)
 {
 
 }
 
 __device__
-bool DevTorus::IsInside(const Sp& L) const
+bool DevTorus::IsInside(const sp& L) const
 {
 	float	d;
 
@@ -24,7 +24,7 @@ bool DevTorus::IsInside(const Sp& L) const
 }
 
 __device__
-bool DevTorus::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
+bool DevTorus::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
 {
 	float	R2 = m_R * m_R;
 	float	a = K * K;
@@ -56,18 +56,18 @@ bool DevTorus::GetInfo(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* p
 		}
 	}
 
-	Sp		p;
+	sp		p;
 	float	th;
 
 	info.isEnter = IsInside(L) == TRUE ? 1 : 0;
 	info.Cross = p = K * r[0] + L;
 
 	if (p.x == 0.0) {
-		info.Vertical = Sp(0, p.y - ((p.y > 0) ? 1 : -1) * m_R, p.z);
+		info.Vertical = sp(0, p.y - ((p.y > 0) ? 1 : -1) * m_R, p.z);
 	}
 	else {
 		th = atan2(p.y, p.x);
-		info.Vertical = Sp(p.x - m_R * cos(th), p.y - m_R * sin(th), p.z);
+		info.Vertical = sp(p.x - m_R * cos(th), p.y - m_R * sin(th), p.z);
 	}
 
 	info.Distance = r[0] * sqrt(K * K);
@@ -93,7 +93,7 @@ __global__
 void newTorus(DevNode** out, DevNode** const root, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevTorus(root, Sp(Material));
+		*out = new DevTorus(root, sp(Material));
 }
 
 bool newDevTorus(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material)

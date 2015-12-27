@@ -1,31 +1,43 @@
 #pragma once
 
 #include <d3d9.h>
-struct	Matrix;
+struct	matrix;
 
-struct	Sp
+#ifndef PERSPECTIVE_RATIO
+#define PERSPECTIVE_RATIO 0.1
+#endif // PERSPECTIVE_RATIO
+
+#ifdef __CUDACC__
+#define TARGET __device__ __host__
+#else
+#define TARGET
+#endif // __CUDACC__
+
+struct sp
 {
 	float	x;
 	float	y;
 	float	z;
-	__device__ Sp() : x(0), y(0), z(0) {} 
-	__device__ Sp(float ix, float iy, float iz) : x(ix), y(iy), z(iz) {}
-	__device__ Sp(const Sp& isp) : x(isp.x), y(isp.y), z(isp.z) {}
-	__device__ Sp(const Matrix& mat);
-	__device__ Sp(const D3DMATERIAL9& mtrl);
-	__device__ bool operator==(const Sp&) const;
-	__device__ bool operator!=(const Sp&) const;
-	__device__ Sp&	operator=(const Sp&);
-	__device__ float	operator*(const Sp&) const;
-	__device__ Sp	operator+(const Sp&) const;
-	__device__ Sp	operator-(const Sp&) const;
-	__device__ Sp	operator-(void) const;
-	__device__ Sp	operator*(float) const;
-	__device__ Sp	operator/(float) const;
-	__device__ Sp	e() const;
-	__device__ float	abs() const { return sqrt(x*x + y*y + z*z); };
+	TARGET sp() : x(0), y(0), z(0) {}
+	TARGET sp(float ix, float iy, float iz) : x(ix), y(iy), z(iz) {}
+	TARGET sp(const sp& isp) : x(isp.x), y(isp.y), z(isp.z) {}
+	TARGET sp(const matrix& mat);
+	TARGET sp(const D3DMATERIAL9& mtrl);
+	TARGET bool operator==(const sp&) const;
+	TARGET bool operator!=(const sp&) const;
+	TARGET sp&	operator=(const sp&);
+	TARGET float	operator*(const sp&) const;
+	TARGET sp	operator+(const sp&) const;
+	TARGET sp	operator-(const sp&) const;
+	TARGET sp	operator-(void) const;
+	TARGET sp	operator*(float) const;
+	TARGET sp	operator/(float) const;
+	TARGET sp	e() const;
+	TARGET float	abs() const { return sqrt(x*x + y*y + z*z); };
 	//void	print();
-//	POINT getPOINT(const CSize& size) const;
-	__device__ friend 	Sp	operator*(float, const Sp&);
-	__device__ D3DMATERIAL9 getMaterial() const;
+	TARGET void getPOINT(long& ox, long& oy, long cx, long cy) const;
+	TARGET friend 	sp	operator*(float, const sp&);
+	TARGET D3DMATERIAL9 getMaterial() const;
 };
+
+#undef TARGET

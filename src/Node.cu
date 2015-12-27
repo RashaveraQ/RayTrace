@@ -4,7 +4,7 @@
 #include "DoCuda.h"
 
 __device__
-DevNode::DevNode(DevNode** const root, node_type NodeType, const Sp Color)
+DevNode::DevNode(DevNode** const root, node_type NodeType, const sp Color)
 	: m_Root(root), m_pParent(0), m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1)
 {
 	m_Material = Color.getMaterial();
@@ -25,27 +25,27 @@ DevNode::DevNode(const DevNode& other) : m_Root(other.m_Root), m_Scale(4, 4), m_
 }
 
 __device__
-Sp DevNode::GetColor(const Sp& K, const Sp& L, int nest, const DevInfo* pHint, bool fromOutSide)
+sp DevNode::GetColor(const sp& K, const sp& L, int nest, const DevInfo* pHint, bool fromOutSide)
 {
 	DevInfo	info;
 
 	// 再帰数が１０を越える又は、交点が存在しない場合、
 	if (nest > 10 || !GetInfo2(K, L, info, pHint, fromOutSide))
-		return Sp(127, 127, 127);
+		return sp(127, 127, 127);
 
-	Sp k = K.e();
-	Sp v = info.Vertical.e();
+	sp k = K.e();
+	sp v = info.Vertical.e();
 
-	Sp k2 = k - 2 * (v * k) * v;
-	Sp l2 = info.Cross;
+	sp k2 = k - 2 * (v * k) * v;
+	sp l2 = info.Cross;
 
 
 	// 反射率がある場合、
 	if (info.pNode->m_Reflect > 0) {
 		// 反射した視線ベクトルから色を取得。
-		Sp c = (*m_Root)->GetColor(k2, l2, nest + 1, &info, true);
+		sp c = (*m_Root)->GetColor(k2, l2, nest + 1, &info, true);
 		// 反射率で色を混ぜる。
-		info.Material = (info.pNode->m_Reflect * c + (1 - info.pNode->m_Reflect) * Sp(info.Material)).getMaterial();
+		info.Material = (info.pNode->m_Reflect * c + (1 - info.pNode->m_Reflect) * sp(info.Material)).getMaterial();
 	}
 
 
@@ -60,25 +60,25 @@ Sp DevNode::GetColor(const Sp& K, const Sp& L, int nest, const DevInfo* pHint, b
 			fromOutSide = !fromOutSide;
 		}
 		// 屈折した視線ベクトルから色を取得。
-		Sp c = (*m_Root)->GetColor(k2, l2, nest + 1, &info, fromOutSide);
+		sp c = (*m_Root)->GetColor(k2, l2, nest + 1, &info, fromOutSide);
 		// 透過率で色を混ぜる。
-		info.Material = (info.pNode->m_Through * c + (1 - info.pNode->m_Through) * Sp(info.Material)).getMaterial();
+		info.Material = (info.pNode->m_Through * c + (1 - info.pNode->m_Through) * sp(info.Material)).getMaterial();
 	}
 
-	Sp Light = Sp(1, 1, 1);
+	sp Light = sp(1, 1, 1);
 	// 光源より色を補正。
 	float	x = -Light.e() * info.Vertical.e();
 	x = (x > 0.0) ? x : 0.0;
 	float t = 64 + 191 * sin(M_PI / 2 * x);
 	float b = 191 * (1 - cos(M_PI / 2 * x));
 
-	return (t - b) * Sp(info.Material) / 255 + Sp(b, b, b);
+	return (t - b) * sp(info.Material) / 255 + sp(b, b, b);
 }
 
 // 視線ベクトル(Kt+L)と交差する物体の情報infoを返す。
 // 戻り値:true 交差あり,false 交差なし
 __device__
-bool DevNode::GetInfo2(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide)
+bool DevNode::GetInfo2(const sp& K, const sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide)
 {
 	// START Boundary 
 	/*
@@ -100,11 +100,11 @@ bool DevNode::GetInfo2(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* p
 	// End Boundary
 	*/
 
-	Matrix& m = m_Matrix;
-	const Matrix& Inv_m = m.Inv();
+	matrix& m = m_Matrix;
+	const matrix& Inv_m = m.Inv();
 
-	Sp L2 = Inv_m * L;
-	Sp K2 = Inv_m * (K + L) - L2;
+	sp L2 = Inv_m * L;
+	sp K2 = Inv_m * (K + L) - L2;
 
 	if (!GetInfo(K2, L2, info, pHint, fromOutSide)) {
 		return false;
@@ -122,22 +122,22 @@ bool DevNode::GetInfo2(const Sp& K, const Sp& L, DevInfo& info, const DevInfo* p
 }
 
 __device__
-Sp DevNode::GetPixel(float x, float y) const
+sp DevNode::GetPixel(float x, float y) const
 {
 //	COLORREF	c;
 
 //	if (m_TextureFileName.IsEmpty())
-		return Sp(256 * m_Material.Diffuse.r, 256 * m_Material.Diffuse.g, 256 * m_Material.Diffuse.b);
+		return sp(256 * m_Material.Diffuse.r, 256 * m_Material.Diffuse.g, 256 * m_Material.Diffuse.b);
 
 	//c = m_TextureDC.GetPixel((int)(x * m_TextureSize.cx), (int)(y * m_TextureSize.cy));
 
 	//if (c == -1)
-	//	return Sp(256 * m_Material.Diffuse.r, 256 * m_Material.Diffuse.g, 256 * m_Material.Diffuse.b);
+	//	return sp(256 * m_Material.Diffuse.r, 256 * m_Material.Diffuse.g, 256 * m_Material.Diffuse.b);
 
-	//return Sp(GetRValue(c), GetGValue(c), GetBValue(c));
+	//return sp(GetRValue(c), GetGValue(c), GetBValue(c));
 }
 
 __device__
-bool DevNode::IsInside2(const Sp& L) {
+bool DevNode::IsInside2(const sp& L) {
 	return IsInside(m_Matrix.Inv() * L);
 }

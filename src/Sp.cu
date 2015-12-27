@@ -2,10 +2,10 @@
 
 #include <math.h>
 #include "sp.cuh"
-#include "Matrix.cuh"
+#include "matrix.cuh"
 
 __device__
-Sp::Sp(const Matrix& m)
+sp::sp(const matrix& m)
 {
 	x = m.get_data(1,1);
 	y = m.get_data(2,1);
@@ -13,19 +13,19 @@ Sp::Sp(const Matrix& m)
 }
 
 __device__
-bool Sp::operator==( const Sp& a ) const
+bool sp::operator==( const sp& a ) const
 {
 	return x == a.x && y == a.y && z == a.z;
 }
 
 __device__ 
-bool Sp::operator!=(const Sp& a) const
+bool sp::operator!=(const sp& a) const
 {
 	return x != a.x || y != a.y || z != a.z;
 }
 
 __device__ 
-Sp&	Sp::operator=(const Sp& a)
+sp&	sp::operator=(const sp& a)
 {
 	x = a.x;
 	y = a.y;
@@ -34,59 +34,59 @@ Sp&	Sp::operator=(const Sp& a)
 }
 
 __device__ 
-float	Sp::operator*(const Sp& a) const
+float	sp::operator*(const sp& a) const
 {
 	return x*a.x+y*a.y+z*a.z;
 }
 
 __device__ 
-Sp Sp::operator+(const Sp& a) const
+sp sp::operator+(const sp& a) const
 {
-	return Sp( x+a.x, y+a.y, z+a.z );
+	return sp( x+a.x, y+a.y, z+a.z );
 }
 
 __device__
-Sp Sp::operator-(const Sp& a) const
+sp sp::operator-(const sp& a) const
 {
-	return Sp( x-a.x, y-a.y, z-a.z );
+	return sp( x-a.x, y-a.y, z-a.z );
 }
 
 __device__
-Sp Sp::operator-( void ) const
+sp sp::operator-( void ) const
 {
-	return Sp( -x, -y, -z );
+	return sp( -x, -y, -z );
 }
 
 __device__
-Sp Sp::operator*(float k) const
+sp sp::operator*(float k) const
 {
-	return Sp( x*k, y*k, z*k );
+	return sp( x*k, y*k, z*k );
 }
 
 __device__
-Sp Sp::operator/(float a) const
+sp sp::operator/(float a) const
 {
-	return Sp( x/a, y/a, z/a );
+	return sp( x/a, y/a, z/a );
 }
 /*
-void Sp::print()
+void sp::print()
 {
 	printf( "(%f,%f,%f)\n", x, y, z );
 }
 */
 
 __device__ 
-Sp	operator*(float k, const Sp& a)
+sp	operator*(float k, const sp& a)
 {
 	return a*k;
 }
 
 __device__
-Sp	Sp::e() const
+sp	sp::e() const
 {
 	float	r = sqrt(x*x + y*y + z*z);
 
-	return Sp( x/r, y/r, z/r );
+	return sp( x/r, y/r, z/r );
 }
 
 /*
@@ -105,7 +105,7 @@ POINT sp::getPOINT(const CSize& size) const
 */
 
 __device__
-D3DMATERIAL9 Sp::getMaterial() const
+D3DMATERIAL9 sp::getMaterial() const
 {
 	D3DMATERIAL9	mtrl;
 	ZeroMemory(&mtrl, sizeof(D3DMATERIAL9));
@@ -117,9 +117,22 @@ D3DMATERIAL9 Sp::getMaterial() const
 }
 
 __device__ 
-Sp::Sp(const D3DMATERIAL9& mtrl)
+sp::sp(const D3DMATERIAL9& mtrl)
 {
 	x = 256 * mtrl.Diffuse.r;
 	y = 256 * mtrl.Diffuse.g;
 	z = 256 * mtrl.Diffuse.b;
+}
+
+__device__
+void sp::getPOINT(long& ox, long& oy, long cx, long cy) const
+{
+	if (z > -20) {
+		ox = (long)(((x / (PERSPECTIVE_RATIO * (z + 20))) + 10) * cx / 20);
+		oy = (long)(((y / (PERSPECTIVE_RATIO * (z + 20))) + 10) * cx / 20);
+	}
+	else {
+		ox = (long)(((x / 1E-10) + 10) * cx / 20);
+		oy = (long)(((y / 1E-10) + 10) * cx / 20);
+	}
 }

@@ -1,7 +1,7 @@
 #ifndef __ROTATE_H
 #define __ROTATE_H
 
-#include "matrix.h"
+#include "matrix.cuh"
 
 struct	rotate : public matrix
 {

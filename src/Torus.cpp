@@ -29,12 +29,12 @@ bool Torus::newDeviceNode()
 	return newDevTorus(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Material);
 }
 
-void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Matrix) const
+void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
 {
 	const CSize& size = raytraceview.m_ClientSize;
 	const Node* pNode = raytraceview.m_SelectedNode;
 
-	matrix m = Matrix * m_Matrix;
+	matrix m = mat * m_Matrix;
 	pDC->SelectStockObject((pNode == this) ? WHITE_PEN : BLACK_PEN);
 
 	POINT	P[B];
@@ -47,7 +47,7 @@ void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Ma
 			th = 6.28f * i / A;
 			ph = 6.28f * j / B;
 			sp p = m * sp((m_R + m_r * cosf(ph)) * cosf(th), (m_R + m_r * cosf(ph)) * sinf(th), m_r * sinf(ph));
-			P[j] = p.getPOINT(size);
+			p.getPOINT(P[j].x, P[j].y, size.cx, size.cy);
 		}
 		pDC->Polygon(P, B);
 	}
@@ -57,20 +57,20 @@ void Torus::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& Ma
 			ph = 6.28f * i / A;
 			th = 6.28f * j / B;
 			sp p = m * sp((m_R + m_r * cosf(ph)) * cosf(th), (m_R + m_r * cosf(ph)) * sinf(th), m_r * sinf(ph));
-			P[j] = p.getPOINT(size);
+			p.getPOINT(P[j].x, P[j].y, size.cx, size.cy);
 		}
 		pDC->Polygon(P, B);
 	}
 	Node::Draw_Outline(pDC, raytraceview, m);
 }
 
-void Torus::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& Matrix) const
+void Torus::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& mat) const
 {
 	// D3DXCreateTorus の使用を検討すること
 	LPDIRECT3DVERTEXBUFFER9 pVB;
 	CUSTOMVERTEX*	pVertices;
 
-	matrix m = Matrix * m_Matrix;
+	matrix m = mat * m_Matrix;
 
 	switch (rtv.m_ViewMode) {
 	case CRayTraceView::eD3DWireFrame:

@@ -13,7 +13,7 @@
 #include "rotate_z.h"
 #include "rotate.h"
 #include "sp.h"
-#include "matrix.h"
+#include "matrix.cuh"
 #include "info.h"
 #include "node.h"
 #include "sphere.h"
