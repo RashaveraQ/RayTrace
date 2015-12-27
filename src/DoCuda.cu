@@ -75,17 +75,6 @@ bool DoCuda_Init()
 	return true;
 }
 
-bool DoCuda_OnSize(void** dst, const int imageW, const int imageH)
-{
-	if (!DoCuda_Init())
-		return false;
-
-	if (cudaSuccess != cudaMalloc(dst, imageW * imageH * sizeof(unsigned long)))
-		return false;
-
-	return true;
-}
-
 // clamp x to range [a, b]
 __device__ float clamp(float x, float a, float b)
 {
@@ -206,22 +195,6 @@ bool DoCuda_OnDraw(unsigned int* out, class DevNode** root, const int imageW, co
 	if (cudaStatus != cudaSuccess) {
 		return false;
 	}
-
-	return true;
-}
-
-bool DoCuda_Free(void* dst)
-{
-	if (!DoCuda_Init())
-		return false;
-
-	if (!dst)
-		return false;
-
-	cudaError_t cudaStatus = cudaFree(dst);
-
-	if (cudaSuccess != cudaStatus)
-		return false;
 
 	return true;
 }

@@ -103,7 +103,6 @@ CRayTraceView::CRayTraceView()
 	m_pd3dDevice = NULL;
 	m_vEyePt = D3DXVECTOR3(0.0f, 5.0f, -30.0f);
 	m_vLookatPt = D3DXVECTOR3(0.0f, 10.0f, 0.0f);
-	m_ColorRefs = NULL;
 
 	pbo_dest = 0;
 	cuda_pbo_dest_resource = NULL;
@@ -114,13 +113,6 @@ CRayTraceView::~CRayTraceView()
 {
 	m_MemoryDC.DeleteDC();
 	m_Viewport.DetachRoot();
-
-	if (m_ColorRefs) {
-		free(m_ColorRefs);
-		m_ColorRefs = NULL;
-		if (!DoCuda_Free(m_deviceAllocateMemory))
-			MessageBox(_T("Failed to DoCuda_Free"));
-	}
 }
 
 BOOL CRayTraceView::PreCreateWindow(CREATESTRUCT& cs)
@@ -215,9 +207,6 @@ void CRayTraceView::OnDraw(CDC* pDC)
 		displayImage(tex_cudaResult, m_ClientSize.cx, m_ClientSize.cy);
 		glutSwapBuffers();
 
-//		for (int y = 0; y < m_ClientSize.cy; y++)
-//			for (int x = 0; x < m_ClientSize.cx; x++)
-//				m_MemoryDC.FillSolidRect(CRect(x, y, x + 1, y + 1), m_ColorRefs[x + y * m_ClientSize.cx]);
 		t4 = GetTickCount();
 
 		d1 = t2 - t1;
@@ -385,7 +374,6 @@ int CRayTraceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_Viewport.SetRoot(&pDoc->m_Root);
 	m_Viewport.AttachRoot(&(pDoc->m_Root));
 
-	m_deviceAllocateMemory = 0;
 	if (!DoCuda_Init())
 		MessageBox(_T("Failed to DoCuda_Init!"));
 
@@ -688,17 +676,6 @@ void CRayTraceView::OnSize(UINT nType, int cx, int cy)
 	// load shader programs
 	GLuint shDraw = compileGLSLprogram(NULL, glsl_draw_fragshader_src);
 	SDK_CHECK_ERROR_GL();
-
-	if (m_ColorRefs) {
-		free(m_ColorRefs);
-		m_ColorRefs = NULL;
-		if (!DoCuda_Free(m_deviceAllocateMemory))
-			MessageBox(_T("Failed to DoCuda_Free."));
-	}
-	m_ColorRefs = (COLORREF*)malloc(cx * cy * sizeof(COLORREF));
-	if (!DoCuda_OnSize(&m_deviceAllocateMemory, cx, cy)) {
-		MessageBox(_T("Failed to DoCuda_OnSize."));
-	}
 
 	if (!m_Iconized && nType != SIZE_MINIMIZED)	{
 		m_MemoryDC.DeleteDC();

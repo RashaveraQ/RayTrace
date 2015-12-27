@@ -2,9 +2,7 @@ class DevNode;
 class DevGathering;
 
 bool DoCuda_Init();
-bool DoCuda_OnSize(void** dst, const int imageW, const int imageH);
 bool DoCuda_OnDraw(unsigned int* out, DevNode** root, const int imageW, const int imageH, const struct fsize* pView, const struct matrix* pMatrix);
-bool DoCuda_Free(void* dst);
 bool mallocDev(DevNode*** out);
 bool freeDevicePointer(DevNode** devNode);
 bool DoCuda_updateMatrix(DevNode** devNode, const struct matrix* pMatrix);
