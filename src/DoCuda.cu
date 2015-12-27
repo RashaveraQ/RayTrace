@@ -111,10 +111,10 @@ void RayTrace(unsigned int* dst, const int imageW, const int imageH, DevNode** r
 		if ((ix < imageW) && (iy < imageH))
 		{
 			// Output the pixel
-			int pixel = imageW * iy + ix;
 			Sp k, l;
 			GetVectorFromPoint(k, l, ix, iy, pView, imageW, imageH, pMatrix);
 			Sp c = (*root)->GetColor(k, l, 0, NULL, true);
+			int pixel = imageW * (imageH - iy - 1) + ix;
 			dst[pixel] = rgbToInt(c.x, c.y, c.z);
 		}
 	}
