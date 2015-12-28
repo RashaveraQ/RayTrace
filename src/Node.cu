@@ -11,17 +11,10 @@ DevNode::DevNode(DevNode** const root, node_type NodeType, const sp Color)
 }
 
 __device__
-DevNode::DevNode(const DevNode& other) : m_Root(other.m_Root), m_Scale(4, 4), m_Rotate(4, 4), m_Move(4, 4), m_Matrix(4, 4)
+DevNode::DevNode(const DevNode& other)
+	: m_Root(other.m_Root), m_Scale(other.m_Scale), m_Rotate(other.m_Rotate), m_Move(other.m_Move), m_Matrix(other.m_Matrix),
+	m_NodeType(other.m_NodeType), m_Material(other.m_Material), m_Reflect(other.m_Reflect), m_Through(other.m_Through), m_Refractive(other.m_Refractive)
 {
-	m_NodeType = other.m_NodeType;
-	m_Material = other.m_Material;
-	m_Scale = other.m_Scale;
-	m_Rotate = other.m_Rotate;
-	m_Move = other.m_Move;
-	m_Matrix = other.m_Matrix;
-	m_Reflect = other.m_Reflect;
-	m_Through = other.m_Through;
-	m_Refractive = other.m_Refractive;
 }
 
 __device__

@@ -17,20 +17,12 @@ Node::Node(Node* const root, node_type NodeType, const TCHAR* const Name, const 
 	m_Material = Color.getMaterial();
 }
 
-Node::Node(const Node& other) : m_Root(other.m_Root), m_Scale(4, 4), m_Rotate(4, 4), m_Move(4, 4), m_Matrix(4, 4)
+Node::Node(const Node& other)
+	: m_Root(other.m_Root), m_Scale(other.m_Scale), m_Rotate(other.m_Rotate), m_Move(other.m_Move), m_Matrix(other.m_Matrix),
+	m_NodeType(other.m_NodeType), m_Material(other.m_Material), m_Reflect(other.m_Reflect), m_Through(other.m_Through), m_Refractive(other.m_Refractive),
+	m_TextureFileName(other.m_TextureFileName), m_Boundary(other.m_Boundary)
 {
-	m_NodeType = other.m_NodeType;
 	_tcscpy_s(m_Name, sizeof(m_Name), other.m_Name);
-	m_Material = other.m_Material;
-	m_Scale = other.m_Scale;
-	m_Rotate = other.m_Rotate;
-	m_Move = other.m_Move;
-	m_Matrix = other.m_Matrix;
-	m_Boundary = other.m_Boundary;
-	m_Reflect = other.m_Reflect;
-	m_Through = other.m_Through;
-	m_Refractive = other.m_Refractive;
-	m_TextureFileName = other.m_TextureFileName;
 	MakeMemoryDCfromTextureFileName();
 }
 
