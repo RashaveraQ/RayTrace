@@ -22,7 +22,8 @@ matrix::matrix(int gyo, int retu)
 	m_data[3][0] = 0.0;
 	m_data[3][1] = 0.0;
 	m_data[3][2] = 0.0;
-	m_pInvMatrix = 0;
+
+	m_is_enabled_idata = false;
 }
 
 matrix::matrix(const matrix& mat)
@@ -33,7 +34,7 @@ matrix::matrix(const matrix& mat)
 	for ( int i = 0; i < m_Height; i++ )
 		for ( int j = 0; j < m_Width; j++ )
 			m_data[i][j] = mat.m_data[i][j];
-	m_pInvMatrix = 0;
+	m_is_enabled_idata = false;
 }
 
 matrix::matrix(const sp& sp, float d)
@@ -46,7 +47,7 @@ matrix::matrix(const sp& sp, float d)
 	m_data[2][0] = sp.z;
 	m_data[3][0] = d;
 
-	m_pInvMatrix = 0;
+	m_is_enabled_idata = false;
 }
 
 matrix::matrix(int w, int h, float data[4][4])
@@ -57,25 +58,22 @@ matrix::matrix(int w, int h, float data[4][4])
 	for (int i = 0; i < m_Height; i++)
 		for (int j = 0; j < m_Width; j++)
 			m_data[i][j] = data[i][j];
-	m_pInvMatrix = 0;
+
+	m_is_enabled_idata = false;
 }
 
 matrix::~matrix()
 {
-	if (m_pInvMatrix)
-		delete m_pInvMatrix;
 }
 
 matrix	matrix::operator=(const matrix& mat)
 {
-	if (m_pInvMatrix) {
-		delete m_pInvMatrix;
-		m_pInvMatrix = 0;
-	}
-
 	for ( int i = 0; i < m_Height; i++ )
-		for ( int j = 0; j < m_Width; j++ )
+		for (int j = 0; j < m_Width; j++) {
 			m_data[i][j] = mat.m_data[i][j];
+			m_idata[j][i] = mat.m_idata[j][i];
+		}
+	m_is_enabled_idata = mat.m_is_enabled_idata;
 
 	return *this;
 }
@@ -142,9 +140,7 @@ matrix	matrix::operator*(const matrix& mat) const
 
 matrix	matrix::Inv()
 {
-	if (!m_pInvMatrix) {
-		m_pInvMatrix = new matrix(m_Width, m_Height);
-
+	if (!m_is_enabled_idata) {
 		float	A = d();
 		float	m;
 
@@ -156,12 +152,13 @@ matrix	matrix::Inv()
 			{
 				m = M(retu, gyo);
 				m = ((gyo + retu) % 2) ? -m : m;
-				m_pInvMatrix->m_data[gyo - 1][retu - 1] = m / A; // set_data( gyo, retu, m / A );
+				m_idata[gyo - 1][retu - 1] = m / A; // set_data( gyo, retu, m / A );
 			}
 		}
 	}
+	m_is_enabled_idata = true;
 
-	return *m_pInvMatrix;
+	return matrix(m_Height, m_Width, m_idata);
 }
 
 float	matrix::M(int gyo, int retu) const
@@ -334,11 +331,7 @@ void	matrix::print() const
 void matrix::set_data(int gyo, int retu, float value)
 {
 	m_data[gyo - 1][retu - 1] = value;
-
-	if (m_pInvMatrix) {
-		delete m_pInvMatrix;
-		m_pInvMatrix = 0;
-	}
+	m_is_enabled_idata = false;
 }
 
 

@@ -14,7 +14,8 @@ private:
 	int		m_Width;
 	int		m_Height;
 	float	m_data[4][4];
-	matrix* m_pInvMatrix;
+	bool	m_is_enabled_idata;
+	float	m_idata[4][4];
 public:
 	TARGET matrix(int = 4, int = 4);
 	TARGET matrix(const matrix&);
