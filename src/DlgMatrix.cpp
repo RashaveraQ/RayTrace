@@ -1,4 +1,4 @@
-// DlgMatrix.cpp : ƒCƒ“ƒvƒŠƒƒ“ƒe[ƒVƒ‡ƒ“ ƒtƒ@ƒCƒ‹
+ï»¿// DlgMatrix.cpp : ã‚¤ãƒ³ãƒ—ãƒªãƒ¡ãƒ³ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ ãƒ•ã‚¡ã‚¤ãƒ«
 //
 
 #include "stdafx.h"
@@ -12,11 +12,11 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
-// CDlgMatrix ƒ_ƒCƒAƒƒO
+// CDlgMatrix ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
 
 
 CDlgMatrix::CDlgMatrix(CWnd* pParent /*=NULL*/)
-: CDialog(CDlgMatrix::IDD, pParent), m_Matrix(4,4)
+	: CDialog(CDlgMatrix::IDD, pParent), m_Matrix(4, 4)
 {
 	//{{AFX_DATA_INIT(CDlgMatrix)
 	m_1_2 = 0.0;
@@ -99,55 +99,55 @@ BEGIN_MESSAGE_MAP(CDlgMatrix, CDialog)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CDlgMatrix ƒƒbƒZ[ƒW ƒnƒ“ƒhƒ‰
+// CDlgMatrix ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ ãƒãƒ³ãƒ‰ãƒ©
 
-void CDlgMatrix::Set( Node& trans )
+void CDlgMatrix::Set(Node& trans)
 {
 	Calc();
 }
 
-void CDlgMatrix::Get( Node& trans )
+void CDlgMatrix::Get(Node& trans)
 {
 
 }
 
-void CDlgMatrix::Calc() 
+void CDlgMatrix::Calc()
 {
-	matrix	M(4,4), S(4,4);
-	rotate	R( m_rotate_axis_x, m_rotate_axis_y, m_rotate_axis_z, m_rotate_angle );
+	matrix	M(4, 4), S(4, 4);
+	rotate	R(m_rotate_axis_x, m_rotate_axis_y, m_rotate_axis_z, m_rotate_angle);
 
-	S.set_data(1,1, m_scale_x);
-	S.set_data(2,2, m_scale_y);
-	S.set_data(3,3, m_scale_z);
+	S.set_data(1, 1, m_scale_x);
+	S.set_data(2, 2, m_scale_y);
+	S.set_data(3, 3, m_scale_z);
 
-	M.set_data(1,4, m_move_x);
-	M.set_data(2,4, m_move_y);
-	M.set_data(3,4, m_move_z);
+	M.set_data(1, 4, m_move_x);
+	M.set_data(2, 4, m_move_y);
+	M.set_data(3, 4, m_move_z);
 
 	m_Matrix = M * R * S;
 
-	m_1_1 = m_Matrix.get_data(1,1);
-	m_1_2 = m_Matrix.get_data(1,2);
-	m_1_3 = m_Matrix.get_data(1,3);
-	m_1_4 = m_Matrix.get_data(1,4);
+	m_1_1 = m_Matrix.get_data(1, 1);
+	m_1_2 = m_Matrix.get_data(1, 2);
+	m_1_3 = m_Matrix.get_data(1, 3);
+	m_1_4 = m_Matrix.get_data(1, 4);
 
-	m_2_1 = m_Matrix.get_data(2,1);
-	m_2_2 = m_Matrix.get_data(2,2);
-	m_2_3 = m_Matrix.get_data(2,3);
-	m_2_4 = m_Matrix.get_data(2,4);
+	m_2_1 = m_Matrix.get_data(2, 1);
+	m_2_2 = m_Matrix.get_data(2, 2);
+	m_2_3 = m_Matrix.get_data(2, 3);
+	m_2_4 = m_Matrix.get_data(2, 4);
 
-	m_3_1 = m_Matrix.get_data(3,1);
-	m_3_2 = m_Matrix.get_data(3,2);
-	m_3_3 = m_Matrix.get_data(3,3);
-	m_3_4 = m_Matrix.get_data(3,4);
+	m_3_1 = m_Matrix.get_data(3, 1);
+	m_3_2 = m_Matrix.get_data(3, 2);
+	m_3_3 = m_Matrix.get_data(3, 3);
+	m_3_4 = m_Matrix.get_data(3, 4);
 
-	m_4_1 = m_Matrix.get_data(4,1);
-	m_4_2 = m_Matrix.get_data(4,2);
-	m_4_3 = m_Matrix.get_data(4,3);
-	m_4_4 = m_Matrix.get_data(4,4);
+	m_4_1 = m_Matrix.get_data(4, 1);
+	m_4_2 = m_Matrix.get_data(4, 2);
+	m_4_3 = m_Matrix.get_data(4, 3);
+	m_4_4 = m_Matrix.get_data(4, 4);
 }
 
-	
+
 
 void CDlgMatrix::OnKillfocusEditMoveX()			{ UpdateData(); Calc(); UpdateData(FALSE); }
 void CDlgMatrix::OnKillfocusEditMoveY()			{ UpdateData(); Calc(); UpdateData(FALSE); }
