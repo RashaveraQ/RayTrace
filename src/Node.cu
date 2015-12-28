@@ -5,9 +5,8 @@
 
 __device__
 DevNode::DevNode(DevNode** const root, node_type NodeType, const sp Color)
-	: m_Root(root), m_pParent(0), m_NodeType(NodeType), m_Reflect(0), m_Through(0), m_Refractive(1)
+	: m_Root(root), m_pParent(0), m_NodeType(NodeType), m_Material(Color.getMaterial()), m_Reflect(0), m_Through(0), m_Refractive(1)
 {
-	m_Material = Color.getMaterial();
 }
 
 __device__

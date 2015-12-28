@@ -19,11 +19,12 @@ Node::Node(Node* const root, node_type NodeType, const TCHAR* const Name, const 
 
 Node::Node(const Node& other)
 	: m_Root(other.m_Root), m_Scale(other.m_Scale), m_Rotate(other.m_Rotate), m_Move(other.m_Move), m_Matrix(other.m_Matrix),
-	m_NodeType(other.m_NodeType), m_Material(other.m_Material), m_Reflect(other.m_Reflect), m_Through(other.m_Through), m_Refractive(other.m_Refractive),
+	m_NodeType(other.m_NodeType), m_Reflect(other.m_Reflect), m_Through(other.m_Through), m_Refractive(other.m_Refractive),
 	m_TextureFileName(other.m_TextureFileName), m_Boundary(other.m_Boundary)
 {
 	_tcscpy_s(m_Name, sizeof(m_Name), other.m_Name);
 	MakeMemoryDCfromTextureFileName();
+	m_Material = other.m_Material;
 }
 
 Node::~Node()
@@ -173,7 +174,7 @@ bool Node::MakeMemoryDCfromTextureFileName()
 	m_TextureDC.CreateCompatibleDC(NULL);
 
 	if (!(h = (HBITMAP)LoadImage(NULL, m_TextureFileName, IMAGE_BITMAP, 0, 0, LR_DEFAULTSIZE | LR_LOADFROMFILE)))
-		return FALSE;
+		return false;
 
 	(p = CBitmap::FromHandle(h))->GetObject(sizeof(BITMAP), &b);
 
