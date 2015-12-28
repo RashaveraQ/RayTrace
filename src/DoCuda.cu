@@ -313,7 +313,7 @@ bool DoCuda_SetRoot(DevNode** devNode, DevNode** devRoot)
 	if (!DoCuda_Init())
 		return false;
 
-	SetRoot << <1, 1 >> >(devNode, devRoot);
+	SetRoot<<<1, 1>>>(devNode, devRoot);
 
 	cudaError_t cudaStatus;
 	// Check for any errors launching the kernel
@@ -337,6 +337,29 @@ bool DoCuda_AddNode(DevGathering** devGathering, DevNode** devNode)
 		return false;
 
 	AddNode<<<1, 1>>>(devGathering, devNode);
+
+	cudaError_t cudaStatus;
+	// Check for any errors launching the kernel
+	cudaStatus = cudaGetLastError();
+	if (cudaStatus != cudaSuccess) {
+		return false;
+	}
+	return true;
+}
+
+__global__
+void DeleteNode(DevGathering **out, DevNode** node)
+{
+	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
+		(*out)->Delete(*node);
+}
+
+bool DoCuda_DeleteNode(DevGathering** devGathering, DevNode** devNode)
+{
+	if (!DoCuda_Init())
+		return false;
+
+	DeleteNode<<<1, 1>>>(devGathering, devNode);
 
 	cudaError_t cudaStatus;
 	// Check for any errors launching the kernel

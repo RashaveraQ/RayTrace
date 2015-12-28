@@ -102,6 +102,10 @@ bool Gathering::Delete(Node* pNode)
 
 	for (i = 0; i < m_Member; i++) {
 		if (m_Node[i] == pNode) {
+			if (!DoCuda_DeleteNode((DevGathering**)m_devNode, pNode->m_devNode)) {
+				MessageBox(0, _T("Failed to DoCuda_DeleteNode"), _T("Error"), MB_OK);
+			}
+			pNode->m_devNode = 0;
 			delete pNode;
 			m_Member--;
 			for (j = i; j < m_Member; j++)
