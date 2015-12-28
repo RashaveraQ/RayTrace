@@ -108,7 +108,14 @@ void CDlgMatrix::Set(Node& trans)
 
 void CDlgMatrix::Get(Node& trans)
 {
-
+	trans.m_Scale.set_data(1, 1, m_scale_x);
+	trans.m_Scale.set_data(2, 2, m_scale_y);
+	trans.m_Scale.set_data(3, 3, m_scale_z);
+	trans.m_Rotate = rotate(m_rotate_axis_x, m_rotate_axis_y, m_rotate_axis_z, m_rotate_angle);
+	trans.m_Move.set_data(1, 4, m_move_x);
+	trans.m_Move.set_data(2, 4, m_move_y);
+	trans.m_Move.set_data(3, 4, m_move_z);
+	trans.updateMatrix();
 }
 
 void CDlgMatrix::Calc()
