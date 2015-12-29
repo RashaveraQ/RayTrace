@@ -136,6 +136,61 @@ int Solve_Polynomial(int d, float *k, float min, float max, float *r)
 			return i;
 		}
 		return 0;
+/*
+	case 3:
+		if (k[3] == 0.0f) {
+			if (k[2] == 0.0f) {
+				if (k[1] == 0.0f)
+					return 0;
+				r[0] = -k[0] / k[1];
+				return (min <= r[0] && r[0] <= max) ? 1 : 0;
+			}
+			D = k[1] * k[1] - 4 * k[2] * k[0];
+			if (D == 0.0f) {
+				r[0] = -k[1] / (2.0f * k[2]);
+				return (min <= r[0] && r[0] <= max) ? 1 : 0;
+			} else if (D > 0) {
+				r[0] = (-k[1] + sqrt(D)) / (2.0f * k[2]);
+				r[1] = (-k[1] - sqrt(D)) / (2.0f * k[2]);
+				if (r[0] > r[1])
+					D = r[0], r[0] = r[1], r[1] = D;
+				i = ((min <= r[0] && r[0] <= max) ? 1 : 0) + ((min <= r[1] && r[1] <= max) ? 1 : 0);
+				return i;
+			}
+			return 0;
+		}
+		// ビエタの解を用いる
+		// 根の様子
+		float Δ = -4 * k[1] * k[1] * k[1] * k[3] + k[1] * k[1] * k[2] * k[2] - 4 * k[0] * k[2] * k[2] * k[2] + 18 * k[0] * k[1] * k[2] * k[3] - 27 * k[0] * k[0] * k[3] * k[3];
+		if (Δ > 0) {
+			
+
+			// ３つの異なる実数解を持つ。
+			return 3;
+		} else if (Δ < 0) {
+			// １つの実数解を持つ。
+			return 1;
+		} else {
+			// 実数の重根を持つ。
+			float Δ2 = -2 * k[2] * k[2] * k[2] + 9 * k[1] * k[2] * k[3] - 27 * k[0] * k[3] * k[3];
+			if (Δ2 = 0) {
+
+
+				// 三重根を持つ。
+				return 1;
+			} else {
+
+
+				// 二重根とそれとは異なる実数根を持つ。
+				return 2;
+			}
+ 		}
+		// カルダノの公式より
+		float p = (k[1] / k[3] - k[2] * k[2] / (3 * k[3] * k[3])) / 3;
+		float q = -(k[0] / k[3] - k[2] * k[1] / (3 * k[3] * k[3]) + 2 * k[2] * k[2] * k[2] / (27 * k[3] * k[3] * k[3])) / 2;
+		float e = cbrtf(q + sqrtf(q * q + p * p * p));
+		float f = cbrtf(q - sqrtf(q * q + p * p * p));
+*/
 	}
 
 	K = new float[2 * d];
