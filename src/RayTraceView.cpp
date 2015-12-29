@@ -585,6 +585,7 @@ static const char *glsl_draw_fragshader_src =
 #endif
 
 static int iGLUTWindowHandle = 0;          // handle to the GLUT window
+static bool bInitGL_done = false;
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Initialize GL
@@ -595,7 +596,12 @@ static bool initGL(int window_width, int window_height)
 	char *argv[] = { "RayTrace.exe" };
 
 	// Create GL context
-	glutInit(&argc, argv);
+	if (bInitGL_done) {
+		glutHideWindow();
+		glutDestroyWindow(iGLUTWindowHandle);
+	} else
+		glutInit(&argc, argv);
+
 	glutInitDisplayMode(GLUT_RGBA | GLUT_ALPHA | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowSize(window_width, window_height);
 	iGLUTWindowHandle = glutCreateWindow("CUDA OpenGL post-processing");
@@ -644,14 +650,12 @@ static bool initGL(int window_width, int window_height)
 	return true;
 }
 
-static bool bInitGL_done = false;
-
 void CRayTraceView::OnSize(UINT nType, int cx, int cy)
 {
 	m_ClientSize.cx = cx;
 	m_ClientSize.cy = cy;
 	
-	if (!bInitGL_done && !initGL(cx, cy)) {
+	if (!initGL(cx, cy)) {
 		MessageBox(_T("Failed to initGL"));
 		return;
 	}
