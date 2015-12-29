@@ -48,26 +48,34 @@ bool Minus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	Info	l_info;
 	Info	r_info;
 	sp		l = L;
-	int		left, right;
+	bool	left, right;
 
 	if (!(m_Member >= 1 && m_Node[0]->GetInfo2(K, l, l_info, pHint, fromOutSide)))
-		return FALSE;
+		return false;
 	do {
 		left = (m_Member >= 1) ? m_Node[0]->GetInfo2(K, l, l_info, pHint, fromOutSide) : 0;
 		right = (m_Member >= 2) ? m_Node[1]->GetInfo2(K, l, r_info, pHint, fromOutSide) : 0;
 
-		if (left == 0 && right == 0)
+		if (!left && !right)
 			return FALSE;
 
+		int cmp = cmp_distance(l_info.Distance, r_info.Distance);
+
 		// 左が、右より近い場合。
-		if (cmp_distance(l_info.Distance, r_info.Distance) < 0) {
+		if (left && l_info.Distance > 0 && (!right || cmp < 0)) {
 			l = l_info.Cross;
+			info.pNode = l_info.pNode;
+			info.Refractive = l_info.Refractive;
+			info.Vertical = l_info.Vertical;
 			info.Material = l_info.Material;
-		}
-		else {
+		} else if (right && r_info.Distance > 0 && (!left || cmp > 0)) {
 			l = r_info.Cross;
+			info.pNode = r_info.pNode;
+			info.Refractive = r_info.Refractive;
+			info.Vertical = r_info.Vertical;
 			info.Material = r_info.Material;
-		}
+		} else
+			return false;
 
 	} while (!IsInside(m_Matrix * l));
 
@@ -78,7 +86,7 @@ bool Minus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	if (info.Material.Diffuse.r < 0)
 		info.Material = m_Material;
 
-	return TRUE;
+	return true;
 }
 
 int	Minus::cmp_distance(float a, float b) const
