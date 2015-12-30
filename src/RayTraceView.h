@@ -43,8 +43,9 @@ public:
 		eRayTrace,
 		eWireFrame,
 		eWireFrameWithRayTrace,
-		eCudaRayTrace,
 	} m_ViewMode;
+
+	bool m_CudaRayTraceView;
 
 private:
 	int Go_ahead(int& X, int& Y, int& S, int& X0, int& Y0, CSize& cs, int MAX);

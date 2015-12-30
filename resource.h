@@ -1,4 +1,4 @@
-//{{NO_DEPENDENCIES}}
+﻿//{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
 // Used by RayTrace.rc
 //
@@ -75,6 +75,7 @@
 #define ID_32798                        32798
 #define ID_VIEW_WIREFRAME_WITH_RAYTRACE 32799
 #define ID_VIEW_CUDA_RAYTRACE           32801
+#define ID_32802                        32802
 
 // Next default values for new objects
 // 
@@ -82,7 +83,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        138
-#define _APS_NEXT_COMMAND_VALUE         32802
+#define _APS_NEXT_COMMAND_VALUE         32803
 #define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

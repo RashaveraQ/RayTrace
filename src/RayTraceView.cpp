@@ -94,7 +94,8 @@ CRayTraceView::CRayTraceView()
 	m_View.right = 10;
 	m_View.top = -10;
 	m_View.bottom = 10;
-	m_ViewMode = eD3DFlatShading; //eWireFrame;
+	m_ViewMode = eWireFrame;
+	m_CudaRayTraceView = false;
 	m_Alt = FALSE;
 	m_AltStart.x = m_AltStart.y = 0;
 	m_SelectedNode = NULL;
@@ -171,9 +172,7 @@ void CRayTraceView::OnDraw(CDC* pDC)
 	DWORD t1, t2, t3, t4, d1, d2, d3;
 	CString str;
 
-	switch (m_ViewMode) {
-	case eCudaRayTrace:
-
+	if (m_CudaRayTraceView) {
 		t1 = GetTickCount();
 
 		// run the Cuda kernel
@@ -219,9 +218,9 @@ void CRayTraceView::OnDraw(CDC* pDC)
 
 		pDC->SelectStockObject(NULL_BRUSH);
 		m_Viewport.Draw_Outline(pDC, *this, matrix(4, 4));
+	}
 
-		break;
-
+	switch (m_ViewMode) {
 	case eRayTrace:
 	case eWireFrameWithRayTrace:
 		pDC->BitBlt(0, 0, m_ClientSize.cx, m_ClientSize.cy, &m_MemoryDC, 0, 0, SRCCOPY);
@@ -814,10 +813,9 @@ void CRayTraceView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 	case eD3DGouraudShading:
 		UpdateDevice();
 	case eWireFrame:
-	case eCudaRayTrace:
 	case eWireFrameWithRayTrace:
 		Invalidate();
-		if (m_ViewMode == eWireFrame || m_ViewMode == eCudaRayTrace)
+		if (m_ViewMode == eWireFrame)
 			break;
 	case eRayTrace:
 		m_StartX = m_StartY = m_NowX = m_NowY = 0;
@@ -868,8 +866,7 @@ void CRayTraceView::OnViewGouraudshading()
 
 void CRayTraceView::OnViewCudaRaytrace()
 {
-	m_ViewMode = eCudaRayTrace;
-	Invalidate();
+	m_CudaRayTraceView = !m_CudaRayTraceView;
 }
 
 void CRayTraceView::OnUpdateViewRaytrace(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eRayTrace); }
@@ -877,7 +874,7 @@ void CRayTraceView::OnUpdateViewWireframe(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_V
 void CRayTraceView::OnUpdateViewD3dwireframe(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eD3DWireFrame); }
 void CRayTraceView::OnUpdateViewFlatshading(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eD3DFlatShading); }
 void CRayTraceView::OnUpdateViewGouraudshading(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eD3DGouraudShading); }
-void CRayTraceView::OnUpdateViewCudaRaytrace(CCmdUI *pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eCudaRayTrace); }
+void CRayTraceView::OnUpdateViewCudaRaytrace(CCmdUI *pCmdUI) { pCmdUI->SetCheck(m_CudaRayTraceView); }
 
 BOOL CRayTraceView::OnEraseBkgnd(CDC* pDC)
 {
@@ -954,11 +951,12 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 
 	if (m_SelectedNode) {
 		((CRayTraceDoc*)GetDocument())->UpdateAllViews(NULL);
-	}
-	else {
+	} else {
+		if (m_CudaRayTraceView)
+			OnUpdate(0, 0, 0);
+		else
 		switch (m_ViewMode) {
 		case eRayTrace:
-		case eCudaRayTrace:
 		case eWireFrame:
 		case eWireFrameWithRayTrace:
 			OnUpdate(0, 0, 0);
