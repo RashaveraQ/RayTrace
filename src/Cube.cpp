@@ -182,7 +182,7 @@ void Cube::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 	case CRayTraceView::eD3DGouraudShading:
 		LPD3DXMESH pMesh;
 
-		if (FAILED(D3DXCreateBox(pd3dDevice, 1, 1, 1, &pMesh, NULL)))
+		if (FAILED(D3DXCreateBox(pd3dDevice, 2, 2, 2, &pMesh, NULL)))
 			return;
 		
 		lstGeometry.AddTail(Geometry(this, pMesh, m));
