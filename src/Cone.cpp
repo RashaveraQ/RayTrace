@@ -69,7 +69,7 @@ void Cone::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 		int i;
 		for (i = 0; i < COUNT; i++) {
 			float th = 6.28f * (float)i / COUNT;
-			sp p = m * sp(cos(th), 0, sin(th));
+			sp p = m * sp(cos(th), -1, sin(th));
 			pVertices[i].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 			pVertices[i].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 		}
@@ -79,31 +79,28 @@ void Cone::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 		if (!InitVertexBuffer(pd3dDevice, pVB, pVertices, 2 * LINES))
 			return;
 		{
-			sp p = m * sp(0,1,0);
+			sp p = m * sp(0,0,0);
 			pVertices[0].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 			pVertices[0].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 		}
 		for (int i = 0; i < LINES; i++) {
 			pVertices[2*i] = pVertices[0];
 			float th = 6.28f * (float)(i)/ LINES;
-			sp p = m * sp(cosf(th), 0, sin(th));
+			sp p = m * sp(cosf(th), -1, sin(th));
 			pVertices[2*i+1].position = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 			pVertices[2*i+1].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 		}
 		pVB->Unlock();
 		lstGeometry.AddTail(Geometry(this, pVB, D3DPT_LINELIST, LINES));
-
 		break;
 
 	case CRayTraceView::eD3DFlatShading:
 	case CRayTraceView::eD3DGouraudShading:
 
 		LPD3DXMESH pMesh;
-
-		if (FAILED(D3DXCreateCylinder(pd3dDevice, 0, 1, 2, 50, 50, &pMesh, NULL)))
+		if (FAILED(D3DXCreateCylinder(pd3dDevice, 0, 1, 1, 50, 50, &pMesh, NULL)))
 			return;
-		
-		lstGeometry.AddTail(Geometry(this, pMesh, m));
+		lstGeometry.AddTail(Geometry(this, pMesh, m * move(0,-0.5,0) * rotate_x(90)));
 		break;
 	}
 	Node::AddGeometry(pd3dDevice, lstGeometry, rtv, m);

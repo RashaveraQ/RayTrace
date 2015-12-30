@@ -74,7 +74,7 @@ void Cylinder::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeome
 			return;
 
 		int i,j;
-
+		
 		for (j = 0; j < 2; j++) {
 			for (i = 0; i < COUNT; i++) {
 				float th = 6.28f * (float)i / COUNT;
@@ -83,7 +83,7 @@ void Cylinder::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeome
 				pVertices[COUNT*j+i].normal = D3DXVECTOR3((float)p.x, (float)p.y, (float)p.z);
 			}
 		}
-
+		
 		{
 			sp o1= sp(m * sp(0,-1,0));
 			sp o2= sp(m * sp(0,1,0));
@@ -105,10 +105,10 @@ void Cylinder::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeome
 
 		LPD3DXMESH pMesh;
 
-		if (FAILED(D3DXCreateCylinder(pd3dDevice, 1, 1, 1, 50, 50, &pMesh, NULL)))
+		if (FAILED(D3DXCreateCylinder(pd3dDevice, 1, 1, 2, 50, 50, &pMesh, NULL)))
 			return;
 		
-		lstGeometry.AddTail(Geometry(this, pMesh, m));
+		lstGeometry.AddTail(Geometry(this, pMesh, m * rotate_x(90)));
 		break;
 	}
 	Node::AddGeometry(pd3dDevice, lstGeometry, rtv, m);
