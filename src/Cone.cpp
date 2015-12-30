@@ -15,6 +15,7 @@ Cone::Cone(Node* const root, const TCHAR* const Name, const sp Color)
 {
 	if (!newDeviceNode())
 		exit(1);
+	Move(eY, 20);
 }
 
 Cone::Cone(const Cone& other)
