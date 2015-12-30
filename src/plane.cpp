@@ -33,12 +33,12 @@ bool Plane::IsInside(const sp& L) const
 bool Plane::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)
-		return FALSE;
+		return false;
 
 	float	t = ( K.z ) ? -L.z / K.z : (( L.z > 0 ) ? FLT_MAX : -FLT_MAX);
 
 	if ( t <= 0 )
-		return FALSE;
+		return false;
 
 	info.Cross = K * t + L;
 	info.Vertical = sp(0, 0, -1);
@@ -47,7 +47,7 @@ bool Plane::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	info.Material = GetPixel(info.Cross.x, info.Cross.y).getMaterial();
 	info.pNode = this;
 	
-	return TRUE;
+	return -1 < info.Cross.x && info.Cross.x < 1 && -1 < info.Cross.y && info.Cross.y < 1;
 }
 
 void Plane::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)

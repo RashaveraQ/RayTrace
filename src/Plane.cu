@@ -35,7 +35,7 @@ bool DevPlane::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* p
 	info.Material = GetPixel(info.Cross.x, info.Cross.y).getMaterial();
 	info.pNode = this;
 
-	return true;
+	return -1 < info.Cross.x && info.Cross.x < 1 && -1 < info.Cross.y && info.Cross.y < 1;
 }
 
 __global__
