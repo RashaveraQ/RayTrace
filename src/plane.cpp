@@ -41,7 +41,7 @@ bool Plane::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 		return false;
 
 	info.Cross = K * t + L;
-	info.Vertical = sp(0, 0, -1);
+	info.Vertical = sp(0, 1, 0);
 	info.Distance = t * sqrt(K * K);
 	info.isEnter = (L.y < 0);
 	info.Material = GetPixel(info.Cross.x, info.Cross.z).getMaterial();
