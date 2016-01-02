@@ -9,7 +9,7 @@ bool Minus::newDeviceNode()
 }
 
 Minus::Minus(Node* const root, const TCHAR* const Name)
-	: Gathering(root, MINUS, Name)
+	: Gathering(root, eMINUS, Name)
 {
 	if (!newDeviceNode())
 		exit(1);

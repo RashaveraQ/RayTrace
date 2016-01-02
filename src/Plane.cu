@@ -6,7 +6,7 @@
 
 __device__
 DevPlane::DevPlane(DevNode** const root, const sp Color)
-	: DevNode(root, PLANE, Color)
+	: DevNode(root, ePLANE, Color)
 {
 
 }

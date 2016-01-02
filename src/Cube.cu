@@ -6,7 +6,7 @@
 
 __device__
 DevCube::DevCube(DevNode** const root, const sp Color)
-	: DevNode(root, CUBE, Color)
+	: DevNode(root, eCUBE, Color)
 {
 
 }

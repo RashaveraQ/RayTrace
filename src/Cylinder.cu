@@ -6,7 +6,7 @@
 
 __device__
 DevCylinder::DevCylinder(DevNode** const root, const sp Color)
-	: DevNode(root, CYLINDER, Color)
+	: DevNode(root, eCYLINDER, Color)
 {
 
 }

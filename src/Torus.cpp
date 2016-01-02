@@ -10,7 +10,7 @@ IMPLEMENT_SERIAL(Torus, CObject, 1)
 Boundary Torus::sBoundary = Boundary(1);
 
 Torus::Torus(Node* const root, const TCHAR* const Name, const sp Color)
-	: Node(root, TORUS, Name, Color), m_R(0.7f), m_r(0.3f)
+	: Node(root, eTORUS, Name, Color), m_R(0.7f), m_r(0.3f)
 {
 	if (!newDeviceNode())
 		exit(1);

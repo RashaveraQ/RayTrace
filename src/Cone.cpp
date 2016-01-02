@@ -11,7 +11,7 @@ bool Cone::newDeviceNode()
 }
 
 Cone::Cone(Node* const root, const TCHAR* const Name, const sp Color)
-	: Node(root, CONE, Name, Color)
+	: Node(root, eCONE, Name, Color)
 {
 	if (!newDeviceNode())
 		exit(1);

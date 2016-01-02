@@ -13,7 +13,7 @@ bool Polygon2::newDeviceNode()
 }
 
 Polygon2::Polygon2(Node* const root, const TCHAR* const Name, const sp Color)
-	: Node(root, POLYGON, Name, Color), m_N(0), m_P(0)
+	: Node(root, ePOLYGON, Name, Color), m_N(0), m_P(0)
 {
 	if (!newDeviceNode())
 		exit(1);

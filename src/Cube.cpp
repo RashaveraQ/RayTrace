@@ -11,7 +11,7 @@ bool Cube::newDeviceNode()
 }
 
 Cube::Cube(Node* const root, const TCHAR* const Name, const sp Color)
-	: Node(root, CUBE, Name, Color)
+	: Node(root, eCUBE, Name, Color)
 {
 	if (!newDeviceNode())
 		exit(1);

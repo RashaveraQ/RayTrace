@@ -6,7 +6,7 @@
 
 __device__
 DevSphere::DevSphere(DevNode** const root, const sp Color)
-	: DevNode(root, SPHERE, Color)
+	: DevNode(root, eSPHERE, Color)
 {
 
 }

@@ -5,7 +5,7 @@
 #include "NurbsPrimitive.cuh"
 
 DevNurbsPrimitive::DevNurbsPrimitive(DevNode** const root, const sp Color)
-	: DevNode(root, PLANE, Color)
+	: DevNode(root, ePLANE, Color)
 {
 
 }

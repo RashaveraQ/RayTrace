@@ -119,6 +119,8 @@ protected:
 
 	friend Node;
 	friend class CScnTreeView;
+	friend Point;
+
 public:
 	afx_msg void OnViewWireframeWithRaytrace();
 	afx_msg void OnViewCudaRaytrace();

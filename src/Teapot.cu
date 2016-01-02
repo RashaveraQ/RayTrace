@@ -6,7 +6,7 @@
 
 __device__
 DevTeapot::DevTeapot(DevNode** const root, const sp Color)
-	: DevNode(root, TEAPOT, Color)
+	: DevNode(root, eTEAPOT, Color)
 {
 
 }

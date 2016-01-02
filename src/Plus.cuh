@@ -5,7 +5,7 @@ class DevPlus : public DevGathering
 {
 public:
 	// コンストラクタ
-	__device__ DevPlus(DevNode** const root = 0) : DevGathering(root, PLUS) {}
+	__device__ DevPlus(DevNode** const root = 0) : DevGathering(root, ePLUS) {}
 	__device__ DevPlus(const DevPlus& other) : DevGathering(other) {}
 
 	__device__ virtual	bool GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const;

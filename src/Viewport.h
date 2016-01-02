@@ -14,6 +14,7 @@
 class Viewport : public Plus  
 {
 friend class Node;
+friend class Point;
 public:
 	Viewport();
 	virtual ~Viewport();

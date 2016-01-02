@@ -12,7 +12,7 @@ bool Sphere::newDeviceNode()
 }
 
 Sphere::Sphere(Node* const root, const TCHAR* const Name, const sp Color)
-	: Node(root, SPHERE, Name, Color)
+	: Node(root, eSPHERE, Name, Color)
 {
 	if (!newDeviceNode())
 		exit(1);

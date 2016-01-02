@@ -7,7 +7,7 @@
 
 __device__
 DevTorus::DevTorus(DevNode** const root, const sp Color)
-	: DevNode(root, TORUS, Color), m_R(0.7f), m_r(0.3f)
+	: DevNode(root, eTORUS, Color), m_R(0.7f), m_r(0.3f)
 {
 
 }

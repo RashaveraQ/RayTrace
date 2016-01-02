@@ -3,6 +3,7 @@
 
 class	Node;
 struct	matrix;
+class   Point;
 
 #define CV_MAX_WIDTH 100
 #define CV_MAX_HEIGHT 100
@@ -15,7 +16,7 @@ protected:
 	bool m_IsControlVertexEditable;
 	int m_ControlVertexWidth;
 	int m_ControlVertexHeight;
-	sp m_ControlVertex[CV_MAX_WIDTH][CV_MAX_HEIGHT];
+	Point** m_ControlVertex;// [CV_MAX_WIDTH][CV_MAX_HEIGHT];
 	DECLARE_SERIAL(NurbsPrimitive)
 	virtual bool newDeviceNode();
 public:
@@ -23,6 +24,7 @@ public:
 	NurbsPrimitive();
 	NurbsPrimitive(Node* const root, const TCHAR* const Name, const sp Color = sp(255, 255, 255));
 	NurbsPrimitive(const NurbsPrimitive& other);
+	virtual ~NurbsPrimitive();
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& matrix) const {}
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
 	bool IsInside(const sp& L) const;

@@ -16,6 +16,8 @@ class   Viewport;
 struct	matrix;
 class   DevNode;
 
+#include "Point.h"
+
 struct fsize
 {
 	float	top;
@@ -35,7 +37,7 @@ struct Boundary {
 	Boundary(float r = 0, const sp& c = sp(0, 0, 0)) : Radius(r), Center(c) {}
 };
 
-class	Node : public CObject
+class Node : public CObject, public Point
 {
 	virtual Boundary getBoundary() = 0;
 	void OnUpdateBoundary();

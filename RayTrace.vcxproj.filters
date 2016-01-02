@@ -134,6 +134,9 @@
     <ClCompile Include="src\NurbsPrimitive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Point.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h">
@@ -330,6 +333,9 @@
     </ClInclude>
     <ClInclude Include="src\NurbsPrimitive.cuh">
       <Filter>CUDA Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Point.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -11,7 +11,7 @@ bool Plus::newDeviceNode()
 }
 
 Plus::Plus(Node* const root, const TCHAR* const Name)
-	: Gathering(root, PLUS, Name)
+	: Gathering(root, ePLUS, Name)
 {
 	if (!newDeviceNode())
 		exit(1);

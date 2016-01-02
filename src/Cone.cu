@@ -6,7 +6,7 @@
 
 __device__
 DevCone::DevCone(DevNode** const root, const sp Color)
-	: DevNode(root, CONE, Color)
+	: DevNode(root, eCONE, Color)
 {
 
 }

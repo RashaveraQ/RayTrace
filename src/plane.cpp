@@ -12,7 +12,7 @@ bool Plane::newDeviceNode()
 }
 
 Plane::Plane(Node* const root, const TCHAR* const Name, const sp Color)
-	: Node(root, PLANE, Name, Color)
+	: Node(root, ePLANE, Name, Color)
 {
 	if (!newDeviceNode())
 		exit(1);

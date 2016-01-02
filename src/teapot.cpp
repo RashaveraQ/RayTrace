@@ -6,7 +6,7 @@ IMPLEMENT_SERIAL(Teapot, CObject, 1)
 Boundary Teapot::sBoundary = Boundary(1);
 
 Teapot::Teapot(Node* const root, const TCHAR* const Name, const sp Color)
-	: Node(root, TEAPOT, Name, Color)
+	: Node(root, eTEAPOT, Name, Color)
 {
 	if (!newDeviceNode())
 		exit(1);

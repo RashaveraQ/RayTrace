@@ -12,12 +12,12 @@ bool NurbsPrimitive::newDeviceNode()
 }
 
 NurbsPrimitive::NurbsPrimitive()
-	: Node(0, NURBS_PRIMITIVE, _T("NurbsPrimitive")), m_IsControlVertexEditable(false)
+	: Node(0, eNURBS, _T("Nurbs")), m_IsControlVertexEditable(false)
 {
 }
 
 NurbsPrimitive::NurbsPrimitive(Node* const root, const TCHAR* const Name, const sp Color)
-	: Node(root, NURBS_PRIMITIVE, Name, Color), m_IsControlVertexEditable(false)
+	: Node(root, eNURBS, Name, Color), m_IsControlVertexEditable(false)
 {
 	if (!newDeviceNode())
 		exit(1);
@@ -28,6 +28,13 @@ NurbsPrimitive::NurbsPrimitive(const NurbsPrimitive& other)
 {
 	if (!newDeviceNode())
 		exit(1);
+}
+
+NurbsPrimitive::~NurbsPrimitive()
+{
+	for (int i = 0; i < m_ControlVertexWidth; i++)
+		delete[] m_ControlVertex[i];
+	delete m_ControlVertex;
 }
 
 bool NurbsPrimitive::IsInside(const sp& L) const

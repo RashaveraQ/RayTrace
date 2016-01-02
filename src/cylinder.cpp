@@ -11,7 +11,7 @@ bool Cylinder::newDeviceNode()
 }
 
 Cylinder::Cylinder(Node* const root, const TCHAR* const Name, const sp Color)
-	: Node(root, CYLINDER, Name, Color)
+	: Node(root, eCYLINDER, Name, Color)
 {
 	if (!newDeviceNode())
 		exit(1);

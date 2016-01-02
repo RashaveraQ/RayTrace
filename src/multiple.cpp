@@ -10,7 +10,7 @@ bool Multiple::newDeviceNode()
 }
 
 Multiple::Multiple(Node* const root, const TCHAR* const Name)
-	: Gathering(root, MULTIPLE, Name)
+	: Gathering(root, eMULTIPLE, Name)
 {
 	if (!newDeviceNode())
 		exit(1);
