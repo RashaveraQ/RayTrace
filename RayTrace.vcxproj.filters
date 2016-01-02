@@ -128,6 +128,9 @@
     <ClCompile Include="src\GetVectorFromPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\NurbsPlane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h">
@@ -316,6 +319,12 @@
     <ClInclude Include="src\Solve_Polynomial.cuh">
       <Filter>CUDA Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\NurbsPlane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NurbsPlane.cuh">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\bitmap_n.bmp">
@@ -408,6 +417,9 @@
       <Filter>CUDA Source Files</Filter>
     </CudaCompile>
     <CudaCompile Include="src\Solve_Polynomial.cu">
+      <Filter>CUDA Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="src\NurbsPlane.cu">
       <Filter>CUDA Source Files</Filter>
     </CudaCompile>
   </ItemGroup>

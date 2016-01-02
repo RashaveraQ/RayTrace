@@ -53,6 +53,7 @@ BEGIN_MESSAGE_MAP(CScnTreeView, CTreeView)
 	ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnSelchanged)
 	ON_COMMAND(ID_ADD_TEAPOT, OnAddTeapot)
 	//}}AFX_MSG_MAP
+	ON_COMMAND(ID_NURBSPRIMITIVES_PLANE, &CScnTreeView::OnCreateNurbsPlane)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -267,6 +268,7 @@ void CScnTreeView::OnAddPlus()		{ Node*	obj = new Plus(&((CRayTraceDoc*)GetDocum
 void CScnTreeView::OnAddMinus()		{ Node*	obj = new Minus(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
 void CScnTreeView::OnAddMultiple()	{ Node*	obj = new Multiple(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
 void CScnTreeView::OnAddCube()		{ Node*	obj = new Cube(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnCreateNurbsPlane() { Node*	obj = new NurbsPlane(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
 
 void CScnTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
 {
@@ -306,4 +308,6 @@ void CScnTreeView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 
 	c.Expand(hItem, TVE_EXPAND);
 }
+
+
 
