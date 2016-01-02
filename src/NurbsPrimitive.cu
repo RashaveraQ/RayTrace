@@ -2,23 +2,20 @@
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #include "DoCuda.h"
-#include "NurbsPlane.cuh"
+#include "NurbsPrimitive.cuh"
 
-__device__
-DevNurbsPlane::DevNurbsPlane(DevNode** const root, const sp Color)
+DevNurbsPrimitive::DevNurbsPrimitive(DevNode** const root, const sp Color)
 	: DevNode(root, PLANE, Color)
 {
 
 }
 
-__device__
-bool DevNurbsPlane::IsInside(const sp& L) const
+bool DevNurbsPrimitive::IsInside(const sp& L) const
 {
 	return (L.y >= 0.0);
 }
 
-__device__
-bool DevNurbsPlane::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
+bool DevNurbsPrimitive::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return false;
@@ -39,18 +36,18 @@ bool DevNurbsPlane::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevIn
 }
 
 __global__
-void newNurbsPlane(DevNode** out, DevNode** const root, const D3DMATERIAL9 Material)
+void newNurbsPrimitive(DevNode** out, DevNode** const root, const D3DMATERIAL9 Material)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && blockIdx.z == 0 && threadIdx.x == 0 && threadIdx.y == 0 && threadIdx.z == 0)
-		*out = new DevNurbsPlane(root, sp(Material));
+		*out = new DevNurbsPrimitive(root, sp(Material));
 }
 
-bool newDevNurbsPlane(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material)
+bool newDevNurbsPrimitive(DevNode*** out, DevNode** const root, const D3DMATERIAL9 Material)
 {
 	if (!mallocDev(out))
 		return false;
 
-	newNurbsPlane<<<1, 1>>>(*out, root, Material);
+	newNurbsPrimitive<<<1, 1>>>(*out, root, Material);
 
 	// Check for any errors launching the kernel
 	cudaError_t cudaStatus = cudaGetLastError();

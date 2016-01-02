@@ -131,6 +131,9 @@
     <ClCompile Include="src\NurbsPlane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\NurbsPrimitive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h">
@@ -322,7 +325,10 @@
     <ClInclude Include="src\NurbsPlane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\NurbsPlane.cuh">
+    <ClInclude Include="src\NurbsPrimitive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NurbsPrimitive.cuh">
       <Filter>CUDA Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -419,7 +425,7 @@
     <CudaCompile Include="src\Solve_Polynomial.cu">
       <Filter>CUDA Source Files</Filter>
     </CudaCompile>
-    <CudaCompile Include="src\NurbsPlane.cu">
+    <CudaCompile Include="src\NurbsPrimitive.cu">
       <Filter>CUDA Source Files</Filter>
     </CudaCompile>
   </ItemGroup>
