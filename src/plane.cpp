@@ -50,6 +50,29 @@ bool Plane::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	return -1 < info.Cross.x && info.Cross.x < 1 && -1 < info.Cross.z && info.Cross.z < 1;
 }
 
+void Plane::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
+{
+	const CSize& size = raytraceview.m_ClientSize;
+	const Node* pNode = raytraceview.m_SelectedNode;
+	matrix m = mat * m_Matrix;
+	pDC->SelectStockObject((pNode == this) ? WHITE_PEN : BLACK_PEN);
+
+	sp p[] = { sp(1, 0, 1), sp(-1, 0, 1), sp(-1, 0, -1), sp(1, 0, -1) };
+
+	POINT	P[4];
+
+	for (int i = 0; i < 4; i++) {
+		sp(m * p[i]).getPOINT(P[i].x, P[i].y, size.cx, size.cy);
+	}
+
+	pDC->MoveTo(P[0]);
+	pDC->LineTo(P[1]);
+	pDC->LineTo(P[2]);
+	pDC->LineTo(P[3]);
+	pDC->LineTo(P[0]);
+	Node::Draw_Outline(pDC, raytraceview, m);
+}
+
 void Plane::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
 	c.SetItemData(c.InsertItem(m_Name, 13, 12, hParent, hInsertAfter), (DWORD_PTR)this);
