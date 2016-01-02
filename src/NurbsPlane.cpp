@@ -14,11 +14,10 @@ bool NurbsPlane::newDeviceNode()
 NurbsPlane::NurbsPlane(Node* const root, const TCHAR* const Name, const sp Color)
 	: Node(root, NURBS_PLANE, Name, Color)
 {
-/*
 	for (int i = 0; i < 4; i++)
 		for (int j = 0; j < 4; j++)
-			m_ControlVertex[i][j] = sp()
-*/
+			m_ControlVertex[i][j] = sp(-3 + 2 * i, 0, -3 + 2 * j);
+
 	if (!newDeviceNode())
 		exit(1);
 }
@@ -52,7 +51,7 @@ bool NurbsPlane::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint
 	info.Material = GetPixel(info.Cross.x, info.Cross.z).getMaterial();
 	info.pNode = this;
 
-	return -1 < info.Cross.x && info.Cross.x < 1 && -1 < info.Cross.z && info.Cross.z < 1;
+	return -3 < info.Cross.x && info.Cross.x < 3 && -3 < info.Cross.z && info.Cross.z < 3;
 }
 
 void NurbsPlane::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
@@ -62,19 +61,22 @@ void NurbsPlane::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matri
 	matrix m = mat * m_Matrix;
 	pDC->SelectStockObject((pNode == this) ? WHITE_PEN : BLACK_PEN);
 
-	sp p[] = { sp(1, 0, 1), sp(-1, 0, 1), sp(-1, 0, -1), sp(1, 0, -1) };
+	POINT	P[4][4];
 
-	POINT	P[4];
+	for (int i = 0; i < 4; i++)
+		for (int j = 0; j < 4; j++)
+			sp(m * m_ControlVertex[i][j]).getPOINT(P[i][j].x, P[i][j].y, size.cx, size.cy);
 
 	for (int i = 0; i < 4; i++) {
-		sp(m * p[i]).getPOINT(P[i].x, P[i].y, size.cx, size.cy);
+		pDC->MoveTo(P[i][0]);
+		for (int j = 1; j < 4; j++)
+			pDC->LineTo(P[i][j]);
 	}
-
-	pDC->MoveTo(P[0]);
-	pDC->LineTo(P[1]);
-	pDC->LineTo(P[2]);
-	pDC->LineTo(P[3]);
-	pDC->LineTo(P[0]);
+	for (int i = 0; i < 4; i++) {
+		pDC->MoveTo(P[0][i]);
+		for (int j = 1; j < 4; j++)
+			pDC->LineTo(P[j][i]);
+	}
 	Node::Draw_Outline(pDC, raytraceview, m);
 }
 

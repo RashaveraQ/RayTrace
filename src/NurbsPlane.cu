@@ -29,13 +29,13 @@ bool DevNurbsPlane::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevIn
 		return false;
 
 	info.Cross = K * t + L;
-	info.Vertical = sp(0, 0, -1);
+	info.Vertical = sp(0, 1, 0);
 	info.Distance = t * sqrt(K * K);
 	info.isEnter = (L.y < 0);
 	info.Material = GetPixel(info.Cross.x, info.Cross.z).getMaterial();
 	info.pNode = this;
 
-	return -1 < info.Cross.x && info.Cross.x < 1 && -1 < info.Cross.z && info.Cross.z < 1;
+	return -3 < info.Cross.x && info.Cross.x < 3 && -3 < info.Cross.z && info.Cross.z < 3;
 }
 
 __global__
