@@ -64,15 +64,18 @@ void NurbsPlane::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matri
 	POINT	P[4][4];
 
 	for (int i = 0; i < 4; i++)
-		for (int j = 0; j < 4; j++)
+		for (int j = 0; j < 4; j++) {
+			if (0 < i && i < 3 && 0 < j && j < 3)
+				continue;
 			sp(m * m_ControlVertex[i][j]).getPOINT(P[i][j].x, P[i][j].y, size.cx, size.cy);
+		}
 
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i += 3) {
 		pDC->MoveTo(P[i][0]);
 		for (int j = 1; j < 4; j++)
 			pDC->LineTo(P[i][j]);
 	}
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i += 3) {
 		pDC->MoveTo(P[0][i]);
 		for (int j = 1; j < 4; j++)
 			pDC->LineTo(P[j][i]);
