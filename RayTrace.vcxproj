@@ -288,6 +288,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="src\rotate_y.cpp" />
     <ClCompile Include="src\rotate_z.cpp" />
     <ClCompile Include="src\ScnTreeView.cpp" />
+    <ClCompile Include="src\Selectable.cpp" />
     <ClCompile Include="src\sphere.cpp" />
     <ClCompile Include="src\StdAfx.cpp" />
     <ClCompile Include="src\teapot.cpp" />
@@ -350,6 +351,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="src\rotate_y.h" />
     <ClInclude Include="src\rotate_z.h" />
     <ClInclude Include="src\ScnTreeView.h" />
+    <ClInclude Include="src\Selectable.h" />
     <ClInclude Include="src\Solve_Polynomial.cuh" />
     <ClInclude Include="src\Sp.cuh" />
     <ClInclude Include="src\Sphere.cuh" />

@@ -137,6 +137,9 @@
     <ClCompile Include="src\Point.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Selectable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h">
@@ -335,6 +338,9 @@
       <Filter>CUDA Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Point.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Selectable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -16,7 +16,7 @@ protected:
 	bool m_IsControlVertexEditable;
 	int m_ControlVertexWidth;
 	int m_ControlVertexHeight;
-	Point** m_ControlVertex;// [CV_MAX_WIDTH][CV_MAX_HEIGHT];
+	Point** m_ControlVertex;
 	DECLARE_SERIAL(NurbsPrimitive)
 	virtual bool newDeviceNode();
 public:

@@ -37,7 +37,7 @@ struct Boundary {
 	Boundary(float r = 0, const sp& c = sp(0, 0, 0)) : Radius(r), Center(c) {}
 };
 
-class Node : public CObject, public Point
+class Node : public CObject, public Selectable
 {
 	virtual Boundary getBoundary() = 0;
 	void OnUpdateBoundary();
@@ -48,12 +48,6 @@ protected:
 	node_type	m_NodeType;
 	TCHAR		m_Name[99];	// 名前
 	D3DMATERIAL9 m_Material;
-
-	matrix		m_Scale;	// スケール変換
-	matrix		m_Rotate;	// 回転
-	matrix		m_Move;		// 平行移動
-	matrix		m_Pivot;	// マニュピレータの中心点
-	matrix		m_Matrix;
 
 	float		m_Reflect;		// 反射率
 	float		m_Through;  	// 透過率
@@ -86,18 +80,11 @@ public:
 	sp GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fromOutSide);
 	bool GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide);
 	sp GetPixel(float x, float y) const;
-	virtual	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const = 0;
 
 	bool IsInside2(const sp& L);
 
 	virtual	BOOL AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target) { return FALSE; }
 	virtual void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& matrix) const;
-	void Move(eAxis axis, float d);
-	void Move(POINT d);
-	void Rotate(eAxis axis, float d);
-	void Rotate(POINT d);
-	void Scale(eAxis axis, float d);
-	void MovePivot(eAxis axis, float d);
 	virtual bool SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& m) const;
 
 	virtual void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& matrix) const;

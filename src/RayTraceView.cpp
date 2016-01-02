@@ -724,13 +724,7 @@ void CRayTraceView::OnLButtonDown(UINT nFlags, CPoint point)
 	sp k, l;
 	GetVectorFromPoint(k, l, point.x, point.y);
 
-	if (pDoc->m_Root.GetInfo2(k, l, info, NULL, true)) {
-		m_SelectedNode = (Node*)info.pNode;
-	}
-	else {
-		m_SelectedNode = NULL;
-	}
-
+	m_SelectedNode = pDoc->m_Root.GetSelectable(k, l);
 	m_AltStart = point;
 }
 
@@ -894,7 +888,7 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 	d.y = m_AltStart.y - point.y;
 	m_AltStart = point;
 
-	Node* p = m_SelectedNode ? m_SelectedNode : &m_Viewport;
+	Selectable* p = m_SelectedNode ? m_SelectedNode : &m_Viewport;
 	eAxis axis;
 	eType type;
 

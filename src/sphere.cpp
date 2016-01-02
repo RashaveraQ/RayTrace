@@ -28,7 +28,7 @@ Sphere::Sphere(const Sphere& other)
 void Sphere::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
 {
 	const CSize& size = raytraceview.m_ClientSize;
-	const Node* pNode = raytraceview.m_SelectedNode;
+	const Selectable* pNode = raytraceview.m_SelectedNode;
 
 	matrix m = mat * m_Matrix;
 

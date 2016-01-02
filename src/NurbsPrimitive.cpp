@@ -68,7 +68,7 @@ void NurbsPrimitive::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const m
 
 	//if (m_IsControlVertexEditable) {
 		const CSize& size = raytraceview.m_ClientSize;
-		const Node* pNode = raytraceview.m_SelectedNode;
+		const Selectable* pNode = raytraceview.m_SelectedNode;
 		pDC->SelectStockObject((pNode == this) ? WHITE_PEN : BLACK_PEN);
 		for (int i = 0; i < m_ControlVertexWidth; i++)
 			for (int j = 0; j < m_ControlVertexHeight; j++) {

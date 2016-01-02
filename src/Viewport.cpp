@@ -29,7 +29,7 @@ Viewport::~Viewport()
 void Viewport::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
 {
 	const CSize& size = raytraceview.m_ClientSize;
-	const Node* pNode = raytraceview.m_SelectedNode;
+	const Selectable* pNode = raytraceview.m_SelectedNode;
 
 	static CPen	gray_pen(PS_SOLID, 1, RGB(100, 100, 100));
 

@@ -1,10 +1,11 @@
 ﻿#pragma once
 #include "node.h"
+#include "Selectable.h"
 
-class Point : public sp
+class Point : public sp, Selectable
 {
 public:
 	Point(const sp& = sp());
-	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& m, const matrix& pivot) const;
+	bool GetInfo(const struct sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
 };
 

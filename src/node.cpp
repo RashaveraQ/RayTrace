@@ -18,7 +18,7 @@ Node::Node(Node* const root, node_type NodeType, const TCHAR* const Name, const 
 }
 
 Node::Node(const Node& other)
-	: m_Root(other.m_Root), m_Scale(other.m_Scale), m_Rotate(other.m_Rotate), m_Move(other.m_Move), m_Matrix(other.m_Matrix),
+	: m_Root(other.m_Root), Selectable(other),
 	m_NodeType(other.m_NodeType), m_Reflect(other.m_Reflect), m_Through(other.m_Through), m_Refractive(other.m_Refractive),
 	m_TextureFileName(other.m_TextureFileName), m_Boundary(other.m_Boundary)
 {
@@ -39,7 +39,7 @@ Node::~Node()
 
 void Node::updateMatrix()
 {
-	m_Matrix = m_Move * m_Rotate * m_Scale;
+	Selectable::updateMatrix();
 	DoCuda_updateMatrix(m_devNode, &m_Matrix);
 	OnUpdateBoundary();
 }
@@ -187,65 +187,7 @@ bool Node::MakeMemoryDCfromTextureFileName()
 	return true;
 }
 
-void Node::Move(eAxis axis, float d)
-{
-	switch (axis) {
-	case eX:	m_Move.set_data(3, 4, m_Move.get_data(3, 4) - (float)d / 20);	break;
-	case eY:	m_Move.set_data(2, 4, m_Move.get_data(2, 4) - (float)d / 20);	break;
-	case eZ:	m_Move.set_data(1, 4, m_Move.get_data(1, 4) - (float)d / 20);	break;
-	}
-	updateMatrix();
-}
 
-void Node::Move(POINT d)
-{
-	m_Move.set_data(1, 4, m_Move.get_data(1, 4) - (float)d.x / 20);
-	m_Move.set_data(2, 4, m_Move.get_data(2, 4) - (float)d.y / 20);
-	updateMatrix();
-}
-
-void Node::Rotate(eAxis axis, float d)
-{
-	switch (axis) {
-	case eX:
-		m_Rotate = m_Rotate * m_Pivot * rotate(0, 0, 1, d) * m_Pivot.Inv();
-		break;
-	case eY:
-		m_Rotate = m_Rotate * m_Pivot * rotate(0, 1, 0, d) * m_Pivot.Inv();
-		break;
-	case eZ:
-		m_Rotate = m_Rotate * m_Pivot * rotate(1, 0, 0, d) * m_Pivot.Inv();
-		break;
-	}
-	updateMatrix();
-}
-
-void Node::Rotate(POINT d)
-{
-	rotate	r((float)-d.y, (float)-d.x, 0, sqrt((float)(d.x * d.x + d.y * d.y)) / 2);
-	m_Rotate = r * m_Rotate;
-	updateMatrix();
-}
-
-void Node::Scale(eAxis axis, float d)
-{
-	if (axis == eX || axis == eNONE)
-		m_Scale.set_data(3, 3, m_Scale.get_data(3, 3) - d / 50);
-	if (axis == eY || axis == eNONE)
-		m_Scale.set_data(2, 2, m_Scale.get_data(2, 2) - d / 50);
-	if (axis == eZ || axis == eNONE)
-		m_Scale.set_data(1, 1, m_Scale.get_data(1, 1) - d / 50);
-	updateMatrix();
-}
-
-void Node::MovePivot(eAxis axis, float d)
-{
-	switch (axis) {
-	case eX:	m_Pivot.set_data(3, 4, m_Pivot.get_data(3, 4) - (float)d / 20);	break;
-	case eY:	m_Pivot.set_data(2, 4, m_Pivot.get_data(2, 4) - (float)d / 20);	break;
-	case eZ:	m_Pivot.set_data(1, 4, m_Pivot.get_data(1, 4) - (float)d / 20);	break;
-	}
-}
 
 bool Node::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& mat) const
 {
@@ -418,7 +360,7 @@ void Node::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) const
 	if (rtv.m_SelectedNode != this || rtv.m_Manipulator.Type == eSELECT)
 		return;
 
-	Point::Draw_Outline(pDC, rtv, m, m_Pivot);
+	Selectable::Draw_Outline(pDC, rtv, m, m_Pivot);
 }
 
 void Node::OnUpdateBoundary()

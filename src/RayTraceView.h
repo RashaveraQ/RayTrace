@@ -33,7 +33,7 @@ public:
 	class CRayTraceDoc* GetDocument();
 	fsize		m_View;
 	Viewport	m_Viewport;		//	視点開始オブジェクトのポインタ
-	Node*		m_SelectedNode;
+	Selectable*	m_SelectedNode;
 	CSize		m_ClientSize;
 
 	enum {
@@ -119,7 +119,7 @@ protected:
 
 	friend Node;
 	friend class CScnTreeView;
-	friend Point;
+	friend Selectable;
 
 public:
 	afx_msg void OnViewWireframeWithRaytrace();

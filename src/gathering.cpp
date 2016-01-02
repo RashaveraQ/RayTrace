@@ -57,7 +57,7 @@ void Gathering::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& mat) co
 {
 	matrix m = mat * m_Matrix;
 	
-	Node *pNodeBackup = rtv.m_SelectedNode;
+	Selectable *pNodeBackup = rtv.m_SelectedNode;
 	if (pNodeBackup == (Node*)this) {
 		for (int i = 0; i < m_Member; i++) {
 			rtv.m_SelectedNode = m_Node[i];
