@@ -10,6 +10,7 @@ public:
 	// コンストラクタ
 	NurbsPlane(Node* const root = 0, const TCHAR* const Name = _T("NurbsPlane"), const sp Color = sp(255, 255, 255));
 	NurbsPlane(const NurbsPlane& other);
+	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& matrix) const;
 };
 
 #endif

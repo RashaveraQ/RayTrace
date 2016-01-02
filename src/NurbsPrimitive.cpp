@@ -12,19 +12,19 @@ bool NurbsPrimitive::newDeviceNode()
 }
 
 NurbsPrimitive::NurbsPrimitive()
-	: Node(0, NURBS_PRIMITIVE, _T("NurbsPrimitive"))
+	: Node(0, NURBS_PRIMITIVE, _T("NurbsPrimitive")), m_IsControlVertexEditable(false)
 {
 }
 
 NurbsPrimitive::NurbsPrimitive(Node* const root, const TCHAR* const Name, const sp Color)
-	: Node(root, NURBS_PRIMITIVE, Name, Color)
+	: Node(root, NURBS_PRIMITIVE, Name, Color), m_IsControlVertexEditable(false)
 {
 	if (!newDeviceNode())
 		exit(1);
 }
 
 NurbsPrimitive::NurbsPrimitive(const NurbsPrimitive& other)
-	: Node(other)
+	: Node(other), m_IsControlVertexEditable(false)
 {
 	if (!newDeviceNode())
 		exit(1);
@@ -57,30 +57,23 @@ bool NurbsPrimitive::GetInfo(const sp& K, const sp& L, Info& info, const Info* p
 
 void NurbsPrimitive::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
 {
-	const CSize& size = raytraceview.m_ClientSize;
-	const Node* pNode = raytraceview.m_SelectedNode;
 	matrix m = mat * m_Matrix;
-	pDC->SelectStockObject((pNode == this) ? WHITE_PEN : BLACK_PEN);
 
-	POINT	P[4][4];
+	//if (m_IsControlVertexEditable) {
+		const CSize& size = raytraceview.m_ClientSize;
+		const Node* pNode = raytraceview.m_SelectedNode;
+		pDC->SelectStockObject((pNode == this) ? WHITE_PEN : BLACK_PEN);
+		for (int i = 0; i < m_ControlVertexWidth; i++)
+			for (int j = 0; j < m_ControlVertexHeight; j++) {
+				POINT P;
+				sp(m * m_ControlVertex[i][j]).getPOINT(P.x, P.y, size.cx, size.cy);
+				P.x -= 3;
+				P.y -= 3;
+				CRect rect(P, CSize(6, 6));
+				pDC->FillSolidRect(rect, RGB(150, 0, 150));
+			}
+	//}
 
-	for (int i = 0; i < 4; i++)
-		for (int j = 0; j < 4; j++) {
-			if (0 < i && i < 3 && 0 < j && j < 3)
-				continue;
-			sp(m * m_ControlVertex[i][j]).getPOINT(P[i][j].x, P[i][j].y, size.cx, size.cy);
-		}
-
-	for (int i = 0; i < 4; i += 3) {
-		pDC->MoveTo(P[i][0]);
-		for (int j = 1; j < 4; j++)
-			pDC->LineTo(P[i][j]);
-	}
-	for (int i = 0; i < 4; i += 3) {
-		pDC->MoveTo(P[0][i]);
-		for (int j = 1; j < 4; j++)
-			pDC->LineTo(P[j][i]);
-	}
 	Node::Draw_Outline(pDC, raytraceview, m);
 }
 

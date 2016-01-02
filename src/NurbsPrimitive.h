@@ -4,12 +4,18 @@
 class	Node;
 struct	matrix;
 
+#define CV_MAX_WIDTH 100
+#define CV_MAX_HEIGHT 100
+
 class NurbsPrimitive : public Node
 {
 	static Boundary sBoundary;
 	Boundary getBoundary() { return sBoundary; }
 protected:
-	sp m_ControlVertex[4][4];
+	bool m_IsControlVertexEditable;
+	int m_ControlVertexWidth;
+	int m_ControlVertexHeight;
+	sp m_ControlVertex[CV_MAX_WIDTH][CV_MAX_HEIGHT];
 	DECLARE_SERIAL(NurbsPrimitive)
 	virtual bool newDeviceNode();
 public:
