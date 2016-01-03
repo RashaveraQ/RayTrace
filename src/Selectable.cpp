@@ -20,7 +20,7 @@ Selectable* Selectable::GetSelectable(const sp& K, const sp& L)
 {
 	Info	info;
 	matrix& m = m_Matrix;
-	matrix Inv_m = m.Inv();
+	matrix& Inv_m = m.Inv();
 	sp L2 = Inv_m * L;
 	sp K2 = Inv_m * (K + L) - L2;
 
