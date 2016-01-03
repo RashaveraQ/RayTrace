@@ -16,15 +16,19 @@ Selectable::~Selectable()
 {
 }
 
-Selectable* Selectable::GetSelectable(const sp& K, const sp& L)
+bool Selectable::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide)
 {
-	Info	info;
 	matrix& m = m_Matrix;
 	matrix& Inv_m = m.Inv();
 	sp L2 = Inv_m * L;
 	sp K2 = Inv_m * (K + L) - L2;
+	return GetInfo(K2, L2, info, pHint, fromOutSide);
+}
 
-	if (GetInfo(K2, L2, info, NULL, true)) {
+Selectable* Selectable::GetSelectable(const sp& K, const sp& L)
+{
+	Info	info;
+	if (GetInfo2(K, L, info, NULL, true)) {
 		return (Selectable*)info.pSelectable;
 	}
 	return NULL;

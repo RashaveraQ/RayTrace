@@ -131,19 +131,14 @@ bool Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	return FALSE;
 	// End Boundary
 	*/
-	matrix& m = m_Matrix;
-	matrix& Inv_m = m.Inv();
 
-	sp L2 = Inv_m * L;
-	sp K2 = Inv_m * (K + L) - L2;
-
-	if (!GetInfo(K2, L2, info, pHint, fromOutSide)) {
+	if (!Selectable::GetInfo2(K, L, info, pHint, fromOutSide)) {
 		return false;
 	}
 
 	info.Vertical = m_Scale.Inv() * info.Vertical;
-	info.Vertical = m * (info.Vertical + info.Cross) - m * info.Cross;
-	info.Cross = m * info.Cross;
+	info.Vertical = m_Matrix * (info.Vertical + info.Cross) - m_Matrix * info.Cross;
+	info.Cross = m_Matrix * info.Cross;
 	info.Distance = (info.Cross - L).abs();
 	info.Refractive = info.pNode->m_Refractive / ((pHint) ? pHint->Refractive : 1.0f);
 	if (!info.isEnter)

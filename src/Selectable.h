@@ -8,6 +8,7 @@ protected:
 	matrix		m_Pivot;	// マニュピレータの中心点
 	matrix		m_Matrix;
 	virtual void updateMatrix();
+	bool GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide);
 
 public:
 	Selectable();
