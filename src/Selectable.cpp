@@ -16,7 +16,7 @@ Selectable::~Selectable()
 {
 }
 
-bool Selectable::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide)
+bool Selectable::GetInfo3(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide)
 {
 	matrix& m = m_Matrix;
 	matrix& Inv_m = m.Inv();
@@ -28,7 +28,7 @@ bool Selectable::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHin
 Selectable* Selectable::GetSelectable(const sp& K, const sp& L)
 {
 	Info	info;
-	if (GetInfo2(K, L, info, NULL, true)) {
+	if (GetInfo3(K, L, info, NULL, true)) {
 		return (Selectable*)(info.pNode ? info.pNode : info.pSelectable);
 	}
 	return NULL;

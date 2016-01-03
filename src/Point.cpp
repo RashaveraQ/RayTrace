@@ -13,20 +13,40 @@ bool Point::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	float	a = K * K;
 	float	b = K * L;
 	float	c = L * L - 1.0f;
-	float	bb_ac = b * b - a * c;
+
+	float	bb_ac = b*b - a*c;
 
 	if (bb_ac < 0)
-		return false;
+		return FALSE;
 
-	float	t1 = -b + sqrt(bb_ac);
-	float	t2 = -b - sqrt(bb_ac);
+	float	t;
+	float	t1 = (-b + sqrt(bb_ac)) / a;
+	float	t2 = (-b - sqrt(bb_ac)) / a;
 
-	if (t1 > 0 || t2 > 0) {
-		info.pNode = NULL;
-		info.pSelectable = this;
-		return true;
-	} 
-	return false;
+	info.isEnter = 0;
+	if (t1 > 0) {
+		if (t2 > 0) {
+			t = (t1 < t2) ? t1 : t2;
+			info.isEnter = 1;
+		}
+		else {
+			t = t1;
+		}
+	}
+	else {
+		if (t2 > 0) {
+			t = t2;
+		}
+		else
+			return FALSE;
+	}
+
+	info.Cross = K * t + L;
+	info.Vertical = info.isEnter ? info.Cross : -info.Cross;
+	info.Distance = t * sqrt(K * K);
+	info.pSelectable = this;
+
+	return TRUE;
 }
 
 void Point::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const

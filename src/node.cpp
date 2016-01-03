@@ -132,7 +132,7 @@ bool Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	// End Boundary
 	*/
 
-	if (!Selectable::GetInfo2(K, L, info, pHint, fromOutSide)) {
+	if (!Selectable::GetInfo3(K, L, info, pHint, fromOutSide)) {
 		return false;
 	}
 
