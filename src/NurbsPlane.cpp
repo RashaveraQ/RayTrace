@@ -4,17 +4,14 @@
 #define CV_WIDTH 4
 #define CV_HEIGHT 4
 
+IMPLEMENT_SERIAL(NurbsPlane, CObject, 1)
+
 NurbsPlane::NurbsPlane(Node* const root, const TCHAR* const Name, const sp Color)
-	: NurbsPrimitive(root, Name, Color)
+	: NurbsPrimitive(root, eNurbsPlane, Name, CV_WIDTH, CV_HEIGHT, Color)
 {
-	m_ControlVertexWidth = CV_WIDTH;
-	m_ControlVertexHeight = CV_HEIGHT;
-	m_ControlVertex = new Point*[CV_WIDTH];
-	for (int i = 0; i < m_ControlVertexWidth; i++) {
-		m_ControlVertex[i] = new Point[CV_HEIGHT];
-		for (int j = 0; j < m_ControlVertexHeight; j++)
+	for (int i = 0; i < CV_WIDTH; i++)
+		for (int j = 0; j < CV_HEIGHT; j++)
 			m_ControlVertex[i][j] = Point(sp(-3 + 2 * i, 0, -3 + 2 * j));
-	}
 
 	if (!newDeviceNode())
 		exit(1);

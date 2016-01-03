@@ -33,16 +33,17 @@ void	Gathering::Serialize(CArchive& ar)
 			ar >> id;
 			switch ( id )
 			{
-			case eSPHERE:	m_Node[i] = new Sphere(m_Root); 	break;
-			case ePLANE:	m_Node[i] = new Plane(m_Root);		break;
-			case ePLUS:		m_Node[i] = new Plus(m_Root);		break;
-			case eMINUS:	m_Node[i] = new Minus(m_Root);		break;
-			case eMULTIPLE:	m_Node[i] = new Multiple(m_Root);	break;
-			case eCONE:		m_Node[i] = new Cone(m_Root);		break;
-			case eCYLINDER:	m_Node[i] = new Cylinder(m_Root);	break;
-			case eTORUS:	m_Node[i] = new Torus(m_Root);		break;
-			case ePOLYGON:	m_Node[i] = new Polygon2(m_Root);	break;
-			case eCUBE:		m_Node[i] = new Cube(m_Root);		break;
+			case eSPHERE:		m_Node[i] = new Sphere(m_Root); 	break;
+			case ePLANE:		m_Node[i] = new Plane(m_Root);		break;
+			case ePLUS:			m_Node[i] = new Plus(m_Root);		break;
+			case eMINUS:		m_Node[i] = new Minus(m_Root);		break;
+			case eMULTIPLE:		m_Node[i] = new Multiple(m_Root);	break;
+			case eCONE:			m_Node[i] = new Cone(m_Root);		break;
+			case eCYLINDER:		m_Node[i] = new Cylinder(m_Root);	break;
+			case eTORUS:		m_Node[i] = new Torus(m_Root);		break;
+			case ePOLYGON:		m_Node[i] = new Polygon2(m_Root);	break;
+			case eCUBE:			m_Node[i] = new Cube(m_Root);		break;
+			case eNurbsPlane:	m_Node[i] = new NurbsPlane(m_Root); break;
 			}
 			m_Node[i]->Serialize(ar);
 

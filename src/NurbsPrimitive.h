@@ -12,17 +12,16 @@ class NurbsPrimitive : public Node
 {
 	static Boundary sBoundary;
 	Boundary getBoundary() { return sBoundary; }
+	void init(int w, int h);
 protected:
 	bool m_IsControlVertexEditable;
 	int m_ControlVertexWidth;
 	int m_ControlVertexHeight;
 	Point** m_ControlVertex;
-	DECLARE_SERIAL(NurbsPrimitive)
 	virtual bool newDeviceNode();
 public:
 	// コンストラクタ
-	NurbsPrimitive();
-	NurbsPrimitive(Node* const root, const TCHAR* const Name, const sp Color = sp(255, 255, 255));
+	NurbsPrimitive(Node* const root, node_type NodeType, const TCHAR* const Name, int cv_width, int cv_height, const sp Color = sp(255, 255, 255));
 	NurbsPrimitive(const NurbsPrimitive& other);
 	virtual ~NurbsPrimitive();
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& matrix) const {}
@@ -32,6 +31,7 @@ public:
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	const Node*	MakeCopy() const { return new NurbsPrimitive(*this); }
 	bool SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& m) const;
+	void Serialize(CArchive& ar);
 };
 
 #endif

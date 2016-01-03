@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include <float.h>
 
-IMPLEMENT_SERIAL(NurbsPrimitive, CObject, 1)
-
 Boundary NurbsPrimitive::sBoundary = Boundary(FLT_MAX); // 
 
 bool NurbsPrimitive::newDeviceNode()
@@ -11,23 +9,30 @@ bool NurbsPrimitive::newDeviceNode()
 	return newDevNurbsPrimitive(&m_devNode, m_Root ? m_Root->m_devNode : 0, m_Material);
 }
 
-NurbsPrimitive::NurbsPrimitive()
-	: Node(0, eNURBS, _T("Nurbs")), m_IsControlVertexEditable(false)
+NurbsPrimitive::NurbsPrimitive(Node* const root, node_type NodeType, const TCHAR* const Name, int cv_width, int cv_height, const sp Color)
+	: Node(root, NodeType, Name, Color), m_ControlVertex(0), m_IsControlVertexEditable(false)
 {
-}
-
-NurbsPrimitive::NurbsPrimitive(Node* const root, const TCHAR* const Name, const sp Color)
-	: Node(root, eNURBS, Name, Color), m_IsControlVertexEditable(false)
-{
-	if (!newDeviceNode())
-		exit(1);
+	init(cv_width, cv_height);
 }
 
 NurbsPrimitive::NurbsPrimitive(const NurbsPrimitive& other)
-	: Node(other), m_IsControlVertexEditable(false)
+	: Node(other), m_ControlVertex(0), m_IsControlVertexEditable(false)
 {
-	if (!newDeviceNode())
-		exit(1);
+	init(other.m_ControlVertexWidth, other.m_ControlVertexHeight);
+}
+
+void NurbsPrimitive::init(int w, int h)
+{
+	if (m_ControlVertex) {
+		for (int i = 0; i < m_ControlVertexWidth; i++)
+			delete[] m_ControlVertex[i];
+		delete m_ControlVertex;
+	}
+	m_ControlVertexWidth = w;
+	m_ControlVertexHeight = h;
+	m_ControlVertex = new Point*[m_ControlVertexWidth];
+	for (int i = 0; i < m_ControlVertexWidth; i++)
+		m_ControlVertex[i] = new Point[m_ControlVertexHeight];
 }
 
 NurbsPrimitive::~NurbsPrimitive()
@@ -90,4 +95,25 @@ bool NurbsPrimitive::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const 
 void NurbsPrimitive::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
 	c.SetItemData(c.InsertItem(m_Name, 13, 12, hParent, hInsertAfter), (DWORD_PTR)this);
+}
+
+void NurbsPrimitive::Serialize(CArchive& ar)
+{
+	Node::Serialize(ar);
+
+	if (ar.IsStoring()) {
+		ar << m_ControlVertexWidth;
+		ar << m_ControlVertexHeight;
+		for (int i = 0; i < m_ControlVertexWidth; i++)
+			for (int j = 0; j < m_ControlVertexHeight; j++)
+				m_ControlVertex[i][j].Serialize(ar);
+	} else {
+		int w, h;
+		ar >> w;
+		ar >> h;
+		init(w,h);
+		for (int i = 0; i < m_ControlVertexWidth; i++)
+			for (int j = 0; j < m_ControlVertexHeight; j++)
+				m_ControlVertex[i][j].Serialize(ar);
+	}
 }

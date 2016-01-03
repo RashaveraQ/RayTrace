@@ -6,6 +6,8 @@ struct	matrix;
 
 class NurbsPlane : public NurbsPrimitive
 {
+protected:
+	DECLARE_SERIAL(NurbsPlane)
 public:
 	// コンストラクタ
 	NurbsPlane(Node* const root = 0, const TCHAR* const Name = _T("NurbsPlane"), const sp Color = sp(255, 255, 255));
