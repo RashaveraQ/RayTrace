@@ -287,14 +287,10 @@ void Node::OnUpdateBoundary()
 
 void Node::Serialize(CArchive& ar)
 {
-	int		i;
-
-	if (ar.IsStoring())
-	{
+	if (ar.IsStoring())	{
 		ar << (WORD)m_NodeType;
-		for (i = 0; i < 99; i++)
+		for (int i = 0; i < 99; i++)
 			ar << m_Name[i];
-
 		ar << m_Material.Diffuse.r;
 		ar << m_Material.Diffuse.g;
 		ar << m_Material.Diffuse.b;
@@ -312,20 +308,10 @@ void Node::Serialize(CArchive& ar)
 		ar << m_Material.Emissive.b;
 		ar << m_Material.Emissive.a;
 		ar << m_Material.Power;
-
-		for (int i = 1; i < 4; i++) {
-			ar << m_Scale.get_data(i, i);
-			ar << m_Move.get_data(i, 4);
-			for (int j = 1; j < 4; j++)
-				ar << m_Rotate.get_data(i, j);
-		}
 		ar << m_Reflect;	ar << m_Through;	ar << m_Refractive;
-	}
-	else
-	{
-		for (i = 0; i < 99; i++)
+	} else {
+		for (int i = 0; i < 99; i++)
 			ar >> m_Name[i];
-
 		ar >> m_Material.Diffuse.r;
 		ar >> m_Material.Diffuse.g;
 		ar >> m_Material.Diffuse.b;
@@ -343,21 +329,10 @@ void Node::Serialize(CArchive& ar)
 		ar >> m_Material.Emissive.b;
 		ar >> m_Material.Emissive.a;
 		ar >> m_Material.Power;
-
-		for (int i = 1; i < 4; i++) {
-			float value;
-			ar >> value;
-			m_Scale.set_data(i, i, value);
-			ar >> value;
-			m_Move.set_data(i, 4, value);
-			for (int j = 1; j < 4; j++) {
-				ar >> value;
-				m_Rotate.set_data(i, j, value);
-			}
-		}
-		m_Matrix = m_Move * m_Rotate * m_Scale;
 		ar >> m_Reflect;	ar >> m_Through;	ar >> m_Refractive;
-
+	}
+	Selectable::Serialize(ar);
+	if (ar.IsLoading()) {
 		if (!DoCuda_updateMatrix(m_devNode, &m_Matrix) ||
 			!DoCuda_updateMaterial(m_devNode, m_Reflect, m_Refractive, m_Through) ||
 			!DoCuda_updateColor(m_devNode, m_Material.Diffuse.r, m_Material.Diffuse.g, m_Material.Diffuse.b)) {

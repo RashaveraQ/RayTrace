@@ -287,3 +287,28 @@ bool Selectable::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matr
 	}
 	return true;
 }
+
+void Selectable::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring()) {
+		for (int i = 1; i < 4; i++) {
+			ar << m_Scale.get_data(i, i);
+			ar << m_Move.get_data(i, 4);
+			for (int j = 1; j < 4; j++)
+				ar << m_Rotate.get_data(i, j);
+		}
+	} else {
+		for (int i = 1; i < 4; i++) {
+			float value;
+			ar >> value;
+			m_Scale.set_data(i, i, value);
+			ar >> value;
+			m_Move.set_data(i, 4, value);
+			for (int j = 1; j < 4; j++) {
+				ar >> value;
+				m_Rotate.set_data(i, j, value);
+			}
+		}
+		m_Matrix = m_Move * m_Rotate * m_Scale;
+	}
+}
