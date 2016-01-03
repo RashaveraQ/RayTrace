@@ -3,7 +3,7 @@
 
 Point::Point(const sp& isp)
 {
-	m_Scale = expand(0.001f);
+	m_Scale = expand(0.1f);
 	m_Move = move(isp.x, isp.y, isp.z);
 	updateMatrix();
 }

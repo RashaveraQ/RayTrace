@@ -49,7 +49,7 @@ bool NurbsPrimitive::GetInfo(const sp& K, const sp& L, Info& info, const Info* p
 
 	for (int i = 0; i < m_ControlVertexWidth; i++)
 		for (int j = 0; j < m_ControlVertexHeight; j++)
-			if (m_ControlVertex[i][j].GetInfo(K, L, info, NULL, true))
+			if (m_ControlVertex[i][j].GetInfo3(K, L, info, NULL, true))
 				return true;
 
 	float	t = (K.y) ? -L.y / K.y : ((L.y> 0) ? FLT_MAX : -FLT_MAX);
