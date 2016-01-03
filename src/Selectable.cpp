@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "Selectable.h"
 
 
@@ -203,4 +203,87 @@ void Selectable::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) con
 		return;
 	}
 	pDC->SelectObject(old_pen);
+}
+
+bool Selectable::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& mat) const
+{
+	if (rtv.m_SelectedNode != this || rtv.m_Manipulator.Type == eSELECT)
+		return false;
+
+	const CSize& size = rtv.m_ClientSize;
+	const Viewport& viewport = rtv.m_Viewport;
+
+	matrix m = mat * m_Matrix;
+
+	sp	p0 = m * m_Pivot * sp(0, 0, 0);
+	sp	px, py, pz;
+
+	int r = 100;
+
+	switch (rtv.m_Manipulator.Type) {
+	case ePIVOT_MOVE:
+		r = 50;
+	case eMOVE:
+	case eSCALE:
+		px = p0 + viewport.m_Rotate * sp(0, 0, -2);
+		py = p0 + viewport.m_Rotate * sp(0, -2, 0);
+		pz = p0 + viewport.m_Rotate * sp(-2, 0, 0);
+		break;
+	default:
+		px = m * m_Pivot * sp(0, 0, -1 / m_Scale.get_data(3, 3));
+		py = m * m_Pivot * sp(0, -1 / m_Scale.get_data(2, 2), 0);
+		pz = m * m_Pivot * sp(-1 / m_Scale.get_data(1, 1), 0, 0);
+	}
+
+	POINT P0, PX, PY, PZ;
+	p0.getPOINT(P0.x, P0.y, size.cx, size.cy);
+	px.getPOINT(PX.x, PX.y, size.cx, size.cy);
+	py.getPOINT(PY.x, PY.y, size.cx, size.cy);
+	pz.getPOINT(PZ.x, PZ.y, size.cx, size.cy);
+
+	switch (rtv.m_Manipulator.Type)
+	{
+		// case eMOVE:
+		// point が P0-PX 線上の場合は、rtv.m_Manipulator.Axis = eX;
+		// point が P0-PY 線上の場合は、rtv.m_Manipulator.Axis = eY;
+		// point が P0-PZ 線上の場合は、rtv.m_Manipulator.Axis = eZ;
+		// break;
+	case eROTATE:
+	{
+		eAxis tbl[] = { eX, eZ, eY };
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 50; j++) {
+				float th = (i == 2) ? (6.28f * j / 50) : (3.14f * i / 2);
+				float ph = (i == 2) ? (3.14f / 2) : (6.28f * j / 50);
+				sp p = m * sp(2 * cos(th)*sin(ph), 2 * cos(ph), 2 * sin(th)*sin(ph));
+				float dx = (P0.x + (r - 10) * (p - p0).e().x) - point.x;
+				float dy = (P0.y + (r - 10) * (p - p0).e().y) - point.y;
+				if (dx*dx + dy*dy < 20) {
+					rtv.m_Manipulator.Axis = tbl[i];
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+	break;
+	case eMOVE: // temp
+	case ePIVOT_MOVE: // temp
+	case eSCALE:
+		if (::abs(PX.x - point.x) + ::abs(PX.y - point.y) <= 20)
+			rtv.m_Manipulator.Axis = eX;
+		else if (::abs(PY.x - point.x) + ::abs(PY.y - point.y) <= 20)
+			rtv.m_Manipulator.Axis = eY;
+		else if (::abs(PZ.x - point.x) + ::abs(PZ.y - point.y) <= 20)
+			rtv.m_Manipulator.Axis = eZ;
+		else if (::abs(P0.x - point.x) + ::abs(P0.y - point.y) <= 20)
+			rtv.m_Manipulator.Axis = eNONE;
+		else
+			return false;
+		break;
+	default:
+		return false;
+	}
+	return true;
 }

@@ -77,6 +77,16 @@ void NurbsPrimitive::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const m
 	Node::Draw_Outline(pDC, raytraceview, mat);
 }
 
+bool NurbsPrimitive::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& mat) const
+{
+	matrix m = m_Matrix * mat;
+	for (int i = 0; i < m_ControlVertexWidth; i++)
+		for (int j = 0; j < m_ControlVertexHeight; j++)
+			if (m_ControlVertex[i][j].SetManipulatorAxis(rtv, point, m))
+				return true;
+	return Node::SetManipulatorAxis(rtv, point, mat);
+}
+
 void NurbsPrimitive::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
 	c.SetItemData(c.InsertItem(m_Name, 13, 12, hParent, hInsertAfter), (DWORD_PTR)this);

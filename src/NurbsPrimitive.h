@@ -31,6 +31,7 @@ public:
 	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& matrix) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	const Node*	MakeCopy() const { return new NurbsPrimitive(*this); }
+	bool SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& m) const;
 };
 
 #endif
