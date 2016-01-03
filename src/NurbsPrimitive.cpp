@@ -47,6 +47,11 @@ bool NurbsPrimitive::GetInfo(const sp& K, const sp& L, Info& info, const Info* p
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return false;
 
+	for (int i = 0; i < m_ControlVertexWidth; i++)
+		for (int j = 0; j < m_ControlVertexHeight; j++)
+			if (m_ControlVertex[i][j].GetInfo(K, L, info, NULL, true))
+				return true;
+
 	float	t = (K.y) ? -L.y / K.y : ((L.y> 0) ? FLT_MAX : -FLT_MAX);
 
 	if (t <= 0)
@@ -64,24 +69,12 @@ bool NurbsPrimitive::GetInfo(const sp& K, const sp& L, Info& info, const Info* p
 
 void NurbsPrimitive::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
 {
-	matrix m = mat * m_Matrix;
-
 	//if (m_IsControlVertexEditable) {
-		const CSize& size = raytraceview.m_ClientSize;
-		const Selectable* pNode = raytraceview.m_SelectedNode;
-		pDC->SelectStockObject((pNode == this) ? WHITE_PEN : BLACK_PEN);
 		for (int i = 0; i < m_ControlVertexWidth; i++)
-			for (int j = 0; j < m_ControlVertexHeight; j++) {
-				POINT P;
-				sp(m * m_ControlVertex[i][j]).getPOINT(P.x, P.y, size.cx, size.cy);
-				P.x -= 3;
-				P.y -= 3;
-				CRect rect(P, CSize(6, 6));
-				pDC->FillSolidRect(rect, RGB(150, 0, 150));
-			}
+			for (int j = 0; j < m_ControlVertexHeight; j++)
+				m_ControlVertex[i][j].Draw_Outline(pDC, raytraceview, mat);
 	//}
-
-	Node::Draw_Outline(pDC, raytraceview, m);
+	Node::Draw_Outline(pDC, raytraceview, mat);
 }
 
 void NurbsPrimitive::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)

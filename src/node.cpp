@@ -65,7 +65,7 @@ sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fr
 	Info	info;
 
 	// 再帰数が１０を越える又は、交点が存在しない場合、
-	if (nest > 10 || !GetInfo2(K, L, info, pHint, fromOutSide))
+	if (nest > 10 || !GetInfo2(K, L, info, pHint, fromOutSide) || info.pNode == NULL)
 		return sp(127, 127, 127);
 
 	sp k = K.e();
@@ -140,7 +140,7 @@ bool Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	info.Vertical = m_Matrix * (info.Vertical + info.Cross) - m_Matrix * info.Cross;
 	info.Cross = m_Matrix * info.Cross;
 	info.Distance = (info.Cross - L).abs();
-	info.Refractive = info.pNode->m_Refractive / ((pHint) ? pHint->Refractive : 1.0f);
+	info.Refractive = info.pNode ? (info.pNode->m_Refractive / ((pHint) ? pHint->Refractive : 1.0f)) : 1;
 	if (!info.isEnter)
 		info.Refractive = 1 / info.Refractive;
 
@@ -355,7 +355,7 @@ void Node::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) const
 	if (rtv.m_SelectedNode != this || rtv.m_Manipulator.Type == eSELECT)
 		return;
 
-	Selectable::Draw_Outline(pDC, rtv, m, m_Pivot);
+	Selectable::Draw_Outline(pDC, rtv, m);
 }
 
 void Node::OnUpdateBoundary()

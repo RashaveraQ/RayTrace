@@ -40,7 +40,7 @@ void NurbsPlane::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matri
 		for (int j = 0; j < CV_HEIGHT; j++) {
 			if (0 < i && i < CV_WIDTH - 1 && 0 < j && j < CV_HEIGHT - 1)
 				continue;
-			sp(m * m_ControlVertex[i][j]).getPOINT(P[i][j].x, P[i][j].y, size.cx, size.cy);
+			sp(m * (sp)m_ControlVertex[i][j]).getPOINT(P[i][j].x, P[i][j].y, size.cx, size.cy);
 		}
 
 	for (int i = 0; i < CV_WIDTH; i += CV_WIDTH - 1) {

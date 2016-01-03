@@ -137,7 +137,7 @@ bool Sphere::IsInside(const sp& L) const
 bool Sphere::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	if (pHint && pHint->pNode == this && fromOutSide)
-		return FALSE;
+		return false;
 
 	float	a = K * K;
 	float	b = K * L;

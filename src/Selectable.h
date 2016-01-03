@@ -14,7 +14,7 @@ public:
 	Selectable();
 	Selectable(const Selectable& other);
 	~Selectable();
-	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& m, const matrix& pivot) const;
+	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& m) const;
 	Selectable* GetSelectable(const sp& K, const sp& L);
 	virtual	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const = 0;
 	void Move(eAxis axis, float d);

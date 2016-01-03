@@ -100,7 +100,7 @@ void Selectable::MovePivot(eAxis axis, float d)
 	}
 }
 
-void Selectable::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m, const matrix& pivot) const
+void Selectable::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) const
 {
 	static COLORREF s_color = RGB(255, 255, 0);
 
@@ -113,7 +113,7 @@ void Selectable::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m, con
 	const CSize& size = rtv.m_ClientSize;
 	const Viewport& viewport = rtv.m_Viewport;
 
-	sp	p0 = m * pivot * sp(0, 0, 0);
+	sp	p0 = m * m_Pivot * sp(0, 0, 0);
 	sp	px, py, pz;
 
 	int r = 100;
@@ -127,9 +127,9 @@ void Selectable::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m, con
 		pz = p0 + viewport.m_Rotate * sp(-2, 0, 0);
 		break;
 	default:
-		px = m * pivot * sp(0, 0, -1);
-		py = m * pivot * sp(0, -1, 0);
-		pz = m * pivot * sp(-1, 0, 0);
+		px = m * m_Pivot * sp(0, 0, -1);
+		py = m * m_Pivot * sp(0, -1, 0);
+		pz = m * m_Pivot * sp(-1, 0, 0);
 	}
 
 	POINT P0, PX, PY, PZ;
