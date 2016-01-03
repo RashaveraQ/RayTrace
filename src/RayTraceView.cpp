@@ -719,11 +719,10 @@ void CRayTraceView::OnLButtonDown(UINT nFlags, CPoint point)
 		return;
 	}
 
-	Info	info;
 	CRayTraceDoc	*pDoc = GetDocument();
+	Info	info;
 	sp k, l;
 	GetVectorFromPoint(k, l, point.x, point.y);
-
 	m_SelectedNode = pDoc->m_Root.GetSelectable(k, l);
 	m_AltStart = point;
 }
@@ -734,11 +733,7 @@ void CRayTraceView::OnLButtonUp(UINT nFlags, CPoint point)
 	Info	info;
 	sp k, l;
 	GetVectorFromPoint(k, l, point.x, point.y);
-
-	if (pDoc->m_Root.GetInfo2(k, l, info, NULL, true)) {
-		m_SelectedNode = (Node*)info.pNode;
-	}
-
+	m_SelectedNode = pDoc->m_Root.GetSelectable(k, l);
 	Invalidate();
 }
 

@@ -29,7 +29,7 @@ Selectable* Selectable::GetSelectable(const sp& K, const sp& L)
 {
 	Info	info;
 	if (GetInfo2(K, L, info, NULL, true)) {
-		return (Selectable*)info.pSelectable;
+		return (Selectable*)(info.pNode ? info.pNode : info.pSelectable);
 	}
 	return NULL;
 }
