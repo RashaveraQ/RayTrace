@@ -749,7 +749,11 @@ void CRayTraceView::OnRButtonDown(UINT nFlags, CPoint point)
 
 	CMenu cMenu;
 	cMenu.LoadMenu(IDR_POPUP_MENU);
-	CMenu* popup = cMenu.GetSubMenu(m_SelectedNode || GetSelectable(point) ? 0 : 1);
+
+	Selectable* p = GetSelectable(point);
+	if (!p)
+		p = m_SelectedNode;
+	CMenu* popup = cMenu.GetSubMenu((!p) ? 0 : (dynamic_cast<NurbsPrimitive*>(p)) ? 1 : 2);
 	ClientToScreen(&point);
 	popup->TrackPopupMenu(0, point.x, point.y, this);
 	cMenu.DestroyMenu();
@@ -1033,12 +1037,10 @@ void CRayTraceView::OnObjectMode()
 	// TODO: Add your command handler code here
 }
 
-
 void CRayTraceView::OnSelectAll()
 {
 	// TODO: Add your command handler code here
 }
-
 
 void CRayTraceView::OnCompleteTool()
 {
