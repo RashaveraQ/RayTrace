@@ -42,6 +42,22 @@ NurbsPrimitive::~NurbsPrimitive()
 	delete m_ControlVertex;
 }
 
+bool NurbsPrimitive::OnControlVertex()
+{
+	if (m_IsControlVertexEditable)
+		return false;
+	m_IsControlVertexEditable = true;
+	return true;
+}
+
+bool NurbsPrimitive::OnObjectMode()
+{
+	if (!m_IsControlVertexEditable)
+		return false;
+	m_IsControlVertexEditable = false;
+	return true;
+}
+
 bool NurbsPrimitive::IsInside(const sp& L) const
 {
 	return ( L.y >= 0.0 );
@@ -49,13 +65,16 @@ bool NurbsPrimitive::IsInside(const sp& L) const
 
 bool NurbsPrimitive::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
+	if (m_IsControlVertexEditable) {
+		for (int i = 0; i < m_ControlVertexWidth; i++)
+			for (int j = 0; j < m_ControlVertexHeight; j++)
+				if (m_ControlVertex[i][j].GetInfo3(K, L, info, NULL, true))
+					return true;
+		return false;
+	}
+
 	if (pHint && pHint->pNode == this && fromOutSide)
 		return false;
-
-	for (int i = 0; i < m_ControlVertexWidth; i++)
-		for (int j = 0; j < m_ControlVertexHeight; j++)
-			if (m_ControlVertex[i][j].GetInfo3(K, L, info, NULL, true))
-				return true;
 
 	float	t = (K.y) ? -L.y / K.y : ((L.y> 0) ? FLT_MAX : -FLT_MAX);
 
@@ -74,11 +93,11 @@ bool NurbsPrimitive::GetInfo(const sp& K, const sp& L, Info& info, const Info* p
 
 void NurbsPrimitive::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
 {
-	//if (m_IsControlVertexEditable) {
+	if (m_IsControlVertexEditable) {
 		for (int i = 0; i < m_ControlVertexWidth; i++)
 			for (int j = 0; j < m_ControlVertexHeight; j++)
 				m_ControlVertex[i][j].Draw_Outline(pDC, raytraceview, mat);
-	//}
+	}
 	Node::Draw_Outline(pDC, raytraceview, mat);
 }
 

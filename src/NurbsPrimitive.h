@@ -32,6 +32,8 @@ public:
 	const Node*	MakeCopy() const { return new NurbsPrimitive(*this); }
 	bool SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& m) const;
 	void Serialize(CArchive& ar);
+	bool OnControlVertex();
+	bool OnObjectMode();
 };
 
 #endif

@@ -2,6 +2,7 @@
 class Selectable
 {
 protected:
+	bool		m_Selected;
 	matrix		m_Scale;	// スケール変換
 	matrix		m_Rotate;	// 回転
 	matrix		m_Move;		// 平行移動
@@ -25,5 +26,6 @@ public:
 	void MovePivot(eAxis axis, float d);
 	bool GetInfo3(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide);
 	virtual	void Serialize(CArchive& ar);
+	virtual bool OnObjectMode() { return false; }
 };
 
