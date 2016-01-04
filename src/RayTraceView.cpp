@@ -81,6 +81,10 @@ BEGIN_MESSAGE_MAP(CRayTraceView, CView)
 	ON_COMMAND(ID_VIEW_CUDA_RAYTRACE, &CRayTraceView::OnViewCudaRaytrace)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_CUDA_RAYTRACE, &CRayTraceView::OnUpdateViewCudaRaytrace)
 	ON_WM_TIMER()
+	ON_COMMAND(ID_CONTROL_VERTEX, &CRayTraceView::OnControlVertex)
+	ON_COMMAND(ID_OBJECT_MODE, &CRayTraceView::OnObjectMode)
+	ON_COMMAND(ID_SELECT_ALL, &CRayTraceView::OnSelectAll)
+	ON_COMMAND(ID_COMPLETE_TOOL, &CRayTraceView::OnCompleteTool)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -712,21 +716,22 @@ void CRayTraceView::OnSize(UINT nType, int cx, int cy)
 	}
 }
 
+Selectable* CRayTraceView::GetSelectable(const CPoint& point)
+{
+	sp k, l;
+	GetVectorFromPoint(k, l, point.x, point.y);
+	return ((CRayTraceDoc*)GetDocument())->m_Root.GetSelectable(k, l);
+}
+
 void CRayTraceView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	if (m_Alt)
 		return;
-	
 	if (m_SelectedNode && m_Viewport.SetManipulatorAxis(*this, point, matrix(4, 4))) {
 		Invalidate();
 		return;
 	}
-
-	CRayTraceDoc	*pDoc = GetDocument();
-	Info	info;
-	sp k, l;
-	GetVectorFromPoint(k, l, point.x, point.y);
-	m_SelectedNode = pDoc->m_Root.GetSelectable(k, l);
+	m_SelectedNode = GetSelectable(point);
 	m_AltStart = point;
 }
 
@@ -734,18 +739,20 @@ void CRayTraceView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	if (m_Alt)
 		return;
-
-	CRayTraceDoc	*pDoc = GetDocument();
-	Info	info;
-	sp k, l;
-	GetVectorFromPoint(k, l, point.x, point.y);
-	m_SelectedNode = pDoc->m_Root.GetSelectable(k, l);
+	m_SelectedNode = GetSelectable(point);
 	Invalidate();
 }
 
 void CRayTraceView::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	m_AltStart = point;
+
+	CMenu cMenu;
+	cMenu.LoadMenu(IDR_POPUP_MENU);
+	CMenu* popup = cMenu.GetSubMenu(m_SelectedNode || GetSelectable(point) ? 0 : 1);
+	ClientToScreen(&point);
+	popup->TrackPopupMenu(0, point.x, point.y, this);
+	cMenu.DestroyMenu();
 }
 
 void CRayTraceView::UpdateDevice()
@@ -1016,7 +1023,24 @@ void CRayTraceView::OnDestroy()
 	}
 }
 
+void CRayTraceView::OnControlVertex()
+{
+	// TODO: Add your command handler code here
+}
+
+void CRayTraceView::OnObjectMode()
+{
+	// TODO: Add your command handler code here
+}
 
 
+void CRayTraceView::OnSelectAll()
+{
+	// TODO: Add your command handler code here
+}
 
 
+void CRayTraceView::OnCompleteTool()
+{
+	// TODO: Add your command handler code here
+}

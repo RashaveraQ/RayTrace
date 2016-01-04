@@ -63,6 +63,7 @@ private:
 	BOOL		m_Alt;
 	POINT		m_AltStart;
 	void GetVectorFromPoint(sp& k, sp& l, int px, int py);
+	Selectable* GetSelectable(const CPoint&);
 	// オペレーション
 public:
 
@@ -126,6 +127,10 @@ public:
 	afx_msg void OnViewCudaRaytrace();
 	afx_msg void OnUpdateViewCudaRaytrace(CCmdUI *pCmdUI);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnControlVertex();
+	afx_msg void OnObjectMode();
+	afx_msg void OnSelectAll();
+	afx_msg void OnCompleteTool();
 };
 
 #ifndef _DEBUG  // RayTraceView.cpp ファイルがデバッグ環境の時使用されます。
