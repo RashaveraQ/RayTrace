@@ -112,12 +112,6 @@ sp::sp(const D3DMATERIAL9& mtrl)
 
 void sp::getPOINT(long& ox, long& oy, long cx, long cy) const
 {
-	if (z > -20) {
-		ox = (long)(((x / (PERSPECTIVE_RATIO * (z + 20))) + 10) * cx / 20);
-		oy = (long)(((y / (PERSPECTIVE_RATIO * (z + 20))) + 10) * cx / 20);
-	}
-	else {
-		ox = (long)(((x / 1E-10) + 10) * cx / 20);
-		oy = (long)(((y / 1E-10) + 10) * cx / 20);
-	}
+	ox = cx * (x + 0.5 * z + 20) / (z + 40);
+	oy = cx * (y + 0.5 * z + 20) / (z + 40);
 }
