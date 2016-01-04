@@ -85,6 +85,7 @@ BEGIN_MESSAGE_MAP(CRayTraceView, CView)
 	ON_COMMAND(ID_OBJECT_MODE, &CRayTraceView::OnObjectMode)
 	ON_COMMAND(ID_SELECT_ALL, &CRayTraceView::OnSelectAll)
 	ON_COMMAND(ID_COMPLETE_TOOL, &CRayTraceView::OnCompleteTool)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_WIREFRAME_WITH_RAYTRACE, &CRayTraceView::OnUpdateViewWireframeWithRaytrace)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -879,6 +880,7 @@ void CRayTraceView::OnUpdateViewD3dwireframe(CCmdUI* pCmdUI) { pCmdUI->SetCheck(
 void CRayTraceView::OnUpdateViewFlatshading(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eD3DFlatShading); }
 void CRayTraceView::OnUpdateViewGouraudshading(CCmdUI* pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eD3DGouraudShading); }
 void CRayTraceView::OnUpdateViewCudaRaytrace(CCmdUI *pCmdUI) { pCmdUI->SetCheck(m_CudaRayTraceView); }
+void CRayTraceView::OnUpdateViewWireframeWithRaytrace(CCmdUI *pCmdUI) { pCmdUI->SetCheck(m_ViewMode == eWireFrameWithRayTrace); }
 
 BOOL CRayTraceView::OnEraseBkgnd(CDC* pDC)
 {
@@ -1046,3 +1048,5 @@ void CRayTraceView::OnCompleteTool()
 {
 	// TODO: Add your command handler code here
 }
+
+

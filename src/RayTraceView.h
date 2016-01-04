@@ -131,6 +131,7 @@ public:
 	afx_msg void OnObjectMode();
 	afx_msg void OnSelectAll();
 	afx_msg void OnCompleteTool();
+	afx_msg void OnUpdateViewWireframeWithRaytrace(CCmdUI *pCmdUI);
 };
 
 #ifndef _DEBUG  // RayTraceView.cpp ファイルがデバッグ環境の時使用されます。
