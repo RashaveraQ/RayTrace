@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "Point.h"
 
 Point::Point(const sp& isp)
@@ -59,7 +59,7 @@ void Point::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& ma
 	P.x -= 3;
 	P.y -= 3;
 	CRect rect(P, CSize(6, 6));
-	pDC->FillSolidRect(rect, (pNode == this) ? RGB(255,255,255) : RGB(150, 0, 150));
+	pDC->FillSolidRect(rect, (pNode == this) ? RGB(255,255, 0) : RGB(150, 0, 150));
 	if (pNode == this)
 		Selectable::Draw_Outline(pDC, raytraceview, mat * m_Matrix);
 }
