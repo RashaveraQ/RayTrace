@@ -743,6 +743,7 @@ void CRayTraceView::OnLButtonUp(UINT nFlags, CPoint point)
 
 	m_SelectionRect.SetRect(m_SelectionRect.TopLeft(), point);
 	m_SelectionRect.NormalizeRect();
+	m_SelectionRect.InflateRect(3, 3);
 
 	// シフトキーを押していない場合は、全ての選択を解除する。
 	if (!(nFlags & MK_SHIFT) && m_Viewport.ResetSelection())
@@ -758,6 +759,9 @@ void CRayTraceView::OnLButtonUp(UINT nFlags, CPoint point)
 void CRayTraceView::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	m_AltStart = point;
+
+	if (m_Alt || (nFlags & MK_SHIFT))
+		return;
 
 	CMenu cMenu;
 	cMenu.LoadMenu(IDR_POPUP_MENU);
