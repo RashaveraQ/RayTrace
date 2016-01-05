@@ -27,5 +27,7 @@ public:
 	bool GetInfo3(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide);
 	virtual	void Serialize(CArchive& ar);
 	virtual bool OnObjectMode() { return false; }
+	virtual bool ChangeSelection(const CRect* pRect, int cx, int cy);
+	virtual bool ResetSelection();
 };
 

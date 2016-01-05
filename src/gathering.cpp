@@ -148,3 +148,23 @@ void Gathering::SetRoot(Node* const root)
 	for (int i = 0; i < m_Member; i++)
 		m_Node[i]->SetRoot(root);
 }
+
+bool Gathering::ChangeSelection(const CRect* pRect, int cx, int cy)
+{
+	bool ans = false;
+	for (int i = 0; i < m_Member; i++) {
+		if (m_Node[i]->ChangeSelection(pRect, cx, cy))
+			ans = true;
+	}
+	return ans;
+}
+
+bool Gathering::ResetSelection()
+{
+	bool ans = false;
+	for (int i = 0; i < m_Member; i++) {
+		if (m_Node[i]->ResetSelection())
+			ans = true;
+	}
+	return ans;
+}

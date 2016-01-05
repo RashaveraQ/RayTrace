@@ -312,3 +312,21 @@ void Selectable::Serialize(CArchive& ar)
 		m_Matrix = m_Move * m_Rotate * m_Scale;
 	}
 }
+
+bool Selectable::ChangeSelection(const CRect* pRect, int cx, int cy)
+{
+	long ox, oy;
+	sp(m_Matrix * sp()).getPOINT(ox, oy, cx, cy);
+	if (ox < pRect->left || pRect->right < ox || oy < pRect->top || pRect->bottom < oy)
+		return false;
+	m_Selected = !m_Selected;
+	return true;
+}
+
+bool Selectable::ResetSelection()
+{
+	if (!m_Selected)
+		return false;
+	m_Selected = false;
+	return true;
+}
