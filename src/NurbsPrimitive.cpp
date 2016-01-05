@@ -136,3 +136,27 @@ void NurbsPrimitive::Serialize(CArchive& ar)
 				m_ControlVertex[i][j].Serialize(ar);
 	}
 }
+
+bool NurbsPrimitive::ChangeSelection(const CRect* pRect, int cx, int cy, const matrix& mat)
+{
+	matrix m = mat * m_Matrix;
+	if (m_IsControlVertexEditable) {
+		bool ans = false;
+		for (int i = 0; i < m_ControlVertexWidth; i++)
+			for (int j = 0; j < m_ControlVertexHeight; j++)
+				ans |= m_ControlVertex[i][j].ChangeSelection(pRect, cx, cy, m);
+		return ans;
+	}
+	return Node::ChangeSelection(pRect, cx, cy, mat);
+}
+
+bool NurbsPrimitive::ResetSelection()
+{
+	bool ans = false;
+	for (int i = 0; i < m_ControlVertexWidth; i++)
+		for (int j = 0; j < m_ControlVertexHeight; j++)
+			ans |= m_ControlVertex[i][j].ResetSelection();
+	ans |= Node::ResetSelection();
+	return ans;
+}
+

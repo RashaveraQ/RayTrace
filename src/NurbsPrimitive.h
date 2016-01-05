@@ -34,6 +34,8 @@ public:
 	void Serialize(CArchive& ar);
 	bool OnControlVertex();
 	bool OnObjectMode();
+	bool ChangeSelection(const CRect* pRect, int cx, int cy, const matrix& mat);
+	bool ResetSelection();
 };
 
 #endif

@@ -207,7 +207,7 @@ void Selectable::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) con
 
 bool Selectable::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& mat) const
 {
-	if (rtv.m_SelectedNode != this || rtv.m_Manipulator.Type == eSELECT)
+	if (!m_Selected || rtv.m_Manipulator.Type == eSELECT)
 		return false;
 
 	const CSize& size = rtv.m_ClientSize;
@@ -313,10 +313,10 @@ void Selectable::Serialize(CArchive& ar)
 	}
 }
 
-bool Selectable::ChangeSelection(const CRect* pRect, int cx, int cy)
+bool Selectable::ChangeSelection(const CRect* pRect, int cx, int cy, const matrix& mat)
 {
 	long ox, oy;
-	sp(m_Matrix * sp()).getPOINT(ox, oy, cx, cy);
+	sp(mat * m_Matrix * sp()).getPOINT(ox, oy, cx, cy);
 	if (ox < pRect->left || pRect->right < ox || oy < pRect->top || pRect->bottom < oy)
 		return false;
 	m_Selected = !m_Selected;

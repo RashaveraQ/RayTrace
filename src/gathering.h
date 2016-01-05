@@ -26,7 +26,7 @@ public:
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	bool Delete(Node*);
 	void Serialize(CArchive& ar);
-	bool ChangeSelection(const CRect* pRect, int cx, int cy);
+	bool ChangeSelection(const CRect* pRect, int cx, int cy, const matrix& mat);
 	bool ResetSelection();
 };
 

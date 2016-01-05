@@ -270,7 +270,7 @@ void Node::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry,
 
 void Node::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& m) const
 {
-	if (rtv.m_SelectedNode != this || rtv.m_Manipulator.Type == eSELECT)
+	if (!m_Selected || rtv.m_Manipulator.Type == eSELECT)
 		return;
 
 	Selectable::Draw_Outline(pDC, rtv, m);

@@ -732,7 +732,7 @@ void CRayTraceView::OnLButtonDown(UINT nFlags, CPoint point)
 		Invalidate();
 		return;
 	}
-	m_SelectedNode = GetSelectable(point);
+	m_SelectionRect.SetRect(point, point);
 	m_AltStart = point;
 }
 
@@ -740,8 +740,19 @@ void CRayTraceView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	if (m_Alt)
 		return;
-	m_SelectedNode = GetSelectable(point);
-	Invalidate();
+
+	m_SelectionRect.SetRect(m_SelectionRect.TopLeft(), point);
+	m_SelectionRect.NormalizeRect();
+
+	// シフトキーを押していない場合は、全ての選択を解除する。
+	if (!(nFlags & MK_SHIFT) && m_Viewport.ResetSelection())
+		Invalidate();
+
+	// 選択を切り替える
+	if (m_Viewport.ChangeSelection(&m_SelectionRect, m_ClientSize.cx, m_ClientSize.cy, matrix(4,4)))
+		Invalidate();
+	
+	//m_SelectedNode = GetSelectable(point);
 }
 
 void CRayTraceView::OnRButtonDown(UINT nFlags, CPoint point)

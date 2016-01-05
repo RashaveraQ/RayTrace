@@ -52,14 +52,13 @@ bool Point::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 void Point::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
 {
 	const CSize& size = raytraceview.m_ClientSize;
-	const Selectable* pNode = raytraceview.m_SelectedNode;
 	//pDC->SelectStockObject((pNode == this) ? WHITE_PEN : BLACK_PEN);
 	POINT P;
 	sp(mat * (sp)*this).getPOINT(P.x, P.y, size.cx, size.cy);
 	P.x -= 3;
 	P.y -= 3;
 	CRect rect(P, CSize(6, 6));
-	pDC->FillSolidRect(rect, (pNode == this) ? RGB(255,255, 0) : RGB(150, 0, 150));
-	if (pNode == this)
+	pDC->FillSolidRect(rect, m_Selected ? RGB(255,255, 0) : RGB(150, 0, 150));
+	if (m_Selected)
 		Selectable::Draw_Outline(pDC, raytraceview, mat * m_Matrix);
 }
