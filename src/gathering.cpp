@@ -91,16 +91,6 @@ void Gathering::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeom
 	Node::AddGeometry(pd3dDevice, lstGeometry, rtv, m);
 }
 
-bool Gathering::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& mat) const
-{
-	matrix m = m_Matrix * mat;
-	for (int i = 0; i < m_Member; i++) {
-		if (m_Node[i]->SetManipulatorAxis(rtv, point, m))
-			return true;
-	}
-	return false;
-}
-
 void Gathering::InsertItem(CTreeCtrl& c, HTREEITEM hParent, HTREEITEM hInsertAfter)
 {
 	for (short i = 0; i < m_Member; i++)

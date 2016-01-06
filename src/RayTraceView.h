@@ -65,7 +65,9 @@ private:
 	CRect		m_SelectionRect;
 	void GetVectorFromPoint(sp& k, sp& l, int px, int py);
 	Selectable* GetSelectable(const CPoint&);
-	void drawManipulator(CDC* pDC);
+	void drawManipulator(CDC* pDC) const;
+	bool setManipulatorAxis(const CPoint& point);
+
 	// オペレーション
 public:
 
