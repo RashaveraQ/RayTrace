@@ -33,7 +33,7 @@ public:
 	class CRayTraceDoc* GetDocument();
 	fsize		m_View;
 	Viewport	m_Viewport;		//	視点開始オブジェクトのポインタ
-	Selectable*	m_SelectedNode;
+	Selectable*	m_pActiveNode;
 	CSize		m_ClientSize;
 
 	enum {

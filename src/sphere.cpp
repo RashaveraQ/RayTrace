@@ -28,11 +28,9 @@ Sphere::Sphere(const Sphere& other)
 void Sphere::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
 {
 	const CSize& size = raytraceview.m_ClientSize;
-	const Selectable* pNode = raytraceview.m_SelectedNode;
-
 	matrix m = mat * m_Matrix;
 
-	pDC->SelectStockObject((pNode == this) ? WHITE_PEN : BLACK_PEN);
+	pDC->SelectStockObject(m_Selected ? WHITE_PEN : BLACK_PEN);
 
 	POINT	P[50];
 

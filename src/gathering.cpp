@@ -57,18 +57,8 @@ void	Gathering::Serialize(CArchive& ar)
 void Gathering::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& mat) const
 {
 	matrix m = mat * m_Matrix;
-	
-	Selectable *pNodeBackup = rtv.m_SelectedNode;
-	if (pNodeBackup == (Node*)this) {
-		for (int i = 0; i < m_Member; i++) {
-			rtv.m_SelectedNode = m_Node[i];
-			m_Node[i]->Draw_Outline(pDC, rtv, m);
-		}
-		rtv.m_SelectedNode = pNodeBackup;
-	} else {
-		for (int i = 0; i < m_Member; i++)
-			m_Node[i]->Draw_Outline(pDC, rtv, m);
-	}
+	for (int i = 0; i < m_Member; i++)
+		m_Node[i]->Draw_Outline(pDC, rtv, m);
 	Node::Draw_Outline(pDC, rtv, m);
 }
 

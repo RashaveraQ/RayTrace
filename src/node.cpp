@@ -205,7 +205,7 @@ bool InitVertexBuffer(LPDIRECT3DDEVICE9 pd3dDevice, LPDIRECT3DVERTEXBUFFER9& pVB
 
 void Node::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& m) const
 {
-	if (rtv.m_SelectedNode != this || rtv.m_Manipulator.Type == eSELECT)
+	if (!m_Selected || rtv.m_Manipulator.Type == eSELECT)
 		return;
 
 	const Viewport& viewport = rtv.m_Viewport;

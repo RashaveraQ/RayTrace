@@ -278,7 +278,7 @@ void CScnTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
 	CRayTraceDoc*	pDoc = (CRayTraceDoc*)GetDocument();
 	CRayTraceView*  pRayTraceView = (CRayTraceView*)((CSplitterWnd*)GetParent())->GetPane(0, 1);
 
-	pRayTraceView->m_SelectedNode = (Node*)c.GetItemData(c.GetSelectedItem());
+	pRayTraceView->m_pActiveNode = (Node*)c.GetItemData(c.GetSelectedItem());
 
 	if (pRayTraceView->m_ViewMode == CRayTraceView::eWireFrame)
 		pRayTraceView->Invalidate();

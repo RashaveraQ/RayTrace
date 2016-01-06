@@ -103,7 +103,7 @@ CRayTraceView::CRayTraceView()
 	m_CudaRayTraceView = false;
 	m_Alt = FALSE;
 	m_AltStart.x = m_AltStart.y = 0;
-	m_SelectedNode = NULL;
+	m_pActiveNode = NULL;
 	m_Manipulator.Type = eSELECT;
 	m_Manipulator.Axis = eNONE;
 	m_pd3dDevice = NULL;
@@ -837,7 +837,7 @@ void CRayTraceView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	if (m_Alt)
 		return;
-	if (m_SelectedNode && m_Viewport.SetManipulatorAxis(*this, point, matrix(4, 4))) {
+	if (m_pActiveNode && m_Viewport.SetManipulatorAxis(*this, point, matrix(4, 4))) {
 		Invalidate();
 		return;
 	}
@@ -875,8 +875,8 @@ void CRayTraceView::OnRButtonDown(UINT nFlags, CPoint point)
 	CMenu cMenu;
 	cMenu.LoadMenu(IDR_POPUP_MENU);
 
-	m_SelectedNode = GetSelectable(point);
-	CMenu* popup = cMenu.GetSubMenu((!m_SelectedNode) ? 0 : (dynamic_cast<NurbsPrimitive*>(m_SelectedNode)) ? 1 : 2);
+	m_pActiveNode = GetSelectable(point);
+	CMenu* popup = cMenu.GetSubMenu((!m_pActiveNode) ? 0 : (dynamic_cast<NurbsPrimitive*>(m_pActiveNode)) ? 1 : 2);
 	ClientToScreen(&point);
 	popup->TrackPopupMenu(0, point.x, point.y, this);
 	cMenu.DestroyMenu();
@@ -1024,7 +1024,7 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 	d.y = m_AltStart.y - point.y;
 	m_AltStart = point;
 
-	Selectable* p = m_SelectedNode ? m_SelectedNode : &m_Viewport;
+	Selectable* p = m_pActiveNode ? m_pActiveNode : &m_Viewport;
 	eAxis axis;
 	eType type;
 
@@ -1037,8 +1037,9 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 		case MK_RBUTTON: type = eSCALE;	break;
 		default: return;
 		}
-	} else if (m_SelectedNode && (nFlags == MK_LBUTTON || nFlags == MK_MBUTTON)) {
-		p = m_SelectedNode;
+	}
+	else if (m_pActiveNode && (nFlags == MK_LBUTTON || nFlags == MK_MBUTTON)) {
+		p = m_pActiveNode;
 		axis = m_Manipulator.Axis;
 		type = m_Manipulator.Type;
 	} else {
@@ -1048,13 +1049,13 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 
 	switch (type){
 	case eMOVE:
-		if (m_Alt || !m_SelectedNode)
+		if (m_Alt || !m_pActiveNode)
 			p->Move(d);
 		else
 			p->Move(axis, (float)d.x);
 		break;
 	case eROTATE:
-		if (m_Alt || !m_SelectedNode)
+		if (m_Alt || !m_pActiveNode)
 			p->Rotate(d);
 		else
 			p->Rotate(axis, (float)d.x);
@@ -1063,7 +1064,7 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 		p->Scale(axis, (float)d.x);
 		break;
 	case ePIVOT_MOVE:
-		if (!m_SelectedNode)
+		if (!m_pActiveNode)
 			return;
 		p->MovePivot(axis, (float)d.x);
 		break;
@@ -1075,7 +1076,7 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 	m_NowSize = START_SQUARE;
 	m_Job = CONTINUED;
 
-	if (m_SelectedNode) {
+	if (m_pActiveNode) {
 		((CRayTraceDoc*)GetDocument())->UpdateAllViews(NULL);
 	} else {
 		if (m_CudaRayTraceView)
@@ -1109,7 +1110,7 @@ void CRayTraceView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	case 45: m_Manipulator.Type = ePIVOT_MOVE;	break;	// Insert Key
 	}
 
-	if (m_SelectedNode)
+	if (m_pActiveNode)
 		Invalidate();
 
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
@@ -1153,13 +1154,13 @@ void CRayTraceView::OnDestroy()
 
 void CRayTraceView::OnControlVertex()
 {
-	if (((NurbsPrimitive*)m_SelectedNode)->OnControlVertex())
+	if (((NurbsPrimitive*)m_pActiveNode)->OnControlVertex())
 		Invalidate();
 }
 
 void CRayTraceView::OnObjectMode()
 {
-	if (m_SelectedNode->OnObjectMode())
+	if (m_pActiveNode->OnObjectMode())
 		Invalidate();
 }
 

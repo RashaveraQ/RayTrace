@@ -53,9 +53,8 @@ bool Plane::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 void Plane::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
 {
 	const CSize& size = raytraceview.m_ClientSize;
-	const Selectable* pNode = raytraceview.m_SelectedNode;
 	matrix m = mat * m_Matrix;
-	pDC->SelectStockObject((pNode == this) ? WHITE_PEN : BLACK_PEN);
+	pDC->SelectStockObject(m_Selected ? WHITE_PEN : BLACK_PEN);
 
 	sp p[] = { sp(1, 0, 1), sp(-1, 0, 1), sp(-1, 0, -1), sp(1, 0, -1) };
 
