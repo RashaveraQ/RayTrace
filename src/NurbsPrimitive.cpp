@@ -101,6 +101,31 @@ void NurbsPrimitive::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const m
 	Node::Draw_Outline(pDC, raytraceview, mat);
 }
 
+bool NurbsPrimitive::getManipulatorMatrix(matrix& mat) const
+{
+	if (!m_IsControlVertexEditable)
+		return Node::getManipulatorMatrix(mat);
+
+	bool ans = false;
+	matrix m1;
+	int c = 0;
+	for (int i = 0; i < m_ControlVertexWidth; i++) {
+		for (int j = 0; j < m_ControlVertexHeight; j++) {
+			matrix m2;
+			if (m_ControlVertex[i][j].getManipulatorMatrix(m2)) {
+				m1 = m1 * m2;
+				c++;
+				ans = true;
+			}
+		}
+	}
+	if (ans) {
+		m1 = m1 * expand(1.0f / c);
+		mat = mat * m1;
+	}
+	return ans;
+}
+
 bool NurbsPrimitive::SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& mat) const
 {
 	matrix m = m_Matrix * mat;

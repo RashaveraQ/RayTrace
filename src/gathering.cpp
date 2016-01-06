@@ -72,6 +72,27 @@ void Gathering::Draw_Outline(CDC* pDC, CRayTraceView& rtv, const matrix& mat) co
 	Node::Draw_Outline(pDC, rtv, m);
 }
 
+bool Gathering::getManipulatorMatrix(matrix& mat) const
+{
+	matrix m1;
+	bool ans = false;
+	int c = 0;
+	for (int i = 0; i < m_Member; i++) {
+		matrix m2;
+		if (m_Node[i]->getManipulatorMatrix(m2)) {
+			m1 = m1 * m2;
+			c++;
+			ans = true;
+		}
+	}
+
+	if (ans) {
+		m1 = m1 * expand(1.0f / c);
+		mat = mat * m_Matrix * m1;
+	}
+	return ans;
+}
+
 void Gathering::AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& mat) const
 {
 	matrix m = mat * m_Matrix;

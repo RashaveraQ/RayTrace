@@ -36,6 +36,7 @@ public:
 	bool OnObjectMode();
 	bool ChangeSelection(const CRect* pRect, int cx, int cy, const matrix& mat);
 	bool ResetSelection();
+	bool getManipulatorMatrix(matrix& mat) const;
 };
 
 #endif

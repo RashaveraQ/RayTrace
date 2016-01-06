@@ -13,8 +13,7 @@
 
 class Viewport : public Plus  
 {
-friend class Node;
-friend class Selectable;
+friend class CRayTraceView;
 public:
 	Viewport();
 	virtual ~Viewport();

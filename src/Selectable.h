@@ -14,7 +14,7 @@ public:
 	Selectable();
 	Selectable(const Selectable& other);
 	~Selectable();
-	virtual void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& m) const;
+	virtual void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& m) const {}
 	virtual bool SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& m) const;
 	Selectable* GetSelectable(const sp& K, const sp& L);
 	virtual	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const = 0;
@@ -29,5 +29,6 @@ public:
 	virtual bool OnObjectMode() { return false; }
 	virtual bool ChangeSelection(const CRect* pRect, int cx, int cy, const matrix& mat);
 	virtual bool ResetSelection();
+	virtual bool getManipulatorMatrix(matrix& mat) const;
 };
 
