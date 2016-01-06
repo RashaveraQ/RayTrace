@@ -77,7 +77,7 @@ bool Gathering::getManipulatorMatrix(matrix& mat) const
 	}
 
 	if (ans) {
-		m1 = m1 * expand(1.0f / c);
+		m1 = expand(1.0f / c) * m1;
 		mat = mat * m_Matrix * m1;
 	}
 	return ans;

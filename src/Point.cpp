@@ -3,7 +3,6 @@
 
 Point::Point(const sp& isp)
 {
-	m_Scale = expand(0.1f);
 	m_Move = move(isp.x, isp.y, isp.z);
 	updateMatrix();
 }
@@ -12,7 +11,7 @@ bool Point::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 {
 	float	a = K * K;
 	float	b = K * L;
-	float	c = L * L - 1.0f;
+	float	c = L * L - 0.01f;
 
 	float	bb_ac = b*b - a*c;
 
