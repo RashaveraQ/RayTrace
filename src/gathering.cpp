@@ -169,28 +169,24 @@ bool Gathering::ResetSelection()
 
 void Gathering::Move(eAxis axis, float d)
 {
-	Node::Move(axis, d);
 	for (int i = 0; i < m_Member; i++)
 		m_Node[i]->Move(axis, d);
 }
 
 void Gathering::Rotate(eAxis axis, float d)
 {
-	Node::Rotate(axis, d);
 	for (int i = 0; i < m_Member; i++)
 		m_Node[i]->Rotate(axis, d);
 }
 
 void Gathering::Scale(eAxis axis, float d)
 {
-	Node::Scale(axis, d);
 	for (int i = 0; i < m_Member; i++)
 		m_Node[i]->Scale(axis, d);
 }
 
 void Gathering::MovePivot(eAxis axis, float d)
 {
-	Node::MovePivot(axis, d);
 	for (int i = 0; i < m_Member; i++)
 		m_Node[i]->MovePivot(axis, d);
 }
