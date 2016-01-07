@@ -19,7 +19,9 @@ static char THIS_FILE[] = __FILE__;
 
 Viewport::Viewport()
 {
+	m_Selected = true;
 	Rotate(eZ, 10);
+	m_Selected = false;
 }
 
 Viewport::~Viewport()
@@ -103,3 +105,17 @@ BOOL Viewport::AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target)
 {
 	return FALSE;
 }
+
+void Viewport::Move2(POINT d)
+{
+	m_Move.set_data(1, 4, m_Move.get_data(1, 4) - (float)d.x / 20);
+	m_Move.set_data(2, 4, m_Move.get_data(2, 4) - (float)d.y / 20);
+	updateMatrix();
+}
+void Viewport::Rotate2(POINT d)
+{
+	rotate	r((float)-d.y, (float)-d.x, 0, sqrt((float)(d.x * d.x + d.y * d.y)) / 2);
+	m_Rotate = r * m_Rotate;
+	updateMatrix();
+}
+

@@ -922,7 +922,7 @@ void CRayTraceView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	if (m_Alt)
 		return;
-	if (m_pActiveNode && setManipulatorAxis(point)) {
+	if (setManipulatorAxis(point)) {
 		Invalidate();
 		return;
 	}
@@ -1109,12 +1109,10 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 	d.y = m_AltStart.y - point.y;
 	m_AltStart = point;
 
-	Selectable* p = m_pActiveNode ? m_pActiveNode : &m_Viewport;
 	eAxis axis;
 	eType type;
 
 	if (m_Alt) {
-		p = &m_Viewport;
 		axis = eNONE;
 		switch (nFlags) {
 		case MK_LBUTTON: type = eROTATE;break;
@@ -1123,8 +1121,7 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 		default: return;
 		}
 	}
-	else if (m_pActiveNode && (nFlags == MK_LBUTTON || nFlags == MK_MBUTTON)) {
-		p = m_pActiveNode;
+	else if (nFlags == MK_LBUTTON || nFlags == MK_MBUTTON) {
 		axis = m_Manipulator.Axis;
 		type = m_Manipulator.Type;
 	} else {
@@ -1134,24 +1131,22 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 
 	switch (type){
 	case eMOVE:
-		if (m_Alt || !m_pActiveNode)
-			p->Move(d);
+		if (m_Alt)
+			m_Viewport.Move2(d);
 		else
-			p->Move(axis, (float)d.x);
+			m_Viewport.Move(axis, (float)d.x);
 		break;
 	case eROTATE:
-		if (m_Alt || !m_pActiveNode)
-			p->Rotate(d);
+		if (m_Alt)
+			m_Viewport.Rotate2(d);
 		else
-			p->Rotate(axis, (float)d.x);
+			m_Viewport.Rotate(axis, (float)d.x);
 		break;
 	case eSCALE:
-		p->Scale(axis, (float)d.x);
+		m_Viewport.Scale(axis, (float)d.x);
 		break;
 	case ePIVOT_MOVE:
-		if (!m_pActiveNode)
-			return;
-		p->MovePivot(axis, (float)d.x);
+		m_Viewport.MovePivot(axis, (float)d.x);
 		break;
 	default:
 		return;

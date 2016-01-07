@@ -37,6 +37,10 @@ public:
 	bool ChangeSelection(const CRect* pRect, int cx, int cy, const matrix& mat);
 	bool ResetSelection();
 	bool getManipulatorMatrix(matrix& mat) const;
+	void Move(eAxis axis, float d);
+	void Rotate(eAxis axis, float d);
+	void Scale(eAxis axis, float d);
+	void MovePivot(eAxis axis, float d);
 };
 
 #endif

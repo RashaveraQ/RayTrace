@@ -47,6 +47,7 @@ bool NurbsPrimitive::OnControlVertex()
 	if (m_IsControlVertexEditable)
 		return false;
 	m_IsControlVertexEditable = true;
+	m_Selected = false;
 	return true;
 }
 
@@ -175,3 +176,49 @@ bool NurbsPrimitive::ResetSelection()
 	return ans;
 }
 
+void NurbsPrimitive::Move(eAxis axis, float d)
+{
+	if (m_IsControlVertexEditable) {
+		for (int i = 0; i < m_ControlVertexWidth; i++)
+			for (int j = 0; j < m_ControlVertexHeight; j++)
+				m_ControlVertex[i][j].Move(axis, d);
+	} else {
+		Node::Move(axis, d);
+	}
+}
+
+void NurbsPrimitive::Rotate(eAxis axis, float d)
+{
+	if (m_IsControlVertexEditable) {
+		for (int i = 0; i < m_ControlVertexWidth; i++)
+			for (int j = 0; j < m_ControlVertexHeight; j++)
+				m_ControlVertex[i][j].Rotate(axis, d);
+	}
+	else {
+		Node::Rotate(axis, d);
+	}
+}
+
+void NurbsPrimitive::Scale(eAxis axis, float d)
+{
+	if (m_IsControlVertexEditable) {
+		for (int i = 0; i < m_ControlVertexWidth; i++)
+			for (int j = 0; j < m_ControlVertexHeight; j++)
+				m_ControlVertex[i][j].Scale(axis, d);
+	}
+	else {
+		Node::Scale(axis, d);
+	}
+}
+
+void NurbsPrimitive::MovePivot(eAxis axis, float d)
+{
+	if (m_IsControlVertexEditable) {
+		for (int i = 0; i < m_ControlVertexWidth; i++)
+			for (int j = 0; j < m_ControlVertexHeight; j++)
+				m_ControlVertex[i][j].MovePivot(axis, d);
+	}
+	else {
+		Node::MovePivot(axis, d);
+	}
+}

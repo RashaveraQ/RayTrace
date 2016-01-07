@@ -41,6 +41,9 @@ void Selectable::updateMatrix()
 
 void Selectable::Move(eAxis axis, float d)
 {
+	if (!m_Selected)
+		return;
+
 	switch (axis) {
 	case eX:	m_Move.set_data(3, 4, m_Move.get_data(3, 4) - (float)d / 20);	break;
 	case eY:	m_Move.set_data(2, 4, m_Move.get_data(2, 4) - (float)d / 20);	break;
@@ -49,15 +52,11 @@ void Selectable::Move(eAxis axis, float d)
 	updateMatrix();
 }
 
-void Selectable::Move(POINT d)
-{
-	m_Move.set_data(1, 4, m_Move.get_data(1, 4) - (float)d.x / 20);
-	m_Move.set_data(2, 4, m_Move.get_data(2, 4) - (float)d.y / 20);
-	updateMatrix();
-}
-
 void Selectable::Rotate(eAxis axis, float d)
 {
+	if (!m_Selected)
+		return;
+
 	switch (axis) {
 	case eX:
 		m_Rotate = m_Rotate * m_Pivot * rotate(0, 0, 1, d) * m_Pivot.Inv();
@@ -72,16 +71,11 @@ void Selectable::Rotate(eAxis axis, float d)
 	updateMatrix();
 }
 
-void Selectable::Rotate(POINT d)
-{
-	rotate	r((float)-d.y, (float)-d.x, 0, sqrt((float)(d.x * d.x + d.y * d.y)) / 2);
-	m_Rotate = r * m_Rotate;
-	updateMatrix();
-}
-
-
 void Selectable::Scale(eAxis axis, float d)
 {
+	if (!m_Selected)
+		return;
+
 	if (axis == eX || axis == eNONE)
 		m_Scale.set_data(3, 3, m_Scale.get_data(3, 3) - d / 50);
 	if (axis == eY || axis == eNONE)
@@ -93,6 +87,9 @@ void Selectable::Scale(eAxis axis, float d)
 
 void Selectable::MovePivot(eAxis axis, float d)
 {
+	if (!m_Selected)
+		return;
+
 	switch (axis) {
 	case eX:	m_Pivot.set_data(3, 4, m_Pivot.get_data(3, 4) - (float)d / 20);	break;
 	case eY:	m_Pivot.set_data(2, 4, m_Pivot.get_data(2, 4) - (float)d / 20);	break;

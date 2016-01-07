@@ -17,12 +17,10 @@ public:
 	virtual void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& m) const {}
 	Selectable* GetSelectable(const sp& K, const sp& L);
 	virtual	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const = 0;
-	void Move(eAxis axis, float d);
-	void Move(POINT d);
-	void Rotate(eAxis axis, float d);
-	void Rotate(POINT d);
-	void Scale(eAxis axis, float d);
-	void MovePivot(eAxis axis, float d);
+	virtual void Move(eAxis axis, float d);
+	virtual void Rotate(eAxis axis, float d);
+	virtual void Scale(eAxis axis, float d);
+	virtual void MovePivot(eAxis axis, float d);
 	bool GetInfo3(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide);
 	virtual	void Serialize(CArchive& ar);
 	virtual bool OnObjectMode() { return false; }

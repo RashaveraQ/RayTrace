@@ -22,6 +22,8 @@ public:
 	void DetachRoot();
 	BOOL AddNode(CTreeCtrl& c, HTREEITEM SelectItem, Node* Target);
 	void AddGeometry(LPDIRECT3DDEVICE9 pd3dDevice, CListGeometry& lstGeometry, CRayTraceView& rtv, const matrix& matrix) const;
+	void Move2(POINT d);
+	void Rotate2(POINT d);
 };
 
 #endif // !defined(AFX_VIEWPORT_H__526166D6_44D0_4C72_AAE2_26BB886824C1__INCLUDED_)
