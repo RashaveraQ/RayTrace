@@ -19,9 +19,9 @@ static char THIS_FILE[] = __FILE__;
 
 Viewport::Viewport()
 {
-	m_Selected = true;
-	Rotate(eZ, 10);
-	m_Selected = false;
+	POINT p;
+	p.y = -10;
+	Rotate2(p);
 }
 
 Viewport::~Viewport()
