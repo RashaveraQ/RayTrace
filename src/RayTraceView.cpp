@@ -1143,7 +1143,10 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 			m_Viewport.Rotate(axis, (float)d.x);
 		break;
 	case eSCALE:
-		m_Viewport.Scale(axis, (float)d.x);
+		if (m_Alt)
+			m_Viewport.Scale2(d.x);
+		else
+			m_Viewport.Scale(axis, (float)d.x);
 		break;
 	case ePIVOT_MOVE:
 		m_Viewport.MovePivot(axis, (float)d.x);

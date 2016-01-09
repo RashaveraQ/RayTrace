@@ -119,3 +119,11 @@ void Viewport::Rotate2(POINT d)
 	updateMatrix();
 }
 
+void Viewport::Scale2(float d)
+{
+	m_Scale.set_data(3, 3, m_Scale.get_data(3, 3) - d / 50);
+	m_Scale.set_data(2, 2, m_Scale.get_data(2, 2) - d / 50);
+	m_Scale.set_data(1, 1, m_Scale.get_data(1, 1) - d / 50);
+	updateMatrix();
+}
+
