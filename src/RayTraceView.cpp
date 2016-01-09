@@ -172,14 +172,13 @@ static void displayImage(GLuint texture, int window_width, int window_height)
 	SDK_CHECK_ERROR_GL();
 }
 
-bool CRayTraceView::setManipulatorAxis(const CPoint& point/*, const matrix& mat*/)
+bool CRayTraceView::setManipulatorAxis(const CPoint& point)
 {
 	if (m_Manipulator.Type == eSELECT)
 		return false;
 
-	const Viewport& viewport = m_Viewport;
 	matrix mat;
-	if (!viewport.getManipulatorMatrix(mat))
+	if (!m_Viewport.getManipulatorMatrix(mat))
 		return false;
 
 	const CSize& size = m_ClientSize;
@@ -194,9 +193,9 @@ bool CRayTraceView::setManipulatorAxis(const CPoint& point/*, const matrix& mat*
 		r = 50;
 	case eMOVE:
 	case eSCALE:
-		px = p0 + viewport.m_Rotate * sp(0, 0, -2);
-		py = p0 + viewport.m_Rotate * sp(0, -2, 0);
-		pz = p0 + viewport.m_Rotate * sp(-2, 0, 0);
+		px = p0 + m_Viewport.m_Rotate * sp(0, 0, -2);
+		py = p0 + m_Viewport.m_Rotate * sp(0, -2, 0);
+		pz = p0 + m_Viewport.m_Rotate * sp(-2, 0, 0);
 		break;
 	default:
 		px = mat * sp(0, 0, -1/* / m_Scale.get_data(3, 3)*/);
