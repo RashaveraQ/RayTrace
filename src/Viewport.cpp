@@ -19,9 +19,8 @@ static char THIS_FILE[] = __FILE__;
 
 Viewport::Viewport()
 {
-	POINT p;
-	p.y = -10;
-	Rotate2(p);
+	m_Rotate = rotate_x(210) * rotate_y(-45) * m_Rotate;
+	updateMatrix();
 }
 
 Viewport::~Viewport()
