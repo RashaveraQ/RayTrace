@@ -101,3 +101,10 @@ BOOL CRayTraceDoc::OnOpenDocument(LPCTSTR lpszPathName)
 
 	return TRUE;
 }
+
+void CRayTraceDoc::updateManipulatorOrigin()
+{
+	matrix mat;
+	if (m_Root.getManipulatorMatrix(mat))
+		m_ManipulatorOrigin = mat * sp();
+}

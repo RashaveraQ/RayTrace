@@ -14,7 +14,7 @@ Torus::Torus(Node* const root, const TCHAR* const Name, const sp Color)
 {
 	if (!newDeviceNode())
 		exit(1);
-	Rotate(eZ, 90);
+	Rotate(sp(), eZ, 90);
 }
 
 Torus::Torus(const Torus& other)

@@ -256,7 +256,7 @@ bool CRayTraceView::setManipulatorAxis(const CPoint& point)
 	return true;
 }
 
-void CRayTraceView::drawManipulator(CDC* pDC) const
+void CRayTraceView::drawManipulator(CDC* pDC)
 {
 	matrix mat;
 	if (!m_Viewport.getManipulatorMatrix(mat))
@@ -937,15 +937,20 @@ void CRayTraceView::OnLButtonUp(UINT nFlags, CPoint point)
 	m_SelectionRect.NormalizeRect();
 	m_SelectionRect.InflateRect(3, 3);
 
+	bool selection_changed = false;
+
 	// シフトキーを押していない場合は、全ての選択を解除する。
 	if (!(nFlags & MK_SHIFT) && m_Viewport.ResetSelection())
-		Invalidate();
-
+		selection_changed = true;
+	
 	// 選択を切り替える
 	if (m_Viewport.ChangeSelection(&m_SelectionRect, m_ClientSize.cx, m_ClientSize.cy, matrix(4,4)))
-		Invalidate();
+		selection_changed = true;
 	
-	//m_SelectedNode = GetSelectable(point);
+	if (selection_changed)
+		Invalidate();
+
+	((CRayTraceDoc*)GetDocument())->updateManipulatorOrigin();
 }
 
 void CRayTraceView::OnRButtonDown(UINT nFlags, CPoint point)
@@ -1127,6 +1132,8 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 		return;
 	}
 
+	CRayTraceDoc* pDoc = GetDocument();
+
 	switch (type){
 	case eMOVE:
 		if (m_Alt)
@@ -1138,13 +1145,13 @@ void CRayTraceView::OnMouseMove(UINT nFlags, CPoint point)
 		if (m_Alt)
 			m_Viewport.Rotate2(d);
 		else
-			m_Viewport.Rotate(axis, (float)d.x);
+			m_Viewport.Rotate(pDoc->m_ManipulatorOrigin, axis, (float)d.x);
 		break;
 	case eSCALE:
 		if (m_Alt)
 			m_Viewport.Scale2(d.x);
 		else
-			m_Viewport.Scale(axis, (float)d.x);
+			m_Viewport.Scale(pDoc->m_ManipulatorOrigin, axis, (float)d.x);
 		break;
 	case ePIVOT_MOVE:
 		m_Viewport.MovePivot(axis, (float)d.x);

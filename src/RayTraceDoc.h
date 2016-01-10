@@ -20,7 +20,8 @@ protected: // シリアライズ機能のみから作成します。
 public:
 	sp			m_Light;		//	光源の方向ベクトル
 	Plus		m_Root;
-
+	sp			m_ManipulatorOrigin;
+	void		updateManipulatorOrigin();
 	// オペレーション
 public:
 

@@ -173,16 +173,16 @@ void Gathering::Move(eAxis axis, float d)
 		m_Node[i]->Move(axis, d);
 }
 
-void Gathering::Rotate(eAxis axis, float d)
+void Gathering::Rotate(const sp& o, eAxis axis, float d)
 {
 	for (int i = 0; i < m_Member; i++)
-		m_Node[i]->Rotate(axis, d);
+		m_Node[i]->Rotate(o, axis, d);
 }
 
-void Gathering::Scale(eAxis axis, float d)
+void Gathering::Scale(const sp& o, eAxis axis, float d)
 {
 	for (int i = 0; i < m_Member; i++)
-		m_Node[i]->Scale(axis, d);
+		m_Node[i]->Scale(o, axis, d);
 }
 
 void Gathering::MovePivot(eAxis axis, float d)

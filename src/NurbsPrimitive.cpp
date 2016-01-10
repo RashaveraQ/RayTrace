@@ -186,27 +186,27 @@ void NurbsPrimitive::Move(eAxis axis, float d)
 	}
 }
 
-void NurbsPrimitive::Rotate(eAxis axis, float d)
+void NurbsPrimitive::Rotate(const sp& o, eAxis axis, float d)
 {
 	if (m_IsControlVertexEditable) {
 		for (int i = 0; i < m_ControlVertexWidth; i++)
 			for (int j = 0; j < m_ControlVertexHeight; j++)
-				m_ControlVertex[i][j].Rotate(axis, d);
+				m_ControlVertex[i][j].Rotate(o, axis, d);
 	}
 	else {
-		Node::Rotate(axis, d);
+		Node::Rotate(o, axis, d);
 	}
 }
 
-void NurbsPrimitive::Scale(eAxis axis, float d)
+void NurbsPrimitive::Scale(const sp& o, eAxis axis, float d)
 {
 	if (m_IsControlVertexEditable) {
 		for (int i = 0; i < m_ControlVertexWidth; i++)
 			for (int j = 0; j < m_ControlVertexHeight; j++)
-				m_ControlVertex[i][j].Scale(axis, d);
+				m_ControlVertex[i][j].Scale(o, axis, d);
 	}
 	else {
-		Node::Scale(axis, d);
+		Node::Scale(o, axis, d);
 	}
 }
 

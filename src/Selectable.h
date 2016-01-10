@@ -18,8 +18,8 @@ public:
 	Selectable* GetSelectable(const sp& K, const sp& L);
 	virtual	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const = 0;
 	virtual void Move(eAxis axis, float d);
-	virtual void Rotate(eAxis axis, float d);
-	virtual void Scale(eAxis axis, float d);
+	virtual void Rotate(const sp& o, eAxis axis, float d);
+	virtual void Scale(const sp& o, eAxis axis, float d);
 	virtual void MovePivot(eAxis axis, float d);
 	bool GetInfo3(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide);
 	virtual	void Serialize(CArchive& ar);

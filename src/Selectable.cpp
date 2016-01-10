@@ -52,7 +52,7 @@ void Selectable::Move(eAxis axis, float d)
 	updateMatrix();
 }
 
-void Selectable::Rotate(eAxis axis, float d)
+void Selectable::Rotate(const sp& o, eAxis axis, float d)
 {
 	if (!m_Selected)
 		return;
@@ -71,10 +71,15 @@ void Selectable::Rotate(eAxis axis, float d)
 	updateMatrix();
 }
 
-void Selectable::Scale(eAxis axis, float d)
+void Selectable::Scale(const sp& o, eAxis axis, float d)
 {
 	if (!m_Selected)
 		return;
+
+	sp o0 = m_Matrix * sp();
+	Move(eZ, d * (o0.x - o.x));
+	Move(eY, d * (o0.y - o.y));
+	Move(eX, d * (o0.z - o.z));
 
 	if (axis == eX || axis == eNONE)
 		m_Scale.set_data(3, 3, m_Scale.get_data(3, 3) - d / 50);
