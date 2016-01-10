@@ -1198,8 +1198,7 @@ void CRayTraceView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	case 45: m_Manipulator.Type = ePIVOT_MOVE;	break;	// Insert Key
 	}
 
-	if (m_pActiveNode)
-		Invalidate();
+	Invalidate();
 
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
 }

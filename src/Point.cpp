@@ -61,3 +61,21 @@ void Point::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& ma
 	if (m_Selected)
 		Selectable::Draw_Outline(pDC, raytraceview, mat * m_Matrix);
 }
+
+void Point::Rotate(const sp& o, eAxis axis, float d)
+{
+	Selectable::Rotate(o, axis, d);
+}
+
+void Point::Scale(const sp& o, eAxis axis, float d)
+{
+	if (!m_Selected)
+		return;
+
+	sp o0 = d * (m_Matrix * sp() - o);
+	Move(eZ, o0.x);
+	Move(eY, o0.y);
+	Move(eX, o0.z);
+
+	Selectable::Scale(o, axis, d);
+}
