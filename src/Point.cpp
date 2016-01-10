@@ -64,6 +64,30 @@ void Point::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& ma
 
 void Point::Rotate(const sp& o, eAxis axis, float d)
 {
+	/*
+	sp r = (m_Matrix * sp() - o);
+	float l = r.abs();
+
+	switch (axis)
+	{
+	case eNONE:
+		break;
+	case eX:
+		Move(eY, l * cosf(d));
+		Move(eZ, l * sinf(d));
+		break;
+	case eY:
+		Move(eZ, l * cosf(d));
+		Move(eX, l * sinf(d));
+		break;
+	case eZ:
+		Move(eX, l * cosf(d));
+		Move(eY, l * sinf(d));
+		break;
+	default:
+		break;
+	}
+	*/
 	Selectable::Rotate(o, axis, d);
 }
 
@@ -76,6 +100,12 @@ void Point::Scale(const sp& o, eAxis axis, float d)
 	Move(eZ, o0.x);
 	Move(eY, o0.y);
 	Move(eX, o0.z);
+}
 
-	Selectable::Scale(o, axis, d);
+bool Point::getManipulatorMatrix(matrix& mat) const
+{
+	if (!m_Selected)
+		return false;
+	mat = mat * m_Move * m_Pivot;
+	return true;
 }

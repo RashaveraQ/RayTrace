@@ -11,4 +11,5 @@ public:
 	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& matrix) const;
 	void Rotate(const sp& o, eAxis axis, float d);
 	void Scale(const sp& o, eAxis axis, float d);
+	bool getManipulatorMatrix(matrix& mat) const;
 };
