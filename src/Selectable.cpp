@@ -106,7 +106,7 @@ bool Selectable::getManipulatorMatrix(matrix& mat) const
 {
 	if (!m_Selected)
 		return false;
-	mat = mat * m_Matrix * m_Pivot;
+	mat = mat * m_Move * m_Pivot;
 	return true;
 }
 
