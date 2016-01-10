@@ -64,31 +64,33 @@ void Point::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& ma
 
 void Point::Rotate(const sp& o, eAxis axis, float d)
 {
-	/*
+	if (!m_Selected)
+		return;
+
 	sp r = (m_Matrix * sp() - o);
 	float l = r.abs();
+	d /= 10;
 
 	switch (axis)
 	{
 	case eNONE:
 		break;
 	case eX:
-		Move(eY, l * cosf(d));
-		Move(eZ, l * sinf(d));
+		Move(eY, r.y * (cosf(d) - 1.0f) - r.z * sinf(d));
+		Move(eZ, r.z * (cosf(d) - 1.0f) + r.y * sinf(d));
 		break;
 	case eY:
-		Move(eZ, l * cosf(d));
-		Move(eX, l * sinf(d));
+		Move(eZ, r.z * (cosf(d) - 1.0f) - r.x * sinf(d));
+		Move(eX, r.x * (cosf(d) - 1.0f) + r.z * sinf(d));
 		break;
 	case eZ:
-		Move(eX, l * cosf(d));
-		Move(eY, l * sinf(d));
+		Move(eX, r.x * (cosf(d) - 1.0f) - r.y * sinf(d));
+		Move(eY, r.y * (cosf(d) - 1.0f) + r.x * sinf(d));
 		break;
 	default:
 		break;
 	}
-	*/
-	Selectable::Rotate(o, axis, d);
+	//Selectable::Rotate(o, axis, d);
 }
 
 void Point::Scale(const sp& o, eAxis axis, float d)
@@ -97,9 +99,9 @@ void Point::Scale(const sp& o, eAxis axis, float d)
 		return;
 
 	sp o0 = d * (m_Matrix * sp() - o);
-	Move(eZ, o0.x);
+	Move(eX, o0.x);
 	Move(eY, o0.y);
-	Move(eX, o0.z);
+	Move(eZ, o0.z);
 }
 
 bool Point::getManipulatorMatrix(matrix& mat) const

@@ -45,9 +45,9 @@ void Selectable::Move(eAxis axis, float d)
 		return;
 
 	switch (axis) {
-	case eX:	m_Move.set_data(3, 4, m_Move.get_data(3, 4) - (float)d / 20);	break;
+	case eX:	m_Move.set_data(1, 4, m_Move.get_data(1, 4) - (float)d / 20);	break;
 	case eY:	m_Move.set_data(2, 4, m_Move.get_data(2, 4) - (float)d / 20);	break;
-	case eZ:	m_Move.set_data(1, 4, m_Move.get_data(1, 4) - (float)d / 20);	break;
+	case eZ:	m_Move.set_data(3, 4, m_Move.get_data(3, 4) - (float)d / 20);	break;
 	}
 	updateMatrix();
 }
@@ -77,11 +77,11 @@ void Selectable::Scale(const sp& o, eAxis axis, float d)
 		return;
 
 	if (axis == eX || axis == eNONE)
-		m_Scale.set_data(3, 3, m_Scale.get_data(3, 3) - d / 50);
+		m_Scale.set_data(1, 1, m_Scale.get_data(1, 1) - d / 50);
 	if (axis == eY || axis == eNONE)
 		m_Scale.set_data(2, 2, m_Scale.get_data(2, 2) - d / 50);
 	if (axis == eZ || axis == eNONE)
-		m_Scale.set_data(1, 1, m_Scale.get_data(1, 1) - d / 50);
+		m_Scale.set_data(3, 3, m_Scale.get_data(3, 3) - d / 50);
 	updateMatrix();
 }
 
@@ -91,9 +91,9 @@ void Selectable::MovePivot(eAxis axis, float d)
 		return;
 
 	switch (axis) {
-	case eX:	m_Pivot.set_data(3, 4, m_Pivot.get_data(3, 4) - (float)d / 20);	break;
+	case eX:	m_Pivot.set_data(1, 4, m_Pivot.get_data(1, 4) - (float)d / 20);	break;
 	case eY:	m_Pivot.set_data(2, 4, m_Pivot.get_data(2, 4) - (float)d / 20);	break;
-	case eZ:	m_Pivot.set_data(1, 4, m_Pivot.get_data(1, 4) - (float)d / 20);	break;
+	case eZ:	m_Pivot.set_data(3, 4, m_Pivot.get_data(3, 4) - (float)d / 20);	break;
 	}
 }
 
