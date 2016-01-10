@@ -59,13 +59,13 @@ void Selectable::Rotate(const sp& o, eAxis axis, float d)
 
 	switch (axis) {
 	case eX:
-		m_Rotate = m_Rotate * m_Pivot * rotate(0, 0, 1, d) * m_Pivot.Inv();
+		m_Rotate = m_Rotate * m_Pivot * rotate(1, 0, 0, d) * m_Pivot.Inv();
 		break;
 	case eY:
 		m_Rotate = m_Rotate * m_Pivot * rotate(0, 1, 0, d) * m_Pivot.Inv();
 		break;
 	case eZ:
-		m_Rotate = m_Rotate * m_Pivot * rotate(1, 0, 0, d) * m_Pivot.Inv();
+		m_Rotate = m_Rotate * m_Pivot * rotate(0, 0, 1, d) * m_Pivot.Inv();
 		break;
 	}
 	updateMatrix();

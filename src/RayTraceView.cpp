@@ -223,7 +223,7 @@ bool CRayTraceView::setManipulatorAxis(const CPoint& point)
 			for (int j = 0; j < 50; j++) {
 				float th = (i == 2) ? (6.28f * j / 50) : (3.14f * i / 2);
 				float ph = (i == 2) ? (3.14f / 2) : (6.28f * j / 50);
-				sp p = mat * sp(2 * cos(th)*sin(ph), 2 * cos(ph), 2 * sin(th)*sin(ph));
+				sp p = mat * sp(2 * sin(th)*sin(ph), 2 * cos(ph), 2 * cos(th)*sin(ph));
 				float dx = (P0.x + (r - 10) * (p - p0).e().x) - point.x;
 				float dy = (P0.y + (r - 10) * (p - p0).e().y) - point.y;
 				if (dx*dx + dy*dy < 20) {
@@ -287,9 +287,9 @@ void CRayTraceView::drawManipulator(CDC* pDC)
 		pz = p0 + m_Viewport.m_Rotate * sp(0, 0, 2);
 		break;
 	default:
-		px = mat * sp(0, 0, -1);
+		px = mat * sp(-1, 0, 0);
 		py = mat * sp(0, -1, 0);
-		pz = mat * sp(-1, 0, 0);
+		pz = mat * sp(0, 0, -1);
 	}
 
 	POINT P0, PX, PY, PZ;
@@ -319,8 +319,7 @@ void CRayTraceView::drawManipulator(CDC* pDC)
 		pDC->Rectangle(P0.x - 10, P0.y - 10, P0.x + 10, P0.y + 10);
 		break;
 	case eROTATE:
-		old_pen =
-			pDC->SelectObject(&g_pen);
+		old_pen = pDC->SelectObject(&g_pen);
 
 		int i, j;
 		float th, ph;
@@ -330,7 +329,7 @@ void CRayTraceView::drawManipulator(CDC* pDC)
 			for (j = 0; j < 50; j++) {
 				th = (i == 2) ? (6.28f * j / 50) : (3.14f * i / 2);
 				ph = (i == 2) ? (3.14f / 2) : (6.28f * j / 50);
-				sp p = mat * sp(2 * cosf(th) * sinf(ph), 2 * cosf(ph), 2 * sinf(th) * sinf(ph));
+				sp p = mat * sp(2 * sinf(th) * sinf(ph), 2 * cosf(ph), 2 * cosf(th) * sinf(ph));
 				P[j].x = (long)(P0.x + (r - 10) * (p - p0).e().x);
 				P[j].y = (long)(P0.y + (r - 10) * (p - p0).e().y);
 			}
