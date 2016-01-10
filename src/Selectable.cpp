@@ -76,10 +76,10 @@ void Selectable::Scale(const sp& o, eAxis axis, float d)
 	if (!m_Selected)
 		return;
 
-	sp o0 = m_Matrix * sp();
-	Move(eZ, d * (o0.x - o.x));
-	Move(eY, d * (o0.y - o.y));
-	Move(eX, d * (o0.z - o.z));
+	sp o0 = d * (m_Matrix * sp() - o);
+	Move(eZ, o0.x);
+	Move(eY, o0.y);
+	Move(eX, o0.z);
 
 	if (axis == eX || axis == eNONE)
 		m_Scale.set_data(3, 3, m_Scale.get_data(3, 3) - d / 50);
