@@ -16,7 +16,7 @@ class   Viewport;
 struct	matrix;
 class   DevNode;
 
-#include "Point.h"
+#include "Vertex.h"
 
 struct fsize
 {

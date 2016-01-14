@@ -1,13 +1,13 @@
 ﻿#include "StdAfx.h"
-#include "Point.h"
+#include "Vertex.h"
 
-Point::Point(const sp& isp)
+Vertex::Vertex(const sp& isp)
 {
 	m_Move = move(isp.x, isp.y, isp.z);
 	updateMatrix();
 }
 
-bool Point::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+bool Vertex::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
 {
 	float	a = K * K;
 	float	b = K * L;
@@ -48,7 +48,7 @@ bool Point::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	return TRUE;
 }
 
-void Point::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
+void Vertex::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
 {
 	const CSize& size = raytraceview.m_ClientSize;
 	//pDC->SelectStockObject((pNode == this) ? WHITE_PEN : BLACK_PEN);
@@ -62,7 +62,7 @@ void Point::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& ma
 		Selectable::Draw_Outline(pDC, raytraceview, mat * m_Matrix);
 }
 
-void Point::Rotate(const sp& o, eAxis axis, float d)
+void Vertex::Rotate(const sp& o, eAxis axis, float d)
 {
 	if (!m_Selected)
 		return;
@@ -93,7 +93,7 @@ void Point::Rotate(const sp& o, eAxis axis, float d)
 	//Selectable::Rotate(o, axis, d);
 }
 
-void Point::Scale(const sp& o, eAxis axis, float d)
+void Vertex::Scale(const sp& o, eAxis axis, float d)
 {
 	if (!m_Selected)
 		return;
@@ -104,7 +104,7 @@ void Point::Scale(const sp& o, eAxis axis, float d)
 	Move(eZ, o0.z);
 }
 
-bool Point::getManipulatorMatrix(matrix& mat) const
+bool Vertex::getManipulatorMatrix(matrix& mat) const
 {
 	if (!m_Selected)
 		return false;

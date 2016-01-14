@@ -11,7 +11,7 @@ NurbsPlane::NurbsPlane(Node* const root, const TCHAR* const Name, const sp Color
 {
 	for (int i = 0; i < CV_WIDTH; i++)
 		for (int j = 0; j < CV_HEIGHT; j++)
-			m_ControlVertex[i][j] = Point(sp(-3 + 2 * i, 0, -3 + 2 * j));
+			m_ControlVertex[i][j] = Vertex(sp(-3 + 2 * i, 0, -3 + 2 * j));
 
 	if (!newDeviceNode())
 		exit(1);

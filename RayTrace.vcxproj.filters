@@ -134,13 +134,13 @@
     <ClCompile Include="src\NurbsPrimitive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Point.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Selectable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Face.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Vertex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -340,13 +340,13 @@
     <ClInclude Include="src\NurbsPrimitive.cuh">
       <Filter>CUDA Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Point.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Selectable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Face.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

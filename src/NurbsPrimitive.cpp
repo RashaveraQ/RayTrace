@@ -30,9 +30,9 @@ void NurbsPrimitive::init(int w, int h)
 	}
 	m_ControlVertexWidth = w;
 	m_ControlVertexHeight = h;
-	m_ControlVertex = new Point*[m_ControlVertexWidth];
+	m_ControlVertex = new Vertex*[m_ControlVertexWidth];
 	for (int i = 0; i < m_ControlVertexWidth; i++)
-		m_ControlVertex[i] = new Point[m_ControlVertexHeight];
+		m_ControlVertex[i] = new Vertex[m_ControlVertexHeight];
 }
 
 NurbsPrimitive::~NurbsPrimitive()

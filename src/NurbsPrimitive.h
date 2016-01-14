@@ -3,7 +3,7 @@
 
 class	Node;
 struct	matrix;
-class   Point;
+class   Vertex;
 
 #define CV_MAX_WIDTH 100
 #define CV_MAX_HEIGHT 100
@@ -17,7 +17,7 @@ protected:
 	bool m_IsControlVertexEditable;
 	int m_ControlVertexWidth;
 	int m_ControlVertexHeight;
-	Point** m_ControlVertex;
+	Vertex** m_ControlVertex;
 	virtual bool newDeviceNode();
 public:
 	// コンストラクタ
