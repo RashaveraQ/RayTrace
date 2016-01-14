@@ -54,6 +54,7 @@ BEGIN_MESSAGE_MAP(CScnTreeView, CTreeView)
 	ON_COMMAND(ID_ADD_TEAPOT, OnAddTeapot)
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_NURBSPRIMITIVES_PLANE, &CScnTreeView::OnCreateNurbsPlane)
+	ON_COMMAND(ID_POLYGON_SPHERE, &CScnTreeView::OnCreatePolygonSphere)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -309,5 +310,7 @@ void CScnTreeView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 	c.Expand(hItem, TVE_EXPAND);
 }
 
-
-
+void CScnTreeView::OnCreatePolygonSphere()
+{
+	// TODO: Add your command handler code here
+}

@@ -69,6 +69,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnCreateNurbsPlane();
+	afx_msg void OnCreatePolygonSphere();
 };
 
 /////////////////////////////////////////////////////////////////////////////

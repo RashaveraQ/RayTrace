@@ -255,6 +255,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Face.cpp" />
     <ClCompile Include="src\ChildFrm.cpp" />
     <ClCompile Include="src\Cone.cpp" />
     <ClCompile Include="src\Cube.cpp" />
@@ -296,6 +297,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="src\Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Face.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\ChildFrm.h" />
