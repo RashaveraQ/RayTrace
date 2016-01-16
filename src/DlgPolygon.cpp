@@ -1,4 +1,4 @@
-// DlgPolygon.cpp : �C���v�������e�[�V���� �t�@�C��
+﻿// DlgPolygon.cpp : インプリメンテーション ファイル
 //
 
 #include "stdafx.h"
@@ -12,14 +12,14 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
-// CDlgPolygon �_�C�A���O
+// CDlgPolygon ダイアログ
 
 
 CDlgPolygon::CDlgPolygon(CWnd* pParent /*=NULL*/)
 	: CDialog(CDlgPolygon::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CDlgPolygon)
-		// ���� - ClassWizard �͂��̈ʒu�Ƀ}�b�s���O�p�̃}�N����ǉ��܂��͍폜���܂��B
+	// メモ - ClassWizard はこの位置にマッピング用のマクロを追加または削除します。
 	//}}AFX_DATA_INIT
 }
 
@@ -28,16 +28,16 @@ void CDlgPolygon::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CDlgPolygon)
-		// ���� - ClassWizard �͂��̈ʒu�Ƀ}�b�s���O�p�̃}�N����ǉ��܂��͍폜���܂��B
+	// メモ - ClassWizard はこの位置にマッピング用のマクロを追加または削除します。
 	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CDlgPolygon, CDialog)
 	//{{AFX_MSG_MAP(CDlgPolygon)
-		// ���� - ClassWizard �͂��̈ʒu�Ƀ}�b�s���O�p�̃}�N����ǉ��܂��͍폜���܂��B
+	// メモ - ClassWizard はこの位置にマッピング用のマクロを追加または削除します。
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CDlgPolygon ���b�Z�[�W �n���h��
+// CDlgPolygon メッセージ ハンドラ
