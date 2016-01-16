@@ -279,6 +279,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\plane.cpp" />
     <ClCompile Include="src\plus.cpp" />
+    <ClCompile Include="src\PolygonPrimitive.cpp" />
     <ClCompile Include="src\Vertex.cpp" />
     <ClCompile Include="src\polygon2.cpp" />
     <ClCompile Include="src\povray.cpp" />
@@ -342,6 +343,8 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="src\plane.h" />
     <ClInclude Include="src\Plus.cuh" />
     <ClInclude Include="src\plus.h" />
+    <ClInclude Include="src\PolygonPrimitive.cuh" />
+    <ClInclude Include="src\PolygonPrimitive.h" />
     <ClInclude Include="src\Vertex.h" />
     <ClInclude Include="src\Polygon2.cuh" />
     <ClInclude Include="src\Polygon2.h" />
@@ -408,6 +411,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="src\Plane.cu" />
     <CudaCompile Include="src\Plus.cu" />
     <CudaCompile Include="src\Polygon2.cu" />
+    <CudaCompile Include="src\PolygonPrimitive.cu" />
     <CudaCompile Include="src\Solve_Polynomial.cu" />
     <CudaCompile Include="src\Sp.cu" />
     <CudaCompile Include="src\Sphere.cu" />

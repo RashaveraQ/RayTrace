@@ -146,6 +146,9 @@
     <ClCompile Include="src\Object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\PolygonPrimitive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h">
@@ -355,6 +358,12 @@
     <ClInclude Include="src\Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\PolygonPrimitive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PolygonPrimitive.cuh">
+      <Filter>CUDA Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\bitmap_n.bmp">
@@ -450,6 +459,9 @@
       <Filter>CUDA Source Files</Filter>
     </CudaCompile>
     <CudaCompile Include="src\NurbsPrimitive.cu">
+      <Filter>CUDA Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="src\PolygonPrimitive.cu">
       <Filter>CUDA Source Files</Filter>
     </CudaCompile>
   </ItemGroup>

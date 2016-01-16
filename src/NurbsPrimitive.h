@@ -14,7 +14,7 @@ protected:
 	int m_ControlVertexWidth;
 	int m_ControlVertexHeight;
 	Vertex& getControlVertex(int w, int h) const;
-	virtual bool newDeviceNode();
+	bool newDeviceNode();
 public:
 	// コンストラクタ
 	NurbsPrimitive(Node* const root, node_type NodeType, const TCHAR* const Name, int cv_width, int cv_height, const sp Color = sp(255, 255, 255));
