@@ -137,10 +137,13 @@
     <ClCompile Include="src\Selectable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Face.cpp">
+    <ClCompile Include="src\Vertex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Vertex.cpp">
+    <ClCompile Include="src\Face.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -343,10 +346,13 @@
     <ClInclude Include="src\Selectable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Face.h">
+    <ClInclude Include="src\Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Vertex.h">
+    <ClInclude Include="src\Face.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

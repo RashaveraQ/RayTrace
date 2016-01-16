@@ -11,7 +11,7 @@ NurbsPlane::NurbsPlane(Node* const root, const TCHAR* const Name, const sp Color
 {
 	for (int i = 0; i < CV_WIDTH; i++)
 		for (int j = 0; j < CV_HEIGHT; j++)
-			m_ControlVertex[i][j] = Vertex(sp(-3 + 2 * i, 0, -3 + 2 * j));
+			getControlVertex(i,j) = Vertex(sp(-3 + 2 * i, 0, -3 + 2 * j));
 
 	if (!newDeviceNode())
 		exit(1);
@@ -36,7 +36,7 @@ void NurbsPlane::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matri
 		for (int j = 0; j < CV_HEIGHT; j++) {
 			if (0 < i && i < CV_WIDTH - 1 && 0 < j && j < CV_HEIGHT - 1)
 				continue;
-			sp(m * (sp)m_ControlVertex[i][j]).getPOINT(P[i][j].x, P[i][j].y, size.cx, size.cy);
+			sp(m * (sp)getControlVertex(i,j)).getPOINT(P[i][j].x, P[i][j].y, size.cx, size.cy);
 		}
 
 	for (int i = 0; i < CV_WIDTH; i += CV_WIDTH - 1) {
