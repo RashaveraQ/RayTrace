@@ -13,6 +13,16 @@ PolygonPlane::PolygonPlane(Node* const root, const TCHAR* const Name, const sp C
 		for (int j = 0; j < CV_HEIGHT; j++)
 			getControlVertex(i,j) = Vertex(sp(-3 + 2 * i, 0, -3 + 2 * j));
 
+	m_NumberOfFaces = 2 * (CV_WIDTH - 1) * (CV_HEIGHT - 1);
+	m_pFaces = new Face*[m_NumberOfFaces];
+	int n = 0;
+	for (int i = 0; i < CV_WIDTH - 1; i++)
+		for (int j = 0; j < CV_HEIGHT - 1; j++) {
+			m_pFaces[n++] = new Face(&getControlVertex(i,j), &getControlVertex(i+1,j), &getControlVertex(i,j+1));
+			m_pFaces[n++] = new Face(&getControlVertex(i+1,j+1), &getControlVertex(i,j+1), &getControlVertex(i+1,j));
+		}
+
+
 	if (!newDeviceNode())
 		exit(1);
 }
@@ -26,6 +36,11 @@ PolygonPlane::PolygonPlane(const PolygonPlane& other)
 
 void PolygonPlane::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
 {
+	matrix m = mat * m_Matrix;
+	pDC->SelectStockObject(m_Selected ? WHITE_PEN : BLACK_PEN);
+	for (int i = 0; i < m_NumberOfFaces; i++)
+		m_pFaces[i]->Draw_Outline(pDC, raytraceview, m);
+	/*
 	const CSize& size = raytraceview.m_ClientSize;
 	matrix m = mat * m_Matrix;
 	pDC->SelectStockObject(m_Selected ? WHITE_PEN : BLACK_PEN);
@@ -49,5 +64,6 @@ void PolygonPlane::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const mat
 		for (int j = 1; j < CV_WIDTH; j++)
 			pDC->LineTo(P[j][i]);
 	}
+	*/
 	PolygonPrimitive::Draw_Outline(pDC, raytraceview, m);
 }

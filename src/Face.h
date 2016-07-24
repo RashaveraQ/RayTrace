@@ -4,12 +4,12 @@
 #include "Selectable.h"
 class Vertex;
 
-class Face : public Selectable
+class Face //: public Selectable
 {
-	int		m_Count;
-	Vertex** m_pVertexes;
+	Vertex*	m_pVertexes[3];
 public:
-	Face(int count, Vertex** pVertexes);
+	Face(Vertex* pVertex1, Vertex* pVertex2, Vertex* pVertex3);
 	virtual ~Face();
+	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const;
 };
 
