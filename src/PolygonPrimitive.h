@@ -22,6 +22,7 @@ public:
 	// コンストラクタ
 	PolygonPrimitive(Node* const root, node_type NodeType, const TCHAR* const Name, int cv_width, int cv_height, const sp Color = sp(255, 255, 255));
 	PolygonPrimitive(const PolygonPrimitive& other);
+	virtual ~PolygonPrimitive();
 	const Node*	MakeCopy() const { return new PolygonPrimitive(*this); }
 	bool OnPolygonSelectedVertex() { return Object::OnVertex(); }
 };

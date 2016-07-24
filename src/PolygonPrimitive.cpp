@@ -17,6 +17,13 @@ PolygonPrimitive::PolygonPrimitive(const PolygonPrimitive& other)
 {
 }
 
+PolygonPrimitive::~PolygonPrimitive()
+{
+	for (int i = 0; i < m_NumberOfFaces; i++)
+		delete m_pFaces[i];
+	delete [] m_pFaces;
+}
+
 Vertex& PolygonPrimitive::getControlVertex(int w, int h) const
 {
 	return m_pVertexes[w + m_ControlVertexWidth * h];
