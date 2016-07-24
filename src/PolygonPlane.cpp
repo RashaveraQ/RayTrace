@@ -34,36 +34,3 @@ PolygonPlane::PolygonPlane(const PolygonPlane& other)
 		exit(1);
 }
 
-void PolygonPlane::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
-{
-	matrix m = mat * m_Matrix;
-	pDC->SelectStockObject(m_Selected ? WHITE_PEN : BLACK_PEN);
-	for (int i = 0; i < m_NumberOfFaces; i++)
-		m_pFaces[i]->Draw_Outline(pDC, raytraceview, m);
-	/*
-	const CSize& size = raytraceview.m_ClientSize;
-	matrix m = mat * m_Matrix;
-	pDC->SelectStockObject(m_Selected ? WHITE_PEN : BLACK_PEN);
-
-	POINT	P[CV_WIDTH][CV_HEIGHT];
-
-	for (int i = 0; i < CV_WIDTH; i++)
-		for (int j = 0; j < CV_HEIGHT; j++) {
-			if (0 < i && i < CV_WIDTH - 1 && 0 < j && j < CV_HEIGHT - 1)
-				continue;
-			sp(m * (sp)getControlVertex(i,j)).getPOINT(P[i][j].x, P[i][j].y, size.cx, size.cy);
-		}
-
-	for (int i = 0; i < CV_WIDTH; i += CV_WIDTH - 1) {
-		pDC->MoveTo(P[i][0]);
-		for (int j = 1; j < CV_HEIGHT; j++)
-			pDC->LineTo(P[i][j]);
-	}
-	for (int i = 0; i < CV_HEIGHT; i += CV_HEIGHT - 1) {
-		pDC->MoveTo(P[0][i]);
-		for (int j = 1; j < CV_WIDTH; j++)
-			pDC->LineTo(P[j][i]);
-	}
-	*/
-	PolygonPrimitive::Draw_Outline(pDC, raytraceview, m);
-}

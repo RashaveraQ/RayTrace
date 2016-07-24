@@ -28,3 +28,12 @@ Vertex& PolygonPrimitive::getControlVertex(int w, int h) const
 {
 	return m_pVertexes[w + m_ControlVertexWidth * h];
 }
+
+void PolygonPrimitive::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const
+{
+	matrix m = mat * m_Matrix;
+	pDC->SelectStockObject(m_Selected ? WHITE_PEN : BLACK_PEN);
+	for (int i = 0; i < m_NumberOfFaces; i++)
+		m_pFaces[i]->Draw_Outline(pDC, raytraceview, m);
+	Object::Draw_Outline(pDC, raytraceview, m);
+}

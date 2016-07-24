@@ -25,5 +25,6 @@ public:
 	virtual ~PolygonPrimitive();
 	const Node*	MakeCopy() const { return new PolygonPrimitive(*this); }
 	bool OnPolygonSelectedVertex() { return Object::OnVertex(); }
+	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& matrix) const;
 };
 

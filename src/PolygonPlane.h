@@ -12,7 +12,6 @@ public:
 	// コンストラクタ
 	PolygonPlane(Node* const root = 0, const TCHAR* const Name = _T("PolygonPlane"), const sp Color = sp(255, 255, 255));
 	PolygonPlane(const PolygonPlane& other);
-	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& matrix) const;
 };
 
 #endif
