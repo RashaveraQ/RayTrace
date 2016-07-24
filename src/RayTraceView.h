@@ -132,6 +132,7 @@ public:
 	afx_msg void OnUpdateViewCudaRaytrace(CCmdUI *pCmdUI);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnControlVertex();
+	afx_msg void OnPolygonSelectedVertex();
 	afx_msg void OnObjectMode();
 	afx_msg void OnSelectAll();
 	afx_msg void OnCompleteTool();

@@ -54,6 +54,7 @@ BEGIN_MESSAGE_MAP(CScnTreeView, CTreeView)
 	ON_COMMAND(ID_ADD_TEAPOT, OnAddTeapot)
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_NURBSPRIMITIVES_PLANE, &CScnTreeView::OnCreateNurbsPlane)
+	ON_COMMAND(ID_POLYGONPRIMITIVES_PLANE, &CScnTreeView::OnCreatePolygonPlane)
 	ON_COMMAND(ID_POLYGON_SPHERE, &CScnTreeView::OnCreatePolygonSphere)
 END_MESSAGE_MAP()
 
@@ -258,18 +259,19 @@ void CScnTreeView::OnEditTexture()
 	pDoc->UpdateAllViews(this);
 }
 
-void CScnTreeView::OnAddSphere()	{ Node* obj = new Sphere(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddPlane()		{ Node*	obj = new Plane(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddCone()		{ Node*	obj = new Cone(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddCylinder()	{ Node*	obj = new Cylinder(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddTorus()		{ Node*	obj = new Torus(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddPolygon()	{ Node*	obj = new Polygon2(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddTeapot()	{ Node* obj = new Teapot(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddPlus()		{ Node*	obj = new Plus(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddMinus()		{ Node*	obj = new Minus(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddMultiple()	{ Node*	obj = new Multiple(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnAddCube()		{ Node*	obj = new Cube(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
-void CScnTreeView::OnCreateNurbsPlane() { Node*	obj = new NurbsPlane(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddSphere()			{ Node* obj = new Sphere(&((CRayTraceDoc*)GetDocument())->m_Root);			if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddPlane()				{ Node*	obj = new Plane(&((CRayTraceDoc*)GetDocument())->m_Root);			if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddCone()				{ Node*	obj = new Cone(&((CRayTraceDoc*)GetDocument())->m_Root);			if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddCylinder()			{ Node*	obj = new Cylinder(&((CRayTraceDoc*)GetDocument())->m_Root);		if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddTorus()				{ Node*	obj = new Torus(&((CRayTraceDoc*)GetDocument())->m_Root);			if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddPolygon()			{ Node*	obj = new Polygon2(&((CRayTraceDoc*)GetDocument())->m_Root);		if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddTeapot()			{ Node* obj = new Teapot(&((CRayTraceDoc*)GetDocument())->m_Root);			if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddPlus()				{ Node*	obj = new Plus(&((CRayTraceDoc*)GetDocument())->m_Root);			if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddMinus()				{ Node*	obj = new Minus(&((CRayTraceDoc*)GetDocument())->m_Root);			if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddMultiple()			{ Node*	obj = new Multiple(&((CRayTraceDoc*)GetDocument())->m_Root);		if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnAddCube()				{ Node*	obj = new Cube(&((CRayTraceDoc*)GetDocument())->m_Root);			if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnCreateNurbsPlane()		{ Node*	obj = new NurbsPlane(&((CRayTraceDoc*)GetDocument())->m_Root);		if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnCreatePolygonPlane()	{ Node* obj = new PolygonPlane(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
 
 void CScnTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
 {

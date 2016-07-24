@@ -82,6 +82,7 @@ BEGIN_MESSAGE_MAP(CRayTraceView, CView)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_CUDA_RAYTRACE, &CRayTraceView::OnUpdateViewCudaRaytrace)
 	ON_WM_TIMER()
 	ON_COMMAND(ID_CONTROL_VERTEX, &CRayTraceView::OnControlVertex)
+	ON_COMMAND(ID_POLYGONSELECTED_VERTEX, &CRayTraceView::OnPolygonSelectedVertex)
 	ON_COMMAND(ID_OBJECT_MODE, &CRayTraceView::OnObjectMode)
 	ON_COMMAND(ID_SELECT_ALL, &CRayTraceView::OnSelectAll)
 	ON_COMMAND(ID_COMPLETE_TOOL, &CRayTraceView::OnCompleteTool)
@@ -1241,6 +1242,12 @@ void CRayTraceView::OnDestroy()
 void CRayTraceView::OnControlVertex()
 {
 	if (((NurbsPrimitive*)m_pActiveNode)->OnControlVertex())
+		Invalidate();
+}
+
+void CRayTraceView::OnPolygonSelectedVertex()
+{
+	if (((PolygonPrimitive*)m_pActiveNode)->OnPolygonSelectedVertex())
 		Invalidate();
 }
 
