@@ -281,6 +281,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="src\plus.cpp" />
     <ClCompile Include="src\PolygonPlane.cpp" />
     <ClCompile Include="src\PolygonPrimitive.cpp" />
+    <ClCompile Include="src\PolygonSphere.cpp" />
     <ClCompile Include="src\Vertex.cpp" />
     <ClCompile Include="src\polygon2.cpp" />
     <ClCompile Include="src\povray.cpp" />
@@ -347,6 +348,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="src\PolygonPlane.h" />
     <ClInclude Include="src\PolygonPrimitive.cuh" />
     <ClInclude Include="src\PolygonPrimitive.h" />
+    <ClInclude Include="src\PolygonSphere.h" />
     <ClInclude Include="src\Vertex.h" />
     <ClInclude Include="src\Polygon2.cuh" />
     <ClInclude Include="src\Polygon2.h" />

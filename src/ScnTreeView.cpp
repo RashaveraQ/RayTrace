@@ -272,6 +272,7 @@ void CScnTreeView::OnAddMultiple()			{ Node*	obj = new Multiple(&((CRayTraceDoc*
 void CScnTreeView::OnAddCube()				{ Node*	obj = new Cube(&((CRayTraceDoc*)GetDocument())->m_Root);			if (!AddNode(obj)) delete obj; }
 void CScnTreeView::OnCreateNurbsPlane()		{ Node*	obj = new NurbsPlane(&((CRayTraceDoc*)GetDocument())->m_Root);		if (!AddNode(obj)) delete obj; }
 void CScnTreeView::OnCreatePolygonPlane()	{ Node* obj = new PolygonPlane(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
+void CScnTreeView::OnCreatePolygonSphere()	{ Node* obj = new PolygonSphere(&((CRayTraceDoc*)GetDocument())->m_Root);	if (!AddNode(obj)) delete obj; }
 
 void CScnTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
 {
@@ -312,7 +313,3 @@ void CScnTreeView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 	c.Expand(hItem, TVE_EXPAND);
 }
 
-void CScnTreeView::OnCreatePolygonSphere()
-{
-	// TODO: Add your command handler code here
-}

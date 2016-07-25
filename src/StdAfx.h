@@ -89,6 +89,7 @@ bool InitVertexBuffer(LPDIRECT3DDEVICE9 pd3dDevice, LPDIRECT3DVERTEXBUFFER9& pVB
 #include "Face.h"
 #include "PolygonPrimitive.h"
 #include "PolygonPlane.h"
+#include "PolygonSphere.h"
 #include "NurbsPrimitive.h"
 #include "NurbsPlane.h"
 #include "gathering.h"

@@ -152,6 +152,9 @@
     <ClCompile Include="src\PolygonPlane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\PolygonSphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h">
@@ -368,6 +371,9 @@
       <Filter>CUDA Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\PolygonPlane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PolygonSphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
