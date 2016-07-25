@@ -33,7 +33,7 @@ PolygonSphere::PolygonSphere(Node* const root, const TCHAR* const Name, const sp
 			case 0:
 				m_pFaces[n++] = new Face(m_pVertexes, getVertex(a+1,1), getVertex(a,1));
 				break;
-			case SUBDIVISIONS_HEIGHT - 2:
+			case SUBDIVISIONS_HEIGHT - 1:
 				m_pFaces[n++] = new Face(getVertex(a,h), getVertex(a+1,h), getVertex(1,h+1));
 				break;
 			default:
@@ -65,7 +65,7 @@ Vertex* PolygonSphere::getVertex(int a, int h) const
 	if (h == 0) {
 		return m_pVertexes;
 	}
-	if (0 < h && h < SUBDIVISIONS_HEIGHT - 1) {
+	if (0 < h && h < SUBDIVISIONS_HEIGHT) {
 		a = (SUBDIVISIONS_AXIS + a) % SUBDIVISIONS_AXIS + 1;
 		return m_pVertexes + a + SUBDIVISIONS_AXIS * (h - 1);
 	}
