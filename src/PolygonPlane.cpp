@@ -7,21 +7,24 @@
 IMPLEMENT_SERIAL(PolygonPlane, CObject, 1)
 
 PolygonPlane::PolygonPlane(Node* const root, const TCHAR* const Name, const sp Color)
-	: PolygonPrimitive(root, ePolygonPlane, Name, CV_WIDTH * CV_HEIGHT, Color), m_ControlVertexWidth(CV_WIDTH), m_ControlVertexHeight(CV_HEIGHT)
+	: PolygonPrimitive(root, ePolygonPlane, Name, CV_WIDTH * CV_HEIGHT, Color)
 {
 	for (int i = 0; i < CV_WIDTH; i++)
 		for (int j = 0; j < CV_HEIGHT; j++)
-			getControlVertex(i,j) = Vertex(sp(-3 + 2 * i, 0, -3 + 2 * j));
+			m_pVertexes[i + CV_WIDTH * j] = Vertex(sp(-3 + 2 * i, 0, -3 + 2 * j));
 
 	m_NumberOfFaces = 2 * (CV_WIDTH - 1) * (CV_HEIGHT - 1);
 	m_pFaces = new Face*[m_NumberOfFaces];
 	int n = 0;
 	for (int i = 0; i < CV_WIDTH - 1; i++)
 		for (int j = 0; j < CV_HEIGHT - 1; j++) {
-			m_pFaces[n++] = new Face(&getControlVertex(i,j), &getControlVertex(i+1,j), &getControlVertex(i,j+1));
-			m_pFaces[n++] = new Face(&getControlVertex(i+1,j+1), &getControlVertex(i,j+1), &getControlVertex(i+1,j));
+			m_pFaces[n++] = new Face(m_pVertexes + i     + CV_WIDTH * j,
+									 m_pVertexes + i + 1 + CV_WIDTH * j,
+									 m_pVertexes + i     + CV_WIDTH * (j + 1));
+			m_pFaces[n++] = new Face(m_pVertexes + i + 1 + CV_WIDTH * (j + 1),
+									 m_pVertexes + i     + CV_WIDTH * (j + 1),
+									 m_pVertexes + i + 1 + CV_WIDTH * j);
 		}
-
 
 	if (!newDeviceNode())
 		exit(1);
@@ -33,9 +36,3 @@ PolygonPlane::PolygonPlane(const PolygonPlane& other)
 	if (!newDeviceNode())
 		exit(1);
 }
-
-Vertex& PolygonPlane::getControlVertex(int w, int h) const
-{
-	return m_pVertexes[w + m_ControlVertexWidth * h];
-}
-
