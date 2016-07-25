@@ -66,7 +66,7 @@ Vertex* PolygonSphere::getVertex(int a, int h) const
 		return m_pVertexes;
 	}
 	if (0 < h && h < SUBDIVISIONS_HEIGHT - 1) {
-		a = (SUBDIVISIONS_AXIS + a) % SUBDIVISIONS_AXIS;
+		a = (SUBDIVISIONS_AXIS + a) % SUBDIVISIONS_AXIS + 1;
 		return m_pVertexes + a + SUBDIVISIONS_AXIS * (h - 1);
 	}
 	return m_pVertexes + SUBDIVISIONS_AXIS * (SUBDIVISIONS_HEIGHT - 1) + 1;
