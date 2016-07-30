@@ -21,6 +21,8 @@ public:
 	NurbsPrimitive(const NurbsPrimitive& other);
 	const Node*	MakeCopy() const { return new NurbsPrimitive(*this); }
 	bool OnControlVertex() { return Object::OnVertex(); }
+	bool IsInside(const sp& L) const;
+	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
 };
 
 #endif

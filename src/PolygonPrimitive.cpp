@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include <float.h>
 
 bool PolygonPrimitive::newDeviceNode()
@@ -31,4 +31,43 @@ void PolygonPrimitive::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const
 	for (int i = 0; i < m_NumberOfFaces; i++)
 		m_pFaces[i]->Draw_Outline(pDC, raytraceview, m);
 	Object::Draw_Outline(pDC, raytraceview, m);
+}
+
+bool PolygonPrimitive::IsInside(const sp& L) const
+{
+	// m_pFaces[0]へ視線を伸ばし、最初に衝突した m_pFaces の向きで内外判定が出来そう。
+	return false; // 暫定
+}
+
+bool PolygonPrimitive::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+{
+	if (Object::GetInfo(K,L,info,pHint,fromOutSide))
+		return true;
+
+	if (pHint && pHint->pNode == this && fromOutSide)
+		return false;
+
+	Info	tmp;
+	int		n;
+	float	l = -1;
+
+	for (int i = 0; i < m_NumberOfFaces; i++) {
+		if (m_pFaces[i]->GetInfo(K, L, tmp, pHint, fromOutSide)) {
+			if (l == -1 || tmp.Distance < l) {
+				l = tmp.Distance;
+				n = i;
+				info = tmp;
+			}
+		}
+	}
+
+	if (l < 0)
+		return FALSE;
+
+	if (info.Material.Diffuse.r < 0)
+		info.Material = m_Material;
+
+	info.pNode = this;
+
+	return TRUE;
 }

@@ -22,7 +22,6 @@ public:
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
 	bool OnVertex();
 	bool OnObjectMode();
-	bool IsInside(const sp& L) const;
 	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& matrix) const;
 	void InsertItem(CTreeCtrl& c, HTREEITEM hParent = TVI_ROOT, HTREEITEM hInsertAfter = TVI_LAST);
 	bool SetManipulatorAxis(CRayTraceView& rtv, CPoint point, const matrix& m) const;

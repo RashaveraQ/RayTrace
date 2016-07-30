@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include <float.h>
 
 
@@ -21,4 +21,34 @@ NurbsPrimitive::NurbsPrimitive(const NurbsPrimitive& other)
 Vertex& NurbsPrimitive::getControlVertex(int w, int h) const
 {
 	return m_pVertexes[w + m_ControlVertexWidth * h];
+}
+
+bool NurbsPrimitive::IsInside(const sp& L) const
+{
+	return false; // 暫定
+}
+
+bool NurbsPrimitive::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
+{
+	if (Object::GetInfo(K,L,info,pHint,fromOutSide))
+		return true;
+
+	if (pHint && pHint->pNode == this && fromOutSide)
+		return false;
+
+	// ▽▽ 暫定 ▽▽ 
+	float	t = (K.y) ? -L.y / K.y : ((L.y> 0) ? FLT_MAX : -FLT_MAX);
+
+	if (t <= 0)
+		return false;
+
+	info.Cross = K * t + L;
+	info.Vertical = sp(0, 1, 0);
+	info.Distance = t * sqrt(K * K);
+	info.isEnter = (L.y < 0);
+	info.Material = GetPixel(info.Cross.x, info.Cross.z).getMaterial();
+	info.pNode = this;
+
+	return -3 < info.Cross.x && info.Cross.x < 3 && -3 < info.Cross.z && info.Cross.z < 3;
+	// △△ 暫定 △△
 }
