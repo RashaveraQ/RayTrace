@@ -46,6 +46,7 @@ void	Gathering::Serialize(CArchive& ar)
 			case ePolygonPlane:		m_Node[i] = new PolygonPlane(m_Root);	break;
 			case ePolygonSphere:	m_Node[i] = new PolygonSphere(m_Root);	break;
 			case eNurbsPlane:		m_Node[i] = new NurbsPlane(m_Root);		break;
+			case eNurbsSphere:		m_Node[i] = new NurbsSphere(m_Root);	break;
 			}
 			m_Node[i]->Serialize(ar);
 

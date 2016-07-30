@@ -276,6 +276,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="src\NodeTreeCtrl.cpp" />
     <ClCompile Include="src\NurbsPlane.cpp" />
     <ClCompile Include="src\NurbsPrimitive.cpp" />
+    <ClCompile Include="src\NurbsSphere.cpp" />
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\plane.cpp" />
     <ClCompile Include="src\plus.cpp" />
@@ -340,6 +341,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="src\NurbsPrimitive.cuh" />
     <ClInclude Include="src\NurbsPlane.h" />
     <ClInclude Include="src\NurbsPrimitive.h" />
+    <ClInclude Include="src\NurbsSphere.h" />
     <ClInclude Include="src\Object.h" />
     <ClInclude Include="src\Plane.cuh" />
     <ClInclude Include="src\plane.h" />

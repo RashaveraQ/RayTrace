@@ -165,29 +165,29 @@ BEGIN
     BEGIN
         POPUP "NURBS Primitives"
         BEGIN
-            MENUITEM "Sphere",                      ID_NURBSPRIMITIVES_SPHERE
-            MENUITEM "Cube",                        ID_NURBSPRIMITIVES_CUBE
-            MENUITEM "Cylinder",                    ID_NURBSPRIMITIVES_CYLINDER
-            MENUITEM "Cone",                        ID_NURBSPRIMITIVES_CONE
-            MENUITEM "Plane",                       ID_NURBSPRIMITIVES_PLANE
-            MENUITEM "Torus",                       ID_NURBSPRIMITIVES_TORUS
-            MENUITEM "Circle",                      ID_NURBSPRIMITIVES_CIRCLE
-            MENUITEM "Square",                      ID_NURBSPRIMITIVES_SQUARE
+            MENUITEM "Sphere",                      ID_NURBS_SPHERE
+            MENUITEM "Cube",                        ID_NURBS_CUBE
+            MENUITEM "Cylinder",                    ID_NURBS_CYLINDER
+            MENUITEM "Cone",                        ID_NURBS_CONE
+            MENUITEM "Plane",                       ID_NURBS_PLANE
+            MENUITEM "Torus",                       ID_NURBS_TORUS
+            MENUITEM "Circle",                      ID_NURBS_CIRCLE
+            MENUITEM "Square",                      ID_NURBS_SQUARE
         END
         POPUP "Polygon Primitives"
         BEGIN
             MENUITEM "Sphere",                      ID_POLYGON_SPHERE
-            MENUITEM "Cube",                        ID_POLYGONPRIMITIVES_CUBE
-            MENUITEM "Cylinder",                    ID_POLYGONPRIMITIVES_CYLINDER
-            MENUITEM "Cone",                        ID_POLYGONPRIMITIVES_CONE
-            MENUITEM "Plane",                       ID_POLYGONPRIMITIVES_PLANE
-            MENUITEM "Torus",                       ID_POLYGONPRIMITIVES_TORUS
-            MENUITEM "Prism",                       ID_POLYGONPRIMITIVES_PRISM
-            MENUITEM "Pyramid",                     ID_POLYGONPRIMITIVES_PYRAMID
-            MENUITEM "Pipe",                        ID_POLYGONPRIMITIVES_PIPE
-            MENUITEM "Helix",                       ID_POLYGONPRIMITIVES_HELIX
-            MENUITEM "Soccer Ball",                 ID_POLYGONPRIMITIVES_SOCCERBALL
-            MENUITEM "Platonic Solids",             ID_POLYGONPRIMITIVES_PLATONICSOLIDS
+            MENUITEM "Cube",                        ID_POLYGON_CUBE
+            MENUITEM "Cylinder",                    ID_POLYGON_CYLINDER
+            MENUITEM "Cone",                        ID_POLYGON_CONE
+            MENUITEM "Plane",                       ID_POLYGON_PLANE
+            MENUITEM "Torus",                       ID_POLYGON_TORUS
+            MENUITEM "Prism",                       ID_POLYGON_PRISM
+            MENUITEM "Pyramid",                     ID_POLYGON_PYRAMID
+            MENUITEM "Pipe",                        ID_POLYGON_PIPE
+            MENUITEM "Helix",                       ID_POLYGON_HELIX
+            MENUITEM "Soccer Ball",                 ID_POLYGON_SOCCERBALL
+            MENUITEM "Platonic Solids",             ID_POLYGON_PLATONICSOLIDS
         END
         MENUITEM "球(&S)",                       ID_ADD_SPHERE
         MENUITEM "平面(&P)",                      ID_ADD_PLANE
