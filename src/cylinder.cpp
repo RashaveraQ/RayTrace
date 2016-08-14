@@ -134,7 +134,6 @@ bool Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, 
 				info.Cross = p;
 				info.Vertical = sp(0, -1, 0);
 				info.Distance = t * sqrt(K*K);
-				info.isEnter = 1;
 				info.Material = GetPixel(.5f*(p.x + 1), .5f*(p.z + 1)).getMaterial();
 				info.pNode = this;
 				return TRUE;
@@ -153,7 +152,6 @@ bool Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, 
 				info.Cross = p;
 				info.Vertical = sp(0, 1, 0);
 				info.Distance = t * sqrt(K*K);
-				info.isEnter = 1;
 				info.Material = GetPixel(.5f*(p.x + 1), .5f*(p.z + 1)).getMaterial();
 				info.pNode = this;
 				return TRUE;
@@ -177,11 +175,9 @@ bool Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, 
 	t1 = (b + d)/a;
 	t2 = (b - d)/a;
 
-	info.isEnter = 0;
 	if (t1 > 0) {
 		if (t2 > 0) {
 			t = (t1 < t2) ? t1 : t2;
-			info.isEnter = 1;
 		} else
 			t = t1;
 	} else {
@@ -196,7 +192,6 @@ bool Cylinder::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, 
 	if (p.y < -1 || 1 < p.y)
 		return FALSE;
 
-	info.isEnter = !IsInside(L);
 	info.Cross = info.Vertical = p;
 	info.Vertical.y = 0;
 	info.Distance = t * sqrt(K * K);

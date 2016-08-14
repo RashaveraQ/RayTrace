@@ -72,12 +72,12 @@ bool Polygon2::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, 
 	float	t1 = (-b + sqrt(bb_ac)) / a;
 	float	t2 = (-b - sqrt(bb_ac)) / a;
 
-	info.isEnter = 0;
+	bool isEnter = 0;
 	if (t1 > 0)
 	{
 		if (t2 > 0)
 		{
-			info.isEnter = 1;
+			isEnter = 1;
 			t = (t1 < t2) ? t1 : t2;
 		}
 		else

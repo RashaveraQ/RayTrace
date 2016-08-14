@@ -28,7 +28,6 @@ bool DevPolygonPrimitive::GetInfo(const sp& K, const sp& L, DevInfo& info, const
 	info.Cross = K * t + L;
 	info.Vertical = sp(0, 1, 0);
 	info.Distance = t * sqrt(K * K);
-	info.isEnter = (L.y < 0);
 	info.Material = GetPixel(info.Cross.x, info.Cross.z).getMaterial();
 	info.pNode = this;
 

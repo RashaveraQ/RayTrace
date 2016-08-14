@@ -36,7 +36,7 @@ bool DevSphere::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* 
 	float	t1 = (-b + sqrt(bb_ac)) / a;
 	float	t2 = (-b - sqrt(bb_ac)) / a;
 
-	info.isEnter = 0;
+	bool isEnter = 0;
 	if (t1 > 0) {
 		if (t2 > 0) {
 			if (pHint && pHint->pNode == this && !fromOutSide) {
@@ -44,7 +44,7 @@ bool DevSphere::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* 
 			}
 			else {
 				t = (t1 < t2) ? t1 : t2;
-				info.isEnter = 1;
+				isEnter = 1;
 			}
 		}
 		else {
@@ -60,7 +60,7 @@ bool DevSphere::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* 
 	}
 
 	info.Cross = K * t + L;
-	info.Vertical = info.isEnter ? info.Cross : -info.Cross;
+	info.Vertical = isEnter ? info.Cross : -info.Cross;
 	info.Distance = t * sqrt(K * K);
 
 	float x, y, z, th, phy;

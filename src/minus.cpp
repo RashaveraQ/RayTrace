@@ -65,13 +65,11 @@ bool Minus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 		if (left && l_info.Distance > 0 && (!right || cmp < 0)) {
 			l = l_info.Cross;
 			info.pNode = l_info.pNode;
-			info.Refractive = l_info.Refractive;
 			info.Vertical = l_info.Vertical;
 			info.Material = l_info.Material;
 		} else if (right && r_info.Distance > 0 && (!left || cmp > 0)) {
 			l = r_info.Cross;
 			info.pNode = r_info.pNode;
-			info.Refractive = r_info.Refractive;
 			info.Vertical = r_info.Vertical;
 			info.Material = r_info.Material;
 		} else
@@ -79,7 +77,6 @@ bool Minus::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 
 	} while (!IsInside(m_Matrix * l));
 
-	info.isEnter = 1;
 	info.Distance = sqrt((L - l)*(L - l));
 	info.Cross = l;
 

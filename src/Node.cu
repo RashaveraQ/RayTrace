@@ -25,7 +25,7 @@ sp DevNode::GetColor(const sp& K, const sp& L, int nest, const DevInfo* pHint, b
 	if (nest > 10 || !GetInfo2(K, L, info, pHint, fromOutSide))
 		return sp(127, 127, 127);
 
-	sp k = K.e();
+	sp k = K;//.e();
 	sp v = info.Vertical.e();
 
 	sp k2 = k - 2 * (v * k) * v;
@@ -43,7 +43,7 @@ sp DevNode::GetColor(const sp& K, const sp& L, int nest, const DevInfo* pHint, b
 
 	// 透過率がある場合、
 	if (info.pNode->m_Through > 0) {
-		float r = info.Refractive;
+		float r = info.pNode->m_Refractive;
 		float i = k * v;
 		// 全反射でない場合、
 		if (r > 1.0 || asin(r) > acos(-i)) {
@@ -106,9 +106,6 @@ bool DevNode::GetInfo2(const sp& K, const sp& L, DevInfo& info, const DevInfo* p
 	info.Vertical = m * (info.Vertical + info.Cross) - m * info.Cross;
 	info.Cross = m * info.Cross;
 	info.Distance = (info.Cross - L).abs();
-	info.Refractive = info.pNode->m_Refractive / ((pHint) ? pHint->Refractive : 1.0);
-	if (!info.isEnter)
-		info.Refractive = 1 / info.Refractive;
 
 	return true;
 }

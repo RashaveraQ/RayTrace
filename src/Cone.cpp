@@ -130,7 +130,6 @@ bool Cone::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool
 			v[i] = sp(0, 1, 0);
 			info.Material = GetPixel(.5f * (p.x + 1), .5f * (p.z + 1)).getMaterial();
 			info.pNode = this;
-			info.Refractive = m_Refractive;
 			i++;
 		}
 	}
@@ -199,9 +198,9 @@ bool Cone::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool
 		break;
 	}
 
-	info.isEnter = (pHint && pHint->pNode == this) ? fromOutSide : !IsInside( L );
+	bool isEnter = (pHint && pHint->pNode == this) ? fromOutSide : !IsInside( L );
 	info.Cross = K * t[0] + L;
-	info.Vertical = info.isEnter ? v[0] : -v[0];
+	info.Vertical = isEnter ? v[0] : -v[0];
 	info.Distance = t[0] * sqrt(K * K);
 	info.Material = m_Material;
 	info.pNode = this;

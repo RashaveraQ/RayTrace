@@ -33,7 +33,7 @@ bool Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool
 	sp	   v[6];
 	int i = 0;
 	
-	info.isEnter = (pHint && pHint->pNode == this) ? fromOutSide : !IsInside(L);
+	bool isEnter = (pHint && pHint->pNode == this) ? fromOutSide : !IsInside(L);
 
 	t[i] = (-1 - L.x) / K.x;
 	if (t[i] > 0) {
@@ -108,7 +108,7 @@ bool Cube::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool
 	}
 
 	info.Cross = K * t[0] + L;
-	info.Vertical = info.isEnter ? v[0] : -v[0];
+	info.Vertical = isEnter ? v[0] : -v[0];
 	info.Distance = t[0] * sqrt(K * K);
 	info.Material = m_Material;
 	info.pNode = this;

@@ -56,9 +56,8 @@ bool Face::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool
 	if (i < 0)
 		return false;
 
-	info.isEnter = 1;
 	info.Cross = p;
-	info.Vertical = info.isEnter ? info.Cross : -info.Cross;
+	info.Vertical = info.Cross;
 	info.Distance = t * sqrt(K * K);
 
 	return true;

@@ -59,7 +59,7 @@ bool DevTorus::GetInfo(const sp& K, const sp& L, DevInfo& info, const DevInfo* p
 	sp		p;
 	float	th;
 
-	info.isEnter = IsInside(L) == TRUE ? 1 : 0;
+	bool isEnter = IsInside(L) == TRUE ? 1 : 0;
 	info.Cross = p = K * r[0] + L;
 
 	if (p.x == 0.0) {

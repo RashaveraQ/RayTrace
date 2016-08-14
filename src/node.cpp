@@ -84,7 +84,7 @@ sp Node::GetColor(const sp& K, const sp& L, int nest, const Info* pHint, bool fr
 
 	// 透過率がある場合、
 	if (info.pNode->m_Through > 0) {
-		float r = info.Refractive;
+		float r = info.pNode->m_Refractive;
 		float i = k * v;
 		// 全反射でない場合、
 		if (r > 1.0 || asin(r) > acos(-i)) {
@@ -140,9 +140,6 @@ bool Node::GetInfo2(const sp& K, const sp& L, Info& info, const Info* pHint, boo
 	info.Vertical = m_Matrix * (info.Vertical + info.Cross) - m_Matrix * info.Cross;
 	info.Cross = m_Matrix * info.Cross;
 	info.Distance = (info.Cross - L).abs();
-	info.Refractive = info.pNode ? (info.pNode->m_Refractive / ((pHint) ? pHint->Refractive : 1.0f)) : 1;
-	if (!info.isEnter)
-		info.Refractive = 1 / info.Refractive;
 
 	return true;
 }
