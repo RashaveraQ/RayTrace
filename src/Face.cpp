@@ -63,4 +63,18 @@ bool Face::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool
 	return true;
 }
 
+float Face::GetMinDistanceFrom(const sp& L) const
+{
+	float min = -1;
+	for (int i = 0; i < 3; i++) {
+		float l = ((sp)(*m_pVertexes[i]) - L).abs();
+		if (min < 0 || l < min)
+			min = l;
+	}
+	return min;
+}
 
+bool Face::IsFrontSide(const sp& L) const
+{
+	return m_Normal * L > 0;
+}

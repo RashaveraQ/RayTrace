@@ -13,5 +13,7 @@ public:
 	virtual ~Face();
 	void Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const matrix& mat) const;
 	bool GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const;
+	float GetMinDistanceFrom(const sp& L) const;
+	bool IsFrontSide(const sp& L) const;
 };
 

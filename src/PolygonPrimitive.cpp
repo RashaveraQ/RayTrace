@@ -36,7 +36,16 @@ void PolygonPrimitive::Draw_Outline(CDC* pDC, CRayTraceView& raytraceview, const
 bool PolygonPrimitive::IsInside(const sp& L) const
 {
 	// m_pFaces[0]へ視線を伸ばし、最初に衝突した m_pFaces の向きで内外判定が出来そう。
-	return false; // 暫定
+	float min = -1;
+	int j = -1;
+	for (int i = 0; i < m_NumberOfFaces; i++) {
+		float l = m_pFaces[i]->GetMinDistanceFrom(L);
+		if (min < 0 || l < min) {
+			min = l;
+			j = i;
+		}
+	}
+	return m_pFaces[j]->IsFrontSide(L);
 }
 
 bool PolygonPrimitive::GetInfo(const sp& K, const sp& L, Info& info, const Info* pHint, bool fromOutSide) const
