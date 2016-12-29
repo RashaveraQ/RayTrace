@@ -589,7 +589,7 @@ void CRayTraceView::OnTimer(UINT_PTR nIDEvent)
 {
 	CRayTraceDoc	*pDoc = GetDocument();
 
-	for (int i = 0; i < 1000; i++) {
+	for (int i = 0; i < 100000; i++) {
 		if (m_Job == CONTINUED) {
 			sp k, l;
 			GetVectorFromPoint(k, l, m_NowX, m_NowY);
